@@ -28,3 +28,23 @@ li > * {
     height: 400px;
     overflow: auto;
 }
+
+.ItemDate {
+    width: 10em;
+    vertical-align: top;
+}
+
+.day-date {
+    text-align: right;
+    font-size: 1.25em;
+}
+
+.month-year {
+    text-align: right;
+    font-size: .75em;
+}
+
+.ItemContent {
+    vertical-align: top;
+}
+

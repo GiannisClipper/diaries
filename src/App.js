@@ -1,8 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
+import { shiftDate, dayNames, monthNames } from './helpers/dates.js';
 
 function App() {
-    const [ dates, setDates ] = useState( [0,1,2,3,4,5,6,7,8,9] );
+    const today = new Date();
+
+    const [ dates, setDates ] = useState( [
+        shiftDate( today, -3 ),
+        shiftDate( today, -2 ),
+        shiftDate( today, -1 ),
+        today,
+        shiftDate( today, 1 ),
+        shiftDate( today, 2 ),
+        shiftDate( today, 3 ),
+    ] );
 
     return (
         <div className="App">
@@ -41,7 +52,7 @@ function List( { dates, setDates } ) {
         const frameBounds = frame.getBoundingClientRect();
         const { top, height } = prev.getBoundingClientRect();
         if ( top + ( height * 0.1 ) > frameBounds.top ) {
-            addDates( -2 );
+            addDates( -7 );
         }
     }
 
@@ -56,14 +67,14 @@ function List( { dates, setDates } ) {
         const frameBounds = frame.getBoundingClientRect();
         const { top, height } = next.getBoundingClientRect();
         if ( top + ( height * 0.9 ) < frameBounds.bottom ) {
-            addDates( 2 );
+            addDates( 7 );
         }
     }
-
+    
     const addDates = num => {
         let newDates = new Array( Math.abs( num ) ).fill( undefined );
-        const start = num < 0 ? dates[ 0 ] + num : dates[ dates.length - 1 ] + 1;
-        newDates = newDates.map( ( x, index ) => start + index );
+        const start = num < 0 ? shiftDate( dates[ 0 ], num ) : shiftDate( dates[ dates.length - 1 ], 1 );
+        newDates = newDates.map( ( x, index ) => shiftDate( start, index ) );
         setDates( num < 0 ? [ ...newDates, ...dates ] : [ ...dates, ...newDates ] );
     }
 
@@ -120,9 +131,19 @@ function ListItem( { date } ) {
 }
 
 function ItemDate( { date } ) {
+    const dayName = dayNames[ date.getDay() ];
+    const dateNum = date.getDate().toString().padStart(2,'0');
+    const monthName = monthNames[ date.getMonth() ];
+    const yearNum = date.getFullYear();
+
     return (
         <div className="ItemDate">
-            { date }
+            <div className="day-date">
+                { `${dayName} ${dateNum}` }
+            </div>
+            <div className="month-year">
+                { `${monthName} ${yearNum}` }
+            </div>
         </div>
     );
 }
