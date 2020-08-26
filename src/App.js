@@ -1,35 +1,31 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useContext } from 'react';
 import './App.css';
-import { shiftDate, dayNames, monthNames } from './helpers/dates.js';
+import { AppContext, AppContextProvider } from './AppContext';
+import { dayNames, monthNames } from './helpers/dates';
 
 function App() {
-    const today = new Date();
-
-    const [ dates, setDates ] = useState( [
-        shiftDate( today, -3 ),
-        shiftDate( today, -2 ),
-        shiftDate( today, -1 ),
-        today,
-        shiftDate( today, 1 ),
-        shiftDate( today, 2 ),
-        shiftDate( today, 3 ),
-    ] );
 
     return (
-        <div className="App">
-            <div className="title">
-                diaries
+        <AppContextProvider>
+            <div className="App">
+                <div className="title">
+                    diaries
+                </div>
+                <List />
             </div>
-            <List dates={dates} setDates={setDates} />
-        </div>
+        </ AppContextProvider>
     );
 }
 
-function List( { dates, setDates } ) {
+function List() {
+
+    const { state, dispatch } = useContext( AppContext );
+    const { dates } = state;
+
     const elemRef = useRef( null );
     const scrollTop = useRef( 0 );
     const scrollDirection = useRef( {} );
-    const offsetHeight = useRef( 0 );
+    const offsetHeight = useRef( 0 ); 
 
     const handleScroll = event => {
         event.stopPropagation();
@@ -52,7 +48,7 @@ function List( { dates, setDates } ) {
         const frameBounds = frame.getBoundingClientRect();
         const { top, height } = prev.getBoundingClientRect();
         if ( top + ( height * 0.1 ) > frameBounds.top ) {
-            addDates( -7 );
+            dispatch({ type: 'ADD_DATES', payload: { num: -7 } });
         }
     }
 
@@ -67,15 +63,8 @@ function List( { dates, setDates } ) {
         const frameBounds = frame.getBoundingClientRect();
         const { top, height } = next.getBoundingClientRect();
         if ( top + ( height * 0.9 ) < frameBounds.bottom ) {
-            addDates( 7 );
+            dispatch({ type: 'ADD_DATES', payload: { num: 7 } });
         }
-    }
-    
-    const addDates = num => {
-        let newDates = new Array( Math.abs( num ) ).fill( undefined );
-        const start = num < 0 ? shiftDate( dates[ 0 ], num ) : shiftDate( dates[ dates.length - 1 ], 1 );
-        newDates = newDates.map( ( x, index ) => shiftDate( start, index ) );
-        setDates( num < 0 ? [ ...newDates, ...dates ] : [ ...dates, ...newDates ] );
     }
 
     useEffect( () => {
@@ -111,7 +100,7 @@ function List( { dates, setDates } ) {
                     Load prev...
                 </div>
                 <ul className="items">
-                    { dates.map( item => ( <ListItem key={item} date={item} /> ) ) }
+                    { dates.map( date => ( <ListItem key={date.date} date={date} /> ) ) }
                 </ul>
                 <div className="next">
                     Load next...
@@ -121,14 +110,19 @@ function List( { dates, setDates } ) {
     );
 }
 
-function ListItem( { date } ) {
+const ListItem = React.memo( ( { date } ) => {
+
+    useEffect( () => {
+        console.log( 'Rendering ', date.date );
+    } );
+
     return (
         <li className="ListItem">
-            <ItemDate date={date} />
-            <ItemContent />
+            <ItemDate date={date.date} />
+            <ItemContent date={date.date} dateItems={date.dateItems} />
         </li>
     );
-}
+} );
 
 function ItemDate( { date } ) {
     const dayName = dayNames[ date.getDay() ];
@@ -148,10 +142,62 @@ function ItemDate( { date } ) {
     );
 }
 
-function ItemContent() {
+function ItemContent( { date, dateItems } ) {
+
+    const { dispatch } = useContext( AppContext );
+
+    const dragTimestamp = useRef( null );
+    const dragKey = useRef( null );
+    const dropKey = useRef( null );
+
+    const allowDrop = event => {
+        if ( event.target.getAttribute("data-timestamp") === dragTimestamp.current ) {
+            event.preventDefault();
+        }
+    }
+
+    const dragStart = event => {
+        dragTimestamp.current = event.target.getAttribute( "data-timestamp" );
+        dragKey.current = event.target.getAttribute( "data-key" );
+        event.dataTransfer.effectAllowed = 'move';
+    }
+
+    const dragEnd = event => {
+    }
+
+    const drop = event => {
+        event.preventDefault();
+        dropKey.current = event.target.getAttribute( "data-key" );
+        dispatch( { 
+            type: 'SHIFT_DATE_ITEMS', 
+            payload: { 
+                date: new Date( parseInt( dragTimestamp.current ) ),
+                key1: parseInt( dragKey.current ),
+                key2: parseInt( dropKey.current ),
+            },
+        } );
+    }
+
+    let key = -1;
+
     return (
-        <div className="ItemContent">
-            Here is the content of the item...
+        <div className="ItemContent" onClick={() => alert( date )}>
+            <ul className="items">
+                { dateItems.map( dateItem => ( 
+                    <li
+                        key={++key}
+                        draggable="true"
+                        onDragStart={event => dragStart( event )}
+                        onDragOver={event => allowDrop( event )}
+                        onDragEnd={event => dragEnd( event )}
+                        onDrop={event => drop( event )}
+                        data-timestamp={date.getTime()}
+                        data-key={key}
+                    >
+                        {dateItem}
+                    </li> 
+                ) ) }
+            </ul>
         </div>
     );
 }
