@@ -1,21 +1,7 @@
 import React, { useEffect, useRef, useContext } from 'react';
-import './App.css';
-import { AppContext, AppContextProvider } from './AppContext';
-import { dayNames, monthNames } from './helpers/dates';
-
-function App() {
-
-    return (
-        <AppContextProvider>
-            <div className="App">
-                <div className="title">
-                    diaries
-                </div>
-                <List />
-            </div>
-        </ AppContextProvider>
-    );
-}
+import '../styles/List.css';
+import { AppContext } from './AppContext';
+import { dayNames, monthNames } from '../helpers/dates';
 
 function List() {
 
@@ -202,4 +188,4 @@ function ItemContent( { date, dateItems } ) {
     );
 }
 
-export default App;
+export default List;

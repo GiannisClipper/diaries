@@ -1,5 +1,5 @@
 import React, { createContext, useReducer } from 'react';
-import { shiftDate } from './helpers/dates';
+import { shiftDate } from '../helpers/dates';
 
 const AppContext = createContext();
 
