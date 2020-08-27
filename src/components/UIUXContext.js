@@ -5,10 +5,6 @@ const UIUXContext = createContext();
 const UIUXContextProvider = props => {
 
     const UIUXState = {
-        dragDate: null,
-        dropDate: null,
-        dragKey: null,
-        dropKey: null,
         form: { isClose: true },
     };
 
@@ -36,7 +32,7 @@ const UIUXContextProvider = props => {
     const [ state, dispatch ] = useReducer( UIUXReducer, UIUXState );
 
     return (
-        <UIUXContext.Provider value={ { state, dispatch } }>
+        <UIUXContext.Provider value={{ state, dispatch }}>
             {props.children}
         </UIUXContext.Provider>    
     )

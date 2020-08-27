@@ -1,15 +1,17 @@
 import React from 'react';
 import '../styles/App.css';
-import { UIUXContextProvider } from './UIUXContext';
 import { DATAContextProvider } from './DATAContext';
+import { UIUXContextProvider } from './UIUXContext';
+import { REFContextProvider } from './REFContext';
 import DateList from './DateList';
 import Form from './Form';
 
 function App() {
 
     return (
-        <UIUXContextProvider>
         <DATAContextProvider>
+        <UIUXContextProvider>
+        <REFContextProvider>
         <div className="App">
 
             <div className="title">
@@ -21,8 +23,9 @@ function App() {
             <Form />
 
         </div>
-        </ DATAContextProvider>
+        </ REFContextProvider>
         </ UIUXContextProvider>
+        </ DATAContextProvider>
     );
 }
 

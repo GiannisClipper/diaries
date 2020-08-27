@@ -98,7 +98,7 @@ const DATAContextProvider = props => {
     const [ state, dispatch ] = useReducer( DATAReducer, DATAState );
 
     return (
-        <DATAContext.Provider value={ { state, dispatch } }>
+        <DATAContext.Provider value={{ state, dispatch }}>
             {props.children}
         </DATAContext.Provider>    
     )

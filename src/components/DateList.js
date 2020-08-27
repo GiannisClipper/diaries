@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useContext } from 'react';
 import '../styles/DateList.css';
-import { UIUXContext } from './UIUXContext';
 import { DATAContext } from './DATAContext';
+import { UIUXContext } from './UIUXContext';
+import { REFContext } from './REFContext';
 import { dayNames, monthNames } from '../helpers/dates';
 
 function DateList() {
@@ -133,7 +134,7 @@ function DateEntries( { date, entries } ) {
 
     const DATA = useContext( DATAContext );
     const UIUX = useContext( UIUXContext );
-    const refer = UIUX.state;
+    const REF = useContext( REFContext );
 
     const openForm = event => {
         UIUX.dispatch( { 
@@ -142,9 +143,9 @@ function DateEntries( { date, entries } ) {
         } );
     }
 
-    const dragStart = ( event, refer, date ) => {
-        refer.dragDate = date;
-        refer.dragKey = event.target.getAttribute( "data-key" );
+    const dragStart = ( event, date, REF ) => {
+        REF.current.dragDate = date;
+        REF.current.dragKey = event.target.getAttribute( "data-key" );
         event.dataTransfer.effectAllowed = 'move';
     }
 
@@ -152,17 +153,17 @@ function DateEntries( { date, entries } ) {
         event.preventDefault();
     }
 
-    const drop = ( event, refer, date ) => {
+    const drop = ( event, date, REF ) => {
         event.preventDefault();
-        refer.dropDate = date;
-        refer.dropKey = event.target.getAttribute( "data-key" );
+        REF.current.dropDate = date;
+        REF.current.dropKey = event.target.getAttribute( "data-key" );
         DATA.dispatch( { 
             type: 'MOVE_DATE_ENTRY',
             payload: { 
-                dragDate: refer.dragDate,
-                dropDate: refer.dropDate,
-                dragKey: parseInt( refer.dragKey ),
-                dropKey: parseInt( refer.dropKey ),
+                dragDate: REF.current.dragDate,
+                dropDate: REF.current.dropDate,
+                dragKey: parseInt( REF.current.dragKey ),
+                dropKey: parseInt( REF.current.dropKey ),
             },
         } );
     }
@@ -177,9 +178,9 @@ function DateEntries( { date, entries } ) {
                         key={++key}
                         data-key={key}
                         draggable="true"
-                        onDragStart={event => dragStart( event, refer, date )}
+                        onDragStart={event => dragStart( event, date, REF )}
                         onDragOver={event =>  allowDrop( event )}
-                        onDrop={event => drop( event, refer, date )}
+                        onDrop={event => drop( event, date, REF )}
                         onClick={event => openForm( event )}
                     >
                         {key + date + entry}
