@@ -2,7 +2,7 @@ import React from 'react';
 import '../styles/App.css';
 import { UIUXContextProvider } from './UIUXContext';
 import { DATAContextProvider } from './DATAContext';
-import List from './List';
+import DateList from './DateList';
 import Form from './Form';
 
 function App() {
@@ -16,7 +16,7 @@ function App() {
                 diaries
             </div>
 
-            <List />
+            <DateList />
 
             <Form />
 

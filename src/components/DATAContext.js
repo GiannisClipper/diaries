@@ -19,13 +19,13 @@ const DATAContextProvider = props => {
 
     const DATAState = {
         dates: [
-            { date: shiftDate( today, -3 ), dateItems: [ ...notes ] },
-            { date: shiftDate( today, -2 ), dateItems: [ ...notes ] },
-            { date: shiftDate( today, -1 ), dateItems: [ ...notes ] },
-            { date: today, dateItems: [ ...notes ] },
-            { date: shiftDate( today, 1 ), dateItems: [ ...notes ] },
-            { date: shiftDate( today, 2 ), dateItems: [ ...notes ] },
-            { date: shiftDate( today, 3 ), dateItems: [ ...notes ] }
+            { date: shiftDate( today, -3 ), entries: [ ...notes ] },
+            { date: shiftDate( today, -2 ), entries: [ ...notes ] },
+            { date: shiftDate( today, -1 ), entries: [ ...notes ] },
+            { date: today, entries: [ ...notes ] },
+            { date: shiftDate( today, 1 ), entries: [ ...notes ] },
+            { date: shiftDate( today, 2 ), entries: [ ...notes ] },
+            { date: shiftDate( today, 3 ), entries: [ ...notes ] }
         ],
     };
 
@@ -39,7 +39,7 @@ const DATAContextProvider = props => {
                 const addPrevDates = ( dates, num ) => {
                     let startVal = shiftDate( dates[ 0 ].date, -num );
                     let newDates = new Array( num ).fill( undefined );
-                    newDates = newDates.map( ( x, index ) => ({ date: shiftDate( startVal, index ), dateItems: [ ...notes ] }) );
+                    newDates = newDates.map( ( x, index ) => ({ date: shiftDate( startVal, index ), entries: [ ...notes ] }) );
                     return [ ...newDates, ...dates ];
                 }
 
@@ -50,7 +50,7 @@ const DATAContextProvider = props => {
                 const addNextDates = ( dates, num ) => {
                     let startVal = shiftDate( dates[ dates.length - 1 ].date, 1 );
                     let newDates = new Array( num ).fill( undefined );
-                    newDates = newDates.map( ( x, index ) => ({ date: shiftDate( startVal, index ), dateItems: [ ...notes ] }) );
+                    newDates = newDates.map( ( x, index ) => ({ date: shiftDate( startVal, index ), entries: [ ...notes ] }) );
                     return [ ...dates, ...newDates ];
                 }
 
@@ -76,12 +76,12 @@ const DATAContextProvider = props => {
                     const foundDate = { ...dates[ found ] };
                     const nextDates = dates.slice( found + 1 );
 
-                    const dateItems = [ ...foundDate.dateItems ];
-                    let tmp = dateItems[ key1 ];
-                    dateItems[ key1 ] = dateItems[ key2 ];
-                    dateItems[ key2 ] = tmp;
+                    const entries = [ ...foundDate.entries ];
+                    let tmp = entries[ key1 ];
+                    entries[ key1 ] = entries[ key2 ];
+                    entries[ key2 ] = tmp;
 
-                    foundDate.dateItems = dateItems;
+                    foundDate.entries = entries;
                     dates = [ ...prevDates, foundDate, ...nextDates ];
                     return { ...state, dates: dates };
                 }

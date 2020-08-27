@@ -3,7 +3,7 @@ import '../styles/List.css';
 import { DATAContext } from './DATAContext';
 import { dayNames, monthNames } from '../helpers/dates';
 
-function List() {
+function DateList() {
 
     const { state, dispatch } = useContext( DATAContext );
     const { dates } = state;
@@ -80,13 +80,13 @@ function List() {
     } );
 
     return (
-        <div className="List frame" ref={elemRef}>
+        <div className="DateList frame" ref={elemRef}>
             <div className="content">
                 <div className="prev">
                     Load prev...
                 </div>
-                <ul className="items">
-                    { dates.map( date => ( <ListItem key={date.date} date={date} /> ) ) }
+                <ul>
+                    { dates.map( dateItem => ( <DateItem key={dateItem.date} dateItem={dateItem} /> ) ) }
                 </ul>
                 <div className="next">
                     Load next...
@@ -96,28 +96,28 @@ function List() {
     );
 }
 
-const ListItem = React.memo( ( { date } ) => {
+const DateItem = React.memo( ( { dateItem } ) => {
 
     useEffect( () => {
-        console.log( 'Rendering ', date.date );
+        console.log( 'Rendering ', dateItem.date );
     } );
 
     return (
-        <li className="ListItem">
-            <ItemDate date={date.date} />
-            <ItemContent date={date.date} dateItems={date.dateItems} />
+        <li className="DateItem">
+            <DateInfo date={dateItem.date} />
+            <DateEntries date={dateItem.date} entries={dateItem.entries} />
         </li>
     );
 } );
 
-function ItemDate( { date } ) {
+function DateInfo( { date } ) {
     const dayName = dayNames[ date.getDay() ];
-    const dateNum = date.getDate().toString().padStart(2,'0');
+    const dateNum = date.getDate().toString().padStart( 2, '0' );
     const monthName = monthNames[ date.getMonth() ];
     const yearNum = date.getFullYear();
 
     return (
-        <div className="ItemDate">
+        <div className="DateInfo">
             <div className="day-date">
                 { `${dayName} ${dateNum}` }
             </div>
@@ -128,7 +128,7 @@ function ItemDate( { date } ) {
     );
 }
 
-function ItemContent( { date, dateItems } ) {
+function DateEntries( { date, entries } ) {
 
     const { dispatch } = useContext( DATAContext );
 
@@ -171,9 +171,9 @@ function ItemContent( { date, dateItems } ) {
     let key = -1;
 
     return (
-        <div className="ItemContent">
-            <ul className="items">
-                { dateItems.map( dateItem => ( 
+        <div className="DateEntries">
+            <ul>
+                { entries.map( entry => ( 
                     <li
                         key={++key}
                         onClick={event => openForm( event )}
@@ -184,7 +184,7 @@ function ItemContent( { date, dateItems } ) {
                         data-timestamp={date.getTime()}
                         data-key={key}
                     >
-                        {dateItem}
+                        {entry}
                     </li> 
                 ) ) }
             </ul>
@@ -192,4 +192,4 @@ function ItemContent( { date, dateItems } ) {
     );
 }
 
-export default List;
+export default DateList;

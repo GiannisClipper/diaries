@@ -11,12 +11,12 @@ li > * {
     padding: 4px;
 }
 
-.frame {
+.DateList.frame {
     height: 400px;
     overflow: auto;
 }
 
-.ItemDate {
+.DateInfo {
     width: 10em;
     vertical-align: top;
 }
@@ -31,7 +31,6 @@ li > * {
     font-size: .75em;
 }
 
-.ItemContent {
+.DateEntries {
     vertical-align: top;
 }
-
