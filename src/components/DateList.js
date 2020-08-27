@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useContext } from 'react';
-import '../styles/List.css';
+import '../styles/DateList.css';
+import { UIUXContext } from './UIUXContext';
 import { DATAContext } from './DATAContext';
 import { dayNames, monthNames } from '../helpers/dates';
 
@@ -130,40 +131,38 @@ function DateInfo( { date } ) {
 
 function DateEntries( { date, entries } ) {
 
-    const { dispatch } = useContext( DATAContext );
-
-    const dragTimestamp = useRef( null );
-    const dragKey = useRef( null );
-    const dropKey = useRef( null );
+    const DATA = useContext( DATAContext );
+    const UIUX = useContext( UIUXContext );
+    const refer = UIUX.state;
 
     const openForm = event => {
-        dispatch( { 
+        UIUX.dispatch( { 
             type: 'OPEN_FORM',
             payload: {},
         } );
     }
 
-    const dragStart = event => {
-        dragTimestamp.current = event.target.getAttribute( "data-timestamp" );
-        dragKey.current = event.target.getAttribute( "data-key" );
+    const dragStart = ( event, refer, date ) => {
+        refer.dragDate = date;
+        refer.dragKey = event.target.getAttribute( "data-key" );
         event.dataTransfer.effectAllowed = 'move';
     }
 
     const allowDrop = event => {
-        if ( event.target.getAttribute("data-timestamp") === dragTimestamp.current ) {
-            event.preventDefault();
-        }
+        event.preventDefault();
     }
 
-    const drop = event => {
+    const drop = ( event, refer, date ) => {
         event.preventDefault();
-        dropKey.current = event.target.getAttribute( "data-key" );
-        dispatch( { 
-            type: 'SHIFT_DATE_ITEMS', 
+        refer.dropDate = date;
+        refer.dropKey = event.target.getAttribute( "data-key" );
+        DATA.dispatch( { 
+            type: 'MOVE_DATE_ENTRY',
             payload: { 
-                date: new Date( parseInt( dragTimestamp.current ) ),
-                key1: parseInt( dragKey.current ),
-                key2: parseInt( dropKey.current ),
+                dragDate: refer.dragDate,
+                dropDate: refer.dropDate,
+                dragKey: parseInt( refer.dragKey ),
+                dropKey: parseInt( refer.dropKey ),
             },
         } );
     }
@@ -173,18 +172,17 @@ function DateEntries( { date, entries } ) {
     return (
         <div className="DateEntries">
             <ul>
-                { entries.map( entry => ( 
+                { entries.map( entry => (
                     <li
                         key={++key}
-                        onClick={event => openForm( event )}
-                        draggable="true"
-                        onDragStart={event => dragStart( event )}
-                        onDragOver={event => allowDrop( event )}
-                        onDrop={event => drop( event )}
-                        data-timestamp={date.getTime()}
                         data-key={key}
+                        draggable="true"
+                        onDragStart={event => dragStart( event, refer, date )}
+                        onDragOver={event =>  allowDrop( event )}
+                        onDrop={event => drop( event, refer, date )}
+                        onClick={event => openForm( event )}
                     >
-                        {entry}
+                        {key + date + entry}
                     </li> 
                 ) ) }
             </ul>

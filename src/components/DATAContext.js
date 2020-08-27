@@ -1,5 +1,5 @@
 import React, { createContext, useReducer } from 'react';
-import { shiftDate } from '../helpers/dates';
+import { daysBetween, shiftDate } from '../helpers/dates';
 
 const DATAContext = createContext();
 
@@ -31,7 +31,7 @@ const DATAContextProvider = props => {
 
     const DATAReducer = ( state, action ) => {
 
-        let dates;
+        let dates, entries;
 
         switch (action.type) {
 
@@ -57,32 +57,34 @@ const DATAContextProvider = props => {
                 dates = [ ...state.dates ];
                 return { ...state, dates: addNextDates( dates, action.payload.num ) };
         
-            case 'SHIFT_DATE_ITEMS':
+            case 'MOVE_DATE_ENTRY':
                 dates = [ ...state.dates ];
+                console.log( action.payload )
+                const { dragDate, dropDate, dragKey, dropKey } = action.payload;
 
-                const { date, key1, key2 } = action.payload;
-                const timestamp = date.getTime();
-                let found = -1;
+                const dragFound = daysBetween( dates[0].date, dragDate );
+                const dropFound = daysBetween( dates[0].date, dropDate );
 
-                for ( let i = 0; i < dates.length; i++ ) {
-                    if ( dates[ i ].date.getTime() === timestamp ) {
-                        found = i;
-                        break;
-                    }
-                }
+                if ( dragFound > -1 && dropFound > -1 ) {
 
-                if ( found > -1 ) {
-                    const prevDates = dates.slice( 0, found );
-                    const foundDate = { ...dates[ found ] };
-                    const nextDates = dates.slice( found + 1 );
+                    let prevDates, nextDates, dragDateFound, dropDateFound;
 
-                    const entries = [ ...foundDate.entries ];
-                    let tmp = entries[ key1 ];
-                    entries[ key1 ] = entries[ key2 ];
-                    entries[ key2 ] = tmp;
+                    prevDates = dates.slice( 0, dragFound );
+                    dragDateFound = { ...dates[ dragFound ] };
+                    nextDates = dates.slice( dragFound + 1 );
+                    entries = [ ...dragDateFound.entries ];
+                    const entry = entries.splice( dragKey, 1 )[ 0 ];
+                    dragDateFound.entries = entries;
+                    dates = [ ...prevDates, dragDateFound, ...nextDates ];
 
-                    foundDate.entries = entries;
-                    dates = [ ...prevDates, foundDate, ...nextDates ];
+                    prevDates = dates.slice( 0, dropFound );
+                    dropDateFound = { ...dates[ dropFound ] };
+                    nextDates = dates.slice( dropFound + 1 );
+                    entries = [ ...dropDateFound.entries ];
+                    entries.splice( dropKey, 0, entry );
+                    dropDateFound.entries = entries;
+                    dates = [ ...prevDates, dropDateFound, ...nextDates ];
+
                     return { ...state, dates: dates };
                 }
 

@@ -5,6 +5,10 @@ const UIUXContext = createContext();
 const UIUXContextProvider = props => {
 
     const UIUXState = {
+        dragDate: null,
+        dropDate: null,
+        dragKey: null,
+        dropKey: null,
         form: { isClose: true },
     };
 
