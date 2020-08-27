@@ -13,7 +13,7 @@ const AppContextProvider = props => {
         'Third note...'
     ];
 
-    const appState = { 
+    const appState = {
         dates: [
             { date: shiftDate( today, -3 ), dateItems: [ ...notes ] },
             { date: shiftDate( today, -2 ), dateItems: [ ...notes ] },
@@ -23,12 +23,15 @@ const AppContextProvider = props => {
             { date: shiftDate( today, 2 ), dateItems: [ ...notes ] },
             { date: shiftDate( today, 3 ), dateItems: [ ...notes ] }
         ],
-//        setDates: dates => setState( prevState => ( { ...prevState, dates } ) ),
+
+        uiux: {
+            form: { isClose: true },
+        }
     };
 
     const appReducer = ( state, action ) => {
 
-        let dates;
+        let dates, uiux;
 
         switch (action.type) {
 
@@ -73,6 +76,16 @@ const AppContextProvider = props => {
 
                 return state;
 
+            case 'OPEN_FORM':
+                uiux = { ...state.uiux };
+                uiux = { ...uiux, form: { isOpen: true } };
+                return { ...state, uiux };
+
+            case 'CLOSE_FORM':
+                uiux = { ...state.uiux };
+                uiux = { ...uiux, form: { isClose: true } };
+                return { ...state, uiux };
+    
             default:
                 throw new Error();
         }

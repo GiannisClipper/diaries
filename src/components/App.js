@@ -2,6 +2,7 @@ import React from 'react';
 import '../styles/App.css';
 import { AppContextProvider } from './AppContext';
 import List from './List';
+import Form from './Form';
 
 function App() {
 
@@ -12,6 +13,7 @@ function App() {
                     diaries
                 </div>
                 <List />
+                <Form />
             </div>
         </ AppContextProvider>
     );

@@ -34,7 +34,7 @@ function List() {
         const frameBounds = frame.getBoundingClientRect();
         const { top, height } = prev.getBoundingClientRect();
         if ( top + ( height * 0.1 ) > frameBounds.top ) {
-            dispatch({ type: 'ADD_DATES', payload: { num: -7 } });
+            dispatch( { type: 'ADD_DATES', payload: { num: -7 } } );
         }
     }
 
@@ -49,7 +49,7 @@ function List() {
         const frameBounds = frame.getBoundingClientRect();
         const { top, height } = next.getBoundingClientRect();
         if ( top + ( height * 0.9 ) < frameBounds.bottom ) {
-            dispatch({ type: 'ADD_DATES', payload: { num: 7 } });
+            dispatch( { type: 'ADD_DATES', payload: { num: 7 } } );
         }
     }
 
@@ -136,10 +136,11 @@ function ItemContent( { date, dateItems } ) {
     const dragKey = useRef( null );
     const dropKey = useRef( null );
 
-    const allowDrop = event => {
-        if ( event.target.getAttribute("data-timestamp") === dragTimestamp.current ) {
-            event.preventDefault();
-        }
+    const openForm = event => {
+        dispatch( { 
+            type: 'OPEN_FORM',
+            payload: {},
+        } );
     }
 
     const dragStart = event => {
@@ -148,7 +149,10 @@ function ItemContent( { date, dateItems } ) {
         event.dataTransfer.effectAllowed = 'move';
     }
 
-    const dragEnd = event => {
+    const allowDrop = event => {
+        if ( event.target.getAttribute("data-timestamp") === dragTimestamp.current ) {
+            event.preventDefault();
+        }
     }
 
     const drop = event => {
@@ -167,15 +171,15 @@ function ItemContent( { date, dateItems } ) {
     let key = -1;
 
     return (
-        <div className="ItemContent" onClick={() => alert( date )}>
+        <div className="ItemContent">
             <ul className="items">
                 { dateItems.map( dateItem => ( 
                     <li
                         key={++key}
+                        onClick={event => openForm( event )}
                         draggable="true"
                         onDragStart={event => dragStart( event )}
                         onDragOver={event => allowDrop( event )}
-                        onDragEnd={event => dragEnd( event )}
                         onDrop={event => drop( event )}
                         data-timestamp={date.getTime()}
                         data-key={key}
