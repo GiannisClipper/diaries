@@ -1,21 +1,28 @@
 import React from 'react';
 import '../styles/App.css';
-import { AppContextProvider } from './AppContext';
+import { UIUXContextProvider } from './UIUXContext';
+import { DATAContextProvider } from './DATAContext';
 import List from './List';
 import Form from './Form';
 
 function App() {
 
     return (
-        <AppContextProvider>
-            <div className="App">
-                <div className="title">
-                    diaries
-                </div>
-                <List />
-                <Form />
+        <UIUXContextProvider>
+        <DATAContextProvider>
+        <div className="App">
+
+            <div className="title">
+                diaries
             </div>
-        </ AppContextProvider>
+
+            <List />
+
+            <Form />
+
+        </div>
+        </ DATAContextProvider>
+        </ UIUXContextProvider>
     );
 }
 

@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useContext } from 'react';
 import '../styles/List.css';
-import { AppContext } from './AppContext';
+import { DATAContext } from './DATAContext';
 import { dayNames, monthNames } from '../helpers/dates';
 
 function List() {
 
-    const { state, dispatch } = useContext( AppContext );
+    const { state, dispatch } = useContext( DATAContext );
     const { dates } = state;
 
     const elemRef = useRef( null );
@@ -34,7 +34,7 @@ function List() {
         const frameBounds = frame.getBoundingClientRect();
         const { top, height } = prev.getBoundingClientRect();
         if ( top + ( height * 0.1 ) > frameBounds.top ) {
-            dispatch( { type: 'ADD_DATES', payload: { num: -7 } } );
+            dispatch( { type: 'ADD_PREV_DATES', payload: { num: 7 } } );
         }
     }
 
@@ -49,7 +49,7 @@ function List() {
         const frameBounds = frame.getBoundingClientRect();
         const { top, height } = next.getBoundingClientRect();
         if ( top + ( height * 0.9 ) < frameBounds.bottom ) {
-            dispatch( { type: 'ADD_DATES', payload: { num: 7 } } );
+            dispatch( { type: 'ADD_NEXT_DATES', payload: { num: 7 } } );
         }
     }
 
@@ -130,7 +130,7 @@ function ItemDate( { date } ) {
 
 function ItemContent( { date, dateItems } ) {
 
-    const { dispatch } = useContext( AppContext );
+    const { dispatch } = useContext( DATAContext );
 
     const dragTimestamp = useRef( null );
     const dragKey = useRef( null );

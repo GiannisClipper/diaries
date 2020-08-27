@@ -1,11 +1,15 @@
 import React, { createContext, useReducer } from 'react';
 import { shiftDate } from '../helpers/dates';
 
-const AppContext = createContext();
+const DATAContext = createContext();
 
-const AppContextProvider = props => {
+const DATAContextProvider = props => {
 
     const today = new Date();
+    today.setHours( 0 );
+    today.setMinutes( 0 );
+    today.setSeconds( 0 );
+    today.setMilliseconds( 0 );
 
     const notes = [
         'First note...',
@@ -13,7 +17,7 @@ const AppContextProvider = props => {
         'Third note...'
     ];
 
-    const appState = {
+    const DATAState = {
         dates: [
             { date: shiftDate( today, -3 ), dateItems: [ ...notes ] },
             { date: shiftDate( today, -2 ), dateItems: [ ...notes ] },
@@ -23,28 +27,36 @@ const AppContextProvider = props => {
             { date: shiftDate( today, 2 ), dateItems: [ ...notes ] },
             { date: shiftDate( today, 3 ), dateItems: [ ...notes ] }
         ],
-
-        uiux: {
-            form: { isClose: true },
-        }
     };
 
-    const appReducer = ( state, action ) => {
+    const DATAReducer = ( state, action ) => {
 
-        let dates, uiux;
+        let dates;
 
         switch (action.type) {
 
-            case 'ADD_DATES':
+            case 'ADD_PREV_DATES':
+                const addPrevDates = ( dates, num ) => {
+                    let startVal = shiftDate( dates[ 0 ].date, -num );
+                    let newDates = new Array( num ).fill( undefined );
+                    newDates = newDates.map( ( x, index ) => ({ date: shiftDate( startVal, index ), dateItems: [ ...notes ] }) );
+                    return [ ...newDates, ...dates ];
+                }
+
                 dates = [ ...state.dates ];
+                return { ...state, dates: addPrevDates( dates, action.payload.num ) };
 
-                const num = action.payload.num;
-                let newDates = new Array( Math.abs( num ) ).fill( undefined );
-                const start = num < 0 ? shiftDate( dates[ 0 ].date, num ) : shiftDate( dates[ dates.length - 1 ].date, 1 );
-                newDates = newDates.map( ( x, index ) => ({ date: shiftDate( start, index ), dateItems: [ '' ] }) );
+            case 'ADD_NEXT_DATES':
+                const addNextDates = ( dates, num ) => {
+                    let startVal = shiftDate( dates[ dates.length - 1 ].date, 1 );
+                    let newDates = new Array( num ).fill( undefined );
+                    newDates = newDates.map( ( x, index ) => ({ date: shiftDate( startVal, index ), dateItems: [ ...notes ] }) );
+                    return [ ...dates, ...newDates ];
+                }
 
-                return { ...state, dates: num < 0 ? [ ...newDates, ...dates ] : [ ...dates, ...newDates ] };
-
+                dates = [ ...state.dates ];
+                return { ...state, dates: addNextDates( dates, action.payload.num ) };
+        
             case 'SHIFT_DATE_ITEMS':
                 dates = [ ...state.dates ];
 
@@ -76,28 +88,18 @@ const AppContextProvider = props => {
 
                 return state;
 
-            case 'OPEN_FORM':
-                uiux = { ...state.uiux };
-                uiux = { ...uiux, form: { isOpen: true } };
-                return { ...state, uiux };
-
-            case 'CLOSE_FORM':
-                uiux = { ...state.uiux };
-                uiux = { ...uiux, form: { isClose: true } };
-                return { ...state, uiux };
-    
             default:
                 throw new Error();
         }
     };
 
-    const [ state, dispatch ] = useReducer( appReducer, appState );
+    const [ state, dispatch ] = useReducer( DATAReducer, DATAState );
 
     return (
-        <AppContext.Provider value={ { state, dispatch } }>
+        <DATAContext.Provider value={ { state, dispatch } }>
             {props.children}
-        </AppContext.Provider>    
+        </DATAContext.Provider>    
     )
 }
 
-export { AppContext, AppContextProvider };
+export { DATAContext, DATAContextProvider };

@@ -1,4 +1,3 @@
-
 const shiftDate = ( date, days ) => {
     let newDate = new Date( date.getTime() + ( days * 24 * 60 * 60 * 1000 ) );  // (1day = 24h * 60min * 60sec * 1000msec)
 

@@ -1,13 +1,12 @@
 import React, { useContext } from 'react';
 import '../styles/Form.css';
-import { AppContext } from './AppContext';
+import { UIUXContext } from './UIUXContext';
 
 function Form() {
 
-    const { state, dispatch } = useContext( AppContext );
-    const { uiux } = state;
+    const { state, dispatch } = useContext( UIUXContext );
 
-    const className = uiux.form.isOpen ? "modal display-block" : "modal display-none";
+    const className = state.form.isOpen ? "modal display-block" : "modal display-none";
 
     const handleClose = event => dispatch( { type: 'CLOSE_FORM' } );
 
