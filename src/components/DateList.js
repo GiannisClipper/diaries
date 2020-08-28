@@ -152,8 +152,28 @@ function DateEntry( { date, entry, KEY } ) {  // `key`, `ref` are reserved props
     const REF = useContext( REFContext );
 
     const openForm = event => {
+        event.stopPropagation();
+
         UIUX.dispatch( { 
             type: 'OPEN_FORM',
+            payload: {},
+        } );
+    }
+
+    const openEntryMenu = ( event, date, key ) => {
+        event.stopPropagation();
+
+        UIUX.dispatch( { 
+            type: 'OPEN_ENTRY_MENU',
+            payload: { date, KEY },
+        } );
+    }
+
+    const closeEntryMenu = event => {
+        event.stopPropagation();
+
+        UIUX.dispatch( { 
+            type: 'CLOSE_ENTRY_MENU',
             payload: {},
         } );
     }
@@ -196,10 +216,45 @@ function DateEntry( { date, entry, KEY } ) {  // `key`, `ref` are reserved props
             <div className='data'>
                 {KEY + date + entry}
             </div>
-            <div className='menu'>
-                menu
-            </div>
+
+            {UIUX.state.entryMenu.isClose ? (
+                <div 
+                    className='menu open'
+                    onClick={event => openEntryMenu( event, date, KEY )}
+                >
+                    [..]
+                </div>
+            ) : (
+                <div 
+                    className='menu close'
+                    onClick={event => closeEntryMenu( event, date, KEY )}
+                >
+                    []
+                </div>
+            ) } 
         </li> 
+    );
+}
+
+function EntryMenu( { date, entry, KEY } ) { 
+    return (
+        <div className='menu'>
+            <div className='cut'>
+                Cut
+            </div>
+            <div className='copy'>
+                Copy
+            </div>
+            <div className='Paste'>
+                Paste
+            </div>
+            <div className='edit'>
+                Edit
+            </div>
+            <div className='delete'>
+                Del
+            </div>
+        </div>
     );
 }
 
