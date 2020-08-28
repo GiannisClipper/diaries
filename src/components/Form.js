@@ -8,15 +8,19 @@ function Form( { date, entry, pos } ) {
 
     const className = entry.uiux.form.isOpen ? "modal display-block" : "modal display-none";
 
-    const handleClose = event => STATE.dispatch( { 
-        type: 'CLOSE_ENTRY_FORM',
-        payload: { date, pos },
-    } );
+    const closeForm = ( event, date, pos ) => {
+        event.stopPropagation();
+
+        STATE.dispatch( { 
+            type: 'CLOSE_ENTRY_FORM',
+            payload: { date, pos },
+        } );
+    }
 
     return (
         <div className={className}>
             <section className="modal-form">
-                <button onClick={handleClose}>close</button>
+                <button onClick={event => closeForm( event, date, pos )}>close</button>
             </section>
         </div>
     );

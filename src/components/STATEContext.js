@@ -14,8 +14,8 @@ const STATEContextProvider = props => {
     const newEntry = () => ( {
         data: '',
         uiux: {
-            form: { isClosed: true },
-            menu: { isClosed: true },
+            form: { isClose: true },
+            menu: { isClose: true },
         }
     } );
 
@@ -110,7 +110,9 @@ const STATEContextProvider = props => {
 
                 deconstructDate( date );
                 deconstructEntry( pos );
-                activeEntry.uiux.form = { isOpen: true };
+                const uiux = { ...activeEntry.uiux }; 
+                uiux.form = { isOpen: true };
+                activeEntry.uiux = uiux;
                 constructEntry();
                 constructDate();
 
@@ -122,7 +124,9 @@ const STATEContextProvider = props => {
 
                 deconstructDate( date );
                 deconstructEntry( pos );
-                activeEntry.uiux.form = { isClose: true };
+                const uiux = { ...activeEntry.uiux }; 
+                uiux.form = { isClose: true };
+                activeEntry.uiux = uiux;
                 constructEntry();
                 constructDate();
 
