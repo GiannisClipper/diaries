@@ -1,36 +1,67 @@
-li {
-    margin: 8px;
-    border: 1px dotted black;
-    padding: 4px;
-}
-
-li > * {
-    display: inline-block;
-    margin: 8px;
-    border: 1px dotted black;
-    padding: 4px;
+* {
+    border: 1px dotted lightseagreen;
 }
 
 .DateList.frame {
-    height: 400px;
+    width: 80%;
+    margin: auto;
+    height: 90vh;
     overflow: auto;
+}
+
+.DateItem {
+    width: 100%;
+    margin-top: .5em;
+    margin-bottom: .5em;
+    background-color: lightsteelblue;
 }
 
 .DateInfo {
     width: 10em;
+    display: inline-block;
     vertical-align: top;
+    margin-top: .5em;
+    margin-bottom: .5em;
 }
 
 .day-date {
     text-align: right;
     font-size: 1.25em;
+    padding: .5em;
 }
 
 .month-year {
     text-align: right;
     font-size: .75em;
+    padding: .5em;
 }
 
 .DateEntries {
+    width: calc( 100% - 10em );
+    display: inline-block;
     vertical-align: top;
+}
+
+.DateEntry {
+    width: 100%;
+    display: block;
+    margin-top: .5em;
+    margin-bottom: .5em;
+    background-color: lightskyblue;
+}
+
+.DateEntry .data {
+    width: calc( 100% - 2em );
+    display: inline-block;
+    vertical-align: top;
+    text-align: left;
+    padding: .5em;
+}
+
+.DateEntry .menu {
+    width: 2em;
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: top;
+    padding: .5em;
 }

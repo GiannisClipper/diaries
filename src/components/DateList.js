@@ -132,6 +132,21 @@ function DateInfo( { date } ) {
 
 function DateEntries( { date, entries } ) {
 
+    let key = -1;
+
+    return (
+        <div className="DateEntries">
+            <ul>
+                { entries.map( entry => (
+                    <DateEntry date={date} entry={entry} KEY={++key} />
+                ) ) }
+            </ul>
+        </div>
+    );
+}
+
+function DateEntry( { date, entry, KEY } ) {  // `key`, `ref` are reserved props in React. 
+
     const DATA = useContext( DATAContext );
     const UIUX = useContext( UIUXContext );
     const REF = useContext( REFContext );
@@ -143,9 +158,9 @@ function DateEntries( { date, entries } ) {
         } );
     }
 
-    const dragStart = ( event, date, REF ) => {
+    const dragStart = ( event, date, KEY, REF ) => {
         REF.current.dragDate = date;
-        REF.current.dragKey = event.target.getAttribute( "data-key" );
+        REF.current.dragKey = KEY;
         event.dataTransfer.effectAllowed = 'move';
     }
 
@@ -153,10 +168,10 @@ function DateEntries( { date, entries } ) {
         event.preventDefault();
     }
 
-    const drop = ( event, date, REF ) => {
+    const drop = ( event, date, KEY, REF ) => {
         event.preventDefault();
         REF.current.dropDate = date;
-        REF.current.dropKey = event.target.getAttribute( "data-key" );
+        REF.current.dropKey = KEY;
         DATA.dispatch( { 
             type: 'MOVE_DATE_ENTRY',
             payload: { 
@@ -168,26 +183,23 @@ function DateEntries( { date, entries } ) {
         } );
     }
 
-    let key = -1;
-
     return (
-        <div className="DateEntries">
-            <ul>
-                { entries.map( entry => (
-                    <li
-                        key={++key}
-                        data-key={key}
-                        draggable="true"
-                        onDragStart={event => dragStart( event, date, REF )}
-                        onDragOver={event =>  allowDrop( event )}
-                        onDrop={event => drop( event, date, REF )}
-                        onClick={event => openForm( event )}
-                    >
-                        {key + date + entry}
-                    </li> 
-                ) ) }
-            </ul>
-        </div>
+        <li 
+            className="DateEntry"
+            key={KEY}
+            draggable="true"
+            onDragStart={event => dragStart( event, date, KEY, REF )}
+            onDragOver={event =>  allowDrop( event )}
+            onDrop={event => drop( event, date, KEY, REF )}
+            onClick={event => openForm( event )}
+        >
+            <div className='data'>
+                {KEY + date + entry}
+            </div>
+            <div className='menu'>
+                menu
+            </div>
+        </li> 
     );
 }
 
