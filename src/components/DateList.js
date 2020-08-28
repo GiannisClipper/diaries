@@ -1,14 +1,14 @@
 import React, { useEffect, useRef, useContext } from 'react';
 import '../styles/DateList.css';
-import { DATAContext } from './DATAContext';
-import { UIUXContext } from './UIUXContext';
+import { STATEContext } from './STATEContext';
 import { REFContext } from './REFContext';
 import { dayNames, monthNames } from '../helpers/dates';
+import Form from './Form';
 
 function DateList() {
 
-    const { state, dispatch } = useContext( DATAContext );
-    const { dates } = state;
+    const STATE = useContext( STATEContext );
+    const { dates } = STATE.state;
 
     const elemRef = useRef( null );
     const scrollTop = useRef( 0 );
@@ -36,7 +36,7 @@ function DateList() {
         const frameBounds = frame.getBoundingClientRect();
         const { top, height } = prev.getBoundingClientRect();
         if ( top + ( height * 0.1 ) > frameBounds.top ) {
-            dispatch( { type: 'ADD_PREV_DATES', payload: { num: 7 } } );
+            STATE.dispatch( { type: 'ADD_PREV_DATES', payload: { num: 7 } } );
         }
     }
 
@@ -51,7 +51,7 @@ function DateList() {
         const frameBounds = frame.getBoundingClientRect();
         const { top, height } = next.getBoundingClientRect();
         if ( top + ( height * 0.9 ) < frameBounds.bottom ) {
-            dispatch( { type: 'ADD_NEXT_DATES', payload: { num: 7 } } );
+            STATE.dispatch( { type: 'ADD_NEXT_DATES', payload: { num: 7 } } );
         }
     }
 
@@ -132,55 +132,54 @@ function DateInfo( { date } ) {
 
 function DateEntries( { date, entries } ) {
 
-    let key = -1;
+    let pos = -1;
 
     return (
         <div className="DateEntries">
             <ul>
                 { entries.map( entry => (
-                    <DateEntry date={date} entry={entry} KEY={++key} />
+                    <DateEntry date={date} entry={entry} pos={++pos} />
                 ) ) }
             </ul>
         </div>
     );
 }
 
-function DateEntry( { date, entry, KEY } ) {  // `key`, `ref` are reserved props in React. 
+function DateEntry( { date, entry, pos } ) {
 
-    const DATA = useContext( DATAContext );
-    const UIUX = useContext( UIUXContext );
+    const STATE = useContext( STATEContext );
     const REF = useContext( REFContext );
 
-    const openForm = event => {
+    const openForm = ( event, date, pos ) => {
         event.stopPropagation();
 
-        UIUX.dispatch( { 
-            type: 'OPEN_FORM',
-            payload: {},
+        STATE.dispatch( { 
+            type: 'OPEN_ENTRY_FORM',
+            payload: { date, pos },
         } );
     }
 
-    const openEntryMenu = ( event, date, key ) => {
+    const openEntryMenu = ( event, date, pos ) => {
         event.stopPropagation();
 
-        UIUX.dispatch( { 
+        STATE.dispatch( { 
             type: 'OPEN_ENTRY_MENU',
-            payload: { date, KEY },
+            payload: { date, pos },
         } );
     }
 
-    const closeEntryMenu = event => {
+    const closeEntryMenu = ( event, date, pos ) => {
         event.stopPropagation();
 
-        UIUX.dispatch( { 
+        STATE.dispatch( { 
             type: 'CLOSE_ENTRY_MENU',
-            payload: {},
+            payload: { date, pos },
         } );
     }
 
-    const dragStart = ( event, date, KEY, REF ) => {
+    const dragStart = ( event, date, pos, REF ) => {
         REF.current.dragDate = date;
-        REF.current.dragKey = KEY;
+        REF.current.dragPos = pos;
         event.dataTransfer.effectAllowed = 'move';
     }
 
@@ -188,17 +187,17 @@ function DateEntry( { date, entry, KEY } ) {  // `key`, `ref` are reserved props
         event.preventDefault();
     }
 
-    const drop = ( event, date, KEY, REF ) => {
+    const drop = ( event, date, pos, REF ) => {
         event.preventDefault();
         REF.current.dropDate = date;
-        REF.current.dropKey = KEY;
-        DATA.dispatch( { 
-            type: 'MOVE_DATE_ENTRY',
-            payload: { 
+        REF.current.dropPos = pos;
+        STATE.dispatch( { 
+            type: 'MOVE_ENTRY',
+            payload: {
                 dragDate: REF.current.dragDate,
                 dropDate: REF.current.dropDate,
-                dragKey: parseInt( REF.current.dragKey ),
-                dropKey: parseInt( REF.current.dropKey ),
+                dragPos: parseInt( REF.current.dragPos ),
+                dropPos: parseInt( REF.current.dropPos ),
             },
         } );
     }
@@ -206,32 +205,35 @@ function DateEntry( { date, entry, KEY } ) {  // `key`, `ref` are reserved props
     return (
         <li 
             className="DateEntry"
-            key={KEY}
+            key={pos}
             draggable="true"
-            onDragStart={event => dragStart( event, date, KEY, REF )}
+            onDragStart={event => dragStart( event, date, pos, REF )}
             onDragOver={event =>  allowDrop( event )}
-            onDrop={event => drop( event, date, KEY, REF )}
-            onClick={event => openForm( event )}
+            onDrop={event => drop( event, date, pos, REF )}
+            onClick={event => openForm( event, date, pos )}
         >
             <div className='data'>
-                {KEY + date + entry}
+                {pos + date + entry.data}
             </div>
 
-            {UIUX.state.entryMenu.isClose ? (
+            {entry.uiux.menu.isClose ? (
                 <div 
                     className='menu open'
-                    onClick={event => openEntryMenu( event, date, KEY )}
+                    onClick={event => openEntryMenu( event, date, pos )}
                 >
                     [..]
                 </div>
             ) : (
                 <div 
                     className='menu close'
-                    onClick={event => closeEntryMenu( event, date, KEY )}
+                    onClick={event => closeEntryMenu( event, date, pos )}
                 >
                     []
                 </div>
-            ) } 
+            ) }
+
+            {entry.uiux.form.isOpen ? ( <Form date={date} entry={entry} pos={pos} /> ) : null}
+
         </li> 
     );
 }

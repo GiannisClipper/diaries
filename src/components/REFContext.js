@@ -4,7 +4,7 @@ const REFContext = createContext();
 
 const REFContextProvider = props => {
 
-    const REF = useRef( {
+    const initRef = useRef( {
         dragDate: null,
         dropDate: null,
         dragKey: null,
@@ -12,7 +12,7 @@ const REFContextProvider = props => {
     } );
 
     return (
-        <REFContext.Provider value={ REF }>
+        <REFContext.Provider value={ initRef }>
             {props.children}
         </REFContext.Provider>    
     )

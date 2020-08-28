@@ -1,14 +1,17 @@
 import React, { useContext } from 'react';
 import '../styles/Form.css';
-import { UIUXContext } from './UIUXContext';
+import { STATEContext } from './STATEContext';
 
-function Form() {
+function Form( { date, entry, pos } ) {
 
-    const { state, dispatch } = useContext( UIUXContext );
+    const STATE = useContext( STATEContext );
 
-    const className = state.form.isOpen ? "modal display-block" : "modal display-none";
+    const className = entry.uiux.form.isOpen ? "modal display-block" : "modal display-none";
 
-    const handleClose = event => dispatch( { type: 'CLOSE_FORM' } );
+    const handleClose = event => STATE.dispatch( { 
+        type: 'CLOSE_ENTRY_FORM',
+        payload: { date, pos },
+    } );
 
     return (
         <div className={className}>
