@@ -3,7 +3,6 @@ import '../styles/DateList.css';
 import { STATEContext } from './STATEContext';
 import { REFContext } from './REFContext';
 import { dayNames, monthNames } from '../helpers/dates';
-import Form from './Form';
 
 function DateList() {
 
@@ -232,7 +231,7 @@ function DateEntry( { date, entry, pos } ) {
                 </div>
             ) }
 
-            {entry.uiux.form.isOpen ? ( <Form date={date} entry={entry} pos={pos} /> ) : null}
+            {entry.uiux.form.isOpen ? ( <EntryForm date={date} entry={entry} pos={pos} /> ) : null}
 
         </li> 
     );
@@ -255,6 +254,29 @@ function EntryMenu( { date, entry, KEY } ) {
             </div>
             <div className='delete'>
                 Del
+            </div>
+        </div>
+    );
+}
+
+function EntryForm( { date, entry, pos } ) {
+
+    const STATE = useContext( STATEContext );
+    //const className = entry.uiux.form.isOpen ? "modal display-block" : "modal display-none";
+
+    const closeForm = ( event, date, pos ) => {
+        event.stopPropagation();
+
+        STATE.dispatch( { 
+            type: 'CLOSE_ENTRY_FORM',
+            payload: { date, pos },
+        } );
+    }
+
+    return (
+        <div className='modal' onClick={event => closeForm( event, date, pos )}>
+            <div className='form'>
+                <button onClick={event => closeForm( event, date, pos )}>close</button>
             </div>
         </div>
     );
