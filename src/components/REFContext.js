@@ -9,6 +9,8 @@ const REFContextProvider = props => {
         dropDate: null,
         dragKey: null,
         dropKey: null,
+
+        toolMenu: null,
     } );
 
     return (

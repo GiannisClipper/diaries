@@ -158,24 +158,6 @@ function DateEntry( { date, entry, pos } ) {
         } );
     }
 
-    const openEntryMenu = ( event, date, pos ) => {
-        event.stopPropagation();
-
-        STATE.dispatch( { 
-            type: 'OPEN_ENTRY_MENU',
-            payload: { date, pos },
-        } );
-    }
-
-    const closeEntryMenu = ( event, date, pos ) => {
-        event.stopPropagation();
-
-        STATE.dispatch( { 
-            type: 'CLOSE_ENTRY_MENU',
-            payload: { date, pos },
-        } );
-    }
-
     const dragStart = ( event, date, pos, REF ) => {
         REF.current.dragDate = date;
         REF.current.dragPos = pos;
@@ -215,21 +197,9 @@ function DateEntry( { date, entry, pos } ) {
                 {pos + date + entry.data}
             </div>
 
-            {entry.uiux.menu.isClose ? (
-                <div 
-                    className='menu open'
-                    onClick={event => openEntryMenu( event, date, pos )}
-                >
-                    [..]
-                </div>
-            ) : (
-                <div 
-                    className='menu close'
-                    onClick={event => closeEntryMenu( event, date, pos )}
-                >
-                    []
-                </div>
-            ) }
+            <ToolMenu date={date} entry={entry} pos={pos} />
+
+            {entry.uiux.menu.isOpen ? ( <EntryMenu date={date} entry={entry} pos={pos} /> ) : null}
 
             {entry.uiux.form.isOpen ? ( <EntryForm date={date} entry={entry} pos={pos} /> ) : null}
 
@@ -237,23 +207,76 @@ function DateEntry( { date, entry, pos } ) {
     );
 }
 
-function EntryMenu( { date, entry, KEY } ) { 
+function ToolMenu( { date, entry, pos } ) {
+
+    const STATE = useContext( STATEContext );
+    const REF = useContext( REFContext );
+
+    const toolMenuRef = useRef( null );
+
+    const openMenu = ( event, date, pos ) => {
+        event.stopPropagation();
+
+        REF.current.toolMenu = toolMenuRef.current;
+
+        STATE.dispatch( { 
+            type: 'OPEN_ENTRY_MENU',
+            payload: { date, pos },
+        } );
+    }
+
     return (
-        <div className='menu'>
-            <div className='cut'>
-                Cut
-            </div>
-            <div className='copy'>
-                Copy
-            </div>
-            <div className='Paste'>
-                Paste
-            </div>
-            <div className='edit'>
-                Edit
-            </div>
-            <div className='delete'>
-                Del
+        <div
+            className='ToolMenu'
+            onClick={event => openMenu( event, date, pos )}
+            ref={toolMenuRef}
+        >
+            [..]
+        </div>
+    );
+}
+
+
+function EntryMenu( { date, entry, pos } ) {
+
+    const STATE = useContext( STATEContext );
+    const REF = useContext( REFContext );
+
+    let { top, left } = REF.current.toolMenu.getBoundingClientRect();
+    top = `${top}px`;
+    left = `calc( ${left}px - 10em )`;
+    const style = { top, left };
+
+    const closeMenu = ( event, date, pos ) => {
+        event.stopPropagation();
+
+        STATE.dispatch( { 
+            type: 'CLOSE_ENTRY_MENU',
+            payload: { date, pos },
+        } );
+    }
+
+    return (
+        <div className='modal' onClick={event => closeMenu( event, date, pos )}>
+            <div className='menu' style={style}>
+                <div className='edit'>
+                    Edit
+                </div>
+                <div className='delete'>
+                    Del
+                </div>
+                <div className='cut'>
+                    Cut
+                </div>
+                <div className='copy'>
+                    Copy
+                </div>
+                <div className='paste'>
+                    Paste
+                </div>
+                <div className='close' onClick={event => closeMenu( event, date, pos )}>
+                    X
+                </div>
             </div>
         </div>
     );
@@ -262,7 +285,6 @@ function EntryMenu( { date, entry, KEY } ) {
 function EntryForm( { date, entry, pos } ) {
 
     const STATE = useContext( STATEContext );
-    //const className = entry.uiux.form.isOpen ? "modal display-block" : "modal display-none";
 
     const closeForm = ( event, date, pos ) => {
         event.stopPropagation();
