@@ -12,7 +12,7 @@ const STATEContextProvider = props => {
     today.setMilliseconds( 0 );
 
     const newEntry = () => ( {
-        data: '',
+        data: ` Entry with content ${Math.random() * 100}`,
         uiux: {
             form: { isClose: true },
             menu: { isClose: true },
@@ -86,18 +86,33 @@ const STATEContextProvider = props => {
         
             } case 'MOVE_ENTRY': {
                 dates = [ ...state.dates ];
-                const { dragDate, dropDate, dragPos, dropPos } = action.payload;
+                const { departDate, arriveDate, departPos, arrivePos } = action.payload;
                 console.log( action.payload )
-
-                deconstructDate( dragDate );
-                deconstructEntry( dragPos );
+                deconstructDate( departDate );
+                deconstructEntry( departPos );
                 const entryToMove = { ...activeEntry };
                 activeEntry = [];
                 constructEntry();
                 constructDate();
 
-                deconstructDate( dropDate );
-                deconstructEntry( dropPos );
+                deconstructDate( arriveDate );
+                deconstructEntry( arrivePos );
+                activeEntry = [ entryToMove, {...activeEntry} ];
+                constructEntry();
+                constructDate();
+
+                return { ...state, dates: dates };
+
+            } case 'COPY_ENTRY': {
+                dates = [ ...state.dates ];
+                const { departDate, arriveDate, departPos, arrivePos } = action.payload;
+                console.log( action.payload )
+                deconstructDate( departDate );
+                deconstructEntry( departPos );
+                const entryToMove = { ...activeEntry };
+
+                deconstructDate( arriveDate );
+                deconstructEntry( arrivePos );
                 activeEntry = [ entryToMove, {...activeEntry} ];
                 constructEntry();
                 constructDate();

@@ -58,7 +58,7 @@
     padding: .5em;
 }
 
-.DateEntry .ToolMenu {
+.DateEntry .MenuTool {
     width: 2em;
     display: inline-block;
     overflow: hidden;
@@ -100,4 +100,3 @@
     vertical-align: top;
     padding: .5em;
 }
-

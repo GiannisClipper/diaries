@@ -5,12 +5,19 @@ const REFContext = createContext();
 const REFContextProvider = props => {
 
     const initRef = useRef( {
-        dragDate: null,
-        dropDate: null,
-        dragKey: null,
-        dropKey: null,
+        openForm: null,
+        closeForm: null,
+        openMenu: null,
+        closeMenu: null,
 
         toolMenu: null,
+
+        departDate: null,
+        arriveDate: null,
+        departPos: null,
+        arrivePos: null,
+
+        cutOrCopy: null,
     } );
 
     return (

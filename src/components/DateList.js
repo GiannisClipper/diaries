@@ -100,7 +100,7 @@ function DateList() {
 const DateItem = React.memo( ( { dateItem } ) => {
 
     useEffect( () => {
-        console.log( 'Rendering ', dateItem.date );
+        console.log( 'Just rendered ', dateItem.date );
     } );
 
     return (
@@ -131,6 +131,36 @@ function DateInfo( { date } ) {
 
 function DateEntries( { date, entries } ) {
 
+    const STATE = useContext( STATEContext );
+    const REF = useContext( REFContext );
+
+    REF.current.cutEntry = ( date, pos ) => {
+        REF.current.departDate = date;
+        REF.current.departPos = pos;
+        REF.current.cutOrCopy = { isCut: true };
+    }
+
+    REF.current.copyEntry = ( date, pos ) => {
+        REF.current.departDate = date;
+        REF.current.departPos = pos;
+        REF.current.cutOrCopy = { isCopy: true };
+    }
+
+    REF.current.pasteEntry = ( date, pos ) => {
+        REF.current.arriveDate = date;
+        REF.current.arrivePos = pos;
+        STATE.dispatch( { 
+            type: REF.current.cutOrCopy.isCut ? 'MOVE_ENTRY' : 'COPY_ENTRY',
+            payload: {
+                departDate: REF.current.departDate,
+                arriveDate: REF.current.arriveDate,
+                departPos: parseInt( REF.current.departPos ),
+                arrivePos: parseInt( REF.current.arrivePos ),
+            },
+        } );
+        REF.current.cutOrCopy = REF.current.cutOrCopy.isCopy ? REF.current.cutOrCopy.isCopy : null;
+    }
+
     let pos = -1;
 
     return (
@@ -149,7 +179,7 @@ function DateEntry( { date, entry, pos } ) {
     const STATE = useContext( STATEContext );
     const REF = useContext( REFContext );
 
-    const openForm = ( event, date, pos ) => {
+    REF.current.openForm = ( event, date, pos ) => {
         event.stopPropagation();
 
         STATE.dispatch( { 
@@ -158,8 +188,17 @@ function DateEntry( { date, entry, pos } ) {
         } );
     }
 
-    const dragStart = ( event, date, pos, REF ) => {
-        REF.current.dragDate = date;
+    REF.current.closeForm = ( event, date, pos ) => {
+        event.stopPropagation();
+
+        STATE.dispatch( { 
+            type: 'CLOSE_ENTRY_FORM',
+            payload: { date, pos },
+        } );
+    }
+
+    const dragStart = ( event, date, pos ) => {
+        REF.current.cutEntry( date, pos );
         REF.current.dragPos = pos;
         event.dataTransfer.effectAllowed = 'move';
     }
@@ -168,19 +207,9 @@ function DateEntry( { date, entry, pos } ) {
         event.preventDefault();
     }
 
-    const drop = ( event, date, pos, REF ) => {
+    const drop = ( event, date, pos ) => {
         event.preventDefault();
-        REF.current.dropDate = date;
-        REF.current.dropPos = pos;
-        STATE.dispatch( { 
-            type: 'MOVE_ENTRY',
-            payload: {
-                dragDate: REF.current.dragDate,
-                dropDate: REF.current.dropDate,
-                dragPos: parseInt( REF.current.dragPos ),
-                dropPos: parseInt( REF.current.dropPos ),
-            },
-        } );
+        REF.current.pasteEntry( date, pos );
     }
 
     return (
@@ -188,16 +217,16 @@ function DateEntry( { date, entry, pos } ) {
             className="DateEntry"
             key={pos}
             draggable="true"
-            onDragStart={event => dragStart( event, date, pos, REF )}
+            onDragStart={event => dragStart( event, date, pos )}
             onDragOver={event =>  allowDrop( event )}
-            onDrop={event => drop( event, date, pos, REF )}
-            onClick={event => openForm( event, date, pos )}
+            onDrop={event => drop( event, date, pos )}
+            onClick={event => REF.current.openForm( event, date, pos )}
         >
             <div className='data'>
-                {pos + date + entry.data}
+                {pos + entry.data}
             </div>
 
-            <ToolMenu date={date} entry={entry} pos={pos} />
+            <MenuTool date={date} entry={entry} pos={pos} />
 
             {entry.uiux.menu.isOpen ? ( <EntryMenu date={date} entry={entry} pos={pos} /> ) : null}
 
@@ -207,17 +236,13 @@ function DateEntry( { date, entry, pos } ) {
     );
 }
 
-function ToolMenu( { date, entry, pos } ) {
+function MenuTool( { date, entry, pos } ) {
 
     const STATE = useContext( STATEContext );
     const REF = useContext( REFContext );
 
-    const toolMenuRef = useRef( null );
-
-    const openMenu = ( event, date, pos ) => {
+    REF.current.openMenu = ( event, date, pos ) => {
         event.stopPropagation();
-
-        REF.current.toolMenu = toolMenuRef.current;
 
         STATE.dispatch( { 
             type: 'OPEN_ENTRY_MENU',
@@ -225,29 +250,7 @@ function ToolMenu( { date, entry, pos } ) {
         } );
     }
 
-    return (
-        <div
-            className='ToolMenu'
-            onClick={event => openMenu( event, date, pos )}
-            ref={toolMenuRef}
-        >
-            [..]
-        </div>
-    );
-}
-
-
-function EntryMenu( { date, entry, pos } ) {
-
-    const STATE = useContext( STATEContext );
-    const REF = useContext( REFContext );
-
-    let { top, left } = REF.current.toolMenu.getBoundingClientRect();
-    top = `${top}px`;
-    left = `calc( ${left}px - 10em )`;
-    const style = { top, left };
-
-    const closeMenu = ( event, date, pos ) => {
+    REF.current.closeMenu = ( event, date, pos ) => {
         event.stopPropagation();
 
         STATE.dispatch( { 
@@ -256,8 +259,33 @@ function EntryMenu( { date, entry, pos } ) {
         } );
     }
 
+    const menuToolRef = useRef( null );
+
     return (
-        <div className='modal' onClick={event => closeMenu( event, date, pos )}>
+        <div
+            className='MenuTool'
+            onClick={event => {
+                REF.current.menuTool = menuToolRef.current;
+                REF.current.openMenu( event, date, pos );
+            }}
+            ref={menuToolRef}
+        >
+            [..]
+        </div>
+    );
+}
+
+function EntryMenu( { date, entry, pos } ) {
+
+    const REF = useContext( REFContext );
+
+    let { top, left } = REF.current.menuTool.getBoundingClientRect();
+    top = `${top}px`;
+    left = `calc( ${left}px - 10em )`;
+    const style = { top, left };
+
+    return (
+        <div className='modal' onClick={event => REF.current.closeMenu( event, date, pos )}>
             <div className='menu' style={style}>
                 <div className='edit'>
                     Edit
@@ -265,16 +293,33 @@ function EntryMenu( { date, entry, pos } ) {
                 <div className='delete'>
                     Del
                 </div>
-                <div className='cut'>
+                <div className='cut' onClick={event => {
+                    event.stopPropagation();
+                    REF.current.cutEntry( date, pos );
+                    REF.current.closeMenu( event, date, pos );
+                }}>
                     Cut
                 </div>
-                <div className='copy'>
+                <div className='copy' onClick={event => {
+                    event.stopPropagation();
+                    REF.current.copyEntry( date, pos );
+                    REF.current.closeMenu( event, date, pos );
+                }}>
                     Copy
                 </div>
-                <div className='paste'>
+                <div className='paste' onClick={event => {
+                    event.stopPropagation();
+                    if ( REF.current.cutOrCopy ) {
+                        REF.current.closeMenu( event, date, pos );
+                        REF.current.pasteEntry( date, pos );
+                    }
+                }}>
                     Paste
                 </div>
-                <div className='close' onClick={event => closeMenu( event, date, pos )}>
+                <div className='close' onClick={event => {
+                    event.stopPropagation();
+                    REF.current.closeMenu( event, date, pos )
+                }}>
                     X
                 </div>
             </div>
@@ -284,21 +329,12 @@ function EntryMenu( { date, entry, pos } ) {
 
 function EntryForm( { date, entry, pos } ) {
 
-    const STATE = useContext( STATEContext );
-
-    const closeForm = ( event, date, pos ) => {
-        event.stopPropagation();
-
-        STATE.dispatch( { 
-            type: 'CLOSE_ENTRY_FORM',
-            payload: { date, pos },
-        } );
-    }
+    const REF = useContext( REFContext );
 
     return (
-        <div className='modal' onClick={event => closeForm( event, date, pos )}>
+        <div className='modal' onClick={event => REF.current.closeForm( event, date, pos )}>
             <div className='form'>
-                <button onClick={event => closeForm( event, date, pos )}>close</button>
+                <button onClick={event => REF.current.closeForm( event, date, pos )}>close</button>
             </div>
         </div>
     );
