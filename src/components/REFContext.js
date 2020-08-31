@@ -14,8 +14,8 @@ const REFContextProvider = props => {
 
         departDate: null,
         arriveDate: null,
-        departPos: null,
-        arrivePos: null,
+        departEntryPos: null,
+        arriveEntryPos: null,
 
         cutOrCopy: null,
     } );

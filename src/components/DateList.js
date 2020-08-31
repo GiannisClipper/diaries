@@ -134,72 +134,71 @@ function DateEntries( { date, entries } ) {
     const STATE = useContext( STATEContext );
     const REF = useContext( REFContext );
 
-    REF.current.cutEntry = ( date, pos ) => {
+    REF.current.cutEntry = ( date, entryPos ) => {
         REF.current.departDate = date;
-        REF.current.departPos = pos;
+        REF.current.departEntryPos = entryPos;
         REF.current.cutOrCopy = { isCut: true };
     }
 
-    REF.current.copyEntry = ( date, pos ) => {
+    REF.current.copyEntry = ( date, entryPos ) => {
         REF.current.departDate = date;
-        REF.current.departPos = pos;
+        REF.current.departEntryPos = entryPos;
         REF.current.cutOrCopy = { isCopy: true };
     }
 
-    REF.current.pasteEntry = ( date, pos ) => {
+    REF.current.pasteEntry = ( date, entryPos ) => {
         REF.current.arriveDate = date;
-        REF.current.arrivePos = pos;
+        REF.current.arriveEntryPos = entryPos;
         STATE.dispatch( { 
             type: REF.current.cutOrCopy.isCut ? 'MOVE_ENTRY' : 'COPY_ENTRY',
             payload: {
                 departDate: REF.current.departDate,
                 arriveDate: REF.current.arriveDate,
-                departPos: parseInt( REF.current.departPos ),
-                arrivePos: parseInt( REF.current.arrivePos ),
+                departEntryPos: parseInt( REF.current.departEntryPos ),
+                arriveEntryPos: parseInt( REF.current.arriveEntryPos ),
             },
         } );
-        REF.current.cutOrCopy = REF.current.cutOrCopy.isCopy ? REF.current.cutOrCopy.isCopy : null;
+        REF.current.cutOrCopy = null;
     }
 
-    let pos = -1;
+    let entryPos = -1;
 
     return (
         <div className="DateEntries">
             <ul>
                 { entries.map( entry => (
-                    <DateEntry date={date} entry={entry} pos={++pos} />
+                    <DateEntry date={date} entry={entry} entryPos={++entryPos} />
                 ) ) }
             </ul>
         </div>
     );
 }
 
-function DateEntry( { date, entry, pos } ) {
+function DateEntry( { date, entry, entryPos } ) {
 
     const STATE = useContext( STATEContext );
     const REF = useContext( REFContext );
 
-    REF.current.openForm = ( event, date, pos ) => {
+    REF.current.openForm = ( event, date, entryPos ) => {
         event.stopPropagation();
 
         STATE.dispatch( { 
             type: 'OPEN_ENTRY_FORM',
-            payload: { date, pos },
+            payload: { date, entryPos },
         } );
     }
 
-    REF.current.closeForm = ( event, date, pos ) => {
+    REF.current.closeForm = ( event, date, entryPos ) => {
         event.stopPropagation();
 
         STATE.dispatch( { 
             type: 'CLOSE_ENTRY_FORM',
-            payload: { date, pos },
+            payload: { date, entryPos },
         } );
     }
 
-    const dragStart = ( event, date, pos ) => {
-        REF.current.cutEntry( date, pos );
-        REF.current.dragPos = pos;
+    const dragStart = ( event, date, entryPos ) => {
+        REF.current.cutEntry( date, entryPos );
         event.dataTransfer.effectAllowed = 'move';
     }
 
@@ -207,55 +206,55 @@ function DateEntry( { date, entry, pos } ) {
         event.preventDefault();
     }
 
-    const drop = ( event, date, pos ) => {
+    const drop = ( event, date, entryPos ) => {
         event.preventDefault();
-        REF.current.pasteEntry( date, pos );
+        REF.current.pasteEntry( date, entryPos );
     }
 
     return (
         <li 
             className="DateEntry"
-            key={pos}
+            key={entryPos}
             draggable="true"
-            onDragStart={event => dragStart( event, date, pos )}
+            onDragStart={event => dragStart( event, date, entryPos )}
             onDragOver={event =>  allowDrop( event )}
-            onDrop={event => drop( event, date, pos )}
-            onClick={event => REF.current.openForm( event, date, pos )}
+            onDrop={event => drop( event, date, entryPos )}
+            onClick={event => REF.current.openForm( event, date, entryPos )}
         >
             <div className='data'>
-                {pos + entry.data}
+                {entryPos + entry.data}
             </div>
 
-            <MenuTool date={date} entry={entry} pos={pos} />
+            <MenuTool date={date} entry={entry} entryPos={entryPos} />
 
-            {entry.uiux.menu.isOpen ? ( <EntryMenu date={date} entry={entry} pos={pos} /> ) : null}
+            {entry.uiux.menu.isOpen ? ( <EntryMenu date={date} entry={entry} entryPos={entryPos} /> ) : null}
 
-            {entry.uiux.form.isOpen ? ( <EntryForm date={date} entry={entry} pos={pos} /> ) : null}
+            {entry.uiux.form.isOpen ? ( <EntryForm date={date} entry={entry} entryPos={entryPos} /> ) : null}
 
         </li> 
     );
 }
 
-function MenuTool( { date, entry, pos } ) {
+function MenuTool( { date, entry, entryPos } ) {
 
     const STATE = useContext( STATEContext );
     const REF = useContext( REFContext );
 
-    REF.current.openMenu = ( event, date, pos ) => {
+    REF.current.openMenu = ( event, date, entryPos ) => {
         event.stopPropagation();
 
         STATE.dispatch( { 
             type: 'OPEN_ENTRY_MENU',
-            payload: { date, pos },
+            payload: { date, entryPos },
         } );
     }
 
-    REF.current.closeMenu = ( event, date, pos ) => {
+    REF.current.closeMenu = ( event, date, entryPos ) => {
         event.stopPropagation();
 
         STATE.dispatch( { 
             type: 'CLOSE_ENTRY_MENU',
-            payload: { date, pos },
+            payload: { date, entryPos },
         } );
     }
 
@@ -266,7 +265,7 @@ function MenuTool( { date, entry, pos } ) {
             className='MenuTool'
             onClick={event => {
                 REF.current.menuTool = menuToolRef.current;
-                REF.current.openMenu( event, date, pos );
+                REF.current.openMenu( event, date, entryPos );
             }}
             ref={menuToolRef}
         >
@@ -275,7 +274,7 @@ function MenuTool( { date, entry, pos } ) {
     );
 }
 
-function EntryMenu( { date, entry, pos } ) {
+function EntryMenu( { date, entry, entryPos } ) {
 
     const REF = useContext( REFContext );
 
@@ -285,7 +284,7 @@ function EntryMenu( { date, entry, pos } ) {
     const style = { top, left };
 
     return (
-        <div className='modal' onClick={event => REF.current.closeMenu( event, date, pos )}>
+        <div className='modal' onClick={event => REF.current.closeMenu( event, date, entryPos )}>
             <div className='menu' style={style}>
                 <div className='edit'>
                     Edit
@@ -295,30 +294,30 @@ function EntryMenu( { date, entry, pos } ) {
                 </div>
                 <div className='cut' onClick={event => {
                     event.stopPropagation();
-                    REF.current.cutEntry( date, pos );
-                    REF.current.closeMenu( event, date, pos );
+                    REF.current.cutEntry( date, entryPos );
+                    REF.current.closeMenu( event, date, entryPos );
                 }}>
                     Cut
                 </div>
                 <div className='copy' onClick={event => {
                     event.stopPropagation();
-                    REF.current.copyEntry( date, pos );
-                    REF.current.closeMenu( event, date, pos );
+                    REF.current.copyEntry( date, entryPos );
+                    REF.current.closeMenu( event, date, entryPos );
                 }}>
                     Copy
                 </div>
                 <div className='paste' onClick={event => {
                     event.stopPropagation();
                     if ( REF.current.cutOrCopy ) {
-                        REF.current.closeMenu( event, date, pos );
-                        REF.current.pasteEntry( date, pos );
+                        REF.current.closeMenu( event, date, entryPos );
+                        REF.current.pasteEntry( date, entryPos );
                     }
                 }}>
                     Paste
                 </div>
                 <div className='close' onClick={event => {
                     event.stopPropagation();
-                    REF.current.closeMenu( event, date, pos )
+                    REF.current.closeMenu( event, date, entryPos )
                 }}>
                     X
                 </div>
@@ -327,14 +326,14 @@ function EntryMenu( { date, entry, pos } ) {
     );
 }
 
-function EntryForm( { date, entry, pos } ) {
+function EntryForm( { date, entry, entryPos } ) {
 
     const REF = useContext( REFContext );
 
     return (
-        <div className='modal' onClick={event => REF.current.closeForm( event, date, pos )}>
+        <div className='modal' onClick={event => REF.current.closeForm( event, date, entryPos )}>
             <div className='form'>
-                <button onClick={event => REF.current.closeForm( event, date, pos )}>close</button>
+                <button onClick={event => REF.current.closeForm( event, date, entryPos )}>close</button>
             </div>
         </div>
     );
