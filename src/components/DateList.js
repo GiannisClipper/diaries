@@ -211,28 +211,51 @@ function DateEntry( { date, entry, entryPos } ) {
         REF.current.pasteEntry( date, entryPos );
     }
 
-    return (
-        <li 
-            className="DateEntry"
-            key={entryPos}
-            draggable="true"
-            onDragStart={event => dragStart( event, date, entryPos )}
-            onDragOver={event =>  allowDrop( event )}
-            onDrop={event => drop( event, date, entryPos )}
-            onClick={event => REF.current.openForm( event, date, entryPos )}
-        >
-            <div className='data'>
-                {entryPos + entry.data}
-            </div>
+    if ( entry.data.id ) {
+        return (
+            <li 
+                className="DateEntry"
+                key={entryPos}
+                draggable="true"
+                onDragStart={event => dragStart( event, date, entryPos )}
+                onDragOver={event => allowDrop( event )}
+                onDrop={event => drop( event, date, entryPos )}
+                onClick={event => REF.current.openForm( event, date, entryPos )}
+            >
+                <div className='data'>
+                    {entry.data.note}
+                </div>
 
-            <MenuTool date={date} entry={entry} entryPos={entryPos} />
+                <MenuTool date={date} entry={entry} entryPos={entryPos} />
 
-            {entry.uiux.menu.isOpen ? ( <EntryMenu date={date} entry={entry} entryPos={entryPos} /> ) : null}
+                {entry.uiux.menu.isOpen ? ( <EntryMenu date={date} entry={entry} entryPos={entryPos} /> ) : null}
 
-            {entry.uiux.form.isOpen ? ( <EntryForm date={date} entry={entry} entryPos={entryPos} /> ) : null}
+                {entry.uiux.form.isOpen ? ( <EntryForm date={date} entry={entry} entryPos={entryPos} /> ) : null}
 
-        </li> 
-    );
+            </li> 
+        );
+    } else {
+        return (
+            <li 
+                className="DateEntry init"
+                key={entryPos}
+                onDragOver={event => allowDrop( event )}
+                onDrop={event => drop( event, date, entryPos )}
+                onClick={event => REF.current.openForm( event, date, entryPos )}
+            >
+                <div className='data'>
+                    {entry.data.note}
+                </div>
+    
+                <MenuTool date={date} entry={entry} entryPos={entryPos} />
+    
+                {entry.uiux.menu.isOpen ? ( <EntryMenu date={date} entry={entry} entryPos={entryPos} /> ) : null}
+    
+                {entry.uiux.form.isOpen ? ( <EntryForm date={date} entry={entry} entryPos={entryPos} /> ) : null}
+    
+            </li> 
+        );    
+    }
 }
 
 function MenuTool( { date, entry, entryPos } ) {
@@ -280,50 +303,77 @@ function EntryMenu( { date, entry, entryPos } ) {
 
     let { top, left } = REF.current.menuTool.getBoundingClientRect();
     top = `${top}px`;
-    left = `calc( ${left}px - 10em )`;
+    left = entry.data.id ? `calc( ${left}px - 10em )` : `calc( ${left}px - 6em )`;
     const style = { top, left };
 
-    return (
-        <div className='modal' onClick={event => REF.current.closeMenu( event, date, entryPos )}>
-            <div className='menu' style={style}>
-                <div className='edit'>
-                    Edit
-                </div>
-                <div className='delete'>
-                    Del
-                </div>
-                <div className='cut' onClick={event => {
-                    event.stopPropagation();
-                    REF.current.cutEntry( date, entryPos );
-                    REF.current.closeMenu( event, date, entryPos );
-                }}>
-                    Cut
-                </div>
-                <div className='copy' onClick={event => {
-                    event.stopPropagation();
-                    REF.current.copyEntry( date, entryPos );
-                    REF.current.closeMenu( event, date, entryPos );
-                }}>
-                    Copy
-                </div>
-                <div className='paste' onClick={event => {
-                    event.stopPropagation();
-                    if ( REF.current.cutOrCopy ) {
+    if ( entry.data.id ) {
+        return (
+            <div className='modal EntryMenu' onClick={event => REF.current.closeMenu( event, date, entryPos )}>
+                <div className='menu' style={style}>
+                    <div className='edit'>
+                        Edit
+                    </div>
+                    <div className='delete'>
+                        Del
+                    </div>
+                    <div className='cut' onClick={event => {
+                        event.stopPropagation();
+                        REF.current.cutEntry( date, entryPos );
                         REF.current.closeMenu( event, date, entryPos );
-                        REF.current.pasteEntry( date, entryPos );
-                    }
-                }}>
-                    Paste
-                </div>
-                <div className='close' onClick={event => {
-                    event.stopPropagation();
-                    REF.current.closeMenu( event, date, entryPos )
-                }}>
-                    X
+                    }}>
+                        Cut
+                    </div>
+                    <div className='copy' onClick={event => {
+                        event.stopPropagation();
+                        REF.current.copyEntry( date, entryPos );
+                        REF.current.closeMenu( event, date, entryPos );
+                    }}>
+                        Copy
+                    </div>
+                    <div className='paste' onClick={event => {
+                        event.stopPropagation();
+                        if ( REF.current.cutOrCopy ) {
+                            REF.current.closeMenu( event, date, entryPos );
+                            REF.current.pasteEntry( date, entryPos );
+                        }
+                    }}>
+                        Paste
+                    </div>
+                    <div className='close' onClick={event => {
+                        event.stopPropagation();
+                        REF.current.closeMenu( event, date, entryPos )
+                    }}>
+                        X
+                    </div>
                 </div>
             </div>
-        </div>
-    );
+        );
+    } else {
+        return (
+            <div className='modal EntryMenu' onClick={event => REF.current.closeMenu( event, date, entryPos )}>
+                <div className='menu' style={style}>
+                    <div className='edit'>
+                        Edit
+                    </div>
+                    <div className='paste' onClick={event => {
+                        event.stopPropagation();
+                        if ( REF.current.cutOrCopy ) {
+                            REF.current.closeMenu( event, date, entryPos );
+                            REF.current.pasteEntry( date, entryPos );
+                        }
+                    }}>
+                        Paste
+                    </div>
+                    <div className='close' onClick={event => {
+                        event.stopPropagation();
+                        REF.current.closeMenu( event, date, entryPos )
+                    }}>
+                        X
+                    </div>
+                </div>
+            </div>
+        );
+    }
 }
 
 function EntryForm( { date, entry, entryPos } ) {

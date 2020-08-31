@@ -11,8 +11,22 @@ const STATEContextProvider = props => {
     today.setSeconds( 0 );
     today.setMilliseconds( 0 );
 
-    const newEntry = () => ( {
-        data: ` Entry with content ${Math.random() * 100}`,
+    const testEntry = () => ( {
+                data: {
+                    id: '0101',
+                    note: ` Entry with content ${Math.random() * 100}`,
+                },
+                uiux: {
+                    form: { isClose: true },
+                    menu: { isClose: true },
+                }
+            } );
+
+    const initEntry = () => ( {
+        data: { 
+            id: null,
+            note: '',
+        },
         uiux: {
             form: { isClose: true },
             menu: { isClose: true },
@@ -21,15 +35,29 @@ const STATEContextProvider = props => {
 
     const initState = {
         dates: [
-            { date: shiftDate( today, -3 ), entries: [ newEntry() ] },
-            { date: shiftDate( today, -2 ), entries: [ newEntry() ] },
-            { date: shiftDate( today, -1 ), entries: [ newEntry() ] },
-            { date: today, entries: [ newEntry() ] },
-            { date: shiftDate( today, 1 ), entries: [ newEntry() ] },
-            { date: shiftDate( today, 2 ), entries: [ newEntry() ] },
-            { date: shiftDate( today, 3 ), entries: [ newEntry() ] }
+            { date: shiftDate( today, -3 ), entries: [ testEntry(), initEntry() ] },
+            { date: shiftDate( today, -2 ), entries: [ testEntry(), initEntry() ] },
+            { date: shiftDate( today, -1 ), entries: [ testEntry(), initEntry() ] },
+            { date: today, entries: [ initEntry() ] },
+            { date: shiftDate( today, 1 ), entries: [ testEntry(), initEntry() ] },
+            { date: shiftDate( today, 2 ), entries: [ initEntry() ] },
+            { date: shiftDate( today, 3 ), entries: [ initEntry() ] }
         ],
     };
+
+    const addPrevDates = ( dates, num ) => {
+        let startVal = shiftDate( dates[ 0 ].date, -num );
+        let newDates = new Array( num ).fill( undefined );
+        newDates = newDates.map( ( x, index ) => ({ date: shiftDate( startVal, index ), entries: [ initEntry() ] }) );
+        return [ ...newDates, ...dates ];
+    }
+
+    const addNextDates = ( dates, num ) => {
+        let startVal = shiftDate( dates[ dates.length - 1 ].date, 1 );
+        let newDates = new Array( num ).fill( undefined );
+        newDates = newDates.map( ( x, index ) => ({ date: shiftDate( startVal, index ), entries: [ initEntry() ] }) );
+        return [ ...dates, ...newDates ];
+    }
 
     const STATEReducer = ( state, action ) => {
 
@@ -66,24 +94,10 @@ const STATEContextProvider = props => {
         switch (action.type) {
 
             case 'ADD_PREV_DATES': {
-                const addPrevDates = ( dates, num ) => {
-                    let startVal = shiftDate( dates[ 0 ].date, -num );
-                    let newDates = new Array( num ).fill( undefined );
-                    newDates = newDates.map( ( x, index ) => ({ date: shiftDate( startVal, index ), entries: [ newEntry() ] }) );
-                    return [ ...newDates, ...dates ];
-                }
-
                 dates = [ ...state.dates ];
                 return { ...state, dates: addPrevDates( dates, action.payload.num ) };
 
             } case 'ADD_NEXT_DATES': {
-                const addNextDates = ( dates, num ) => {
-                    let startVal = shiftDate( dates[ dates.length - 1 ].date, 1 );
-                    let newDates = new Array( num ).fill( undefined );
-                    newDates = newDates.map( ( x, index ) => ({ date: shiftDate( startVal, index ), entries: [ newEntry() ] }) );
-                    return [ ...dates, ...newDates ];
-                }
-
                 dates = [ ...state.dates ];
                 return { ...state, dates: addNextDates( dates, action.payload.num ) };
         
