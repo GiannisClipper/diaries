@@ -130,8 +130,13 @@ function DateInfo( { date } ) {
 
     return (
         <div className="DateInfo">
-            <div className="day-date">
-                { `${dayName} ${dateNum}` }
+            <div>
+                <span className="dateNum">
+                    { `${dateNum}` }
+                </span>
+                <span className="day">
+                    { `${dayName}` }
+                </span>
             </div>
             <div className="month-year">
                 { `${monthName} ${yearNum}` }

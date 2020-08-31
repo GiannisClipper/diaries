@@ -20,22 +20,25 @@
     width: 10em;
     display: inline-block;
     vertical-align: top;
-    margin-top: .5em;
     margin-bottom: .5em;
     color: lightcoral;
     font-weight: 700;
+    text-align: left;
 }
 
-.day-date {
-    text-align: right;
-    font-size: 1.15em;
-    padding-right: .5em;
+.DateInfo .dateNum {
+    font-size: 1.5em;
+    padding-left: 1em;
+    padding-right: .25em;
+}
+
+.DateInfo .day {
+    font-size: 1em;
 }
 
 .month-year {
-    text-align: right;
+    padding-left: 2.75em;
     font-size: .65em;
-    padding-right: 1em;
 }
 
 .DateEntries {
