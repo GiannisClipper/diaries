@@ -25,6 +25,10 @@ function DateList() {
     }
 
     const handleScrollUp = event => {
+        // if ( dates.length > 35 ) {
+        //     STATE.dispatch( { type: 'REMOVE_NEXT_DATES', payload: { num: 7 } } );
+        // }
+
         const frame = elemRef.current;
         scrollDirection.current = { isUp: true };
         scrollTop.current = frame.scrollTop;
@@ -40,6 +44,10 @@ function DateList() {
     }
 
     const handleScrollDown = event => {
+        // if ( dates.length > 35 ) {
+        //     STATE.dispatch( { type: 'REMOVE_PREV_DATES', payload: { num: 7 } } );
+        // }
+
         const frame = elemRef.current;
         scrollDirection.current = { isDown: true };
         scrollTop.current = frame.scrollTop;
@@ -131,6 +139,21 @@ function DateInfo( { date } ) {
 
 function DateEntries( { date, entries } ) {
 
+    let entryPos = -1;
+
+    return (
+        <div className="DateEntries">
+            <ul>
+                { entries.map( entry => (
+                    <DateEntry date={date} entry={entry} entryPos={++entryPos} />
+                ) ) }
+            </ul>
+        </div>
+    );
+}
+
+function DateEntry( { date, entry, entryPos } ) {
+
     const STATE = useContext( STATEContext );
     const REF = useContext( REFContext );
 
@@ -161,23 +184,19 @@ function DateEntries( { date, entries } ) {
         REF.current.cutOrCopy = null;
     }
 
-    let entryPos = -1;
+    const dragStart = ( event, date, entryPos ) => {
+        REF.current.cutEntry( date, entryPos );
+        event.dataTransfer.effectAllowed = 'move';
+    }
 
-    return (
-        <div className="DateEntries">
-            <ul>
-                { entries.map( entry => (
-                    <DateEntry date={date} entry={entry} entryPos={++entryPos} />
-                ) ) }
-            </ul>
-        </div>
-    );
-}
+    const allowDrop = event => {
+        event.preventDefault();
+    }
 
-function DateEntry( { date, entry, entryPos } ) {
-
-    const STATE = useContext( STATEContext );
-    const REF = useContext( REFContext );
+    const drop = ( event, date, entryPos ) => {
+        event.preventDefault();
+        REF.current.pasteEntry( date, entryPos );
+    }
 
     REF.current.openForm = ( event, date, entryPos ) => {
         event.stopPropagation();
@@ -197,18 +216,11 @@ function DateEntry( { date, entry, entryPos } ) {
         } );
     }
 
-    const dragStart = ( event, date, entryPos ) => {
-        REF.current.cutEntry( date, entryPos );
-        event.dataTransfer.effectAllowed = 'move';
-    }
-
-    const allowDrop = event => {
-        event.preventDefault();
-    }
-
-    const drop = ( event, date, entryPos ) => {
-        event.preventDefault();
-        REF.current.pasteEntry( date, entryPos );
+    REF.current.deleteEntry = ( date, entryPos ) => {
+        STATE.dispatch( { 
+            type: 'DELETE_ENTRY',
+            payload: { date, entryPos },
+        } );
     }
 
     if ( entry.data.id ) {
@@ -220,7 +232,7 @@ function DateEntry( { date, entry, entryPos } ) {
                 onDragStart={event => dragStart( event, date, entryPos )}
                 onDragOver={event => allowDrop( event )}
                 onDrop={event => drop( event, date, entryPos )}
-                onClick={event => REF.current.openForm( event, date, entryPos )}
+                //onDoubleClick={event => REF.current.openForm( event, date, entryPos )}
             >
                 <div className='data'>
                     {entry.data.note}
@@ -241,7 +253,7 @@ function DateEntry( { date, entry, entryPos } ) {
                 key={entryPos}
                 onDragOver={event => allowDrop( event )}
                 onDrop={event => drop( event, date, entryPos )}
-                onClick={event => REF.current.openForm( event, date, entryPos )}
+                //onDoubleClick={event => REF.current.openForm( event, date, entryPos )}
             >
                 <div className='data'>
                     {entry.data.note}
@@ -310,10 +322,18 @@ function EntryMenu( { date, entry, entryPos } ) {
         return (
             <div className='modal EntryMenu' onClick={event => REF.current.closeMenu( event, date, entryPos )}>
                 <div className='menu' style={style}>
-                    <div className='edit'>
+                    <div className='edit' onClick={event => {
+                        event.stopPropagation();
+                        REF.current.editEntry( date, entry, entryPos );
+                        REF.current.closeMenu( event, date, entryPos );
+                    }}>
                         Edit
                     </div>
-                    <div className='delete'>
+                    <div className='delete' onClick={event => {
+                        event.stopPropagation();
+                        REF.current.deleteEntry( date, entryPos );
+                        REF.current.closeMenu( event, date, entryPos );
+                    }}>
                         Del
                     </div>
                     <div className='cut' onClick={event => {

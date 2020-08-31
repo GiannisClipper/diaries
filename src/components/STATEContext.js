@@ -76,8 +76,9 @@ const STATEContextProvider = props => {
 
         const deconstructEntry = entryPos => {
             entries = [ ...activeDate.entries ];
+            entryPos = entryPos < entries.length ? entryPos : entries.length - 1;
             prevEntries = entries.slice( 0, entryPos );
-            activeEntry = entryPos < entries.length ? { ...entries[ entryPos ] } : null;
+            activeEntry = { ...entries[ entryPos ] };
             nextEntries = entries.slice( entryPos + 1 );
         }
 
@@ -91,7 +92,7 @@ const STATEContextProvider = props => {
             dates = [ ...prevDates, activeDate, ...nextDates ];
         }
 
-        switch (action.type) {
+        switch ( action.type ) {
 
             case 'ADD_PREV_DATES': {
                 dates = [ ...state.dates ];
@@ -100,24 +101,29 @@ const STATEContextProvider = props => {
             } case 'ADD_NEXT_DATES': {
                 dates = [ ...state.dates ];
                 return { ...state, dates: addNextDates( dates, action.payload.num ) };
-        
-            } case 'MOVE_ENTRY': {
+
+            } case 'REMOVE_PREV_DATES': {
+                dates = [ ...state.dates ];
+                return { ...state, dates: dates.slice( action.payload.num ) };
+
+            } case 'REMOVE_NEXT_DATES': {
+                dates = [ ...state.dates ];
+                return { ...state, dates: dates.slice( 0, -action.payload.num ) };
+    
+           } case 'MOVE_ENTRY': {
                 dates = [ ...state.dates ];
                 const { departDate, arriveDate, departEntryPos, arriveEntryPos } = action.payload;
-                console.log( action.payload )
-                const departDatePos = getDatePos( departDate );
-                const arriveDatePos = getDatePos( arriveDate );
 
-                deconstructDate( departDatePos );
+                deconstructDate( getDatePos( departDate ) );
                 deconstructEntry( departEntryPos );
                 const entryToMove = { ...activeEntry };
                 activeEntry = [];
                 constructEntry();
                 constructDate();
 
-                deconstructDate( arriveDatePos );
+                deconstructDate( getDatePos( arriveDate ) );
                 deconstructEntry( arriveEntryPos );
-                activeEntry = activeEntry ? [ entryToMove, {...activeEntry} ] : [ entryToMove ];
+                activeEntry = [ entryToMove, {...activeEntry} ];
                 constructEntry();
                 constructDate();
 
@@ -127,16 +133,26 @@ const STATEContextProvider = props => {
                 dates = [ ...state.dates ];
                 const { departDate, arriveDate, departEntryPos, arriveEntryPos } = action.payload;
                 console.log( action.payload )
-                const departDatePos = getDatePos( departDate );
-                const arriveDatePos = getDatePos( arriveDate );
 
-                deconstructDate( departDatePos );
+                deconstructDate( getDatePos( departDate ) );
                 deconstructEntry( departEntryPos );
                 const entryToCopy = { ...activeEntry };
 
-                deconstructDate( arriveDatePos );
+                deconstructDate( getDatePos( arriveDate ) );
                 deconstructEntry( arriveEntryPos );
                 activeEntry = [ entryToCopy, {...activeEntry} ];
+                constructEntry();
+                constructDate();
+
+                return { ...state, dates: dates };
+
+            } case 'DELETE_ENTRY': {
+                dates = [ ...state.dates ];
+                const { date, entryPos } = action.payload;
+ 
+                deconstructDate( getDatePos( date ) );
+                deconstructEntry( entryPos );
+                activeEntry = [];
                 constructEntry();
                 constructDate();
 
@@ -145,9 +161,8 @@ const STATEContextProvider = props => {
             } case 'OPEN_ENTRY_FORM': {
                 dates = [ ...state.dates ];
                 const { date, entryPos } = action.payload;
-                const datePos = getDatePos( date );
 
-                deconstructDate( datePos );
+                deconstructDate( getDatePos( date ) );
                 deconstructEntry( entryPos );
                 const uiux = { ...activeEntry.uiux }; 
                 uiux.form = { isOpen: true };
@@ -160,9 +175,8 @@ const STATEContextProvider = props => {
             } case 'CLOSE_ENTRY_FORM': {
                 dates = [ ...state.dates ];
                 const { date, entryPos } = action.payload;
-                const datePos = getDatePos( date );
 
-                deconstructDate( datePos );
+                deconstructDate( getDatePos( date ) );
                 deconstructEntry( entryPos );
                 const uiux = { ...activeEntry.uiux }; 
                 uiux.form = { isClose: true };
