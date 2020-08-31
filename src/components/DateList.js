@@ -5,7 +5,9 @@ import { REFContext } from './REFContext';
 import { dayNames, monthNames } from '../helpers/dates';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBackward, faForward } from '@fortawesome/free-solid-svg-icons';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrashAlt, faCut, faCamera, faClone, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 function DateList() {
 
@@ -95,13 +97,15 @@ function DateList() {
         <div className="DateList frame" ref={elemRef}>
             <div className="content">
                 <div className="prev">
-                    Load prev...
+                    <FontAwesomeIcon icon={ faBackward } className="icon" />
+                    Προηγούμενες ημ/νίες
                 </div>
                 <ul>
                     { dates.map( dateItem => ( <DateItem key={dateItem.date} dateItem={dateItem} /> ) ) }
                 </ul>
                 <div className="next">
-                    Load next...
+                    Επόμενες ημ/νίες
+                    <FontAwesomeIcon icon={ faForward } className="icon" />
                 </div>
             </div>
         </div>
@@ -342,28 +346,28 @@ function EntryMenu( { date, entryPos, entry } ) {
                         REF.current.openForm( event, date, entryPos, entry );
                         REF.current.closeMenu( event, date, entryPos );
                     }}>
-                        Edit
+                        <FontAwesomeIcon icon={ faEdit } className="icon" title="Επεξεργασία" />
                     </div>
                     <div className='delete' onClick={event => {
                         event.stopPropagation();
                         REF.current.deleteEntry( date, entryPos );
                         REF.current.closeMenu( event, date, entryPos );
                     }}>
-                        Del
+                        <FontAwesomeIcon icon={ faTrashAlt } className="icon" title="Διαγραφή" />
                     </div>
                     <div className='cut' onClick={event => {
                         event.stopPropagation();
                         REF.current.cutEntry( date, entryPos );
                         REF.current.closeMenu( event, date, entryPos );
                     }}>
-                        Cut
+                        <FontAwesomeIcon icon={ faCut } className="icon" title="Αποκοπή" />
                     </div>
                     <div className='copy' onClick={event => {
                         event.stopPropagation();
                         REF.current.copyEntry( date, entryPos );
                         REF.current.closeMenu( event, date, entryPos );
                     }}>
-                        Copy
+                        <FontAwesomeIcon icon={ faCamera } className="icon" title="Αντιγραφή" />
                     </div>
                     <div className='paste' onClick={event => {
                         event.stopPropagation();
@@ -372,13 +376,13 @@ function EntryMenu( { date, entryPos, entry } ) {
                             REF.current.pasteEntry( date, entryPos );
                         }
                     }}>
-                        Paste
+                        <FontAwesomeIcon icon={ faClone } className="icon" title="Επικόλληση" />
                     </div>
                     <div className='close' onClick={event => {
                         event.stopPropagation();
                         REF.current.closeMenu( event, date, entryPos )
                     }}>
-                        X
+                        <FontAwesomeIcon icon={ faTimes } className="icon" title="Κλείσιμο" />
                     </div>
                 </div>
             </div>
@@ -392,7 +396,7 @@ function EntryMenu( { date, entryPos, entry } ) {
                         REF.current.openForm( event, date, entryPos, entry );
                         REF.current.closeMenu( event, date, entryPos );
                     }}>
-                        Edit
+                        <FontAwesomeIcon icon={ faEdit } className="icon" title="Επεξεργασία" />
                     </div>
                     <div className='paste' onClick={event => {
                         event.stopPropagation();
@@ -401,13 +405,13 @@ function EntryMenu( { date, entryPos, entry } ) {
                             REF.current.pasteEntry( date, entryPos );
                         }
                     }}>
-                        Paste
+                        <FontAwesomeIcon icon={ faClone } className="icon" title="Επικόλληση" />
                     </div>
                     <div className='close' onClick={event => {
                         event.stopPropagation();
                         REF.current.closeMenu( event, date, entryPos )
                     }}>
-                        X
+                        <FontAwesomeIcon icon={ faTimes } className="icon" title="Κλείσιμο" />
                     </div>
                 </div>
             </div>

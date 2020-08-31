@@ -9,6 +9,14 @@
     overflow: auto;
 }
 
+.DateList.frame .prev .icon {
+    margin-right: 1em;
+}
+
+.DateList.frame .next .icon {
+    margin-left: 1em;
+}
+
 .DateItem {
     width: 100%;
     margin-top: .5em;
@@ -71,7 +79,8 @@
     padding: .5em;
 }
 
-.DateEntry .MenuTool .icon {
+.MenuTool .icon,
+.EntryMenu .icon {
     color: lightcoral;
 }
 
