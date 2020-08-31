@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useContext } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import '../styles/DateList.css';
 import { STATEContext } from './STATEContext';
 import { REFContext } from './REFContext';
@@ -152,7 +152,7 @@ function DateEntries( { date, entries } ) {
     );
 }
 
-function DateEntry( { date, entry, entryPos } ) {
+function DateEntry( { date, entryPos, entry } ) {
 
     const STATE = useContext( STATEContext );
     const REF = useContext( REFContext );
@@ -198,12 +198,12 @@ function DateEntry( { date, entry, entryPos } ) {
         REF.current.pasteEntry( date, entryPos );
     }
 
-    REF.current.openForm = ( event, date, entryPos ) => {
+    REF.current.openForm = ( event, date, entryPos, entry ) => {
         event.stopPropagation();
 
         STATE.dispatch( { 
             type: 'OPEN_ENTRY_FORM',
-            payload: { date, entryPos },
+            payload: { date, entryPos, entry },
         } );
     }
 
@@ -213,6 +213,13 @@ function DateEntry( { date, entry, entryPos } ) {
         STATE.dispatch( { 
             type: 'CLOSE_ENTRY_FORM',
             payload: { date, entryPos },
+        } );
+    }
+
+    REF.current.saveEntry = ( date, entryPos, entry ) => {
+        STATE.dispatch( { 
+            type: 'SAVE_ENTRY',
+            payload: { date, entryPos, entry },
         } );
     }
 
@@ -270,7 +277,7 @@ function DateEntry( { date, entry, entryPos } ) {
     }
 }
 
-function MenuTool( { date, entry, entryPos } ) {
+function MenuTool( { date, entryPos, entry } ) {
 
     const STATE = useContext( STATEContext );
     const REF = useContext( REFContext );
@@ -309,7 +316,7 @@ function MenuTool( { date, entry, entryPos } ) {
     );
 }
 
-function EntryMenu( { date, entry, entryPos } ) {
+function EntryMenu( { date, entryPos, entry } ) {
 
     const REF = useContext( REFContext );
 
@@ -324,7 +331,7 @@ function EntryMenu( { date, entry, entryPos } ) {
                 <div className='menu' style={style}>
                     <div className='edit' onClick={event => {
                         event.stopPropagation();
-                        REF.current.editEntry( date, entry, entryPos );
+                        REF.current.openForm( event, date, entryPos, entry );
                         REF.current.closeMenu( event, date, entryPos );
                     }}>
                         Edit
@@ -372,7 +379,11 @@ function EntryMenu( { date, entry, entryPos } ) {
         return (
             <div className='modal EntryMenu' onClick={event => REF.current.closeMenu( event, date, entryPos )}>
                 <div className='menu' style={style}>
-                    <div className='edit'>
+                    <div className='edit' onClick={event => {
+                        event.stopPropagation();
+                        REF.current.openForm( event, date, entryPos, entry );
+                        REF.current.closeMenu( event, date, entryPos );
+                    }}>
                         Edit
                     </div>
                     <div className='paste' onClick={event => {
@@ -396,14 +407,54 @@ function EntryMenu( { date, entry, entryPos } ) {
     }
 }
 
-function EntryForm( { date, entry, entryPos } ) {
+function EntryForm( { date, entryPos, entry } ) {
 
     const REF = useContext( REFContext );
 
+    const dateInfo = (
+        dayNames[ date.getDay() ] + ' ' +
+        date.getDate().toString().padStart( 2, '0' ) + '-' +
+        ( date.getMonth() + 1 ).toString().padStart( 2, '0' ) + '-' +
+        date.getFullYear()
+    );
+
+    const [ data, setData ] = useState( { ...entry.data } );
+
     return (
-        <div className='modal' onClick={event => REF.current.closeForm( event, date, entryPos )}>
+        <div className='modal EntryForm'>
             <div className='form'>
-                <button onClick={event => REF.current.closeForm( event, date, entryPos )}>close</button>
+                <div>
+                    <span>Id:</span>
+                    <input 
+                        value={data.id}
+                        readOnly
+                    />
+                </div>
+                <div>
+                    <span>Ημ/νία:</span>
+                    <input 
+                        value={dateInfo}
+                        readOnly
+                    />
+                </div>
+                <div>
+                    <span>Σημείωμα:</span>
+                    <textarea 
+                        rows="10" 
+                        cols="50"
+                        maxlength="1000"
+                        value={data.note}
+                        onChange={event => setData( { ...data, note: event.target.value } )}
+                    />
+                </div>
+                <div>
+                    <button onClick={event => {
+                        entry.data = { ...data };
+                        REF.current.saveEntry( date, entryPos, entry );
+                        REF.current.closeForm( event, date, entryPos );
+                    }}>ΟΚ</button>
+                    <button onClick={event => REF.current.closeForm( event, date, entryPos )}>Άκυρο</button>
+                </div>
             </div>
         </div>
     );

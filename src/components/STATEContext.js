@@ -132,7 +132,6 @@ const STATEContextProvider = props => {
             } case 'COPY_ENTRY': {
                 dates = [ ...state.dates ];
                 const { departDate, arriveDate, departEntryPos, arriveEntryPos } = action.payload;
-                console.log( action.payload )
 
                 deconstructDate( getDatePos( departDate ) );
                 deconstructEntry( departEntryPos );
@@ -141,46 +140,6 @@ const STATEContextProvider = props => {
                 deconstructDate( getDatePos( arriveDate ) );
                 deconstructEntry( arriveEntryPos );
                 activeEntry = [ entryToCopy, {...activeEntry} ];
-                constructEntry();
-                constructDate();
-
-                return { ...state, dates: dates };
-
-            } case 'DELETE_ENTRY': {
-                dates = [ ...state.dates ];
-                const { date, entryPos } = action.payload;
- 
-                deconstructDate( getDatePos( date ) );
-                deconstructEntry( entryPos );
-                activeEntry = [];
-                constructEntry();
-                constructDate();
-
-                return { ...state, dates: dates };
-
-            } case 'OPEN_ENTRY_FORM': {
-                dates = [ ...state.dates ];
-                const { date, entryPos } = action.payload;
-
-                deconstructDate( getDatePos( date ) );
-                deconstructEntry( entryPos );
-                const uiux = { ...activeEntry.uiux }; 
-                uiux.form = { isOpen: true };
-                activeEntry.uiux = uiux;
-                constructEntry();
-                constructDate();
-
-                return { ...state, dates: dates };
-
-            } case 'CLOSE_ENTRY_FORM': {
-                dates = [ ...state.dates ];
-                const { date, entryPos } = action.payload;
-
-                deconstructDate( getDatePos( date ) );
-                deconstructEntry( entryPos );
-                const uiux = { ...activeEntry.uiux }; 
-                uiux.form = { isClose: true };
-                activeEntry.uiux = uiux;
                 constructEntry();
                 constructDate();
 
@@ -207,6 +166,62 @@ const STATEContextProvider = props => {
                 deconstructDate( datePos );
                 deconstructEntry( entryPos );
                 activeEntry.uiux.menu = { isClose: true };
+                constructEntry();
+                constructDate();
+
+                return { ...state, dates: dates };
+
+            } case 'OPEN_ENTRY_FORM': {
+                dates = [ ...state.dates ];
+                const { date, entryPos } = action.payload;
+
+                deconstructDate( getDatePos( date ) );
+                deconstructEntry( entryPos );
+                const uiux = { ...activeEntry.uiux };
+                uiux.form = { isOpen: true };
+                activeEntry.uiux = uiux;
+                constructEntry();
+                constructDate();
+
+                return { ...state, dates: dates };
+
+            } case 'CLOSE_ENTRY_FORM': {
+                dates = [ ...state.dates ];
+                const { date, entryPos } = action.payload;
+
+                deconstructDate( getDatePos( date ) );
+                deconstructEntry( entryPos );
+                const uiux = { ...activeEntry.uiux }; 
+                uiux.form = { isClose: true };
+                activeEntry.uiux = uiux;
+                constructEntry();
+                constructDate();
+
+                return { ...state, dates: dates };
+
+            } case 'SAVE_ENTRY': {
+                dates = [ ...state.dates ];
+                const { date, entryPos, entry } = action.payload;
+ 
+                deconstructDate( getDatePos( date ) );
+                deconstructEntry( entryPos );
+                activeEntry.data = { ...entry.data };
+                if ( !entry.data.id ) {
+                    nextEntries.push( initEntry() );
+                    activeEntry.data.id = '0102';
+                }
+                constructEntry();
+                constructDate();
+
+                return { ...state, dates: dates };
+
+            } case 'DELETE_ENTRY': {
+                dates = [ ...state.dates ];
+                const { date, entryPos } = action.payload;
+ 
+                deconstructDate( getDatePos( date ) );
+                deconstructEntry( entryPos );
+                activeEntry = [];
                 constructEntry();
                 constructDate();
 
