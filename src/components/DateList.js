@@ -423,31 +423,32 @@ function EntryForm( { date, entryPos, entry } ) {
     return (
         <div className='modal EntryForm'>
             <div className='form'>
-                <div>
+                <div className="id">
                     <span>Id:</span>
                     <input 
                         value={data.id}
                         readOnly
                     />
                 </div>
-                <div>
+                <div className="date">
                     <span>Ημ/νία:</span>
                     <input 
                         value={dateInfo}
                         readOnly
                     />
                 </div>
-                <div>
+                <div className="note">
                     <span>Σημείωμα:</span>
-                    <textarea 
-                        rows="10" 
+                    <textarea
+                        rows="10"
                         cols="50"
                         maxlength="1000"
                         value={data.note}
                         onChange={event => setData( { ...data, note: event.target.value } )}
                     />
                 </div>
-                <div>
+                <div className='buttons'>
+                    <span></span>
                     <button onClick={event => {
                         entry.data = { ...data };
                         REF.current.saveEntry( date, entryPos, entry );

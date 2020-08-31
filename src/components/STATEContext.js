@@ -14,7 +14,7 @@ const STATEContextProvider = props => {
     const testEntry = () => ( {
                 data: {
                     id: '0101',
-                    note: ` Entry with content ${Math.random() * 100}`,
+                    note: `Entry with content ${Math.random() * 100}`,
                 },
                 uiux: {
                     form: { isClose: true },
