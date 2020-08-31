@@ -4,6 +4,9 @@ import { STATEContext } from './STATEContext';
 import { REFContext } from './REFContext';
 import { dayNames, monthNames } from '../helpers/dates';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
+
 function DateList() {
 
     const STATE = useContext( STATEContext );
@@ -311,7 +314,7 @@ function MenuTool( { date, entryPos, entry } ) {
             }}
             ref={menuToolRef}
         >
-            [..]
+            <FontAwesomeIcon icon={ faEllipsisH } className="icon" />
         </div>
     );
 }
