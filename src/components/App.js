@@ -12,7 +12,8 @@ function App() {
         <div className="App">
 
             <div className="title">
-                diaries
+                <button onClick={ event => checkLambda( event )}>check Lamdba</button>
+                Diaries by GiannisClipper
             </div>
 
             <DateList />
@@ -21,6 +22,20 @@ function App() {
         </ REFContextProvider>
         </ STATEContextProvider>
     );
+}
+
+const fetch = require( 'node-fetch' );
+
+const checkLambda = () => {
+    fetch( '/.netlify/functions/hello', {
+        headers: {
+            'Content-Type': 'application/json; charset=utf-8'
+        },
+        method: 'GET',
+        //body: JSON.stringify( {} )
+    } )
+    .then( res => res.text() )
+    .then( data => alert( data ) );
 }
 
 export default App;
