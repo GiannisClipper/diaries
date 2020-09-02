@@ -13,6 +13,7 @@ function App() {
 
             <div className="title">
                 <button onClick={ event => checkLambda( event )}>check Lamdba</button>
+                <button onClick={ event => checkMongo( event )}>check Mongo</button>
                 Diaries by GiannisClipper
             </div>
 
@@ -28,6 +29,18 @@ const fetch = require( 'node-fetch' );
 
 const checkLambda = () => {
     fetch( '/.netlify/functions/hello', {
+        headers: {
+            'Content-Type': 'application/json; charset=utf-8'
+        },
+        method: 'GET',
+        //body: JSON.stringify( {} )
+    } )
+    .then( res => res.text() )
+    .then( data => alert( data ) );
+}
+
+const checkMongo = () => {
+    fetch( '/.netlify/functions/mongo-connect', {
         headers: {
             'Content-Type': 'application/json; charset=utf-8'
         },
