@@ -5,11 +5,13 @@ exports.handler = async function( event, context, callback ) {
     context.callbackWaitsForEmptyEventLoop = false;
 
     try {
-        const [ client, cachedCounter ] = await connectDB();
+        const [ client ] = await connectDB();
         const db = client.db( 'diaries' );
         const collection = db.collection( 'entries' );
-        const data = await collection.find( {} ).toArray();
-        data.push( { cachedCounter } );
+
+        //console.log('event.queryStringParameters', event.queryStringParameters)
+        let [ dateFrom, dateTill ] = event.queryStringParameters[ 'range' ].split( '-' );
+        const data = await collection.find( { date: { $gte: dateFrom, $lte: dateTill } } ).toArray();
 
         console.log( data ); // output to netlify function log
         callback( null, {

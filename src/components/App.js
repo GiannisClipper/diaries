@@ -14,6 +14,7 @@ function App() {
             <div className="title">
                 <button onClick={ event => checkLambda( event )}>check Lamdba</button>
                 <button onClick={ event => checkMongo( event )}>check Mongo</button>
+                <button onClick={ event => retrieveDates( event )}>read Dates</button>
                 Diaries by GiannisClipper
             </div>
 
@@ -41,6 +42,18 @@ const checkLambda = () => {
 
 const checkMongo = () => {
     fetch( '/.netlify/functions/mongo-connect', {
+        headers: {
+            'Content-Type': 'application/json; charset=utf-8'
+        },
+        method: 'GET',
+        //body: JSON.stringify( {} )
+    } )
+    .then( res => res.text() )
+    .then( data => alert( data ) );
+}
+
+const retrieveDates = () => {
+    fetch( '/.netlify/functions/retrieve-dates?range=20200901-20200902', {
         headers: {
             'Content-Type': 'application/json; charset=utf-8'
         },
