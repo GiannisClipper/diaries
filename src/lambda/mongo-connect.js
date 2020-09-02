@@ -1,11 +1,13 @@
 import { MongoClient } from 'mongodb';
 
 exports.handler = async function( event, context, callback ) {
+    // This will allow us to freeze open connections to a database
+    context.callbackWaitsForEmptyEventLoop = false;
+
+    const URI = process.env.DB_URI;
+    const client = new MongoClient( URI, { useNewUrlParser: true, useUnifiedTopology: true } );
 
     try {
-        const URI = process.env.DB_URI;
-        const client = new MongoClient( URI, { useNewUrlParser: true, useUnifiedTopology: true } );
-
         await client.connect();
         const db = client.db( 'diaries' );
         const collection = db.collection( 'entries' );
