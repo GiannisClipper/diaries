@@ -2,12 +2,13 @@ import React, { useEffect, useState, useRef, useContext } from 'react';
 import '../styles/DateList.css';
 import { STATEContext } from './STATEContext';
 import { REFContext } from './REFContext';
-import { dayNames, monthNames } from '../helpers/dates';
+import { dayNames, monthNames, dateToYYYYMMDD } from '../helpers/dates';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBackward, faForward } from '@fortawesome/free-solid-svg-icons';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { faEdit, faTrashAlt, faCut, faCamera, faClone, faTimes } from '@fortawesome/free-solid-svg-icons';
+
 
 function DateList() {
 
@@ -23,17 +24,13 @@ function DateList() {
         event.stopPropagation();
         const frame = elemRef.current;
         if ( frame.scrollTop < scrollTop.current ) {
-            handleScrollUp( frame );
+            handleScrollUp( event );
         } else {
-            handleScrollDown( frame );
+            handleScrollDown( event );
         }
     }
 
     const handleScrollUp = event => {
-        // if ( dates.length > 35 ) {
-        //     STATE.dispatch( { type: 'REMOVE_NEXT_DATES', payload: { num: 7 } } );
-        // }
-
         const frame = elemRef.current;
         scrollDirection.current = { isUp: true };
         scrollTop.current = frame.scrollTop;
@@ -44,15 +41,13 @@ function DateList() {
         const frameBounds = frame.getBoundingClientRect();
         const { top, height } = prev.getBoundingClientRect();
         if ( top + ( height * 0.1 ) > frameBounds.top ) {
+            console.log( 'add_prev_dates' )
             STATE.dispatch( { type: 'ADD_PREV_DATES', payload: { num: 7 } } );
         }
     }
 
     const handleScrollDown = event => {
-        // if ( dates.length > 35 ) {
-        //     STATE.dispatch( { type: 'REMOVE_PREV_DATES', payload: { num: 7 } } );
-        // }
-
+        event.stopPropagation();
         const frame = elemRef.current;
         scrollDirection.current = { isDown: true };
         scrollTop.current = frame.scrollTop;
@@ -63,11 +58,17 @@ function DateList() {
         const frameBounds = frame.getBoundingClientRect();
         const { top, height } = next.getBoundingClientRect();
         if ( top + ( height * 0.9 ) < frameBounds.bottom ) {
+            console.log( 'add_next_dates' )
             STATE.dispatch( { type: 'ADD_NEXT_DATES', payload: { num: 7 } } );
         }
     }
 
     useEffect( () => {
+        if ( dates.length === 0 ) {
+            console.log( 'add_init_dates' )
+            STATE.dispatch( { type: 'ADD_INIT_DATES', payload: { num: 7 } } );
+        }
+
         const frame = elemRef.current;
         const content = frame.querySelector( '.content' );
         const prev = frame.querySelector( '.prev' );
@@ -93,6 +94,10 @@ function DateList() {
         }
     } );
 
+    useEffect( () => {
+        console.log( 'Just rendered ', 'DateList' );
+    } );
+
     return (
         <div className="DateList frame" ref={elemRef}>
             <div className="content">
@@ -114,14 +119,75 @@ function DateList() {
 
 const DateItem = React.memo( ( { dateItem } ) => {
 
+    const STATE = useContext( STATEContext );
+
     useEffect( () => {
         console.log( 'Just rendered ', dateItem.date );
+        const { isLoading, doRequest } = dateItem.uiux;
+
+        if ( isLoading && doRequest ) {
+            console.log( 'requesting...', dateItem.date )
+
+            const { dateFrom, dateTill } = dateItem.uiux.doRequest;
+            const strFrom = dateToYYYYMMDD( dateFrom );
+            const strTill = dateToYYYYMMDD( dateTill );
+
+            const mockFetch = ( url, args ) => {
+                const execMockFetch = () => { 
+                    console.log( url, args.method );
+                    return [
+                        {
+                            id: strFrom,
+                            date: strFrom,
+                            note: strFrom + '/' + url,
+                            entryPos: 0
+                        },
+                        {
+                            id: strTill,
+                            date: strTill,
+                            note: strTill + '/' + url,
+                            entryPos: 0
+                        }
+                    ];
+                }
+                return new Promise( ( resolve, reject ) => {
+                    setTimeout( resolve( execMockFetch() ) , 2500 );
+                } );
+            }
+
+            mockFetch( `/.netlify/functions/retrieve-dates?range=${strFrom}-${strTill}`, {
+                headers: {
+                    'Content-Type': 'application/json; charset=utf-8'
+                },
+                method: 'GET',
+                //body: JSON.stringify( {} )
+            } )
+//            .then( res => res.json() )
+            .then( data => {
+                alert( JSON.stringify( data ) );
+                STATE.dispatch( { 
+                    type: 'LOADING_OFF',
+                    payload: { dateFrom, dateTill, data },
+                } );
+            } )
+            .catch( err => {
+                alert( err );
+                STATE.dispatch( { 
+                    type: 'LOADING_OFF',
+                    payload: { dateFrom, dateTill, data: [] },
+                } );
+            } );
+        }
+
     } );
 
     return (
         <li className="DateItem">
             <DateInfo date={dateItem.date} />
-            <DateEntries date={dateItem.date} entries={dateItem.entries} />
+            {dateItem.uiux.isLoading
+                ?  <div className="loader"></div> 
+                : <DateEntries date={dateItem.date} entries={dateItem.entries} />
+            }
         </li>
     );
 } );

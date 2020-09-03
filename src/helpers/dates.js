@@ -1,3 +1,10 @@
+const dateToYYYYMMDD = ( date, sep = '' ) => {
+    const year = date.getFullYear();
+    const month = ( date.getMonth() + 1 ).toString().padStart( 2, '0' );
+    const dateNum = date.getDate().toString().padStart( 2, '0' );
+    return `${year}${sep}${month}${sep}${dateNum}`;
+}
+
 const daysBetween = ( fromDate, tillDate ) => {
     const diff = ( tillDate.getTime() - fromDate.getTime() );
     return Math.round( diff / ( 24 * 60 * 60 * 1000 ) );  // (1day = 24h * 60min * 60sec * 1000msec)
@@ -41,4 +48,4 @@ const monthNames = [
     "Δεκέμβριος"
 ];
 
-export { daysBetween, shiftDate, dayNames, monthNames };
+export { dateToYYYYMMDD, daysBetween, shiftDate, dayNames, monthNames };
