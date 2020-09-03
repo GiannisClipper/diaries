@@ -24,6 +24,7 @@ const initDate = () => ( {
     uiux: {
         isLoading: true,
         doRequest: null,
+        requestArgs: null,
     }
 } );
 
@@ -35,8 +36,8 @@ const calcInitDates = ( date, num ) => {
     let startDate = shiftDate( date, -parseInt( num / 2 ) );
     let newDates = new Array( num ).fill( undefined );
     newDates = newDates.map( ( x, index ) => ({ ...initDate(), date: shiftDate( startDate, index ) }) );
-    const doRequest = { dateFrom: startDate, dateTill: shiftDate( startDate, num - 1) };
-    newDates[ 0 ].uiux.doRequest = doRequest;
+    const requestArgs = { dateFrom: startDate, dateTill: shiftDate( startDate, num - 1) };
+    newDates[ 0 ].uiux.requestArgs = requestArgs;
     return newDates;
 }
 
@@ -44,8 +45,8 @@ const calcPrevDates = ( dates, num ) => {
     let startDate = shiftDate( dates[ 0 ].date, -num );
     let newDates = new Array( num ).fill( undefined );
     newDates = newDates.map( ( x, index ) => ({ ...initDate(), date: shiftDate( startDate, index ) }) );
-    const doRequest = { dateFrom: startDate, dateTill: shiftDate( startDate, num - 1 ) };
-    newDates[ 0 ].uiux.doRequest = doRequest;
+    const requestArgs = { dateFrom: startDate, dateTill: shiftDate( startDate, num - 1 ) };
+    newDates[ 0 ].uiux.requestArgs = requestArgs;
     return newDates;
 }
 
@@ -53,8 +54,8 @@ const calcNextDates = ( dates, num ) => {
     let startDate = shiftDate( dates[ dates.length - 1 ].date, 1 );
     let newDates = new Array( num ).fill( undefined );
     newDates = newDates.map( ( x, index ) => ({ ...initDate(), date: shiftDate( startDate, index ) }) );
-    const doRequest = { dateFrom: startDate, dateTill: shiftDate( startDate, num - 1 ) };
-    newDates[ 0 ].uiux.doRequest = doRequest;
+    const requestArgs = { dateFrom: startDate, dateTill: shiftDate( startDate, num - 1 ) };
+    newDates[ 0 ].uiux.requestArgs = requestArgs;
     return newDates;
 }
 
@@ -102,7 +103,7 @@ const STATEReducer = ( state, action ) => {
             data.sort( (a, b) => a.date < b.date ? -1 : a.date > b.date ? 1 : 0 );
 
             const numDays = daysBetween( dateFrom, dateTill ) + 1;
-            for ( let i = 0; i < numDays; i++ ) {
+            for ( let i = 0; i < numDays; i++ ) { 
                 const date = shiftDate( dateFrom, i );
                 const dateStr = dateToYYYYMMDD( date );
                 const dateInDB = data.filter( x => x.date === dateStr );
@@ -118,6 +119,7 @@ const STATEReducer = ( state, action ) => {
                 activeDate.entries = entries;
                 activeDate.uiux.isLoading = false;
                 activeDate.uiux.doRequest = null;
+                activeDate.uiux.requestArgs = null;
                 constructDate();
             }
 

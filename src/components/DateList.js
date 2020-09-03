@@ -106,7 +106,13 @@ function DateList() {
                     Προηγούμενες ημ/νίες
                 </div>
                 <ul>
-                    { dates.map( dateItem => ( <DateItem key={dateItem.date} dateItem={dateItem} /> ) ) }
+                    { dates.map( dateItem => (
+                        <DateItem 
+                            key={dateItem.date}
+                            dateItem={dateItem}
+                            stateDispatch={STATE.dispatch}
+                        /> 
+                    ) ) }
                 </ul>
                 <div className="next">
                     Επόμενες ημ/νίες
@@ -117,18 +123,16 @@ function DateList() {
     );
 }
 
-const DateItem = React.memo( ( { dateItem } ) => {
-
-    const STATE = useContext( STATEContext );
+const DateItem = React.memo( ( { dateItem, stateDispatch } ) => {
 
     useEffect( () => {
         console.log( 'Just rendered ', dateItem.date );
-        const { isLoading, doRequest } = dateItem.uiux;
+        const { isLoading, requestArgs } = dateItem.uiux;
 
-        if ( isLoading && doRequest ) {
+        if ( isLoading && requestArgs ) {
             console.log( 'requesting...', dateItem.date )
 
-            const { dateFrom, dateTill } = dateItem.uiux.doRequest;
+            const { dateFrom, dateTill } = requestArgs;
             const strFrom = dateToYYYYMMDD( dateFrom );
             const strTill = dateToYYYYMMDD( dateTill );
 
@@ -165,14 +169,14 @@ const DateItem = React.memo( ( { dateItem } ) => {
 //            .then( res => res.json() )
             .then( data => {
                 alert( JSON.stringify( data ) );
-                STATE.dispatch( { 
+                stateDispatch( { 
                     type: 'LOADING_OFF',
                     payload: { dateFrom, dateTill, data },
                 } );
             } )
             .catch( err => {
                 alert( err );
-                STATE.dispatch( { 
+                stateDispatch( { 
                     type: 'LOADING_OFF',
                     payload: { dateFrom, dateTill, data: [] },
                 } );
