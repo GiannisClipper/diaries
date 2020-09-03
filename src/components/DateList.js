@@ -108,7 +108,7 @@ function DateList() {
                 <ul>
                     { dates.map( dateItem => (
                         <DateItem 
-                            key={dateItem.date}
+                            key={dateItem.data.date}
                             dateItem={dateItem}
                             stateDispatch={STATE.dispatch}
                         /> 
@@ -126,11 +126,11 @@ function DateList() {
 const DateItem = React.memo( ( { dateItem, stateDispatch } ) => {
 
     useEffect( () => {
-        console.log( 'Just rendered ', dateItem.date );
+        console.log( 'Just rendered ', dateItem.data.date );
         const { isLoading, requestArgs } = dateItem.uiux;
 
         if ( isLoading && requestArgs ) {
-            console.log( 'requesting...', dateItem.date )
+            console.log( 'Requesting...', dateItem.data.date )
 
             const { dateFrom, dateTill } = requestArgs;
             const strFrom = dateToYYYYMMDD( dateFrom );
@@ -144,18 +144,18 @@ const DateItem = React.memo( ( { dateItem, stateDispatch } ) => {
                             id: strFrom,
                             date: strFrom,
                             note: strFrom + '/' + url,
-                            entryPos: 0
+//                            entryPos: 0
                         },
                         {
                             id: strTill,
                             date: strTill,
                             note: strTill + '/' + url,
-                            entryPos: 0
+//                            entryPos: 0
                         }
                     ];
                 }
                 return new Promise( ( resolve, reject ) => {
-                    setTimeout( resolve( execMockFetch() ) , 2500 );
+                    setTimeout( () => resolve( execMockFetch() ), 2000 );
                 } );
             }
 
@@ -168,7 +168,7 @@ const DateItem = React.memo( ( { dateItem, stateDispatch } ) => {
             } )
 //            .then( res => res.json() )
             .then( data => {
-                alert( JSON.stringify( data ) );
+                //alert( JSON.stringify( data ) );
                 stateDispatch( { 
                     type: 'LOADING_OFF',
                     payload: { dateFrom, dateTill, data },
@@ -187,10 +187,10 @@ const DateItem = React.memo( ( { dateItem, stateDispatch } ) => {
 
     return (
         <li className="DateItem">
-            <DateInfo date={dateItem.date} />
+            <DateInfo date={dateItem.data.date} />
             {dateItem.uiux.isLoading
                 ?  <div className="loader"></div> 
-                : <DateEntries date={dateItem.date} entries={dateItem.entries} />
+                : <DateEntries date={dateItem.data.date} entries={dateItem.data.entries} />
             }
         </li>
     );
@@ -234,7 +234,7 @@ function DateEntries( { date, entries } ) {
     );
 }
 
-function DateEntry( { date, entryPos, entry } ) {
+function DateEntry( { date, entry, entryPos } ) {
 
     const STATE = useContext( STATEContext );
     const REF = useContext( REFContext );
@@ -324,7 +324,7 @@ function DateEntry( { date, entryPos, entry } ) {
                 //onDoubleClick={event => REF.current.openForm( event, date, entryPos )}
             >
                 <div className='data'>
-                    {entry.data.note}
+                    {entryPos + '///' + entry.data.entryPos + '///' + entry.data.note}
                 </div>
 
                 <MenuTool date={date} entry={entry} entryPos={entryPos} />
@@ -345,7 +345,7 @@ function DateEntry( { date, entryPos, entry } ) {
                 //onDoubleClick={event => REF.current.openForm( event, date, entryPos )}
             >
                 <div className='data'>
-                    {entry.data.note}
+                    {entryPos + '///' + entry.data.entryPos + '///' + entry.data.note}
                 </div>
     
                 <MenuTool date={date} entry={entry} entryPos={entryPos} />

@@ -7,10 +7,26 @@ today.setMinutes( 0 );
 today.setSeconds( 0 );
 today.setMilliseconds( 0 );
 
+const initState = {
+    dates: [],
+};
+
+const initDate = () => ( {
+    data: {
+        date: null,
+        entries: [],
+    },
+    uiux: {
+        isLoading: true,
+        requestArgs: null,
+    }
+} );
+
 const initEntry = () => ( {
-    data: { 
+    data: {
         id: null,
         note: '',
+//        entryPos: 0,
     },
     uiux: {
         form: { isClose: true },
@@ -18,42 +34,43 @@ const initEntry = () => ( {
     }
 } );
 
-const initDate = () => ( {
-    date: null,
-    entries: [],
-    uiux: {
-        isLoading: true,
-        doRequest: null,
-        requestArgs: null,
-    }
-} );
-
-const initState = {
-    dates: [],
-};
-
 const calcInitDates = ( date, num ) => {
     let startDate = shiftDate( date, -parseInt( num / 2 ) );
     let newDates = new Array( num ).fill( undefined );
-    newDates = newDates.map( ( x, index ) => ({ ...initDate(), date: shiftDate( startDate, index ) }) );
+    newDates = newDates.map( ( x, index ) => {
+        const _ = initDate();
+        _.data.date = shiftDate( startDate, index );
+        return _;
+    } );
+
     const requestArgs = { dateFrom: startDate, dateTill: shiftDate( startDate, num - 1) };
     newDates[ 0 ].uiux.requestArgs = requestArgs;
     return newDates;
 }
 
 const calcPrevDates = ( dates, num ) => {
-    let startDate = shiftDate( dates[ 0 ].date, -num );
+    let startDate = shiftDate( dates[ 0 ].data.date, -num );
     let newDates = new Array( num ).fill( undefined );
-    newDates = newDates.map( ( x, index ) => ({ ...initDate(), date: shiftDate( startDate, index ) }) );
+    newDates = newDates.map( ( x, index ) => {
+        const _ = initDate();
+        _.data.date = shiftDate( startDate, index );
+        return _;
+    } );
+
     const requestArgs = { dateFrom: startDate, dateTill: shiftDate( startDate, num - 1 ) };
     newDates[ 0 ].uiux.requestArgs = requestArgs;
     return newDates;
 }
 
 const calcNextDates = ( dates, num ) => { 
-    let startDate = shiftDate( dates[ dates.length - 1 ].date, 1 );
+    let startDate = shiftDate( dates[ dates.length - 1 ].data.date, 1 );
     let newDates = new Array( num ).fill( undefined );
-    newDates = newDates.map( ( x, index ) => ({ ...initDate(), date: shiftDate( startDate, index ) }) );
+    newDates = newDates.map( ( x, index ) => {
+        const _ = initDate();
+        _.data.date = shiftDate( startDate, index );
+        return _;
+    } );
+
     const requestArgs = { dateFrom: startDate, dateTill: shiftDate( startDate, num - 1 ) };
     newDates[ 0 ].uiux.requestArgs = requestArgs;
     return newDates;
@@ -67,31 +84,38 @@ const STATEReducer = ( state, action ) => {
     let entries, prevEntries, activeEntry, nextEntries;
 
     const getDatePos = date => {
-        return daysBetween( dates[0].date, date );
+        return daysBetween( dates[0].data.date, date );
     }
 
     const deconstructDate = datePos => {
         prevDates = dates.slice( 0, datePos );
-        activeDate = { ...dates[ datePos ] };
+        activeDate = {
+            data: { ...dates[ datePos ].data },
+            uiux: { ...dates[ datePos ].uiux }
+        }
         nextDates = dates.slice( datePos + 1 );
     }
 
+    const constructDate = () => {
+        dates = [ ...prevDates, activeDate, ...nextDates ];
+    }
+
     const deconstructEntry = entryPos => {
-        entries = [ ...activeDate.entries ];
+        entries = [ ...activeDate.data.entries ];
         entryPos = entryPos < entries.length ? entryPos : entries.length - 1;
         prevEntries = entries.slice( 0, entryPos );
         activeEntry = { ...entries[ entryPos ] };
+        activeEntry = {
+            data: { ...entries[ entryPos ].data },
+            uiux: { ...entries[ entryPos ].uiux }
+        }
         nextEntries = entries.slice( entryPos + 1 );
     }
 
     const constructEntry = () => {
         activeEntry = Array.isArray( activeEntry ) ? activeEntry : [ activeEntry ];
         entries = [ ...prevEntries, ...activeEntry, ...nextEntries ];
-        activeDate.entries = entries;
-    }
-
-    const constructDate = () => {
-        dates = [ ...prevDates, activeDate, ...nextDates ];
+        activeDate.data.entries = entries;
     }
 
     switch ( action.type ) {
@@ -100,7 +124,7 @@ const STATEReducer = ( state, action ) => {
             dates = [ ...state.dates ];
             const { dateFrom, dateTill, data } = action.payload;
 
-            data.sort( (a, b) => a.date < b.date ? -1 : a.date > b.date ? 1 : 0 );
+            data.sort( (a, b) => a.entryPos < b.entryPos ? -1 : a.entryPos > b.entryPos ? 1 : 0 );
 
             const numDays = daysBetween( dateFrom, dateTill ) + 1;
             for ( let i = 0; i < numDays; i++ ) { 
@@ -108,17 +132,20 @@ const STATEReducer = ( state, action ) => {
                 const dateStr = dateToYYYYMMDD( date );
                 const dateInDB = data.filter( x => x.date === dateStr );
                 const entries = [];
+//                let entryPos = -1;
                 for ( const entryInDB of dateInDB ) {
-                    const entry = initEntry() ;
+                    const entry = initEntry();
                     entry.data = entryInDB;
+//                    entry.data.entryPos = ++entryPos;
                     entries.push( entry );
                 }
-                entries.push( initEntry() );
+                const entry = initEntry();
+//                entry.data.entryPos = ++entryPos;
+                entries.push( entry );
 
                 deconstructDate( getDatePos( date ) );
-                activeDate.entries = entries;
+                activeDate.data.entries = entries;
                 activeDate.uiux.isLoading = false;
-                activeDate.uiux.doRequest = null;
                 activeDate.uiux.requestArgs = null;
                 constructDate();
             }
@@ -154,6 +181,7 @@ const STATEReducer = ( state, action ) => {
             deconstructDate( getDatePos( departDate ) );
             deconstructEntry( departEntryPos );
             const entryToMove = { ...activeEntry };
+
             activeEntry = [];
             constructEntry();
             constructDate();
@@ -163,7 +191,6 @@ const STATEReducer = ( state, action ) => {
             activeEntry = [ entryToMove, {...activeEntry} ];
             constructEntry();
             constructDate();
-
             return { ...state, dates };
 
         } case 'COPY_ENTRY': {
@@ -214,9 +241,7 @@ const STATEReducer = ( state, action ) => {
 
             deconstructDate( getDatePos( date ) );
             deconstructEntry( entryPos );
-            const uiux = { ...activeEntry.uiux };
-            uiux.form = { isOpen: true };
-            activeEntry.uiux = uiux;
+            activeEntry.uiux.form = { isOpen: true };
             constructEntry();
             constructDate();
 
@@ -228,9 +253,7 @@ const STATEReducer = ( state, action ) => {
 
             deconstructDate( getDatePos( date ) );
             deconstructEntry( entryPos );
-            const uiux = { ...activeEntry.uiux }; 
-            uiux.form = { isClose: true };
-            activeEntry.uiux = uiux;
+            activeEntry.uiux.form = { isClose: true };
             constructEntry();
             constructDate();
 
@@ -244,8 +267,8 @@ const STATEReducer = ( state, action ) => {
             deconstructEntry( entryPos );
             activeEntry.data = { ...entry.data };
             if ( !entry.data.id ) {
+                activeEntry.data.id = 'this-supposed-to-be-a-new-entry';
                 nextEntries.push( initEntry() );
-                activeEntry.data.id = '0102';
             }
             constructEntry();
             constructDate();
