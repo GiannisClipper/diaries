@@ -10,12 +10,12 @@ exports.handler = async function( event, context, callback ) {
         const collection = db.collection( 'entries' );
 
         //console.log('event.queryStringParameters', event.queryStringParameters)
-        const [ dateFrom, dateTill ] = event.queryStringParameters[ 'range' ].split( '-' );
-        const result = await collection.find( { date: { $gte: dateFrom, $lte: dateTill } } ).toArray();
+        const body = JSON.parse( event.body );
+        const result = await collection.insertOne( body );
 
         console.log( result ); // output to netlify function log
-        callback( null, {
-            headers: { 'Content-Type': 'application/json; charset=utf-8' },
+        callback( null, { 
+            headers: {'Content-Type': 'application/json; charset=utf-8' },
             statusCode: 200,
             body: JSON.stringify( result )
         } );

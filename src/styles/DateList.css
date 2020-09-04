@@ -1,15 +1,14 @@
-/* * {
-    border: 1px dotted lightseagreen;
-} */
+* {
+    border: 0px dotted lightseagreen;
+}
 
 .loader {
     display: inline-block;
-    margin-top: 1em;
-    border: .25em solid lightgrey;
-    border-top: .25em solid darkgrey;
+    border: .20em solid lightgrey;
+    border-top: .20em solid darkgrey;
     border-radius: 50%;
-    width: 1.5em;;
-    height: 1.5em;
+    width: 1em;
+    height: 1em;
     animation: spin 2s linear infinite;
 }
   

@@ -32,10 +32,17 @@ const initEntry = () => ( {
 //        entryPos: 0,
     },
     uiux: {
-        form: { isClose: true },
-        menu: { isClose: true },
+        form: { isOpen: false },
+        menu: { isOpen: false },
     }
 } );
+
+const parseEntryFromDB = data => ( {
+    id: data._id,
+    date: data.date,
+    note: data.note,
+    entryPos: data.entryPos
+} )
 
 const calcInitDates = ( date, num ) => {
     let startDate = shiftDate( date, -parseInt( num / 2 ) );
@@ -120,38 +127,7 @@ const STATEReducer = ( state, action ) => {
 
     switch ( action.type ) {
 
-        case 'REQUEST_DONE': {
-            dates = [ ...state.dates ];
-            const { dateFrom, dateTill, data } = action.payload;
-
-            data.sort( (a, b) => a.entryPos < b.entryPos ? -1 : a.entryPos > b.entryPos ? 1 : 0 );
-
-            const numDays = daysBetween( dateFrom, dateTill ) + 1;
-            for ( let i = 0; i < numDays; i++ ) { 
-                const date = shiftDate( dateFrom, i );
-                const dateStr = dateToYYYYMMDD( date );
-                const dateInDB = data.filter( x => x.date === dateStr );
-                const entries = [];
-//                let entryPos = -1;
-                for ( const entryInDB of dateInDB ) {
-                    const entry = initEntry();
-                    entry.data = entryInDB;
-//                    entry.data.entryPos = ++entryPos;
-                    entries.push( entry );
-                }
-                const entry = initEntry();
-//                entry.data.entryPos = ++entryPos;
-                entries.push( entry );
-
-                deconstructDate( getDatePos( date ) );
-                activeDate.data.entries = entries;
-                activeDate.uiux.request = {};
-                constructDate();
-            }
-
-            return { ...state, dates };
-
-        } case 'ADD_INIT_DATES': {
+        case 'ADD_INIT_DATES': {
             const dates = calcInitDates( today, action.payload.num );
             return { ...state, dates };
 
@@ -228,7 +204,7 @@ const STATEReducer = ( state, action ) => {
 
             deconstructDate( datePos );
             deconstructEntry( entryPos );
-            activeEntry.uiux.menu = { isClose: true };
+            activeEntry.uiux.menu = {};
             constructEntry();
             constructDate();
 
@@ -252,27 +228,65 @@ const STATEReducer = ( state, action ) => {
 
             deconstructDate( getDatePos( date ) );
             deconstructEntry( entryPos );
-            activeEntry.uiux.form = { isClose: true };
+            activeEntry.uiux.form = {};
             constructEntry();
             constructDate();
 
             return { ...state, dates };
 
-        } case 'SAVE_ENTRY': {
+        } case 'REQUESTING_ENTRY_FORM': {
             dates = [ ...state.dates ];
-            const { date, entryPos, entry } = action.payload;
+            const { date, entryPos } = action.payload;
 
             deconstructDate( getDatePos( date ) );
             deconstructEntry( entryPos );
-            activeEntry.data = { ...entry.data };
-            if ( !entry.data.id ) {
-                activeEntry.data.id = 'this-supposed-to-be-a-new-entry';
-                nextEntries.push( initEntry() );
-            }
+            activeEntry.uiux.form = { isOpen: true, isRequesting: true };
             constructEntry();
             constructDate();
 
             return { ...state, dates };
+
+        } case 'RETRIEVE_DATES_REQUEST_DONE': {
+            dates = [ ...state.dates ];
+            const { dateFrom, dateTill, dataFromDB } = action.payload;
+            dataFromDB.sort( ( a, b ) => a.entryPos < b.entryPos ? -1 : a.entryPos > b.entryPos ? 1 : 0 );
+
+            const numDays = daysBetween( dateFrom, dateTill ) + 1;
+            for ( let i = 0; i < numDays; i++ ) { 
+                const date = shiftDate( dateFrom, i );
+                const dateStr = dateToYYYYMMDD( date );
+                const dateFromDB = dataFromDB.filter( x => x.date === dateStr );
+                const entries = [];
+                for ( const entryFromDB of dateFromDB ) {
+                    const entry = initEntry();
+                    entry.data = parseEntryFromDB( entryFromDB );
+                    entries.push( entry );
+                }
+                const entry = initEntry();
+                entries.push( entry );
+
+                deconstructDate( getDatePos( date ) );
+                activeDate.data.entries = entries;
+                activeDate.uiux.request = {};
+                constructDate();
+            }
+
+            return { ...state, dates };
+
+        } case 'CREATE_ENTRY_REQUEST_DONE': {
+            dates = [ ...state.dates ];
+            const { date, entryPos, dataFromDB } = action.payload;
+
+            deconstructDate( getDatePos( date ) );
+            deconstructEntry( entryPos );
+            activeEntry.data = parseEntryFromDB( dataFromDB );
+            activeEntry.uiux.form = {};
+            nextEntries.push( initEntry() );
+            constructEntry();
+            constructDate();
+
+            return { ...state, dates };
+
 
         } case 'DELETE_ENTRY': {
             dates = [ ...state.dates ];

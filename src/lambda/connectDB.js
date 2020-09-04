@@ -5,7 +5,7 @@ let cachedClient = null;
 
 const connectDB = async () => {
     if ( cachedClient ) {
-      return [ cachedClient, ++cachedCounter ];
+        return [ cachedClient, ++cachedCounter ];
     }
 
     const URI = process.env.DB_URI;

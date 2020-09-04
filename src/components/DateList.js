@@ -3,16 +3,18 @@ import '../styles/DateList.css';
 import { STATEContext } from './STATEContext';
 import { REFContext } from './REFContext';
 import { dayNames, monthNames, dateToYYYYMMDD } from '../helpers/dates';
-
+import { realFetch, mockFetch } from '../helpers/customFetch';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBackward, faForward } from '@fortawesome/free-solid-svg-icons';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
-import { faEdit, faTrashAlt, faCut, faCamera, faClone, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrashAlt, faCut, faCamera, faClone, faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 
 function DateList() {
 
     const STATE = useContext( STATEContext );
+    const REF = useContext( REFContext );
+
     const { dates } = STATE.state;
 
     const elemRef = useRef( null );
@@ -63,6 +65,15 @@ function DateList() {
         }
     }
 
+    REF.current.retrieveDatesRequestDone = ( dateFrom, dateTill, dataFromDB ) => {
+
+        STATE.dispatch( { 
+            type: 'RETRIEVE_DATES_REQUEST_DONE',
+            payload: { dateFrom, dateTill, dataFromDB },
+
+        } );
+    }
+
     useEffect( () => {
         if ( dates.length === 0 ) {
             console.log( 'add_init_dates' )
@@ -110,7 +121,6 @@ function DateList() {
                         <DateItem 
                             key={dateItem.data.date}
                             dateItem={dateItem}
-                            stateDispatch={STATE.dispatch}
                         /> 
                     ) ) }
                 </ul>
@@ -123,7 +133,9 @@ function DateList() {
     );
 }
 
-const DateItem = React.memo( ( { dateItem, stateDispatch } ) => {
+const DateItem = React.memo( ( { dateItem } ) => {
+
+    const REF = useContext( REFContext );
 
     useEffect( () => {
         const { date } = dateItem.data;
@@ -137,50 +149,16 @@ const DateItem = React.memo( ( { dateItem, stateDispatch } ) => {
             const strFrom = dateToYYYYMMDD( dateFrom );
             const strTill = dateToYYYYMMDD( dateTill );
 
-            const mockFetch = ( url, args ) => {
-                const execMockFetch = () => { 
-                    console.log( url, args.method );
-                    return [
-                        {
-                            id: strFrom,
-                            date: strFrom,
-                            note: strFrom + '/' + url,
-//                            entryPos: 0
-                        },
-                        {
-                            id: strTill,
-                            date: strTill,
-                            note: strTill + '/' + url,
-//                            entryPos: 0
-                        }
-                    ];
+            realFetch( `/.netlify/functions/retrieve-dates?range=${strFrom}-${strTill}`, { method: 'GET' } )
+            .then( dataFromDB => {
+                if ( !Array.isArray( dataFromDB ) ) {
+                    throw new Error( 'Uknown error while requesting data!' );
                 }
-                return new Promise( ( resolve, reject ) => {
-                    setTimeout( () => resolve( execMockFetch() ), 1500 );
-                } );
-            }
-
-            mockFetch( `/.netlify/functions/retrieve-dates?range=${strFrom}-${strTill}`, {
-                headers: {
-                    'Content-Type': 'application/json; charset=utf-8'
-                },
-                method: 'GET',
-                //body: JSON.stringify( {} )
-            } )
-//            .then( res => res.json() )
-            .then( data => {
-                //alert( JSON.stringify( data ) );
-                stateDispatch( { 
-                    type: 'REQUEST_DONE',
-                    payload: { dateFrom, dateTill, data },
-                } );
+                REF.current.retrieveDatesRequestDone( dateFrom, dateTill, dataFromDB );
             } )
             .catch( err => {
                 alert( err );
-                stateDispatch( { 
-                    type: 'REQUEST_DONE',
-                    payload: { dateFrom, dateTill, data: [] },
-                } );
+                REF.current.retrieveDatesRequestDone( dateFrom, dateTill, [] );
             } );
         }
 
@@ -299,10 +277,19 @@ function DateEntry( { date, entry, entryPos } ) {
         } );
     }
 
-    REF.current.saveEntry = ( date, entryPos, entry ) => {
+    REF.current.requestingForm = ( date, entryPos, entry ) => {
+
         STATE.dispatch( { 
-            type: 'SAVE_ENTRY',
+            type: 'REQUESTING_ENTRY_FORM',
             payload: { date, entryPos, entry },
+        } );
+    }
+
+    REF.current.createEntryRequestDone = ( date, entryPos, dataFromDB ) => {
+
+        STATE.dispatch( { 
+            type: 'CREATE_ENTRY_REQUEST_DONE',
+            payload: { date, entryPos, dataFromDB },
         } );
     }
 
@@ -313,51 +300,32 @@ function DateEntry( { date, entry, entryPos } ) {
         } );
     }
 
-    if ( entry.data.id ) {
-        return (
-            <li 
-                className="DateEntry"
-                key={entryPos}
-                draggable="true"
-                onDragStart={event => dragStart( event, date, entryPos )}
-                onDragOver={event => allowDrop( event )}
-                onDrop={event => drop( event, date, entryPos )}
-                //onDoubleClick={event => REF.current.openForm( event, date, entryPos )}
-            >
-                <div className='data'>
-                    {entryPos + '///' + entry.data.entryPos + '///' + entry.data.note}
-                </div>
+    const className = entry.data.id ? 'DateEntry' : 'DateEntry init';
+    const draggable = entry.data.id ? 'true' : 'false';
+    const onDragStart = entry.data.id ? event => dragStart( event, date, entryPos ) : null;
 
-                <MenuTool date={date} entry={entry} entryPos={entryPos} />
+    return (
+        <li 
+            className={className}
+            key={entryPos}
+            draggable={draggable}
+            onDragStart={onDragStart}
+            onDragOver={event => allowDrop( event )}
+            onDrop={event => drop( event, date, entryPos )}
+            //onDoubleClick={event => REF.current.openForm( event, date, entryPos )}
+        >
+            <div className='data'>
+                {entryPos + '/' + entry.data.id + '/' + entry.data.note}
+            </div>
 
-                {entry.uiux.menu.isOpen ? ( <EntryMenu date={date} entry={entry} entryPos={entryPos} /> ) : null}
+            <MenuTool date={date} entry={entry} entryPos={entryPos} />
 
-                {entry.uiux.form.isOpen ? ( <EntryForm date={date} entry={entry} entryPos={entryPos} /> ) : null}
+            {entry.uiux.menu.isOpen ? ( <EntryMenu date={date} entry={entry} entryPos={entryPos} /> ) : null}
 
-            </li> 
-        );
-    } else {
-        return (
-            <li 
-                className="DateEntry init"
-                key={entryPos}
-                onDragOver={event => allowDrop( event )}
-                onDrop={event => drop( event, date, entryPos )}
-                //onDoubleClick={event => REF.current.openForm( event, date, entryPos )}
-            >
-                <div className='data'>
-                    {entryPos + '///' + entry.data.entryPos + '///' + entry.data.note}
-                </div>
-    
-                <MenuTool date={date} entry={entry} entryPos={entryPos} />
-    
-                {entry.uiux.menu.isOpen ? ( <EntryMenu date={date} entry={entry} entryPos={entryPos} /> ) : null}
-    
-                {entry.uiux.form.isOpen ? ( <EntryForm date={date} entry={entry} entryPos={entryPos} /> ) : null}
-    
-            </li> 
-        );    
-    }
+            {entry.uiux.form.isOpen ? ( <EntryForm date={date} entry={entry} entryPos={entryPos} /> ) : null}
+
+        </li> 
+    );
 }
 
 function MenuTool( { date, entryPos, entry } ) {
@@ -503,6 +471,34 @@ function EntryForm( { date, entryPos, entry } ) {
 
     const [ data, setData ] = useState( { ...entry.data } );
 
+    useEffect( () => {
+
+        if ( entry.uiux.form.isRequesting ) {
+            console.log( 'Requesting... ', data.id )
+
+            const dataToDB = {
+                date: dateToYYYYMMDD( date ),
+                note: data.note,
+                entryPos: entryPos
+            };
+
+            realFetch( `/.netlify/functions/create-entry`, {
+                method: 'POST',
+                body: JSON.stringify( dataToDB )
+            } )
+            .then( res => {
+                alert( JSON.stringify( res ) );
+                const dataFromDB = { ...dataToDB, _id: res.insertedId };
+                REF.current.createEntryRequestDone( date, entryPos, dataFromDB );
+            } )
+            .catch( err => { 
+                alert( err );
+                REF.current.createEntryRequestDone( date, entryPos, {} );
+            } );
+        }
+
+    } );
+    
     return (
         <div className='modal EntryForm'>
             <div className='form'>
@@ -534,10 +530,20 @@ function EntryForm( { date, entryPos, entry } ) {
                     <span></span>
                     <button onClick={event => {
                         entry.data = { ...data };
-                        REF.current.saveEntry( date, entryPos, entry );
-                        REF.current.closeForm( event, date, entryPos );
-                    }}>ΟΚ</button>
-                    <button onClick={event => REF.current.closeForm( event, date, entryPos )}>Άκυρο</button>
+                        REF.current.requestingForm( date, entryPos, entry );
+                        //REF.current.closeForm( event, date, entryPos );
+                    }}>
+                        {entry.uiux.form.isRequesting 
+                            ? <div className="loader icon"></div> 
+                            : <FontAwesomeIcon icon={ faCheck } className="icon" />}
+                        ΟΚ
+                    </button>
+                    <button
+                        onClick={event => REF.current.closeForm( event, date, entryPos )}
+                    >
+                        <FontAwesomeIcon icon={ faTimes } className="icon" />
+                        Άκυρο
+                    </button>
                 </div>
             </div>
         </div>
