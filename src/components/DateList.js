@@ -95,7 +95,7 @@ function DateList() {
     } );
 
     useEffect( () => {
-        console.log( 'Just rendered ', 'DateList' );
+        console.log( 'Has rendered. ', 'DateList' );
     } );
 
     return (
@@ -126,13 +126,14 @@ function DateList() {
 const DateItem = React.memo( ( { dateItem, stateDispatch } ) => {
 
     useEffect( () => {
-        console.log( 'Just rendered ', dateItem.data.date );
-        const { isLoading, requestArgs } = dateItem.uiux;
+        const { date } = dateItem.data;
+        const { request } = dateItem.uiux;
+        console.log( 'Has rendered. ', date );
 
-        if ( isLoading && requestArgs ) {
-            console.log( 'Requesting...', dateItem.data.date )
+        if ( request.isDoing && request.dateFrom.getTime() === date.getTime() ) {
+            console.log( 'Requesting... ', date )
 
-            const { dateFrom, dateTill } = requestArgs;
+            const { dateFrom, dateTill } = request;
             const strFrom = dateToYYYYMMDD( dateFrom );
             const strTill = dateToYYYYMMDD( dateTill );
 
@@ -155,7 +156,7 @@ const DateItem = React.memo( ( { dateItem, stateDispatch } ) => {
                     ];
                 }
                 return new Promise( ( resolve, reject ) => {
-                    setTimeout( () => resolve( execMockFetch() ), 2000 );
+                    setTimeout( () => resolve( execMockFetch() ), 1500 );
                 } );
             }
 
@@ -170,14 +171,14 @@ const DateItem = React.memo( ( { dateItem, stateDispatch } ) => {
             .then( data => {
                 //alert( JSON.stringify( data ) );
                 stateDispatch( { 
-                    type: 'LOADING_OFF',
+                    type: 'REQUEST_DONE',
                     payload: { dateFrom, dateTill, data },
                 } );
             } )
             .catch( err => {
                 alert( err );
                 stateDispatch( { 
-                    type: 'LOADING_OFF',
+                    type: 'REQUEST_DONE',
                     payload: { dateFrom, dateTill, data: [] },
                 } );
             } );
@@ -188,7 +189,7 @@ const DateItem = React.memo( ( { dateItem, stateDispatch } ) => {
     return (
         <li className="DateItem">
             <DateInfo date={dateItem.data.date} />
-            {dateItem.uiux.isLoading
+            {dateItem.uiux.request.isDoing
                 ?  <div className="loader"></div> 
                 : <DateEntries date={dateItem.data.date} entries={dateItem.data.entries} />
             }

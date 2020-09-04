@@ -17,8 +17,11 @@ const initDate = () => ( {
         entries: [],
     },
     uiux: {
-        isLoading: true,
-        requestArgs: null,
+        request: {
+            isDoing: false,
+            dateFrom: '',
+            dateTill: '',
+        }
     }
 } );
 
@@ -40,11 +43,10 @@ const calcInitDates = ( date, num ) => {
     newDates = newDates.map( ( x, index ) => {
         const _ = initDate();
         _.data.date = shiftDate( startDate, index );
+        _.uiux.request = { isDoing: true, dateFrom: startDate, dateTill: shiftDate( startDate, num - 1 ) };
         return _;
     } );
 
-    const requestArgs = { dateFrom: startDate, dateTill: shiftDate( startDate, num - 1) };
-    newDates[ 0 ].uiux.requestArgs = requestArgs;
     return newDates;
 }
 
@@ -54,11 +56,10 @@ const calcPrevDates = ( dates, num ) => {
     newDates = newDates.map( ( x, index ) => {
         const _ = initDate();
         _.data.date = shiftDate( startDate, index );
+        _.uiux.request = { isDoing: true, dateFrom: startDate, dateTill: shiftDate( startDate, num - 1 ) };
         return _;
     } );
 
-    const requestArgs = { dateFrom: startDate, dateTill: shiftDate( startDate, num - 1 ) };
-    newDates[ 0 ].uiux.requestArgs = requestArgs;
     return newDates;
 }
 
@@ -68,11 +69,10 @@ const calcNextDates = ( dates, num ) => {
     newDates = newDates.map( ( x, index ) => {
         const _ = initDate();
         _.data.date = shiftDate( startDate, index );
+        _.uiux.request = { isDoing: true, dateFrom: startDate, dateTill: shiftDate( startDate, num - 1 ) };
         return _;
     } );
 
-    const requestArgs = { dateFrom: startDate, dateTill: shiftDate( startDate, num - 1 ) };
-    newDates[ 0 ].uiux.requestArgs = requestArgs;
     return newDates;
 }
 
@@ -120,7 +120,7 @@ const STATEReducer = ( state, action ) => {
 
     switch ( action.type ) {
 
-        case 'LOADING_OFF': {
+        case 'REQUEST_DONE': {
             dates = [ ...state.dates ];
             const { dateFrom, dateTill, data } = action.payload;
 
@@ -145,8 +145,7 @@ const STATEReducer = ( state, action ) => {
 
                 deconstructDate( getDatePos( date ) );
                 activeDate.data.entries = entries;
-                activeDate.uiux.isLoading = false;
-                activeDate.uiux.requestArgs = null;
+                activeDate.uiux.request = {};
                 constructDate();
             }
 
@@ -300,13 +299,13 @@ const STATEContextProvider = props => {
     const [ state, dispatch ] = useReducer( STATEReducer, initState );
 
     useEffect( () => {
-        console.log( 'Just rendered ', 'STATEContext.Provider' );
+        console.log( 'Has rendered. ', 'STATEContext.Provider' );
     } );
 
     return (
         <STATEContext.Provider value={{ state, dispatch }}>
             {props.children}
-        </STATEContext.Provider>    
+        </STATEContext.Provider>
     )
 }
 
