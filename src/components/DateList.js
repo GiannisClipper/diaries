@@ -219,30 +219,30 @@ function DateEntry( { date, entry, inSequence } ) {
     const REF = useContext( REFContext );
 
     REF.current.cutEntry = ( date, inSequence ) => {
-        REF.current.departDate = date;
-        REF.current.departEntryPos = inSequence;
-        REF.current.cutOrCopy = { isCut: true };
+        REF.current.cut = { date, entryInSequence: inSequence };
+        REF.current.copy = null;
+        REF.current.paste = null;
     }
 
     REF.current.copyEntry = ( date, inSequence ) => {
-        REF.current.departDate = date;
-        REF.current.departEntryPos = inSequence;
-        REF.current.cutOrCopy = { isCopy: true };
+        REF.current.cut = null;
+        REF.current.copy = { date, entryInSequence: inSequence };
+        REF.current.paste = null;
     }
 
     REF.current.pasteEntry = ( date, inSequence ) => {
-        REF.current.arriveDate = date;
-        REF.current.arriveEntryPos = inSequence;
-        STATE.dispatch( { 
-            type: REF.current.cutOrCopy.isCut ? 'MOVE_ENTRY' : 'COPY_ENTRY',
-            payload: {
-                departDate: REF.current.departDate,
-                arriveDate: REF.current.arriveDate,
-                departEntryPos: parseInt( REF.current.departEntryPos ),
-                arriveEntryPos: parseInt( REF.current.arriveEntryPos ),
-            },
-        } );
-        REF.current.cutOrCopy = null;
+        REF.current.paste = { date, entryInSequence: inSequence };
+
+        const { cut, copy, paste } = REF.current;
+
+        if ( cut ) {
+            STATE.dispatch( { type: 'MOVE_ENTRY', payload: { cut, paste } } );
+            REF.current.copy = { ...cut };
+            REF.current.cut = null;
+
+        } else if ( copy ) {
+            STATE.dispatch( { type: 'COPY_ENTRY', payload: { copy, paste } } );
+        }
     }
 
     const dragStart = ( event, date, inSequence ) => {
@@ -419,7 +419,7 @@ function EntryMenu( { date, entry, inSequence } ) {
                     </div>
                     <div className='paste' onClick={event => {
                         event.stopPropagation();
-                        if ( REF.current.cutOrCopy ) {
+                        if ( REF.current.cut || REF.current.copy ) {
                             REF.current.closeMenu( event, date, inSequence );
                             REF.current.pasteEntry( date, inSequence );
                         }
@@ -448,7 +448,7 @@ function EntryMenu( { date, entry, inSequence } ) {
                     </div>
                     <div className='paste' onClick={event => {
                         event.stopPropagation();
-                        if ( REF.current.cutOrCopy ) {
+                        if ( REF.current.cut || REF.current.copy ) {
                             REF.current.closeMenu( event, date, inSequence );
                             REF.current.pasteEntry( date, inSequence );
                         }

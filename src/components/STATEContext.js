@@ -151,34 +151,34 @@ const STATEReducer = ( state, action ) => {
 
         } case 'MOVE_ENTRY': {
             dates = [ ...state.dates ];
-            const { departDate, arriveDate, departEntryPos, arriveEntryPos } = action.payload;
+            const { cut, paste } = action.payload;
 
-            deconstructDate( getDateInSequence( departDate ) );
-            deconstructEntry( departEntryPos );
+            deconstructDate( getDateInSequence( cut.date ) );
+            deconstructEntry( cut.entryInSequence );
             const entryToMove = { ...activeEntry };
 
             activeEntry = [];
             constructEntry();
             constructDate();
 
-            deconstructDate( getDateInSequence( arriveDate ) );
-            deconstructEntry( arriveEntryPos );
-            activeEntry = [ entryToMove, {...activeEntry} ];
+            deconstructDate( getDateInSequence( paste.date ) );
+            deconstructEntry( paste.entryInSequence );
+            activeEntry = [ entryToMove, { ...activeEntry } ];
             constructEntry();
             constructDate();
             return { ...state, dates };
 
         } case 'COPY_ENTRY': {
             dates = [ ...state.dates ];
-            const { departDate, arriveDate, departEntryPos, arriveEntryPos } = action.payload;
+            const { copy, paste } = action.payload;
 
-            deconstructDate( getDateInSequence( departDate ) );
-            deconstructEntry( departEntryPos );
+            deconstructDate( getDateInSequence( copy.date ) );
+            deconstructEntry( copy.entryInSequence );
             const entryToCopy = { ...activeEntry };
 
-            deconstructDate( getDateInSequence( arriveDate ) );
-            deconstructEntry( arriveEntryPos );
-            activeEntry = [ entryToCopy, {...activeEntry} ];
+            deconstructDate( getDateInSequence( paste.date ) );
+            deconstructEntry( paste.entryInSequence );
+            activeEntry = [ entryToCopy, { ...activeEntry } ];
             constructEntry();
             constructDate();
 
