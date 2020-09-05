@@ -212,11 +212,11 @@ const STATEReducer = ( state, action ) => {
 
         } case 'OPEN_ENTRY_FORM': {
             dates = [ ...state.dates ];
-            const { date, entryPos } = action.payload;
+            const { uiux, date, entryPos } = action.payload;
 
             deconstructDate( getDatePos( date ) );
             deconstructEntry( entryPos );
-            activeEntry.uiux.form = { isOpen: true };
+            activeEntry.uiux.form = { ...uiux, isOpen: true };
             constructEntry();
             constructDate();
 
@@ -240,7 +240,7 @@ const STATEReducer = ( state, action ) => {
 
             deconstructDate( getDatePos( date ) );
             deconstructEntry( entryPos );
-            activeEntry.uiux.form = { isOpen: true, isRequesting: true };
+            activeEntry.uiux.form = { ...activeEntry.uiux.form, isRequesting: true };
             constructEntry();
             constructDate();
 
@@ -300,7 +300,7 @@ const STATEReducer = ( state, action ) => {
 
             return { ...state, dates };
 
-        } case 'DELETE_ENTRY': {
+        } case 'DELETE_ENTRY_REQUEST_DONE': {
             dates = [ ...state.dates ];
             const { date, entryPos } = action.payload;
 

@@ -259,12 +259,12 @@ function DateEntry( { date, entry, entryPos } ) {
         REF.current.pasteEntry( date, entryPos );
     }
 
-    REF.current.openForm = ( event, date, entryPos, entry ) => {
+    REF.current.openForm = ( event, uiux, date, entryPos, entry ) => {
         event.stopPropagation();
 
         STATE.dispatch( { 
             type: 'OPEN_ENTRY_FORM',
-            payload: { date, entryPos, entry },
+            payload: { uiux, date, entryPos, entry },
         } );
     }
 
@@ -301,10 +301,11 @@ function DateEntry( { date, entry, entryPos } ) {
         } );
     }
 
-    REF.current.deleteEntry = ( date, entryPos ) => {
+    REF.current.deleteEntryRequestDone = ( date, entryPos, dataFromDB ) => {
+
         STATE.dispatch( { 
-            type: 'DELETE_ENTRY',
-            payload: { date, entryPos },
+            type: 'DELETE_ENTRY_REQUEST_DONE',
+            payload: { date, entryPos, dataFromDB },
         } );
     }
 
@@ -390,14 +391,14 @@ function EntryMenu( { date, entryPos, entry } ) {
                 <div className='menu' style={style}>
                     <div className='edit' onClick={event => {
                         event.stopPropagation();
-                        REF.current.openForm( event, date, entryPos, entry );
+                        REF.current.openForm( event, { toUpdate: true }, date, entryPos, entry );
                         REF.current.closeMenu( event, date, entryPos );
                     }}>
                         <FontAwesomeIcon icon={ faEdit } className="icon" title="Επεξεργασία" />
                     </div>
                     <div className='delete' onClick={event => {
                         event.stopPropagation();
-                        REF.current.deleteEntry( date, entryPos );
+                        REF.current.openForm( event, { toDelete: true }, date, entryPos, entry );
                         REF.current.closeMenu( event, date, entryPos );
                     }}>
                         <FontAwesomeIcon icon={ faTrashAlt } className="icon" title="Διαγραφή" />
@@ -440,7 +441,7 @@ function EntryMenu( { date, entryPos, entry } ) {
                 <div className='menu' style={style}>
                     <div className='edit' onClick={event => {
                         event.stopPropagation();
-                        REF.current.openForm( event, date, entryPos, entry );
+                        REF.current.openForm( event, { toCreate: true }, date, entryPos, entry );
                         REF.current.closeMenu( event, date, entryPos );
                     }}>
                         <FontAwesomeIcon icon={ faEdit } className="icon" title="Επεξεργασία" />
@@ -477,12 +478,27 @@ function EntryForm( { date, entryPos, entry } ) {
         date.getFullYear()
     );
 
+    const formArgs = {};
+
+    if ( entry.uiux.form.toCreate ) {
+        formArgs.className = 'create';
+        formArgs.confirmButtonLabel = ' νέας εγγραφής';
+
+    } else if ( entry.uiux.form.toUpdate ) {
+        formArgs.className = 'update';
+        formArgs.confirmButtonLabel = ' τροποποίησης';
+
+    } else if ( entry.uiux.form.toDelete ) {
+        formArgs.className = 'delete';
+        formArgs.confirmButtonLabel = ' διαγραφής';
+    }
+
     const [ data, setData ] = useState( { ...entry.data } );
 
     useEffect( () => {
 
         if ( entry.uiux.form.isRequesting ) {
-            console.log( 'Requesting... ', data.id )
+            console.log( 'Requesting... ', entry.uiux.form, data.id )
 
             const dataToDB = {
                 date: dateToYYYYMMDD( date ),
@@ -492,16 +508,23 @@ function EntryForm( { date, entryPos, entry } ) {
 
             const requestArgs = {};
 
-            if ( !data.id ) {
+            if ( entry.uiux.form.toCreate ) {
                 requestArgs.url = `/.netlify/functions/create-entry`;
                 requestArgs.method = 'POST';
                 requestArgs.idInResponse = res => res.insertedId;
                 requestArgs.onDone = REF.current.createEntryRequestDone;
-            } else {
+
+            } else if ( entry.uiux.form.toUpdate ) {
                 requestArgs.url = `/.netlify/functions/update-entry?id=${data.id}`;
                 requestArgs.method = 'PUT';
                 requestArgs.idInResponse = () => data.id;
                 requestArgs.onDone = REF.current.updateEntryRequestDone;
+
+            } else if ( entry.uiux.form.toDelete ) {
+                requestArgs.url = `/.netlify/functions/delete-entry?id=${data.id}`;
+                requestArgs.method = 'DELETE';
+                requestArgs.idInResponse = () => data.id;
+                requestArgs.onDone = REF.current.deleteEntryRequestDone;
             }
 
             realFetch( requestArgs.url , {
@@ -522,7 +545,7 @@ function EntryForm( { date, entryPos, entry } ) {
     } );
     
     return (
-        <div className='modal EntryForm'>
+        <div className={`modal EntryForm ${formArgs.className}`}>
             <div className='form'>
                 <div className="id">
                     <span>Id:</span>
@@ -558,13 +581,13 @@ function EntryForm( { date, entryPos, entry } ) {
                         {entry.uiux.form.isRequesting 
                             ? <div className="loader icon"></div> 
                             : <FontAwesomeIcon icon={ faCheck } className="icon" />}
-                        ΟΚ
+                        {`Επιβεβαίωση ${formArgs.confirmButtonLabel}`}
                     </button>
                     <button
                         onClick={event => REF.current.closeForm( event, date, entryPos )}
                     >
                         <FontAwesomeIcon icon={ faTimes } className="icon" />
-                        Άκυρο
+                        Ακύρωση
                     </button>
                 </div>
             </div>

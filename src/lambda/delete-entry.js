@@ -12,8 +12,7 @@ exports.handler = async function( event, context, callback ) {
         const collection = db.collection( 'entries' );
 
         const id = event.queryStringParameters[ 'id' ];
-        const body = JSON.parse( event.body );
-        const result = await collection.updateOne( { _id: ObjectId( id ) }, { $set: body } );
+        const result = await collection.deleteOne( { _id: ObjectId( id ) } );
 
         console.log( result ); // output to netlify function log
         callback( null, responseOnSuccess( result ) );
