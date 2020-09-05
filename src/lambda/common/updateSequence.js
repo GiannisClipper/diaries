@@ -13,7 +13,7 @@ const updateSequence = async ( collection, id, date, inSequence, step ) => {
         } 
     );
 
-    console.log( 'updateEntryPos', { id, date, inSequence, step, res } );
+    console.log( 'updateSequence', { id, date, inSequence, step, res } );
 }
 
 export { updateSequence };

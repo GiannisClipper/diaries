@@ -139,13 +139,13 @@ const DateItem = React.memo( ( { dateItem } ) => {
 
     useEffect( () => {
         const { date } = dateItem.data;
-        const { request } = dateItem.uiux;
+        const { db } = dateItem.uiux;
         console.log( 'Has rendered. ', date );
 
-        if ( request.isDoing && request.dateFrom.getTime() === date.getTime() ) {
+        if ( db.isRequesting && db.dateFrom.getTime() === date.getTime() ) {
             console.log( 'Requesting... ', date )
 
-            const { dateFrom, dateTill } = request;
+            const { dateFrom, dateTill } = db;
             const strFrom = dateToYYYYMMDD( dateFrom );
             const strTill = dateToYYYYMMDD( dateTill );
 
@@ -167,7 +167,7 @@ const DateItem = React.memo( ( { dateItem } ) => {
     return (
         <li className="DateItem">
             <DateInfo date={dateItem.data.date} />
-            {dateItem.uiux.request.isDoing
+            {dateItem.uiux.db.isRequesting
                 ?  <div className="loader"></div> 
                 : <DateEntries date={dateItem.data.date} entries={dateItem.data.entries} />
             }
@@ -277,10 +277,10 @@ function DateEntry( { date, entry, inSequence } ) {
         } );
     }
 
-    REF.current.requestingForm = ( date, entry, inSequence ) => {
+    REF.current.requestEntry = ( date, entry, inSequence ) => {
 
         STATE.dispatch( { 
-            type: 'REQUESTING_ENTRY_FORM',
+            type: 'REQUEST_ENTRY',
             payload: { date, entry, inSequence },
         } );
     }
@@ -391,14 +391,14 @@ function EntryMenu( { date, entry, inSequence } ) {
                 <div className='menu' style={style}>
                     <div className='edit' onClick={event => {
                         event.stopPropagation();
-                        REF.current.openForm( event, { toUpdate: true }, date, entry, inSequence );
+                        REF.current.openForm( event, { isUpdating: true }, date, entry, inSequence );
                         REF.current.closeMenu( event, date, inSequence );
                     }}>
                         <FontAwesomeIcon icon={ faEdit } className="icon" title="Επεξεργασία" />
                     </div>
                     <div className='delete' onClick={event => {
                         event.stopPropagation();
-                        REF.current.openForm( event, { toDelete: true }, date, entry, inSequence );
+                        REF.current.openForm( event, { isDeleting: true }, date, entry, inSequence );
                         REF.current.closeMenu( event, date, inSequence );
                     }}>
                         <FontAwesomeIcon icon={ faTrashAlt } className="icon" title="Διαγραφή" />
@@ -441,7 +441,7 @@ function EntryMenu( { date, entry, inSequence } ) {
                 <div className='menu' style={style}>
                     <div className='edit' onClick={event => {
                         event.stopPropagation();
-                        REF.current.openForm( event, { toCreate: true }, date, entry, inSequence );
+                        REF.current.openForm( event, { isCreating: true }, date, entry, inSequence );
                         REF.current.closeMenu( event, date, inSequence );
                     }}>
                         <FontAwesomeIcon icon={ faEdit } className="icon" title="Επεξεργασία" />
@@ -480,15 +480,15 @@ function EntryForm( { date, entry, inSequence } ) {
 
     const formArgs = {};
 
-    if ( entry.uiux.form.toCreate ) {
+    if ( entry.uiux.db.isCreating ) {
         formArgs.className = 'create';
         formArgs.confirmButtonLabel = ' νέας εγγραφής';
 
-    } else if ( entry.uiux.form.toUpdate ) {
+    } else if ( entry.uiux.db.isUpdating ) {
         formArgs.className = 'update';
         formArgs.confirmButtonLabel = ' τροποποίησης';
 
-    } else if ( entry.uiux.form.toDelete ) {
+    } else if ( entry.uiux.db.isDeleting ) {
         formArgs.className = 'delete';
         formArgs.confirmButtonLabel = ' διαγραφής';
     }
@@ -496,9 +496,9 @@ function EntryForm( { date, entry, inSequence } ) {
     const [ data, setData ] = useState( { ...entry.data } );
 
     useEffect( () => {
-
-        if ( entry.uiux.form.isRequesting ) {
-            console.log( 'Requesting... ', entry.uiux.form, data.id )
+        console.log( 'BeforeRequesting... ', entry.uiux.db, data.id )
+        if ( entry.uiux.db.isRequesting ) {
+            console.log( 'Requesting... ', entry.uiux.db, data.id )
 
             const dataToDB = {
                 date: dateToYYYYMMDD( date ),
@@ -508,19 +508,19 @@ function EntryForm( { date, entry, inSequence } ) {
 
             const requestArgs = {};
 
-            if ( entry.uiux.form.toCreate ) {
+            if ( entry.uiux.db.isCreating ) {
                 requestArgs.url = `/.netlify/functions/create-entry`;
                 requestArgs.method = 'POST';
                 requestArgs.idInResponse = res => res.insertedId;
                 requestArgs.onDone = REF.current.createEntryRequestDone;
 
-            } else if ( entry.uiux.form.toUpdate ) {
+            } else if ( entry.uiux.db.isUpdating ) {
                 requestArgs.url = `/.netlify/functions/update-entry?id=${data.id}`;
                 requestArgs.method = 'PUT';
                 requestArgs.idInResponse = () => data.id;
                 requestArgs.onDone = REF.current.updateEntryRequestDone;
 
-            } else if ( entry.uiux.form.toDelete ) {
+            } else if ( entry.uiux.db.isDeleting ) {
                 requestArgs.url = `/.netlify/functions/delete-entry?id=${data.id}`;
                 requestArgs.method = 'DELETE';
                 requestArgs.idInResponse = () => data.id;
@@ -575,10 +575,9 @@ function EntryForm( { date, entry, inSequence } ) {
                     <span></span>
                     <button onClick={event => {
                         entry.data = { ...data };
-                        REF.current.requestingForm( date, entry, inSequence );
-                        //REF.current.closeForm( event, date, inSequence );
+                        REF.current.requestEntry( date, entry, inSequence );
                     }}>
-                        {entry.uiux.form.isRequesting 
+                        {entry.uiux.db.isRequesting
                             ? <div className="loader icon"></div> 
                             : <FontAwesomeIcon icon={ faCheck } className="icon" />}
                         {`Επιβεβαίωση ${formArgs.confirmButtonLabel}`}

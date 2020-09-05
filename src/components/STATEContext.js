@@ -17,8 +17,8 @@ const initDate = () => ( {
         entries: [],
     },
     uiux: {
-        request: {
-            isDoing: false,
+        db: {
+            isRequesting: false,
             dateFrom: '',
             dateTill: '',
         }
@@ -28,12 +28,14 @@ const initDate = () => ( {
 const initEntry = () => ( {
     data: {
         id: null,
+        date: '',
         note: '',
-//        inSequence: 0,
+        inSequence: 0,
     },
     uiux: {
         form: { isOpen: false },
         menu: { isOpen: false },
+        db: { isRequesting: false },  // isCreating, isRetrieving, isUpdating, isDeleting
     }
 } );
 
@@ -50,7 +52,7 @@ const calcInitDates = ( date, num ) => {
     newDates = newDates.map( ( x, index ) => {
         const _ = initDate();
         _.data.date = shiftDate( startDate, index );
-        _.uiux.request = { isDoing: true, dateFrom: startDate, dateTill: shiftDate( startDate, num - 1 ) };
+        _.uiux.db = { isRequesting: true, dateFrom: startDate, dateTill: shiftDate( startDate, num - 1 ) };
         return _;
     } );
 
@@ -63,7 +65,7 @@ const calcPrevDates = ( dates, num ) => {
     newDates = newDates.map( ( x, index ) => {
         const _ = initDate();
         _.data.date = shiftDate( startDate, index );
-        _.uiux.request = { isDoing: true, dateFrom: startDate, dateTill: shiftDate( startDate, num - 1 ) };
+        _.uiux.db = { isRequesting: true, dateFrom: startDate, dateTill: shiftDate( startDate, num - 1 ) };
         return _;
     } );
 
@@ -76,7 +78,7 @@ const calcNextDates = ( dates, num ) => {
     newDates = newDates.map( ( x, index ) => {
         const _ = initDate();
         _.data.date = shiftDate( startDate, index );
-        _.uiux.request = { isDoing: true, dateFrom: startDate, dateTill: shiftDate( startDate, num - 1 ) };
+        _.uiux.db = { isRequesting: true, dateFrom: startDate, dateTill: shiftDate( startDate, num - 1 ) };
         return _;
     } );
 
@@ -216,7 +218,8 @@ const STATEReducer = ( state, action ) => {
 
             deconstructDate( getDateInSequence( date ) );
             deconstructEntry( inSequence );
-            activeEntry.uiux.form = { ...uiux, isOpen: true };
+            activeEntry.uiux.form = { isOpen: true };
+            activeEntry.uiux.db = uiux;
             constructEntry();
             constructDate();
 
@@ -228,19 +231,8 @@ const STATEReducer = ( state, action ) => {
 
             deconstructDate( getDateInSequence( date ) );
             deconstructEntry( inSequence );
+            activeEntry.uiux.db = {};
             activeEntry.uiux.form = {};
-            constructEntry();
-            constructDate();
-
-            return { ...state, dates };
-
-        } case 'REQUESTING_ENTRY_FORM': {
-            dates = [ ...state.dates ];
-            const { date, inSequence } = action.payload;
-
-            deconstructDate( getDateInSequence( date ) );
-            deconstructEntry( inSequence );
-            activeEntry.uiux.form = { ...activeEntry.uiux.form, isRequesting: true };
             constructEntry();
             constructDate();
 
@@ -267,9 +259,22 @@ const STATEReducer = ( state, action ) => {
 
                 deconstructDate( getDateInSequence( date ) );
                 activeDate.data.entries = entries;
-                activeDate.uiux.request = {};
+                activeDate.uiux.db = {};
                 constructDate();
             }
+
+            return { ...state, dates };
+
+        } case 'REQUEST_ENTRY': {
+            dates = [ ...state.dates ];
+            const { date, inSequence } = action.payload;
+
+            deconstructDate( getDateInSequence( date ) );
+            deconstructEntry( inSequence );
+            activeEntry.uiux.db = { ...activeEntry.uiux.db, isRequesting: true };
+            console.log('activeEntry.uiux.db', activeEntry.uiux.db)
+            constructEntry();
+            constructDate();
 
             return { ...state, dates };
 
@@ -280,6 +285,7 @@ const STATEReducer = ( state, action ) => {
             deconstructDate( getDateInSequence( date ) );
             deconstructEntry( inSequence );
             activeEntry.data = parseEntryFromDB( dataFromDB );
+            activeEntry.uiux.db = {};
             activeEntry.uiux.form = {};
             nextEntries.push( initEntry() );
             constructEntry();
@@ -294,6 +300,7 @@ const STATEReducer = ( state, action ) => {
             deconstructDate( getDateInSequence( date ) );
             deconstructEntry( inSequence );
             activeEntry.data = parseEntryFromDB( dataFromDB );
+            activeEntry.uiux.db = {};
             activeEntry.uiux.form = {};
             constructEntry();
             constructDate();
