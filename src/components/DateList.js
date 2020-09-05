@@ -200,39 +200,39 @@ function DateInfo( { date } ) {
 
 function DateEntries( { date, entries } ) {
 
-    let entryPos = -1;
+    let inSequence = -1;
 
     return (
         <div className="DateEntries">
             <ul>
                 { entries.map( entry => (
-                    <DateEntry date={date} entry={entry} entryPos={++entryPos} />
+                    <DateEntry date={date} entry={entry} inSequence={++inSequence} />
                 ) ) }
             </ul>
         </div>
     );
 }
 
-function DateEntry( { date, entry, entryPos } ) {
+function DateEntry( { date, entry, inSequence } ) {
 
     const STATE = useContext( STATEContext );
     const REF = useContext( REFContext );
 
-    REF.current.cutEntry = ( date, entryPos ) => {
+    REF.current.cutEntry = ( date, inSequence ) => {
         REF.current.departDate = date;
-        REF.current.departEntryPos = entryPos;
+        REF.current.departEntryPos = inSequence;
         REF.current.cutOrCopy = { isCut: true };
     }
 
-    REF.current.copyEntry = ( date, entryPos ) => {
+    REF.current.copyEntry = ( date, inSequence ) => {
         REF.current.departDate = date;
-        REF.current.departEntryPos = entryPos;
+        REF.current.departEntryPos = inSequence;
         REF.current.cutOrCopy = { isCopy: true };
     }
 
-    REF.current.pasteEntry = ( date, entryPos ) => {
+    REF.current.pasteEntry = ( date, inSequence ) => {
         REF.current.arriveDate = date;
-        REF.current.arriveEntryPos = entryPos;
+        REF.current.arriveEntryPos = inSequence;
         STATE.dispatch( { 
             type: REF.current.cutOrCopy.isCut ? 'MOVE_ENTRY' : 'COPY_ENTRY',
             payload: {
@@ -245,8 +245,8 @@ function DateEntry( { date, entry, entryPos } ) {
         REF.current.cutOrCopy = null;
     }
 
-    const dragStart = ( event, date, entryPos ) => {
-        REF.current.cutEntry( date, entryPos );
+    const dragStart = ( event, date, inSequence ) => {
+        REF.current.cutEntry( date, inSequence );
         event.dataTransfer.effectAllowed = 'move';
     }
 
@@ -254,109 +254,109 @@ function DateEntry( { date, entry, entryPos } ) {
         event.preventDefault();
     }
 
-    const drop = ( event, date, entryPos ) => {
+    const drop = ( event, date, inSequence ) => {
         event.preventDefault();
-        REF.current.pasteEntry( date, entryPos );
+        REF.current.pasteEntry( date, inSequence );
     }
 
-    REF.current.openForm = ( event, uiux, date, entryPos, entry ) => {
+    REF.current.openForm = ( event, uiux, date, entry, inSequence ) => {
         event.stopPropagation();
 
         STATE.dispatch( { 
             type: 'OPEN_ENTRY_FORM',
-            payload: { uiux, date, entryPos, entry },
+            payload: { uiux, date, entry, inSequence },
         } );
     }
 
-    REF.current.closeForm = ( event, date, entryPos ) => {
+    REF.current.closeForm = ( event, date, inSequence ) => {
         event.stopPropagation();
 
         STATE.dispatch( { 
             type: 'CLOSE_ENTRY_FORM',
-            payload: { date, entryPos },
+            payload: { date, inSequence },
         } );
     }
 
-    REF.current.requestingForm = ( date, entryPos, entry ) => {
+    REF.current.requestingForm = ( date, entry, inSequence ) => {
 
         STATE.dispatch( { 
             type: 'REQUESTING_ENTRY_FORM',
-            payload: { date, entryPos, entry },
+            payload: { date, entry, inSequence },
         } );
     }
 
-    REF.current.createEntryRequestDone = ( date, entryPos, dataFromDB ) => {
+    REF.current.createEntryRequestDone = ( date, inSequence, dataFromDB ) => {
 
         STATE.dispatch( { 
             type: 'CREATE_ENTRY_REQUEST_DONE',
-            payload: { date, entryPos, dataFromDB },
+            payload: { date, inSequence, dataFromDB },
         } );
     }
 
-    REF.current.updateEntryRequestDone = ( date, entryPos, dataFromDB ) => {
+    REF.current.updateEntryRequestDone = ( date, inSequence, dataFromDB ) => {
 
         STATE.dispatch( { 
             type: 'UPDATE_ENTRY_REQUEST_DONE',
-            payload: { date, entryPos, dataFromDB },
+            payload: { date, inSequence, dataFromDB },
         } );
     }
 
-    REF.current.deleteEntryRequestDone = ( date, entryPos, dataFromDB ) => {
+    REF.current.deleteEntryRequestDone = ( date, inSequence, dataFromDB ) => {
 
         STATE.dispatch( { 
             type: 'DELETE_ENTRY_REQUEST_DONE',
-            payload: { date, entryPos, dataFromDB },
+            payload: { date, inSequence, dataFromDB },
         } );
     }
 
     const className = entry.data.id ? 'DateEntry' : 'DateEntry init';
     const draggable = entry.data.id ? 'true' : 'false';
-    const onDragStart = entry.data.id ? event => dragStart( event, date, entryPos ) : null;
+    const onDragStart = entry.data.id ? event => dragStart( event, date, inSequence ) : null;
 
     return (
         <li 
             className={className}
-            key={entryPos}
+            key={inSequence}
             draggable={draggable}
             onDragStart={onDragStart}
             onDragOver={event => allowDrop( event )}
-            onDrop={event => drop( event, date, entryPos )}
-            //onDoubleClick={event => REF.current.openForm( event, date, entryPos )}
+            onDrop={event => drop( event, date, inSequence )}
+            //onDoubleClick={event => REF.current.openForm( event, date, inSequence )}
         >
             <div className='data'>
-                {entryPos + '/' + entry.data.id + '/' + entry.data.note}
+                {inSequence + '/' + entry.data.id + '/' + entry.data.note}
             </div>
 
-            <MenuTool date={date} entry={entry} entryPos={entryPos} />
+            <MenuTool date={date} entry={entry} inSequence={inSequence} />
 
-            {entry.uiux.menu.isOpen ? ( <EntryMenu date={date} entry={entry} entryPos={entryPos} /> ) : null}
+            {entry.uiux.menu.isOpen ? ( <EntryMenu date={date} entry={entry} inSequence={inSequence} /> ) : null}
 
-            {entry.uiux.form.isOpen ? ( <EntryForm date={date} entry={entry} entryPos={entryPos} /> ) : null}
+            {entry.uiux.form.isOpen ? ( <EntryForm date={date} entry={entry} inSequence={inSequence} /> ) : null}
 
         </li> 
     );
 }
 
-function MenuTool( { date, entryPos, entry } ) {
+function MenuTool( { date, entry, inSequence } ) {
 
     const STATE = useContext( STATEContext );
     const REF = useContext( REFContext );
 
-    REF.current.openMenu = ( event, date, entryPos ) => {
+    REF.current.openMenu = ( event, date, inSequence ) => {
         event.stopPropagation();
 
         STATE.dispatch( { 
             type: 'OPEN_ENTRY_MENU',
-            payload: { date, entryPos },
+            payload: { date, inSequence },
         } );
     }
 
-    REF.current.closeMenu = ( event, date, entryPos ) => {
+    REF.current.closeMenu = ( event, date, inSequence ) => {
         event.stopPropagation();
 
         STATE.dispatch( { 
             type: 'CLOSE_ENTRY_MENU',
-            payload: { date, entryPos },
+            payload: { date, inSequence },
         } );
     }
 
@@ -367,7 +367,7 @@ function MenuTool( { date, entryPos, entry } ) {
             className='MenuTool'
             onClick={event => {
                 REF.current.menuTool = menuToolRef.current;
-                REF.current.openMenu( event, date, entryPos );
+                REF.current.openMenu( event, date, inSequence );
             }}
             ref={menuToolRef}
         >
@@ -376,7 +376,7 @@ function MenuTool( { date, entryPos, entry } ) {
     );
 }
 
-function EntryMenu( { date, entryPos, entry } ) {
+function EntryMenu( { date, entry, inSequence } ) {
 
     const REF = useContext( REFContext );
 
@@ -387,48 +387,48 @@ function EntryMenu( { date, entryPos, entry } ) {
 
     if ( entry.data.id ) {
         return (
-            <div className='modal EntryMenu' onClick={event => REF.current.closeMenu( event, date, entryPos )}>
+            <div className='modal EntryMenu' onClick={event => REF.current.closeMenu( event, date, inSequence )}>
                 <div className='menu' style={style}>
                     <div className='edit' onClick={event => {
                         event.stopPropagation();
-                        REF.current.openForm( event, { toUpdate: true }, date, entryPos, entry );
-                        REF.current.closeMenu( event, date, entryPos );
+                        REF.current.openForm( event, { toUpdate: true }, date, entry, inSequence );
+                        REF.current.closeMenu( event, date, inSequence );
                     }}>
                         <FontAwesomeIcon icon={ faEdit } className="icon" title="Επεξεργασία" />
                     </div>
                     <div className='delete' onClick={event => {
                         event.stopPropagation();
-                        REF.current.openForm( event, { toDelete: true }, date, entryPos, entry );
-                        REF.current.closeMenu( event, date, entryPos );
+                        REF.current.openForm( event, { toDelete: true }, date, entry, inSequence );
+                        REF.current.closeMenu( event, date, inSequence );
                     }}>
                         <FontAwesomeIcon icon={ faTrashAlt } className="icon" title="Διαγραφή" />
                     </div>
                     <div className='cut' onClick={event => {
                         event.stopPropagation();
-                        REF.current.cutEntry( date, entryPos );
-                        REF.current.closeMenu( event, date, entryPos );
+                        REF.current.cutEntry( date, inSequence );
+                        REF.current.closeMenu( event, date, inSequence );
                     }}>
                         <FontAwesomeIcon icon={ faCut } className="icon" title="Αποκοπή" />
                     </div>
                     <div className='copy' onClick={event => {
                         event.stopPropagation();
-                        REF.current.copyEntry( date, entryPos );
-                        REF.current.closeMenu( event, date, entryPos );
+                        REF.current.copyEntry( date, inSequence );
+                        REF.current.closeMenu( event, date, inSequence );
                     }}>
                         <FontAwesomeIcon icon={ faCamera } className="icon" title="Αντιγραφή" />
                     </div>
                     <div className='paste' onClick={event => {
                         event.stopPropagation();
                         if ( REF.current.cutOrCopy ) {
-                            REF.current.closeMenu( event, date, entryPos );
-                            REF.current.pasteEntry( date, entryPos );
+                            REF.current.closeMenu( event, date, inSequence );
+                            REF.current.pasteEntry( date, inSequence );
                         }
                     }}>
                         <FontAwesomeIcon icon={ faClone } className="icon" title="Επικόλληση" />
                     </div>
                     <div className='close' onClick={event => {
                         event.stopPropagation();
-                        REF.current.closeMenu( event, date, entryPos )
+                        REF.current.closeMenu( event, date, inSequence )
                     }}>
                         <FontAwesomeIcon icon={ faTimes } className="icon" title="Κλείσιμο" />
                     </div>
@@ -437,27 +437,27 @@ function EntryMenu( { date, entryPos, entry } ) {
         );
     } else {
         return (
-            <div className='modal EntryMenu' onClick={event => REF.current.closeMenu( event, date, entryPos )}>
+            <div className='modal EntryMenu' onClick={event => REF.current.closeMenu( event, date, inSequence )}>
                 <div className='menu' style={style}>
                     <div className='edit' onClick={event => {
                         event.stopPropagation();
-                        REF.current.openForm( event, { toCreate: true }, date, entryPos, entry );
-                        REF.current.closeMenu( event, date, entryPos );
+                        REF.current.openForm( event, { toCreate: true }, date, entry, inSequence );
+                        REF.current.closeMenu( event, date, inSequence );
                     }}>
                         <FontAwesomeIcon icon={ faEdit } className="icon" title="Επεξεργασία" />
                     </div>
                     <div className='paste' onClick={event => {
                         event.stopPropagation();
                         if ( REF.current.cutOrCopy ) {
-                            REF.current.closeMenu( event, date, entryPos );
-                            REF.current.pasteEntry( date, entryPos );
+                            REF.current.closeMenu( event, date, inSequence );
+                            REF.current.pasteEntry( date, inSequence );
                         }
                     }}>
                         <FontAwesomeIcon icon={ faClone } className="icon" title="Επικόλληση" />
                     </div>
                     <div className='close' onClick={event => {
                         event.stopPropagation();
-                        REF.current.closeMenu( event, date, entryPos )
+                        REF.current.closeMenu( event, date, inSequence )
                     }}>
                         <FontAwesomeIcon icon={ faTimes } className="icon" title="Κλείσιμο" />
                     </div>
@@ -467,7 +467,7 @@ function EntryMenu( { date, entryPos, entry } ) {
     }
 }
 
-function EntryForm( { date, entryPos, entry } ) {
+function EntryForm( { date, entry, inSequence } ) {
 
     const REF = useContext( REFContext );
 
@@ -503,7 +503,7 @@ function EntryForm( { date, entryPos, entry } ) {
             const dataToDB = {
                 date: dateToYYYYMMDD( date ),
                 note: data.note,
-                entryPos: entryPos
+                inSequence: inSequence
             };
 
             const requestArgs = {};
@@ -534,11 +534,11 @@ function EntryForm( { date, entryPos, entry } ) {
             .then( res => {
                 alert( JSON.stringify( res ) );
                 const dataFromDB = { ...dataToDB, _id: requestArgs.idInResponse( res ) };
-                requestArgs.onDone( date, entryPos, dataFromDB );
+                requestArgs.onDone( date, inSequence, dataFromDB );
             } )
             .catch( err => { 
                 alert( err );
-                requestArgs.onDone( date, entryPos, {} );
+                requestArgs.onDone( date, inSequence, {} );
             } );
         }
 
@@ -575,8 +575,8 @@ function EntryForm( { date, entryPos, entry } ) {
                     <span></span>
                     <button onClick={event => {
                         entry.data = { ...data };
-                        REF.current.requestingForm( date, entryPos, entry );
-                        //REF.current.closeForm( event, date, entryPos );
+                        REF.current.requestingForm( date, entry, inSequence );
+                        //REF.current.closeForm( event, date, inSequence );
                     }}>
                         {entry.uiux.form.isRequesting 
                             ? <div className="loader icon"></div> 
@@ -584,7 +584,7 @@ function EntryForm( { date, entryPos, entry } ) {
                         {`Επιβεβαίωση ${formArgs.confirmButtonLabel}`}
                     </button>
                     <button
-                        onClick={event => REF.current.closeForm( event, date, entryPos )}
+                        onClick={event => REF.current.closeForm( event, date, inSequence )}
                     >
                         <FontAwesomeIcon icon={ faTimes } className="icon" />
                         Ακύρωση

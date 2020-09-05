@@ -1,19 +1,19 @@
 import { ObjectId } from 'mongodb';
 
-const updateSequence = async ( collection, date, entryPos, id, num ) => {
+const updateSequence = async ( collection, id, date, inSequence, step ) => {
 
     const res = await collection.updateMany( 
         {
             date: { $eq: date },
-            entryPos: { $gte: entryPos },
+            inSequence: { $gte: inSequence },
             _id: { $ne: ObjectId( id ) }
         }, 
         { 
-            $inc: { entryPos: num }
+            $inc: { inSequence: step }
         } 
     );
 
-    console.log( 'updateEntryPos', { date, entryPos, id, num, res } );
+    console.log( 'updateEntryPos', { id, date, inSequence, step, res } );
 }
 
 export { updateSequence };

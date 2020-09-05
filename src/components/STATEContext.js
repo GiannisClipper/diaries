@@ -29,7 +29,7 @@ const initEntry = () => ( {
     data: {
         id: null,
         note: '',
-//        entryPos: 0,
+//        inSequence: 0,
     },
     uiux: {
         form: { isOpen: false },
@@ -41,7 +41,7 @@ const parseEntryFromDB = data => ( {
     id: data._id,
     date: data.date,
     note: data.note,
-    entryPos: data.entryPos
+    inSequence: data.inSequence
 } )
 
 const calcInitDates = ( date, num ) => {
@@ -90,33 +90,33 @@ const STATEReducer = ( state, action ) => {
     let dates, prevDates, activeDate, nextDates;
     let entries, prevEntries, activeEntry, nextEntries;
 
-    const getDatePos = date => {
+    const getDateInSequence = date => {
         return daysBetween( dates[0].data.date, date );
     }
 
-    const deconstructDate = datePos => {
-        prevDates = dates.slice( 0, datePos );
+    const deconstructDate = dateInSequence => {
+        prevDates = dates.slice( 0, dateInSequence );
         activeDate = {
-            data: { ...dates[ datePos ].data },
-            uiux: { ...dates[ datePos ].uiux }
+            data: { ...dates[ dateInSequence ].data },
+            uiux: { ...dates[ dateInSequence ].uiux }
         }
-        nextDates = dates.slice( datePos + 1 );
+        nextDates = dates.slice( dateInSequence + 1 );
     }
 
     const constructDate = () => {
         dates = [ ...prevDates, activeDate, ...nextDates ];
     }
 
-    const deconstructEntry = entryPos => {
+    const deconstructEntry = inSequence => {
         entries = [ ...activeDate.data.entries ];
-        entryPos = entryPos < entries.length ? entryPos : entries.length - 1;
-        prevEntries = entries.slice( 0, entryPos );
-        activeEntry = { ...entries[ entryPos ] };
+        inSequence = inSequence < entries.length ? inSequence : entries.length - 1;
+        prevEntries = entries.slice( 0, inSequence );
+        activeEntry = { ...entries[ inSequence ] };
         activeEntry = {
-            data: { ...entries[ entryPos ].data },
-            uiux: { ...entries[ entryPos ].uiux }
+            data: { ...entries[ inSequence ].data },
+            uiux: { ...entries[ inSequence ].uiux }
         }
-        nextEntries = entries.slice( entryPos + 1 );
+        nextEntries = entries.slice( inSequence + 1 );
     }
 
     const constructEntry = () => {
@@ -153,7 +153,7 @@ const STATEReducer = ( state, action ) => {
             dates = [ ...state.dates ];
             const { departDate, arriveDate, departEntryPos, arriveEntryPos } = action.payload;
 
-            deconstructDate( getDatePos( departDate ) );
+            deconstructDate( getDateInSequence( departDate ) );
             deconstructEntry( departEntryPos );
             const entryToMove = { ...activeEntry };
 
@@ -161,7 +161,7 @@ const STATEReducer = ( state, action ) => {
             constructEntry();
             constructDate();
 
-            deconstructDate( getDatePos( arriveDate ) );
+            deconstructDate( getDateInSequence( arriveDate ) );
             deconstructEntry( arriveEntryPos );
             activeEntry = [ entryToMove, {...activeEntry} ];
             constructEntry();
@@ -172,11 +172,11 @@ const STATEReducer = ( state, action ) => {
             dates = [ ...state.dates ];
             const { departDate, arriveDate, departEntryPos, arriveEntryPos } = action.payload;
 
-            deconstructDate( getDatePos( departDate ) );
+            deconstructDate( getDateInSequence( departDate ) );
             deconstructEntry( departEntryPos );
             const entryToCopy = { ...activeEntry };
 
-            deconstructDate( getDatePos( arriveDate ) );
+            deconstructDate( getDateInSequence( arriveDate ) );
             deconstructEntry( arriveEntryPos );
             activeEntry = [ entryToCopy, {...activeEntry} ];
             constructEntry();
@@ -186,11 +186,11 @@ const STATEReducer = ( state, action ) => {
 
         } case 'OPEN_ENTRY_MENU': {
             dates = [ ...state.dates ];
-            const { date, entryPos } = action.payload;
-            const datePos = getDatePos( date );
+            const { date, inSequence } = action.payload;
+            const dateInSequence = getDateInSequence( date );
 
-            deconstructDate( datePos );
-            deconstructEntry( entryPos );
+            deconstructDate( dateInSequence );
+            deconstructEntry( inSequence );
             activeEntry.uiux.menu = { isOpen: true };
             constructEntry();
             constructDate();
@@ -199,11 +199,11 @@ const STATEReducer = ( state, action ) => {
 
         } case 'CLOSE_ENTRY_MENU': {
             dates = [ ...state.dates ];
-            const { date, entryPos } = action.payload;
-            const datePos = getDatePos( date );
+            const { date, inSequence } = action.payload;
+            const dateInSequence = getDateInSequence( date );
 
-            deconstructDate( datePos );
-            deconstructEntry( entryPos );
+            deconstructDate( dateInSequence );
+            deconstructEntry( inSequence );
             activeEntry.uiux.menu = {};
             constructEntry();
             constructDate();
@@ -212,10 +212,10 @@ const STATEReducer = ( state, action ) => {
 
         } case 'OPEN_ENTRY_FORM': {
             dates = [ ...state.dates ];
-            const { uiux, date, entryPos } = action.payload;
+            const { uiux, date, inSequence } = action.payload;
 
-            deconstructDate( getDatePos( date ) );
-            deconstructEntry( entryPos );
+            deconstructDate( getDateInSequence( date ) );
+            deconstructEntry( inSequence );
             activeEntry.uiux.form = { ...uiux, isOpen: true };
             constructEntry();
             constructDate();
@@ -224,10 +224,10 @@ const STATEReducer = ( state, action ) => {
 
         } case 'CLOSE_ENTRY_FORM': {
             dates = [ ...state.dates ];
-            const { date, entryPos } = action.payload;
+            const { date, inSequence } = action.payload;
 
-            deconstructDate( getDatePos( date ) );
-            deconstructEntry( entryPos );
+            deconstructDate( getDateInSequence( date ) );
+            deconstructEntry( inSequence );
             activeEntry.uiux.form = {};
             constructEntry();
             constructDate();
@@ -236,10 +236,10 @@ const STATEReducer = ( state, action ) => {
 
         } case 'REQUESTING_ENTRY_FORM': {
             dates = [ ...state.dates ];
-            const { date, entryPos } = action.payload;
+            const { date, inSequence } = action.payload;
 
-            deconstructDate( getDatePos( date ) );
-            deconstructEntry( entryPos );
+            deconstructDate( getDateInSequence( date ) );
+            deconstructEntry( inSequence );
             activeEntry.uiux.form = { ...activeEntry.uiux.form, isRequesting: true };
             constructEntry();
             constructDate();
@@ -249,7 +249,7 @@ const STATEReducer = ( state, action ) => {
         } case 'RETRIEVE_DATES_REQUEST_DONE': {
             dates = [ ...state.dates ];
             const { dateFrom, dateTill, dataFromDB } = action.payload;
-            dataFromDB.sort( ( a, b ) => a.entryPos < b.entryPos ? -1 : a.entryPos > b.entryPos ? 1 : 0 );
+            dataFromDB.sort( ( a, b ) => a.inSequence < b.inSequence ? -1 : a.inSequence > b.inSequence ? 1 : 0 );
 
             const numDays = daysBetween( dateFrom, dateTill ) + 1;
             for ( let i = 0; i < numDays; i++ ) { 
@@ -265,7 +265,7 @@ const STATEReducer = ( state, action ) => {
                 const entry = initEntry();
                 entries.push( entry );
 
-                deconstructDate( getDatePos( date ) );
+                deconstructDate( getDateInSequence( date ) );
                 activeDate.data.entries = entries;
                 activeDate.uiux.request = {};
                 constructDate();
@@ -275,10 +275,10 @@ const STATEReducer = ( state, action ) => {
 
         } case 'CREATE_ENTRY_REQUEST_DONE': {
             dates = [ ...state.dates ];
-            const { date, entryPos, dataFromDB } = action.payload;
+            const { date, inSequence, dataFromDB } = action.payload;
 
-            deconstructDate( getDatePos( date ) );
-            deconstructEntry( entryPos );
+            deconstructDate( getDateInSequence( date ) );
+            deconstructEntry( inSequence );
             activeEntry.data = parseEntryFromDB( dataFromDB );
             activeEntry.uiux.form = {};
             nextEntries.push( initEntry() );
@@ -289,10 +289,10 @@ const STATEReducer = ( state, action ) => {
 
         } case 'UPDATE_ENTRY_REQUEST_DONE': {
             dates = [ ...state.dates ];
-            const { date, entryPos, dataFromDB } = action.payload;
+            const { date, inSequence, dataFromDB } = action.payload;
 
-            deconstructDate( getDatePos( date ) );
-            deconstructEntry( entryPos );
+            deconstructDate( getDateInSequence( date ) );
+            deconstructEntry( inSequence );
             activeEntry.data = parseEntryFromDB( dataFromDB );
             activeEntry.uiux.form = {};
             constructEntry();
@@ -302,10 +302,10 @@ const STATEReducer = ( state, action ) => {
 
         } case 'DELETE_ENTRY_REQUEST_DONE': {
             dates = [ ...state.dates ];
-            const { date, entryPos } = action.payload;
+            const { date, inSequence } = action.payload;
 
-            deconstructDate( getDatePos( date ) );
-            deconstructEntry( entryPos );
+            deconstructDate( getDateInSequence( date ) );
+            deconstructEntry( inSequence );
             activeEntry = [];
             constructEntry();
             constructDate();

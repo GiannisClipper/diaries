@@ -16,8 +16,8 @@ exports.handler = async function( event, context, callback ) {
         const body = JSON.parse( event.body );
         const result = await collection.updateOne( { _id: ObjectId( id ) }, { $set: body } );
 
-        const { date, entryPos } = JSON.parse( event.body );
-        await updateSequence( collection, date, entryPos, id, 1 );
+        const { date, inSequence } = JSON.parse( event.body );
+        await updateSequence( collection, id, date, inSequence, 1 );
 
         console.log( result ); // output to netlify function log
         callback( null, responseOnSuccess( result ) );
