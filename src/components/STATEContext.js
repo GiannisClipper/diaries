@@ -287,6 +287,18 @@ const STATEReducer = ( state, action ) => {
 
             return { ...state, dates };
 
+        } case 'UPDATE_ENTRY_REQUEST_DONE': {
+            dates = [ ...state.dates ];
+            const { date, entryPos, dataFromDB } = action.payload;
+
+            deconstructDate( getDatePos( date ) );
+            deconstructEntry( entryPos );
+            activeEntry.data = parseEntryFromDB( dataFromDB );
+            activeEntry.uiux.form = {};
+            constructEntry();
+            constructDate();
+
+            return { ...state, dates };
 
         } case 'DELETE_ENTRY': {
             dates = [ ...state.dates ];

@@ -293,6 +293,14 @@ function DateEntry( { date, entry, entryPos } ) {
         } );
     }
 
+    REF.current.updateEntryRequestDone = ( date, entryPos, dataFromDB ) => {
+
+        STATE.dispatch( { 
+            type: 'UPDATE_ENTRY_REQUEST_DONE',
+            payload: { date, entryPos, dataFromDB },
+        } );
+    }
+
     REF.current.deleteEntry = ( date, entryPos ) => {
         STATE.dispatch( { 
             type: 'DELETE_ENTRY',
@@ -482,18 +490,32 @@ function EntryForm( { date, entryPos, entry } ) {
                 entryPos: entryPos
             };
 
-            realFetch( `/.netlify/functions/create-entry`, {
-                method: 'POST',
+            const requestArgs = {};
+
+            if ( !data.id ) {
+                requestArgs.url = `/.netlify/functions/create-entry`;
+                requestArgs.method = 'POST';
+                requestArgs.idInResponse = res => res.insertedId;
+                requestArgs.onDone = REF.current.createEntryRequestDone;
+            } else {
+                requestArgs.url = `/.netlify/functions/update-entry?id=${data.id}`;
+                requestArgs.method = 'PUT';
+                requestArgs.idInResponse = () => data.id;
+                requestArgs.onDone = REF.current.updateEntryRequestDone;
+            }
+
+            realFetch( requestArgs.url , {
+                method: requestArgs.method,
                 body: JSON.stringify( dataToDB )
             } )
             .then( res => {
                 alert( JSON.stringify( res ) );
-                const dataFromDB = { ...dataToDB, _id: res.insertedId };
-                REF.current.createEntryRequestDone( date, entryPos, dataFromDB );
+                const dataFromDB = { ...dataToDB, _id: requestArgs.idInResponse( res ) };
+                requestArgs.onDone( date, entryPos, dataFromDB );
             } )
             .catch( err => { 
                 alert( err );
-                REF.current.createEntryRequestDone( date, entryPos, {} );
+                requestArgs.onDone( date, entryPos, {} );
             } );
         }
 
@@ -521,7 +543,7 @@ function EntryForm( { date, entryPos, entry } ) {
                     <textarea
                         rows="10"
                         cols="50"
-                        maxlength="1000"
+                        maxLength="1000"
                         value={data.note}
                         onChange={event => setData( { ...data, note: event.target.value } )}
                     />
