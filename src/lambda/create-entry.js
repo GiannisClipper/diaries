@@ -1,4 +1,5 @@
-import { connectDB } from './connectDB';
+import { connectDB } from './common/connectDB';
+import { responseOnSuccess, responseOnError } from './common/responses';
 
 exports.handler = async function( event, context, callback ) {
     // Allows to freeze open connections to a database
@@ -14,19 +15,11 @@ exports.handler = async function( event, context, callback ) {
         const result = await collection.insertOne( body );
 
         console.log( result ); // output to netlify function log
-        callback( null, { 
-            headers: {'Content-Type': 'application/json; charset=utf-8' },
-            statusCode: 200,
-            body: JSON.stringify( result )
-        } );
+        callback( null, responseOnSuccess( result ) );
 
     } catch ( err ) {
         console.log( err ); // output to netlify function log
-        callback( null, {
-            headers: { 'Content-Type': 'application/json; charset=utf-8' },
-            statusCode: 500,
-            body: JSON.stringify( { err: err.message } )
-        } );
+        callback( null, responseOnError( err ) );
 
     } finally {
         // await client.close();

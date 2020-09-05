@@ -1,4 +1,4 @@
-import { connectDB } from './connectDB';
+import { connectDB } from './common/connectDB';
 
 exports.handler = async function( event, context, callback ) {
     // Allows to freeze open connections to a database
