@@ -1,4 +1,5 @@
 import { connectDB } from './common/connectDB';
+import { updateSequence } from './common/updateSequence';
 import { responseOnSuccess, responseOnError } from './common/responses';
 
 exports.handler = async function( event, context, callback ) {
@@ -13,8 +14,12 @@ exports.handler = async function( event, context, callback ) {
         //console.log('event.queryStringParameters', event.queryStringParameters)
         const body = JSON.parse( event.body );
         const result = await collection.insertOne( body );
-
         console.log( result ); // output to netlify function log
+
+        const id = result.insertedId;
+        const { date, entryPos } = JSON.parse( event.body );
+        await updateSequence( collection, date, entryPos, id, 1 );
+
         callback( null, responseOnSuccess( result ) );
 
     } catch ( err ) {

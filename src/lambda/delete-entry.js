@@ -1,5 +1,6 @@
 import { ObjectId } from 'mongodb';
 import { connectDB } from './common/connectDB';
+import { updateSequence } from './common/updateSequence';
 import { responseOnSuccess, responseOnError } from './common/responses';
 
 exports.handler = async function( event, context, callback ) {
@@ -13,8 +14,11 @@ exports.handler = async function( event, context, callback ) {
 
         const id = event.queryStringParameters[ 'id' ];
         const result = await collection.deleteOne( { _id: ObjectId( id ) } );
-
         console.log( result ); // output to netlify function log
+
+        const { date, entryPos } = JSON.parse( event.body );
+        await updateSequence( collection, date, entryPos, id, -1 );
+
         callback( null, responseOnSuccess( result ) );
 
     } catch ( err ) {
