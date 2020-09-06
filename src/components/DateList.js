@@ -150,14 +150,14 @@ const DateItem = React.memo( ( { dateItem } ) => {
             const strTill = dateToYYYYMMDD( dateTill );
 
             realFetch( `/.netlify/functions/retrieve-dates?range=${strFrom}-${strTill}`, { method: 'GET' } )
-            .then( dataFromDB => {
-                if ( !Array.isArray( dataFromDB ) ) {
-                    throw new Error( 'Uknown error while requesting data!' );
+            .then( res => {
+                if ( res.statusCode !== 200 ) {
+                    throw res;
                 }
-                REF.current.retrieveDatesRequestDone( dateFrom, dateTill, dataFromDB );
+                REF.current.retrieveDatesRequestDone( dateFrom, dateTill, res );
             } )
             .catch( err => {
-                alert( err );
+                alert( JSON.stringify( err ) )
                 REF.current.retrieveDatesRequestDone( dateFrom, dateTill, [] );
             } );
         }
@@ -167,10 +167,7 @@ const DateItem = React.memo( ( { dateItem } ) => {
     return (
         <li className="DateItem">
             <DateInfo date={dateItem.data.date} />
-            {dateItem.uiux.db.isRequesting
-                ?  <div className="loader"></div> 
-                : <DateEntries date={dateItem.data.date} entries={dateItem.data.entries} />
-            }
+            <DateEntries date={dateItem.data.date} entries={dateItem.data.entries} />
         </li>
     );
 } );
@@ -327,7 +324,10 @@ function DateEntry( { date, entry, inSequence } ) {
                 {inSequence + '/' + entry.data.id + '/' + entry.data.note}
             </div>
 
-            <MenuTool date={date} entry={entry} inSequence={inSequence} />
+            {entry.uiux.db.isRequesting
+                ? <div className="loader"></div>
+                : ( <MenuTool date={date} entry={entry} inSequence={inSequence} /> )
+            }
 
             {entry.uiux.menu.isOpen ? ( <EntryMenu date={date} entry={entry} inSequence={inSequence} /> ) : null}
 
@@ -496,7 +496,6 @@ function EntryForm( { date, entry, inSequence } ) {
     const [ data, setData ] = useState( { ...entry.data } );
 
     useEffect( () => {
-        console.log( 'BeforeRequesting... ', entry.uiux.db, data.id )
         if ( entry.uiux.db.isRequesting ) {
             console.log( 'Requesting... ', entry.uiux.db, data.id )
 

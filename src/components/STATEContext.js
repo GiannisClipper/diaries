@@ -53,6 +53,8 @@ const calcInitDates = ( date, num ) => {
         const _ = initDate();
         _.data.date = shiftDate( startDate, index );
         _.uiux.db = { isRequesting: true, dateFrom: startDate, dateTill: shiftDate( startDate, num - 1 ) };
+        _.data.entries.push( initEntry() );
+        _.data.entries[ 0 ].uiux.db = { isRequesting: true };
         return _;
     } );
 
@@ -66,6 +68,8 @@ const calcPrevDates = ( dates, num ) => {
         const _ = initDate();
         _.data.date = shiftDate( startDate, index );
         _.uiux.db = { isRequesting: true, dateFrom: startDate, dateTill: shiftDate( startDate, num - 1 ) };
+        _.data.entries.push( initEntry() );
+        _.data.entries[ 0 ].uiux.db = { isRequesting: true };
         return _;
     } );
 
@@ -79,6 +83,8 @@ const calcNextDates = ( dates, num ) => {
         const _ = initDate();
         _.data.date = shiftDate( startDate, index );
         _.uiux.db = { isRequesting: true, dateFrom: startDate, dateTill: shiftDate( startDate, num - 1 ) };
+        _.data.entries.push( initEntry() );
+        _.data.entries[ 0 ].uiux.db = { isRequesting: true };
         return _;
     } );
 
@@ -177,6 +183,7 @@ const STATEReducer = ( state, action ) => {
             deconstructDate( getDateInSequence( copy.date ) );
             deconstructEntry( copy.entryInSequence );
             const entryToCopy = { ...activeEntry };
+//            entryToCopy.uiux.db = { isRequesting: true, isCreating: true }
 
             deconstructDate( getDateInSequence( paste.date ) );
             deconstructEntry( paste.entryInSequence );
