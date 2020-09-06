@@ -14,12 +14,14 @@ exports.handler = async function( event, context, callback ) {
         const [ dateFrom, dateTill ] = event.queryStringParameters[ 'range' ].split( '-' );
         const result = await collection.find( { date: { $gte: dateFrom, $lte: dateTill } } ).toArray();
 
-        console.log( result ); // output to netlify function log
-        callback( null, responseOnSuccess( result ) );
+        const res = responseOnSuccess( result );
+        console.log( res ); // output to netlify function log
+        return callback( null, res );
 
     } catch ( err ) {
-        console.log( err ); // output to netlify function log
-        callback( null, responseOnError( err ) );
+        const res = responseOnError( err );
+        console.log( res ); // output to netlify function log
+        return callback( null, res );
 
     } finally {
         // await client.close();

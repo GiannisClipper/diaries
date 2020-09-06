@@ -1,6 +1,15 @@
+const fetch = require( 'node-fetch' );
+
 const realFetch = ( url, args ) => {
     args.headers = { 'Content-Type': 'application/json; charset=utf-8' };
-    return fetch( url, args ).then( res => res.json() );
+
+    return fetch( url, args )
+        .then( res => {
+            if ( [ 200, 201 ].includes( res.status ) ) {
+                return res.json();
+            }
+            throw new Error( res.statusText );
+        } );
 }
 
 const mockFetch = ( url, args ) => {
@@ -22,16 +31,16 @@ const mockResult = ( url, args ) => {
 
         return [
             {
-                id: strFrom,
+                _id: strFrom,
                 date: strFrom,
                 note: strFrom + '/' + url,
-                //entryPos: 0
+                inSequence: 0
             },
             {
-                id: strTill,
+                _id: strTill,
                 date: strTill,
                 note: strTill + '/' + url,
-                //entryPos: 0
+                inSequence: 0
             }
         ];
 

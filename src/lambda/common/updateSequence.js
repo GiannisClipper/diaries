@@ -10,7 +10,7 @@ const updateSequence = async ( collection, id, date, inSequence, step ) => {
         }, 
         { 
             $inc: { inSequence: step }
-        } 
+        }
     );
 
     console.log( 'updateSequence', { id, date, inSequence, step, res } );

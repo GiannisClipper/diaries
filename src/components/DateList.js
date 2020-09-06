@@ -149,15 +149,17 @@ const DateItem = React.memo( ( { dateItem } ) => {
             const strFrom = dateToYYYYMMDD( dateFrom );
             const strTill = dateToYYYYMMDD( dateTill );
 
-            realFetch( `/.netlify/functions/retrieve-dates?range=${strFrom}-${strTill}`, { method: 'GET' } )
+            const uri = `/.netlify/functions/retrieve-dates?range=${strFrom}-${strTill}`;
+            const method = 'GET';
+
+            realFetch( uri, { method } )
             .then( res => {
-                if ( res.statusCode !== 200 ) {
-                    throw res;
-                }
+                alert( 'RES', JSON.stringify( res ) );
                 REF.current.retrieveDatesRequestDone( dateFrom, dateTill, res );
             } )
             .catch( err => {
-                alert( JSON.stringify( err ) )
+                alert( `${err} (${method} ${uri}).` );
+                console.log( `${err} (${method} ${uri}).` );
                 REF.current.retrieveDatesRequestDone( dateFrom, dateTill, [] );
             } );
         }
