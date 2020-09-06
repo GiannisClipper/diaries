@@ -183,7 +183,7 @@ const STATEReducer = ( state, action ) => {
             deconstructDate( getDateInSequence( copy.date ) );
             deconstructEntry( copy.entryInSequence );
             const entryToCopy = { ...activeEntry };
-//            entryToCopy.uiux.db = { isRequesting: true, isCreating: true }
+            entryToCopy.uiux.db = { isRequesting: true, isCreating: true }
 
             deconstructDate( getDateInSequence( paste.date ) );
             deconstructEntry( paste.entryInSequence );
@@ -294,7 +294,21 @@ const STATEReducer = ( state, action ) => {
             activeEntry.data = parseEntryFromDB( dataFromDB );
             activeEntry.uiux.db = {};
             activeEntry.uiux.form = {};
-            nextEntries.push( initEntry() );
+            if ( nextEntries[ nextEntries.length - 1 ].data.id ) {
+                nextEntries.push( initEntry() );
+            }
+            constructEntry();
+            constructDate();
+
+            return { ...state, dates };
+
+        } case 'CREATE_ENTRY_REQUEST_ERROR': {
+            dates = [ ...state.dates ];
+            const { date, inSequence } = action.payload;
+
+            deconstructDate( getDateInSequence( date ) );
+            deconstructEntry( inSequence );
+            activeEntry = [];
             constructEntry();
             constructDate();
 
@@ -314,6 +328,20 @@ const STATEReducer = ( state, action ) => {
 
             return { ...state, dates };
 
+        } case 'UPDATE_ENTRY_REQUEST_ERROR': {
+            dates = [ ...state.dates ];
+            const { date, inSequence, oldData } = action.payload;
+
+            deconstructDate( getDateInSequence( date ) );
+            deconstructEntry( inSequence );
+            activeEntry.data = { ...oldData };
+            activeEntry.uiux.db = {};
+            activeEntry.uiux.form = {};
+            constructEntry();
+            constructDate();
+
+            return { ...state, dates };
+
         } case 'DELETE_ENTRY_REQUEST_DONE': {
             dates = [ ...state.dates ];
             const { date, inSequence } = action.payload;
@@ -321,6 +349,19 @@ const STATEReducer = ( state, action ) => {
             deconstructDate( getDateInSequence( date ) );
             deconstructEntry( inSequence );
             activeEntry = [];
+            constructEntry();
+            constructDate();
+
+            return { ...state, dates };
+
+        } case 'DELETE_ENTRY_REQUEST_ERROR': {
+            dates = [ ...state.dates ];
+            const { date, inSequence } = action.payload;
+
+            deconstructDate( getDateInSequence( date ) );
+            deconstructEntry( inSequence );
+            activeEntry.uiux.db = {};
+            activeEntry.uiux.form = {};
             constructEntry();
             constructDate();
 

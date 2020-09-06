@@ -154,7 +154,7 @@ const DateItem = React.memo( ( { dateItem } ) => {
 
             realFetch( uri, { method } )
             .then( res => {
-                alert( 'RES', JSON.stringify( res ) );
+                alert( JSON.stringify( res ) );
                 REF.current.retrieveDatesRequestDone( dateFrom, dateTill, res );
             } )
             .catch( err => {
@@ -214,6 +214,8 @@ function DateEntries( { date, entries } ) {
 
 function DateEntry( { date, entry, inSequence } ) {
 
+    const oldData = useRef( null );
+
     const STATE = useContext( STATEContext );
     const REF = useContext( REFContext );
 
@@ -261,6 +263,8 @@ function DateEntry( { date, entry, inSequence } ) {
     REF.current.openForm = ( event, uiux, date, entry, inSequence ) => {
         event.stopPropagation();
 
+        oldData.current = { ...entry.data };
+
         STATE.dispatch( { 
             type: 'OPEN_ENTRY_FORM',
             payload: { uiux, date, entry, inSequence },
@@ -292,11 +296,27 @@ function DateEntry( { date, entry, inSequence } ) {
         } );
     }
 
+    REF.current.createEntryRequestError = ( date, inSequence ) => {
+
+        STATE.dispatch( { 
+            type: 'CREATE_ENTRY_REQUEST_ERROR',
+            payload: { date, inSequence },
+        } );
+    }
+
     REF.current.updateEntryRequestDone = ( date, inSequence, dataFromDB ) => {
 
         STATE.dispatch( { 
             type: 'UPDATE_ENTRY_REQUEST_DONE',
             payload: { date, inSequence, dataFromDB },
+        } );
+    }
+
+    REF.current.updateEntryRequestError = ( date, inSequence ) => {
+
+        STATE.dispatch( { 
+            type: 'UPDATE_ENTRY_REQUEST_ERROR',
+            payload: { date, inSequence, oldData: oldData.current },
         } );
     }
 
@@ -307,6 +327,70 @@ function DateEntry( { date, entry, inSequence } ) {
             payload: { date, inSequence, dataFromDB },
         } );
     }
+
+    REF.current.deleteEntryRequestError = ( date, inSequence ) => {
+
+        STATE.dispatch( { 
+            type: 'DELETE_ENTRY_REQUEST_ERROR',
+            payload: { date, inSequence },
+        } );
+    }
+
+    useEffect( () => {
+        if ( entry.uiux.db.isRequesting && ( 
+                entry.uiux.db.isCreating ||
+                entry.uiux.db.isRetrieving ||
+                entry.uiux.db.isUpdating ||
+                entry.uiux.db.isDeleting
+        ) ) {
+            console.log( 'Requesting... ', entry.uiux.db, entry.data.id )
+
+            const dataToDB = {
+                date: dateToYYYYMMDD( date ),
+                note: entry.data.note,
+                inSequence: inSequence
+            };
+
+            const requestArgs = {};
+
+            if ( entry.uiux.db.isCreating ) {
+                requestArgs.url = `/.netlify/functions/create-entry`;
+                requestArgs.method = 'POST';
+                requestArgs.idInResponse = res => res.insertedId;
+                requestArgs.onDone = REF.current.createEntryRequestDone;
+                requestArgs.onError = REF.current.createEntryRequestError;
+
+            } else if ( entry.uiux.db.isUpdating ) {
+                requestArgs.url = `/.netlify/functions/update-entry?id=${entry.data.id}`;
+                requestArgs.method = 'PUT';
+                requestArgs.idInResponse = () => entry.data.id;
+                requestArgs.onDone = REF.current.updateEntryRequestDone;
+                requestArgs.onError = REF.current.updateEntryRequestError;
+
+            } else if ( entry.uiux.db.isDeleting ) {
+                requestArgs.url = `/.netlify/functions/delete-entry?id=${entry.data.id}`;
+                requestArgs.method = 'DELETE';
+                requestArgs.idInResponse = () => entry.data.id;
+                requestArgs.onDone = REF.current.deleteEntryRequestDone;
+                requestArgs.onError = REF.current.deleteEntryRequestError;
+            }
+
+            realFetch( requestArgs.url , {
+                method: requestArgs.method,
+                body: JSON.stringify( dataToDB )
+            } )
+            .then( res => {
+                alert( JSON.stringify( res ) );
+                const dataFromDB = { ...dataToDB, _id: requestArgs.idInResponse( res ) };
+                requestArgs.onDone( date, inSequence, dataFromDB );
+            } )
+            .catch( err => { 
+                alert( err );
+                requestArgs.onError( date, inSequence, {} );
+            } );
+        }
+
+    } );
 
     const className = entry.data.id ? 'DateEntry' : 'DateEntry init';
     const draggable = entry.data.id ? 'true' : 'false';
@@ -497,54 +581,6 @@ function EntryForm( { date, entry, inSequence } ) {
 
     const [ data, setData ] = useState( { ...entry.data } );
 
-    useEffect( () => {
-        if ( entry.uiux.db.isRequesting ) {
-            console.log( 'Requesting... ', entry.uiux.db, data.id )
-
-            const dataToDB = {
-                date: dateToYYYYMMDD( date ),
-                note: data.note,
-                inSequence: inSequence
-            };
-
-            const requestArgs = {};
-
-            if ( entry.uiux.db.isCreating ) {
-                requestArgs.url = `/.netlify/functions/create-entry`;
-                requestArgs.method = 'POST';
-                requestArgs.idInResponse = res => res.insertedId;
-                requestArgs.onDone = REF.current.createEntryRequestDone;
-
-            } else if ( entry.uiux.db.isUpdating ) {
-                requestArgs.url = `/.netlify/functions/update-entry?id=${data.id}`;
-                requestArgs.method = 'PUT';
-                requestArgs.idInResponse = () => data.id;
-                requestArgs.onDone = REF.current.updateEntryRequestDone;
-
-            } else if ( entry.uiux.db.isDeleting ) {
-                requestArgs.url = `/.netlify/functions/delete-entry?id=${data.id}`;
-                requestArgs.method = 'DELETE';
-                requestArgs.idInResponse = () => data.id;
-                requestArgs.onDone = REF.current.deleteEntryRequestDone;
-            }
-
-            realFetch( requestArgs.url , {
-                method: requestArgs.method,
-                body: JSON.stringify( dataToDB )
-            } )
-            .then( res => {
-                alert( JSON.stringify( res ) );
-                const dataFromDB = { ...dataToDB, _id: requestArgs.idInResponse( res ) };
-                requestArgs.onDone( date, inSequence, dataFromDB );
-            } )
-            .catch( err => { 
-                alert( err );
-                requestArgs.onDone( date, inSequence, {} );
-            } );
-        }
-
-    } );
-    
     return (
         <div className={`modal EntryForm ${formArgs.className}`}>
             <div className='form'>
