@@ -164,6 +164,7 @@ const STATEReducer = ( state, action ) => {
             deconstructDate( getDateInSequence( cut.date ) );
             deconstructEntry( cut.entryInSequence );
             const entryToMove = { ...activeEntry };
+            entryToMove.uiux.db = { isRequesting: true, isUpdating: true }
 
             activeEntry = [];
             constructEntry();
@@ -330,13 +331,21 @@ const STATEReducer = ( state, action ) => {
 
         } case 'UPDATE_ENTRY_REQUEST_ERROR': {
             dates = [ ...state.dates ];
-            const { date, inSequence, oldData } = action.payload;
+            const { date, inSequence, saved } = action.payload;
 
             deconstructDate( getDateInSequence( date ) );
             deconstructEntry( inSequence );
-            activeEntry.data = { ...oldData };
-            activeEntry.uiux.db = {};
-            activeEntry.uiux.form = {};
+            const entryToMoveBack = { ...activeEntry };
+            activeEntry = [];
+            constructEntry();
+            constructDate();
+
+            deconstructDate( getDateInSequence( saved.date ) );
+            deconstructEntry( saved.inSequence );
+            entryToMoveBack.data = { ...saved.entry.data };
+            entryToMoveBack.uiux.db = {};
+            entryToMoveBack.uiux.form = {};
+            activeEntry = [ entryToMoveBack, { ...activeEntry } ];
             constructEntry();
             constructDate();
 

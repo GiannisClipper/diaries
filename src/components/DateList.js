@@ -214,24 +214,28 @@ function DateEntries( { date, entries } ) {
 
 function DateEntry( { date, entry, inSequence } ) {
 
-    const oldData = useRef( null );
+    const saved = useRef( {} );
 
     const STATE = useContext( STATEContext );
     const REF = useContext( REFContext );
 
-    REF.current.cutEntry = ( date, inSequence ) => {
+    REF.current.cutEntry = ( date, entry, inSequence ) => {
         REF.current.cut = { date, entryInSequence: inSequence };
         REF.current.copy = null;
         REF.current.paste = null;
+
+        saved.current = { date, entry, inSequence };
     }
 
-    REF.current.copyEntry = ( date, inSequence ) => {
+    REF.current.copyEntry = ( date, entry, inSequence ) => {
         REF.current.cut = null;
         REF.current.copy = { date, entryInSequence: inSequence };
         REF.current.paste = null;
+
+        saved.current = { date, entry, inSequence };
     }
 
-    REF.current.pasteEntry = ( date, inSequence ) => {
+    REF.current.pasteEntry = ( date, entry, inSequence ) => {
         REF.current.paste = { date, entryInSequence: inSequence };
 
         const { cut, copy, paste } = REF.current;
@@ -246,8 +250,8 @@ function DateEntry( { date, entry, inSequence } ) {
         }
     }
 
-    const dragStart = ( event, date, inSequence ) => {
-        REF.current.cutEntry( date, inSequence );
+    const dragStart = ( event, date, entry, inSequence ) => {
+        REF.current.cutEntry( date, entry, inSequence );
         event.dataTransfer.effectAllowed = 'move';
     }
 
@@ -257,13 +261,13 @@ function DateEntry( { date, entry, inSequence } ) {
 
     const drop = ( event, date, inSequence ) => {
         event.preventDefault();
-        REF.current.pasteEntry( date, inSequence );
+        REF.current.pasteEntry( date, entry, inSequence );
     }
 
     REF.current.openForm = ( event, uiux, date, entry, inSequence ) => {
         event.stopPropagation();
 
-        oldData.current = { ...entry.data };
+        saved.current = { date, entry, inSequence };
 
         STATE.dispatch( { 
             type: 'OPEN_ENTRY_FORM',
@@ -316,7 +320,7 @@ function DateEntry( { date, entry, inSequence } ) {
 
         STATE.dispatch( { 
             type: 'UPDATE_ENTRY_REQUEST_ERROR',
-            payload: { date, inSequence, oldData: oldData.current },
+            payload: { date, inSequence, saved: saved.current },
         } );
     }
 
@@ -394,7 +398,7 @@ function DateEntry( { date, entry, inSequence } ) {
 
     const className = entry.data.id ? 'DateEntry' : 'DateEntry init';
     const draggable = entry.data.id ? 'true' : 'false';
-    const onDragStart = entry.data.id ? event => dragStart( event, date, inSequence ) : null;
+    const onDragStart = entry.data.id ? event => dragStart( event, date, entry, inSequence ) : null;
 
     return (
         <li 
@@ -491,14 +495,14 @@ function EntryMenu( { date, entry, inSequence } ) {
                     </div>
                     <div className='cut' onClick={event => {
                         event.stopPropagation();
-                        REF.current.cutEntry( date, inSequence );
+                        REF.current.cutEntry( date, entry, inSequence );
                         REF.current.closeMenu( event, date, inSequence );
                     }}>
                         <FontAwesomeIcon icon={ faCut } className="icon" title="Αποκοπή" />
                     </div>
                     <div className='copy' onClick={event => {
                         event.stopPropagation();
-                        REF.current.copyEntry( date, inSequence );
+                        REF.current.copyEntry( date, entry, inSequence );
                         REF.current.closeMenu( event, date, inSequence );
                     }}>
                         <FontAwesomeIcon icon={ faCamera } className="icon" title="Αντιγραφή" />
@@ -507,7 +511,7 @@ function EntryMenu( { date, entry, inSequence } ) {
                         event.stopPropagation();
                         if ( REF.current.cut || REF.current.copy ) {
                             REF.current.closeMenu( event, date, inSequence );
-                            REF.current.pasteEntry( date, inSequence );
+                            REF.current.pasteEntry( date, entry, inSequence );
                         }
                     }}>
                         <FontAwesomeIcon icon={ faClone } className="icon" title="Επικόλληση" />
@@ -536,7 +540,7 @@ function EntryMenu( { date, entry, inSequence } ) {
                         event.stopPropagation();
                         if ( REF.current.cut || REF.current.copy ) {
                             REF.current.closeMenu( event, date, inSequence );
-                            REF.current.pasteEntry( date, inSequence );
+                            REF.current.pasteEntry( date, entry, inSequence );
                         }
                     }}>
                         <FontAwesomeIcon icon={ faClone } className="icon" title="Επικόλληση" />
