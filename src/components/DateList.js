@@ -214,8 +214,6 @@ function DateEntries( { date, entries } ) {
 
 function DateEntry( { date, entry, inSequence } ) {
 
-    const saved = useRef( {} );
-
     const STATE = useContext( STATEContext );
     const REF = useContext( REFContext );
 
@@ -224,7 +222,7 @@ function DateEntry( { date, entry, inSequence } ) {
         REF.current.copy = null;
         REF.current.paste = null;
 
-        saved.current = { date, entry, inSequence };
+        REF.current.saved = { date, entry, inSequence };
     }
 
     REF.current.copyEntry = ( date, entry, inSequence ) => {
@@ -232,7 +230,7 @@ function DateEntry( { date, entry, inSequence } ) {
         REF.current.copy = { date, entryInSequence: inSequence };
         REF.current.paste = null;
 
-        saved.current = { date, entry, inSequence };
+        REF.current.saved = { date, entry, inSequence };
     }
 
     REF.current.pasteEntry = ( date, entry, inSequence ) => {
@@ -267,7 +265,7 @@ function DateEntry( { date, entry, inSequence } ) {
     REF.current.openForm = ( event, uiux, date, entry, inSequence ) => {
         event.stopPropagation();
 
-        saved.current = { date, entry, inSequence };
+        REF.current.saved = { date, entry, inSequence };
 
         STATE.dispatch( { 
             type: 'OPEN_ENTRY_FORM',
@@ -288,7 +286,7 @@ function DateEntry( { date, entry, inSequence } ) {
 
         STATE.dispatch( { 
             type: 'REQUEST_ENTRY',
-            payload: { date, entry, inSequence },
+            payload: { date, inSequence },
         } );
     }
 
@@ -320,7 +318,7 @@ function DateEntry( { date, entry, inSequence } ) {
 
         STATE.dispatch( { 
             type: 'UPDATE_ENTRY_REQUEST_ERROR',
-            payload: { date, inSequence, saved: saved.current },
+            payload: { date, inSequence, saved: REF.current.saved },
         } );
     }
 
@@ -381,7 +379,11 @@ function DateEntry( { date, entry, inSequence } ) {
 
             realFetch( requestArgs.url , {
                 method: requestArgs.method,
-                body: JSON.stringify( dataToDB )
+                body: JSON.stringify( {
+                    oldSaved: { date: dateToYYYYMMDD( REF.current.saved.date ), inSequence: REF.current.saved.inSequence },
+                    newSaved: { date: dateToYYYYMMDD( date ), inSequence },
+                    data: dataToDB
+                } )
             } )
             .then( res => {
                 alert( JSON.stringify( res ) );

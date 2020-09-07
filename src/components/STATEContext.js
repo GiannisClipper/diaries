@@ -2,7 +2,7 @@ import React, { createContext, useReducer, useEffect } from 'react';
 import { daysBetween, shiftDate, dateToYYYYMMDD } from '../helpers/dates';
 
 const today = new Date();
-today.setHours( 0 );
+today.setHours( 12 );
 today.setMinutes( 0 );
 today.setSeconds( 0 );
 today.setMilliseconds( 0 );
@@ -295,7 +295,7 @@ const STATEReducer = ( state, action ) => {
             activeEntry.data = parseEntryFromDB( dataFromDB );
             activeEntry.uiux.db = {};
             activeEntry.uiux.form = {};
-            if ( nextEntries[ nextEntries.length - 1 ].data.id ) {
+            if ( nextEntries.length === 0 ) {
                 nextEntries.push( initEntry() );
             }
             constructEntry();

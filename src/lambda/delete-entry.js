@@ -16,7 +16,8 @@ exports.handler = async function( event, context, callback ) {
         const result = await collection.deleteOne( { _id: ObjectId( id ) } );
         console.log( result ); // output to netlify function log
 
-        const { date, inSequence } = JSON.parse( event.body );
+        const body = JSON.parse( event.body );
+        const { date, inSequence } = body.oldSaved;
         await updateSequence( collection, id, date, inSequence, -1 );
 
         callback( null, responseOnSuccess( result ) );

@@ -14,10 +14,18 @@ exports.handler = async function( event, context, callback ) {
 
         const id = event.queryStringParameters[ 'id' ];
         const body = JSON.parse( event.body );
-        const result = await collection.updateOne( { _id: ObjectId( id ) }, { $set: body } );
+        const data = body.data;
+        const result = await collection.updateOne( { _id: ObjectId( id ) }, { $set: data } );
 
-        const { date, inSequence } = JSON.parse( event.body );
-        await updateSequence( collection, id, date, inSequence, 1 );
+        const oldDate = body.oldSaved.date;
+        const oldInSequence = body.oldSaved.inSequence;
+        const newDate = body.newSaved.date;
+        const newInSequence = body.newSaved.inSequence;
+
+        if ( oldDate + oldInSequence !== newDate + newInSequence ) {
+            await updateSequence( collection, id, oldDate, oldInSequence, -1 );
+            await updateSequence( collection, id, newDate, newInSequence, 1 );
+        }
 
         console.log( result ); // output to netlify function log
         callback( null, responseOnSuccess( result ) );

@@ -12,12 +12,13 @@ exports.handler = async function( event, context, callback ) {
         const collection = db.collection( 'entries' );
 
         //console.log('event.queryStringParameters', event.queryStringParameters)
-        const body = JSON.parse( event.body );
-        const result = await collection.insertOne( body );
+        const body = JSON.parse( event.body )
+        const data = body.data;
+        const result = await collection.insertOne( data );
         console.log( result ); // output to netlify function log
 
         const id = result.insertedId;
-        const { date, inSequence } = JSON.parse( event.body );
+        const { date, inSequence } = body.newSaved;
         await updateSequence( collection, id, date, inSequence, 1 );
 
         callback( null, responseOnSuccess( result ) );
