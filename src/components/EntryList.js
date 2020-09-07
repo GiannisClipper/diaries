@@ -30,7 +30,7 @@ function Entry( { date, entry, inSequence } ) {
     const REF = useContext( REFContext );
 
     REF.current.cutEntry = ( date, entry, inSequence ) => {
-        REF.current.cut = { date, entryInSequence: inSequence };
+        REF.current.cut = { date, inSequence };
         REF.current.copy = null;
         REF.current.paste = null;
 
@@ -39,14 +39,14 @@ function Entry( { date, entry, inSequence } ) {
 
     REF.current.copyEntry = ( date, entry, inSequence ) => {
         REF.current.cut = null;
-        REF.current.copy = { date, entryInSequence: inSequence };
+        REF.current.copy = { date, inSequence };
         REF.current.paste = null;
 
         REF.current.saved = { date, entry, inSequence };
     }
 
     REF.current.pasteEntry = ( date, entry, inSequence ) => {
-        REF.current.paste = { date, entryInSequence: inSequence };
+        REF.current.paste = { date, inSequence };
 
         const { cut, copy, paste } = REF.current;
 
@@ -76,7 +76,6 @@ function Entry( { date, entry, inSequence } ) {
 
     REF.current.openForm = ( event, uiux, date, entry, inSequence ) => {
         //event.stopPropagation()
-
         REF.current.saved = { date, entry, inSequence };
 
         STATE.dispatch( { 
@@ -87,17 +86,15 @@ function Entry( { date, entry, inSequence } ) {
 
     REF.current.closeForm = ( event, date, inSequence ) => {
         //event.stopPropagation()
-
         STATE.dispatch( { 
             type: 'CLOSE_ENTRY_FORM',
             payload: { date, inSequence },
         } );
     }
 
-    REF.current.requestEntry = ( date, entry, inSequence ) => {
-
+    REF.current.entryRequest = ( date, inSequence ) => {
         STATE.dispatch( { 
-            type: 'REQUEST_ENTRY',
+            type: 'ENTRY_REQUEST',
             payload: { date, inSequence },
         } );
     }
@@ -153,7 +150,6 @@ function Entry( { date, entry, inSequence } ) {
     useEffect( () => {
         if ( entry.uiux.db.isRequesting && ( 
                 entry.uiux.db.isCreating ||
-                entry.uiux.db.isRetrieving ||
                 entry.uiux.db.isUpdating ||
                 entry.uiux.db.isDeleting
         ) ) {
@@ -211,8 +207,17 @@ function Entry( { date, entry, inSequence } ) {
     } );
 
     const className = entry.data.id ? 'Entry' : 'Entry init';
-    const draggable = entry.data.id && !entry.uiux.form.isOpen ? 'true' : 'false';
-    const onDragStart = entry.data.id ? event => dragStart( event, date, entry, inSequence ) : null;
+    let draggable = entry.data.id && !entry.uiux.form.isOpen ? 'true' : 'false';
+    let onDragStart = entry.data.id ? event => dragStart( event, date, entry, inSequence ) : null;
+    let onDragOver = event => allowDrop( event );
+    let onDrop = event => drop( event, date, inSequence );
+
+    if ( entry.uiux.isUnderProcess ) {
+        draggable = null;
+        onDragStart = null;
+        onDragOver = null;
+        onDrop = null;
+    }
 
     return (
         <li 
@@ -220,16 +225,18 @@ function Entry( { date, entry, inSequence } ) {
             key={inSequence}
             draggable={draggable}
             onDragStart={onDragStart}
-            onDragOver={event => allowDrop( event )}
-            onDrop={event => drop( event, date, inSequence )}
+            onDragOver={onDragOver}
+            onDrop={onDrop}
             //onDoubleClick={event => REF.current.openForm( event, date, inSequence )}
         >
-            <div className='data'>
-                {inSequence + '/' + entry.data.id + '/' + entry.data.note}
+            <div className='data' title={`${entry.data.date}, ${inSequence}, ${entry.data.inSequence}, ${entry.data.id}`}>
+                {entry.data.note}
             </div>
 
             {entry.uiux.db.isRequesting
                 ? <div className="loader"></div>
+                : entry.uiux.isUnderProcess
+                ? null
                 : <MenuTool date={date} entry={entry} inSequence={inSequence} />
             }
 

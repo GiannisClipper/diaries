@@ -163,7 +163,7 @@ const STATEReducer = ( state, action ) => {
 
             if ( cut.date + cut.inSequence !== paste.date + paste.inSequence ) {
                 deconstructDate( getDateInSequence( cut.date ) );
-                deconstructEntry( cut.entryInSequence );
+                deconstructEntry( cut.inSequence );
                 const entryToMove = { ...activeEntry };
                 entryToMove.uiux.db = { isRequesting: true, isUpdating: true }
 
@@ -172,9 +172,10 @@ const STATEReducer = ( state, action ) => {
                 constructDate();
 
                 deconstructDate( getDateInSequence( paste.date ) );
-                deconstructEntry( paste.entryInSequence );
+                deconstructEntry( paste.inSequence );
                 activeEntry = [ entryToMove, { ...activeEntry } ];
                 constructEntry();
+                activeDate.data.entries.forEach( x => x.uiux.isUnderProcess = true );
                 constructDate();
             }
 
@@ -185,14 +186,15 @@ const STATEReducer = ( state, action ) => {
             const { copy, paste } = action.payload;
 
             deconstructDate( getDateInSequence( copy.date ) );
-            deconstructEntry( copy.entryInSequence );
+            deconstructEntry( copy.inSequence );
             const entryToCopy = { ...activeEntry };
             entryToCopy.uiux.db = { isRequesting: true, isCreating: true }
 
             deconstructDate( getDateInSequence( paste.date ) );
-            deconstructEntry( paste.entryInSequence );
+            deconstructEntry( paste.inSequence );
             activeEntry = [ entryToCopy, { ...activeEntry } ];
             constructEntry();
+            activeDate.data.entries.forEach( x => x.uiux.isUnderProcess = true );
             constructDate();
 
             return { ...state, dates };
@@ -276,7 +278,7 @@ const STATEReducer = ( state, action ) => {
 
             return { ...state, dates };
 
-        } case 'REQUEST_ENTRY': {
+        } case 'ENTRY_REQUEST': {
             dates = [ ...state.dates ];
             const { date, inSequence } = action.payload;
 
@@ -302,6 +304,7 @@ const STATEReducer = ( state, action ) => {
                 nextEntries.push( initEntry() );
             }
             constructEntry();
+            activeDate.data.entries.forEach( x => x.uiux.isUnderProcess = false );
             constructDate();
 
             return { ...state, dates };
@@ -314,6 +317,7 @@ const STATEReducer = ( state, action ) => {
             deconstructEntry( inSequence );
             activeEntry = [];
             constructEntry();
+            activeDate.data.entries.forEach( x => x.uiux.isUnderProcess = false );
             constructDate();
 
             return { ...state, dates };
@@ -328,6 +332,7 @@ const STATEReducer = ( state, action ) => {
             activeEntry.uiux.db = {};
             activeEntry.uiux.form = {};
             constructEntry();
+            activeDate.data.entries.forEach( x => x.uiux.isUnderProcess = false );
             constructDate();
 
             return { ...state, dates };
@@ -341,6 +346,7 @@ const STATEReducer = ( state, action ) => {
             const entryToMoveBack = { ...activeEntry };
             activeEntry = [];
             constructEntry();
+            activeDate.data.entries.forEach( x => x.uiux.isUnderProcess = false );
             constructDate();
 
             deconstructDate( getDateInSequence( saved.date ) );
@@ -350,6 +356,7 @@ const STATEReducer = ( state, action ) => {
             entryToMoveBack.uiux.form = {};
             activeEntry = [ entryToMoveBack, { ...activeEntry } ];
             constructEntry();
+            activeDate.data.entries.forEach( x => x.uiux.isUnderProcess = false );
             constructDate();
 
             return { ...state, dates };
@@ -362,6 +369,7 @@ const STATEReducer = ( state, action ) => {
             deconstructEntry( inSequence );
             activeEntry = [];
             constructEntry();
+            activeDate.data.entries.forEach( x => x.uiux.isUnderProcess = false );
             constructDate();
 
             return { ...state, dates };
@@ -375,6 +383,7 @@ const STATEReducer = ( state, action ) => {
             activeEntry.uiux.db = {};
             activeEntry.uiux.form = {};
             constructEntry();
+            activeDate.data.entries.forEach( x => x.uiux.isUnderProcess = false );
             constructDate();
 
             return { ...state, dates };

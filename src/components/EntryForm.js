@@ -70,7 +70,7 @@ function EntryForm( { date, entry, inSequence } ) {
 
                     <button onClick={event => {
                         entry.data = { ...data };
-                        REF.current.requestEntry( date, entry, inSequence );
+                        REF.current.entryRequest( date, inSequence );
                     }}>
                         {entry.uiux.db.isRequesting
                             ? <div className="loader icon"></div> 
