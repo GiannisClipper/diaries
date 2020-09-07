@@ -15,38 +15,38 @@ function EntryMenu( { date, entry, inSequence } ) {
 
     if ( entry.data.id ) {
         return (
-            <div className='modal' onClick={event => REF.current.closeMenu( event, date, inSequence )}>
+            <div className='modal'>
                 <div className='EntryMenu' style={style}>
                     <div className='edit' onClick={event => {
-                        event.stopPropagation();
+                        //event.stopPropagation()
                         REF.current.openForm( event, { isUpdating: true }, date, entry, inSequence );
                         REF.current.closeMenu( event, date, inSequence );
                     }}>
                         <FontAwesomeIcon icon={ faEdit } className="icon" title="Επεξεργασία" />
                     </div>
                     <div className='delete' onClick={event => {
-                        event.stopPropagation();
+                        //event.stopPropagation()
                         REF.current.openForm( event, { isDeleting: true }, date, entry, inSequence );
                         REF.current.closeMenu( event, date, inSequence );
                     }}>
                         <FontAwesomeIcon icon={ faTrashAlt } className="icon" title="Διαγραφή" />
                     </div>
                     <div className='cut' onClick={event => {
-                        event.stopPropagation();
+                        //event.stopPropagation()
                         REF.current.cutEntry( date, entry, inSequence );
                         REF.current.closeMenu( event, date, inSequence );
                     }}>
                         <FontAwesomeIcon icon={ faCut } className="icon" title="Αποκοπή" />
                     </div>
                     <div className='copy' onClick={event => {
-                        event.stopPropagation();
+                        //event.stopPropagation()
                         REF.current.copyEntry( date, entry, inSequence );
                         REF.current.closeMenu( event, date, inSequence );
                     }}>
                         <FontAwesomeIcon icon={ faCamera } className="icon" title="Αντιγραφή" />
                     </div>
                     <div className='paste' onClick={event => {
-                        event.stopPropagation();
+                        //event.stopPropagation()
                         if ( REF.current.cut || REF.current.copy ) {
                             REF.current.closeMenu( event, date, inSequence );
                             REF.current.pasteEntry( date, entry, inSequence );
@@ -55,7 +55,7 @@ function EntryMenu( { date, entry, inSequence } ) {
                         <FontAwesomeIcon icon={ faClone } className="icon" title="Επικόλληση" />
                     </div>
                     <div className='close' onClick={event => {
-                        event.stopPropagation();
+                        //event.stopPropagation()
                         REF.current.closeMenu( event, date, inSequence )
                     }}>
                         <FontAwesomeIcon icon={ faTimes } className="icon" title="Κλείσιμο" />
@@ -65,17 +65,17 @@ function EntryMenu( { date, entry, inSequence } ) {
         );
     } else {
         return (
-            <div className='modal' onClick={event => REF.current.closeMenu( event, date, inSequence )}>
+            <div className='modal'>
                 <div className='EntryMenu' style={style}>
                     <div className='edit' onClick={event => {
-                        event.stopPropagation();
+                        //event.stopPropagation()
                         REF.current.openForm( event, { isCreating: true }, date, entry, inSequence );
                         REF.current.closeMenu( event, date, inSequence );
                     }}>
                         <FontAwesomeIcon icon={ faEdit } className="icon" title="Επεξεργασία" />
                     </div>
                     <div className='paste' onClick={event => {
-                        event.stopPropagation();
+                        //event.stopPropagation()
                         if ( REF.current.cut || REF.current.copy ) {
                             REF.current.closeMenu( event, date, inSequence );
                             REF.current.pasteEntry( date, entry, inSequence );
@@ -84,7 +84,7 @@ function EntryMenu( { date, entry, inSequence } ) {
                         <FontAwesomeIcon icon={ faClone } className="icon" title="Επικόλληση" />
                     </div>
                     <div className='close' onClick={event => {
-                        event.stopPropagation();
+                        //event.stopPropagation()
                         REF.current.closeMenu( event, date, inSequence )
                     }}>
                         <FontAwesomeIcon icon={ faTimes } className="icon" title="Κλείσιμο" />

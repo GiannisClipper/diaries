@@ -75,7 +75,7 @@ function Entry( { date, entry, inSequence } ) {
     }
 
     REF.current.openForm = ( event, uiux, date, entry, inSequence ) => {
-        event.stopPropagation();
+        //event.stopPropagation()
 
         REF.current.saved = { date, entry, inSequence };
 
@@ -86,7 +86,7 @@ function Entry( { date, entry, inSequence } ) {
     }
 
     REF.current.closeForm = ( event, date, inSequence ) => {
-        event.stopPropagation();
+        //event.stopPropagation()
 
         STATE.dispatch( { 
             type: 'CLOSE_ENTRY_FORM',
@@ -211,7 +211,7 @@ function Entry( { date, entry, inSequence } ) {
     } );
 
     const className = entry.data.id ? 'Entry' : 'Entry init';
-    const draggable = entry.data.id ? 'true' : 'false';
+    const draggable = entry.data.id && !entry.uiux.form.isOpen ? 'true' : 'false';
     const onDragStart = entry.data.id ? event => dragStart( event, date, entry, inSequence ) : null;
 
     return (
@@ -247,7 +247,7 @@ function MenuTool( { date, entry, inSequence } ) {
     const REF = useContext( REFContext );
 
     REF.current.openMenu = ( event, date, inSequence ) => {
-        event.stopPropagation();
+        //event.stopPropagation();
 
         STATE.dispatch( { 
             type: 'OPEN_ENTRY_MENU',
@@ -256,7 +256,7 @@ function MenuTool( { date, entry, inSequence } ) {
     }
 
     REF.current.closeMenu = ( event, date, inSequence ) => {
-        event.stopPropagation();
+        //event.stopPropagation();
 
         STATE.dispatch( { 
             type: 'CLOSE_ENTRY_MENU',

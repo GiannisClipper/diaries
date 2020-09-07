@@ -47,7 +47,6 @@ function DateList() {
     }
 
     const handleScrollDown = event => {
-        event.stopPropagation();
         const frame = elemRef.current;
         scrollDirection.current = { isDown: true };
         scrollTop.current = frame.scrollTop;
@@ -194,7 +193,6 @@ function DateInfo( { date } ) {
             <span className="day">
                 { `${dayName}` }
             </span>
-
         </div>
     );
 }
