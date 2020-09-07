@@ -30,17 +30,26 @@
     text-align: left;
 }
 
+.DateInfo span {
+    display: inline-block;
+}
+
+.DateInfo .year-month {
+    font-size: .65em;
+    padding-top: 1.25em;
+    padding-left: .5em;
+    writing-mode: vertical-rl;
+}
+
 .DateInfo .dateNum {
     font-size: 1.5em;
-    padding-left: 1em;
-    padding-right: .25em;
+    padding-left: .1em;
+    padding-right: .1em;
+    vertical-align: top;
 }
 
 .DateInfo .day {
     font-size: 1em;
-}
-
-.month-year {
-    padding-left: 2.75em;
-    font-size: .65em;
+    padding-top: .5em;
+    vertical-align: top;
 }

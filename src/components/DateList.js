@@ -182,17 +182,19 @@ function DateInfo( { date } ) {
 
     return (
         <div className="DateInfo">
-            <div>
-                <span className="dateNum">
-                    { `${dateNum}` }
-                </span>
-                <span className="day">
-                    { `${dayName}` }
-                </span>
-            </div>
-            <div className="month-year">
-                { `${monthName} ${yearNum}` }
-            </div>
+
+            <span className="year-month">
+                { `${yearNum} ${monthName}` }
+            </span>
+
+            <span className="dateNum">
+                { `${dateNum}` }
+            </span>
+
+            <span className="day">
+                { `${dayName}` }
+            </span>
+
         </div>
     );
 }
