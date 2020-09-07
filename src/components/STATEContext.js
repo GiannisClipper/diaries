@@ -161,20 +161,23 @@ const STATEReducer = ( state, action ) => {
             dates = [ ...state.dates ];
             const { cut, paste } = action.payload;
 
-            deconstructDate( getDateInSequence( cut.date ) );
-            deconstructEntry( cut.entryInSequence );
-            const entryToMove = { ...activeEntry };
-            entryToMove.uiux.db = { isRequesting: true, isUpdating: true }
+            if ( cut.date + cut.inSequence !== paste.date + paste.inSequence ) {
+                deconstructDate( getDateInSequence( cut.date ) );
+                deconstructEntry( cut.entryInSequence );
+                const entryToMove = { ...activeEntry };
+                entryToMove.uiux.db = { isRequesting: true, isUpdating: true }
 
-            activeEntry = [];
-            constructEntry();
-            constructDate();
+                activeEntry = [];
+                constructEntry();
+                constructDate();
 
-            deconstructDate( getDateInSequence( paste.date ) );
-            deconstructEntry( paste.entryInSequence );
-            activeEntry = [ entryToMove, { ...activeEntry } ];
-            constructEntry();
-            constructDate();
+                deconstructDate( getDateInSequence( paste.date ) );
+                deconstructEntry( paste.entryInSequence );
+                activeEntry = [ entryToMove, { ...activeEntry } ];
+                constructEntry();
+                constructDate();
+            }
+
             return { ...state, dates };
 
         } case 'COPY_ENTRY': {
