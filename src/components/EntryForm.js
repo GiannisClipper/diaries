@@ -18,15 +18,15 @@ function EntryForm( { date, entry, inSequence } ) {
 
     const formArgs = {};
 
-    if ( entry.uiux.db.isCreating ) {
+    if ( entry.uiux.mode.isCreate ) {
         formArgs.className = 'create';
         formArgs.confirmButtonLabel = ' νέας εγγραφής';
 
-    } else if ( entry.uiux.db.isUpdating ) {
+    } else if ( entry.uiux.mode.isUpdate ) {
         formArgs.className = 'update';
         formArgs.confirmButtonLabel = ' τροποποίησης';
 
-    } else if ( entry.uiux.db.isDeleting ) {
+    } else if ( entry.uiux.mode.isDelete ) {
         formArgs.className = 'delete';
         formArgs.confirmButtonLabel = ' διαγραφής';
     }
@@ -72,14 +72,14 @@ function EntryForm( { date, entry, inSequence } ) {
                         entry.data = { ...data };
                         REF.current.entryRequest( date, inSequence );
                     }}>
-                        {entry.uiux.db.isRequesting
+                        {entry.uiux.db.isOnRequest
                             ? <div className="loader icon"></div> 
                             : <FontAwesomeIcon icon={ faCheck } className="icon" />}
                         {`Επιβεβαίωση ${formArgs.confirmButtonLabel}`}
                     </button>
 
                     <button
-                        onClick={event => REF.current.closeForm( event, date, inSequence )}
+                        onClick={event => REF.current.closeEntryForm( event, date, inSequence )}
                     >
                         <FontAwesomeIcon icon={ faTimes } className="icon" />
                         Ακύρωση

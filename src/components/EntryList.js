@@ -69,22 +69,39 @@ function Entry( { date, entry, inSequence } ) {
         event.preventDefault();
     }
 
-    const drop = ( event, date, inSequence ) => {
+    const doDrop = ( event, date, inSequence ) => {
         event.preventDefault();
         REF.current.pasteEntry( date, entry, inSequence );
     }
 
-    REF.current.openForm = ( event, uiux, date, entry, inSequence ) => {
-        //event.stopPropagation()
+    REF.current.openCreateEntryForm = ( event, date, entry, inSequence ) => {
         REF.current.saved = { date, entry, inSequence };
 
         STATE.dispatch( { 
             type: 'OPEN_ENTRY_FORM',
-            payload: { uiux, date, entry, inSequence },
+            payload: { mode: { isCreate: true }, date, entry, inSequence },
         } );
     }
 
-    REF.current.closeForm = ( event, date, inSequence ) => {
+    REF.current.openUpdateEntryForm = ( event, date, entry, inSequence ) => {
+        REF.current.saved = { date, entry, inSequence };
+
+        STATE.dispatch( { 
+            type: 'OPEN_ENTRY_FORM',
+            payload: { mode: { isUpdate: true }, date, entry, inSequence },
+        } );
+    }
+
+    REF.current.openDeleteEntryForm = ( event, date, entry, inSequence ) => {
+        REF.current.saved = { date, entry, inSequence };
+
+        STATE.dispatch( { 
+            type: 'OPEN_ENTRY_FORM',
+            payload: { mode: { isDelete: true }, date, entry, inSequence },
+        } );
+    }
+
+    REF.current.closeEntryForm = ( event, date, inSequence ) => {
         //event.stopPropagation()
         STATE.dispatch( { 
             type: 'CLOSE_ENTRY_FORM',
@@ -148,12 +165,8 @@ function Entry( { date, entry, inSequence } ) {
     }
 
     useEffect( () => {
-        if ( entry.uiux.db.isRequesting && ( 
-                entry.uiux.db.isCreating ||
-                entry.uiux.db.isUpdating ||
-                entry.uiux.db.isDeleting
-        ) ) {
-            console.log( 'Requesting... ', entry.uiux.db, entry.data.id )
+        if ( entry.uiux.db.isOnRequest && Object.keys( entry.uiux.mode ).length !== 0 ) {
+            console.log( 'Requesting... ', entry.uiux.mode, entry.data.id )
 
             const dataToDB = {
                 date: dateToYYYYMMDD( date ),
@@ -163,21 +176,21 @@ function Entry( { date, entry, inSequence } ) {
 
             const requestArgs = {};
 
-            if ( entry.uiux.db.isCreating ) {
+            if ( entry.uiux.mode.isCreate ) {
                 requestArgs.url = `/.netlify/functions/create-entry`;
                 requestArgs.method = 'POST';
                 requestArgs.idInResponse = res => res.insertedId;
                 requestArgs.onDone = REF.current.createEntryRequestDone;
                 requestArgs.onError = REF.current.createEntryRequestError;
 
-            } else if ( entry.uiux.db.isUpdating ) {
+            } else if ( entry.uiux.mode.isUpdate ) {
                 requestArgs.url = `/.netlify/functions/update-entry?id=${entry.data.id}`;
                 requestArgs.method = 'PUT';
                 requestArgs.idInResponse = () => entry.data.id;
                 requestArgs.onDone = REF.current.updateEntryRequestDone;
                 requestArgs.onError = REF.current.updateEntryRequestError;
 
-            } else if ( entry.uiux.db.isDeleting ) {
+            } else if ( entry.uiux.mode.isDelete ) {
                 requestArgs.url = `/.netlify/functions/delete-entry?id=${entry.data.id}`;
                 requestArgs.method = 'DELETE';
                 requestArgs.idInResponse = () => entry.data.id;
@@ -210,7 +223,7 @@ function Entry( { date, entry, inSequence } ) {
     let draggable = entry.data.id && !entry.uiux.form.isOpen ? 'true' : 'false';
     let onDragStart = entry.data.id ? event => dragStart( event, date, entry, inSequence ) : null;
     let onDragOver = event => allowDrop( event );
-    let onDrop = event => drop( event, date, inSequence );
+    let onDrop = event => doDrop( event, date, inSequence );
 
     if ( entry.uiux.isUnderProcess ) {
         draggable = null;
@@ -233,7 +246,7 @@ function Entry( { date, entry, inSequence } ) {
                 {entry.data.note}
             </div>
 
-            {entry.uiux.db.isRequesting
+            {entry.uiux.db.isOnRequest
                 ? <div className="loader"></div>
                 : entry.uiux.isUnderProcess
                 ? null

@@ -141,7 +141,7 @@ const ADate = React.memo( ( { aDate } ) => {  // to differ from native function 
 
         const { db } = aDate.uiux;
 
-        if ( db.isRequesting && db.dateFrom.getTime() === date.getTime() ) {
+        if ( db.isOnRequest && db.dateFrom.getTime() === date.getTime() ) {
             console.log( 'Requesting... ', date )
 
             const { dateFrom, dateTill } = db;
