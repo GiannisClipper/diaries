@@ -1,0 +1,75 @@
+.EntryForm {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 80%;
+    height: auto;
+    transform: translate( -50%, -50% );
+}
+.EntryForm {
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+.EntryForm > * {
+    width: 80%;
+    margin: auto;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    text-align: left;
+    background-color: lightskyblue;
+}
+
+.EntryForm span {
+    vertical-align: top;
+    display: inline-block;
+    width: 6em;
+    height: 100%;
+    padding: .5em;
+}
+
+.EntryForm input,
+.EntryForm textarea {
+    width: calc( 100% - 6em );
+    font-family: inherit;
+    font-size: inherit;
+    padding: .5em;
+    background-color: white;
+}
+
+.EntryForm.delete input,
+.EntryForm.delete textarea {
+    pointer-events: none;
+}
+
+.EntryForm .buttons {
+    background-color: inherit;
+}
+
+.EntryForm button {
+    display: inline-block;
+    width: calc( 50% - 3.5em );
+    font-family: inherit;
+    font-size: inherit;
+    padding: .5em;
+}
+
+.EntryForm button:nth-of-type(1) {
+    margin-right: .5em;
+    background-color: seagreen;
+}
+
+.EntryForm.delete button:nth-of-type(1) {
+    margin-right: .5em;
+    background-color: red;
+}
+
+.EntryForm button:nth-of-type(2) {
+    margin-left: .5em;
+    background-color: tomato;
+}
+
+.EntryForm .id > input,
+.EntryForm .date > input {
+    color: darkgrey;
+}

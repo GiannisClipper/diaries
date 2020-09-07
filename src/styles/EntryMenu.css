@@ -1,0 +1,18 @@
+.EntryMenu {
+    position: fixed;
+    width: auto;
+    height: auto;
+    background: white;
+}
+
+.EntryMenu > * {
+    width: 2em;
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: top;
+    padding: .5em;
+}
+
+.EntryMenu .icon {
+    color: lightcoral;
+}

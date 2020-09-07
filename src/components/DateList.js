@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useContext } from 'react';
+import React, { useEffect, useRef, useContext } from 'react';
 import '../styles/DateList.css';
 import { STATEContext } from './STATEContext';
 import { REFContext } from './REFContext';
@@ -6,9 +6,7 @@ import { dayNames, monthNames, dateToYYYYMMDD } from '../helpers/dates';
 import { realFetch, mockFetch } from '../helpers/customFetch';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBackward, faForward } from '@fortawesome/free-solid-svg-icons';
-import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
-import { faEdit, faTrashAlt, faCut, faCamera, faClone, faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
-
+import EntryList from './EntryList';
 
 function DateList() {
 
@@ -117,10 +115,10 @@ function DateList() {
                     Προηγούμενες ημ/νίες
                 </div>
                 <ul>
-                    { dates.map( dateItem => (
-                        <DateItem 
-                            key={dateItem.data.date}
-                            dateItem={dateItem}
+                    { dates.map( aDate => (
+                        <ADate
+                            key={aDate.data.date}
+                            aDate={aDate}
                         /> 
                     ) ) }
                 </ul>
@@ -133,14 +131,16 @@ function DateList() {
     );
 }
 
-const DateItem = React.memo( ( { dateItem } ) => {
+const ADate = React.memo( ( { aDate } ) => {  // to differ from native function Date()
 
     const REF = useContext( REFContext );
 
+    const { date, entries } = aDate.data;
+
     useEffect( () => {
-        const { date } = dateItem.data;
-        const { db } = dateItem.uiux;
         console.log( 'Has rendered. ', date );
+
+        const { db } = aDate.uiux;
 
         if ( db.isRequesting && db.dateFrom.getTime() === date.getTime() ) {
             console.log( 'Requesting... ', date )
@@ -167,9 +167,9 @@ const DateItem = React.memo( ( { dateItem } ) => {
     } );
 
     return (
-        <li className="DateItem">
-            <DateInfo date={dateItem.data.date} />
-            <DateEntries date={dateItem.data.date} entries={dateItem.data.entries} />
+        <li className="ADate">
+            <DateInfo date={date} />
+            <EntryList date={date} entries={entries} />
         </li>
     );
 } );
@@ -192,446 +192,6 @@ function DateInfo( { date } ) {
             </div>
             <div className="month-year">
                 { `${monthName} ${yearNum}` }
-            </div>
-        </div>
-    );
-}
-
-function DateEntries( { date, entries } ) {
-
-    let inSequence = -1;
-
-    return (
-        <div className="DateEntries">
-            <ul>
-                { entries.map( entry => (
-                    <DateEntry date={date} entry={entry} inSequence={++inSequence} />
-                ) ) }
-            </ul>
-        </div>
-    );
-}
-
-function DateEntry( { date, entry, inSequence } ) {
-
-    const STATE = useContext( STATEContext );
-    const REF = useContext( REFContext );
-
-    REF.current.cutEntry = ( date, entry, inSequence ) => {
-        REF.current.cut = { date, entryInSequence: inSequence };
-        REF.current.copy = null;
-        REF.current.paste = null;
-
-        REF.current.saved = { date, entry, inSequence };
-    }
-
-    REF.current.copyEntry = ( date, entry, inSequence ) => {
-        REF.current.cut = null;
-        REF.current.copy = { date, entryInSequence: inSequence };
-        REF.current.paste = null;
-
-        REF.current.saved = { date, entry, inSequence };
-    }
-
-    REF.current.pasteEntry = ( date, entry, inSequence ) => {
-        REF.current.paste = { date, entryInSequence: inSequence };
-
-        const { cut, copy, paste } = REF.current;
-
-        if ( cut ) {
-            STATE.dispatch( { type: 'MOVE_ENTRY', payload: { cut, paste } } );
-            REF.current.copy = { ...cut };
-            REF.current.cut = null;
-
-        } else if ( copy ) {
-            STATE.dispatch( { type: 'COPY_ENTRY', payload: { copy, paste } } );
-        }
-    }
-
-    const dragStart = ( event, date, entry, inSequence ) => {
-        REF.current.cutEntry( date, entry, inSequence );
-        event.dataTransfer.effectAllowed = 'move';
-    }
-
-    const allowDrop = event => {
-        event.preventDefault();
-    }
-
-    const drop = ( event, date, inSequence ) => {
-        event.preventDefault();
-        REF.current.pasteEntry( date, entry, inSequence );
-    }
-
-    REF.current.openForm = ( event, uiux, date, entry, inSequence ) => {
-        event.stopPropagation();
-
-        REF.current.saved = { date, entry, inSequence };
-
-        STATE.dispatch( { 
-            type: 'OPEN_ENTRY_FORM',
-            payload: { uiux, date, entry, inSequence },
-        } );
-    }
-
-    REF.current.closeForm = ( event, date, inSequence ) => {
-        event.stopPropagation();
-
-        STATE.dispatch( { 
-            type: 'CLOSE_ENTRY_FORM',
-            payload: { date, inSequence },
-        } );
-    }
-
-    REF.current.requestEntry = ( date, entry, inSequence ) => {
-
-        STATE.dispatch( { 
-            type: 'REQUEST_ENTRY',
-            payload: { date, inSequence },
-        } );
-    }
-
-    REF.current.createEntryRequestDone = ( date, inSequence, dataFromDB ) => {
-
-        STATE.dispatch( { 
-            type: 'CREATE_ENTRY_REQUEST_DONE',
-            payload: { date, inSequence, dataFromDB },
-        } );
-    }
-
-    REF.current.createEntryRequestError = ( date, inSequence ) => {
-
-        STATE.dispatch( { 
-            type: 'CREATE_ENTRY_REQUEST_ERROR',
-            payload: { date, inSequence },
-        } );
-    }
-
-    REF.current.updateEntryRequestDone = ( date, inSequence, dataFromDB ) => {
-
-        STATE.dispatch( { 
-            type: 'UPDATE_ENTRY_REQUEST_DONE',
-            payload: { date, inSequence, dataFromDB },
-        } );
-    }
-
-    REF.current.updateEntryRequestError = ( date, inSequence ) => {
-
-        STATE.dispatch( { 
-            type: 'UPDATE_ENTRY_REQUEST_ERROR',
-            payload: { date, inSequence, saved: REF.current.saved },
-        } );
-    }
-
-    REF.current.deleteEntryRequestDone = ( date, inSequence, dataFromDB ) => {
-
-        STATE.dispatch( { 
-            type: 'DELETE_ENTRY_REQUEST_DONE',
-            payload: { date, inSequence, dataFromDB },
-        } );
-    }
-
-    REF.current.deleteEntryRequestError = ( date, inSequence ) => {
-
-        STATE.dispatch( { 
-            type: 'DELETE_ENTRY_REQUEST_ERROR',
-            payload: { date, inSequence },
-        } );
-    }
-
-    useEffect( () => {
-        if ( entry.uiux.db.isRequesting && ( 
-                entry.uiux.db.isCreating ||
-                entry.uiux.db.isRetrieving ||
-                entry.uiux.db.isUpdating ||
-                entry.uiux.db.isDeleting
-        ) ) {
-            console.log( 'Requesting... ', entry.uiux.db, entry.data.id )
-
-            const dataToDB = {
-                date: dateToYYYYMMDD( date ),
-                note: entry.data.note,
-                inSequence: inSequence
-            };
-
-            const requestArgs = {};
-
-            if ( entry.uiux.db.isCreating ) {
-                requestArgs.url = `/.netlify/functions/create-entry`;
-                requestArgs.method = 'POST';
-                requestArgs.idInResponse = res => res.insertedId;
-                requestArgs.onDone = REF.current.createEntryRequestDone;
-                requestArgs.onError = REF.current.createEntryRequestError;
-
-            } else if ( entry.uiux.db.isUpdating ) {
-                requestArgs.url = `/.netlify/functions/update-entry?id=${entry.data.id}`;
-                requestArgs.method = 'PUT';
-                requestArgs.idInResponse = () => entry.data.id;
-                requestArgs.onDone = REF.current.updateEntryRequestDone;
-                requestArgs.onError = REF.current.updateEntryRequestError;
-
-            } else if ( entry.uiux.db.isDeleting ) {
-                requestArgs.url = `/.netlify/functions/delete-entry?id=${entry.data.id}`;
-                requestArgs.method = 'DELETE';
-                requestArgs.idInResponse = () => entry.data.id;
-                requestArgs.onDone = REF.current.deleteEntryRequestDone;
-                requestArgs.onError = REF.current.deleteEntryRequestError;
-            }
-
-            realFetch( requestArgs.url , {
-                method: requestArgs.method,
-                body: JSON.stringify( {
-                    oldSaved: { date: dateToYYYYMMDD( REF.current.saved.date ), inSequence: REF.current.saved.inSequence },
-                    newSaved: { date: dateToYYYYMMDD( date ), inSequence },
-                    data: dataToDB
-                } )
-            } )
-            .then( res => {
-                alert( JSON.stringify( res ) );
-                const dataFromDB = { ...dataToDB, _id: requestArgs.idInResponse( res ) };
-                requestArgs.onDone( date, inSequence, dataFromDB );
-            } )
-            .catch( err => { 
-                alert( err );
-                requestArgs.onError( date, inSequence, {} );
-            } );
-        }
-
-    } );
-
-    const className = entry.data.id ? 'DateEntry' : 'DateEntry init';
-    const draggable = entry.data.id ? 'true' : 'false';
-    const onDragStart = entry.data.id ? event => dragStart( event, date, entry, inSequence ) : null;
-
-    return (
-        <li 
-            className={className}
-            key={inSequence}
-            draggable={draggable}
-            onDragStart={onDragStart}
-            onDragOver={event => allowDrop( event )}
-            onDrop={event => drop( event, date, inSequence )}
-            //onDoubleClick={event => REF.current.openForm( event, date, inSequence )}
-        >
-            <div className='data'>
-                {inSequence + '/' + entry.data.id + '/' + entry.data.note}
-            </div>
-
-            {entry.uiux.db.isRequesting
-                ? <div className="loader"></div>
-                : ( <MenuTool date={date} entry={entry} inSequence={inSequence} /> )
-            }
-
-            {entry.uiux.menu.isOpen ? ( <EntryMenu date={date} entry={entry} inSequence={inSequence} /> ) : null}
-
-            {entry.uiux.form.isOpen ? ( <EntryForm date={date} entry={entry} inSequence={inSequence} /> ) : null}
-
-        </li> 
-    );
-}
-
-function MenuTool( { date, entry, inSequence } ) {
-
-    const STATE = useContext( STATEContext );
-    const REF = useContext( REFContext );
-
-    REF.current.openMenu = ( event, date, inSequence ) => {
-        event.stopPropagation();
-
-        STATE.dispatch( { 
-            type: 'OPEN_ENTRY_MENU',
-            payload: { date, inSequence },
-        } );
-    }
-
-    REF.current.closeMenu = ( event, date, inSequence ) => {
-        event.stopPropagation();
-
-        STATE.dispatch( { 
-            type: 'CLOSE_ENTRY_MENU',
-            payload: { date, inSequence },
-        } );
-    }
-
-    const menuToolRef = useRef( null );
-
-    return (
-        <div
-            className='MenuTool'
-            onClick={event => {
-                REF.current.menuTool = menuToolRef.current;
-                REF.current.openMenu( event, date, inSequence );
-            }}
-            ref={menuToolRef}
-        >
-            <FontAwesomeIcon icon={ faEllipsisH } className="icon" />
-        </div>
-    );
-}
-
-function EntryMenu( { date, entry, inSequence } ) {
-
-    const REF = useContext( REFContext );
-
-    let { top, left } = REF.current.menuTool.getBoundingClientRect();
-    top = `${top}px`;
-    left = entry.data.id ? `calc( ${left}px - 10em )` : `calc( ${left}px - 6em )`;
-    const style = { top, left };
-
-    if ( entry.data.id ) {
-        return (
-            <div className='modal EntryMenu' onClick={event => REF.current.closeMenu( event, date, inSequence )}>
-                <div className='menu' style={style}>
-                    <div className='edit' onClick={event => {
-                        event.stopPropagation();
-                        REF.current.openForm( event, { isUpdating: true }, date, entry, inSequence );
-                        REF.current.closeMenu( event, date, inSequence );
-                    }}>
-                        <FontAwesomeIcon icon={ faEdit } className="icon" title="Επεξεργασία" />
-                    </div>
-                    <div className='delete' onClick={event => {
-                        event.stopPropagation();
-                        REF.current.openForm( event, { isDeleting: true }, date, entry, inSequence );
-                        REF.current.closeMenu( event, date, inSequence );
-                    }}>
-                        <FontAwesomeIcon icon={ faTrashAlt } className="icon" title="Διαγραφή" />
-                    </div>
-                    <div className='cut' onClick={event => {
-                        event.stopPropagation();
-                        REF.current.cutEntry( date, entry, inSequence );
-                        REF.current.closeMenu( event, date, inSequence );
-                    }}>
-                        <FontAwesomeIcon icon={ faCut } className="icon" title="Αποκοπή" />
-                    </div>
-                    <div className='copy' onClick={event => {
-                        event.stopPropagation();
-                        REF.current.copyEntry( date, entry, inSequence );
-                        REF.current.closeMenu( event, date, inSequence );
-                    }}>
-                        <FontAwesomeIcon icon={ faCamera } className="icon" title="Αντιγραφή" />
-                    </div>
-                    <div className='paste' onClick={event => {
-                        event.stopPropagation();
-                        if ( REF.current.cut || REF.current.copy ) {
-                            REF.current.closeMenu( event, date, inSequence );
-                            REF.current.pasteEntry( date, entry, inSequence );
-                        }
-                    }}>
-                        <FontAwesomeIcon icon={ faClone } className="icon" title="Επικόλληση" />
-                    </div>
-                    <div className='close' onClick={event => {
-                        event.stopPropagation();
-                        REF.current.closeMenu( event, date, inSequence )
-                    }}>
-                        <FontAwesomeIcon icon={ faTimes } className="icon" title="Κλείσιμο" />
-                    </div>
-                </div>
-            </div>
-        );
-    } else {
-        return (
-            <div className='modal EntryMenu' onClick={event => REF.current.closeMenu( event, date, inSequence )}>
-                <div className='menu' style={style}>
-                    <div className='edit' onClick={event => {
-                        event.stopPropagation();
-                        REF.current.openForm( event, { isCreating: true }, date, entry, inSequence );
-                        REF.current.closeMenu( event, date, inSequence );
-                    }}>
-                        <FontAwesomeIcon icon={ faEdit } className="icon" title="Επεξεργασία" />
-                    </div>
-                    <div className='paste' onClick={event => {
-                        event.stopPropagation();
-                        if ( REF.current.cut || REF.current.copy ) {
-                            REF.current.closeMenu( event, date, inSequence );
-                            REF.current.pasteEntry( date, entry, inSequence );
-                        }
-                    }}>
-                        <FontAwesomeIcon icon={ faClone } className="icon" title="Επικόλληση" />
-                    </div>
-                    <div className='close' onClick={event => {
-                        event.stopPropagation();
-                        REF.current.closeMenu( event, date, inSequence )
-                    }}>
-                        <FontAwesomeIcon icon={ faTimes } className="icon" title="Κλείσιμο" />
-                    </div>
-                </div>
-            </div>
-        );
-    }
-}
-
-function EntryForm( { date, entry, inSequence } ) {
-
-    const REF = useContext( REFContext );
-
-    const dateInfo = (
-        dayNames[ date.getDay() ] + ' ' +
-        date.getDate().toString().padStart( 2, '0' ) + '-' +
-        ( date.getMonth() + 1 ).toString().padStart( 2, '0' ) + '-' +
-        date.getFullYear()
-    );
-
-    const formArgs = {};
-
-    if ( entry.uiux.db.isCreating ) {
-        formArgs.className = 'create';
-        formArgs.confirmButtonLabel = ' νέας εγγραφής';
-
-    } else if ( entry.uiux.db.isUpdating ) {
-        formArgs.className = 'update';
-        formArgs.confirmButtonLabel = ' τροποποίησης';
-
-    } else if ( entry.uiux.db.isDeleting ) {
-        formArgs.className = 'delete';
-        formArgs.confirmButtonLabel = ' διαγραφής';
-    }
-
-    const [ data, setData ] = useState( { ...entry.data } );
-
-    return (
-        <div className={`modal EntryForm ${formArgs.className}`}>
-            <div className='form'>
-                <div className="id">
-                    <span>Id:</span>
-                    <input 
-                        value={data.id}
-                        readOnly
-                    />
-                </div>
-                <div className="date">
-                    <span>Ημ/νία:</span>
-                    <input 
-                        value={dateInfo}
-                        readOnly
-                    />
-                </div>
-                <div className="note">
-                    <span>Σημείωμα:</span>
-                    <textarea
-                        rows="10"
-                        cols="50"
-                        maxLength="1000"
-                        value={data.note}
-                        onChange={event => setData( { ...data, note: event.target.value } )}
-                    />
-                </div>
-                <div className='buttons'>
-                    <span></span>
-                    <button onClick={event => {
-                        entry.data = { ...data };
-                        REF.current.requestEntry( date, entry, inSequence );
-                    }}>
-                        {entry.uiux.db.isRequesting
-                            ? <div className="loader icon"></div> 
-                            : <FontAwesomeIcon icon={ faCheck } className="icon" />}
-                        {`Επιβεβαίωση ${formArgs.confirmButtonLabel}`}
-                    </button>
-                    <button
-                        onClick={event => REF.current.closeForm( event, date, inSequence )}
-                    >
-                        <FontAwesomeIcon icon={ faTimes } className="icon" />
-                        Ακύρωση
-                    </button>
-                </div>
             </div>
         </div>
     );
