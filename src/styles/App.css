@@ -1,20 +1,3 @@
-* {
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-
-    border: 0px dotted lightseagreen;
-}
-
-ul {
-    list-style-type: none;
-}
-
-button {
-    cursor: pointer;
-    background-color: inherit;
-}
-
 .App {
     text-align: center;
     background-color: lightcoral;
@@ -34,13 +17,4 @@ button {
 
 .App > .title .icon {
     font-size: 1.5em;
-}
-
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba( 0, 0, 0, 0.5 );
 }

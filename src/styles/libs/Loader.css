@@ -1,4 +1,4 @@
-  .loader {
+.Loader {
     display: inline-block;
     animation: spin 2s linear infinite;
 }

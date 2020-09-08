@@ -3,6 +3,7 @@ import '../styles/EntryMenu.css';
 import { REFContext } from './REFContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrashAlt, faCut, faCamera, faClone, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { Modal } from './libs/Modal';
 
 function EntryMenu( { date, entry, inSequence } ) {
 
@@ -15,7 +16,7 @@ function EntryMenu( { date, entry, inSequence } ) {
 
     if ( entry.data.id ) {
         return (
-            <div className='modal'>
+            <Modal>
                 <div className='EntryMenu' style={style}>
 
                     <button className='edit' onClick={event => {
@@ -61,11 +62,11 @@ function EntryMenu( { date, entry, inSequence } ) {
                         <FontAwesomeIcon icon={ faTimes } className="icon" title="Κλείσιμο" />
                     </button>
                 </div>
-            </div>
+            </Modal>
         );
     } else {
         return (
-            <div className='modal'>
+            <Modal>
                 <div className='EntryMenu' style={style}>
 
                     <button className='edit' onClick={event => {
@@ -90,7 +91,7 @@ function EntryMenu( { date, entry, inSequence } ) {
                         <FontAwesomeIcon icon={ faTimes } className="icon" title="Κλείσιμο" />
                     </button>
                 </div>
-            </div>
+            </Modal>
         );
     }
 }

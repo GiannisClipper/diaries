@@ -6,7 +6,7 @@ import { dateToYYYYMMDD } from '../helpers/dates';
 import { realFetch, mockFetch } from '../helpers/customFetch';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisH, faBan } from '@fortawesome/free-solid-svg-icons';
-import { Loader } from './Loader';
+import { Loader } from './libs/Loader';
 import EntryMenu from './EntryMenu';
 import EntryForm from './EntryForm';
 

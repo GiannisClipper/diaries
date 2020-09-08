@@ -1,11 +1,11 @@
 import React from 'react';
-import '../styles/Loader.css';
+import '../../styles/libs/Loader.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSyncAlt } from '@fortawesome/free-solid-svg-icons';
 
 function Loader() { 
     return ( 
-        <span className="loader">
+        <span className="Loader">
             <FontAwesomeIcon icon={ faSyncAlt } className="icon" />
         </span> 
     )

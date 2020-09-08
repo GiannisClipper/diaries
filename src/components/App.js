@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import '../styles/libs/initialize.css';
 import '../styles/App.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCompass } from '@fortawesome/free-solid-svg-icons';

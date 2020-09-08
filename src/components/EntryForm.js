@@ -4,7 +4,8 @@ import { REFContext } from './REFContext';
 import { dayNames } from '../helpers/dates';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
-import { Loader } from './Loader';
+import { Loader } from './libs/Loader';
+import { Modal } from './libs/Modal';
 
 function EntryForm( { date, entry, inSequence } ) {
 
@@ -35,7 +36,7 @@ function EntryForm( { date, entry, inSequence } ) {
     const [ data, setData ] = useState( { ...entry.data } );
 
     return (
-        <div className={'modal'}>
+        <Modal>
             <div className={`EntryForm ${formArgs.className}`}>
 
                 <div className="id">
@@ -88,7 +89,7 @@ function EntryForm( { date, entry, inSequence } ) {
 
                 </div>
             </div>
-        </div>
+        </Modal>
     );
 }
 
