@@ -293,7 +293,7 @@ function MenuTool( { date, entry, inSequence } ) {
     const menuToolRef = useRef( null );
 
     return (
-        <div
+        <button
             className='MenuTool'
             onClick={event => {
                 REF.current.menuTool = menuToolRef.current;
@@ -302,7 +302,7 @@ function MenuTool( { date, entry, inSequence } ) {
             ref={menuToolRef}
         >
             <FontAwesomeIcon icon={ faEllipsisH } className="icon" />
-        </div>
+        </button>
     );
 }
 

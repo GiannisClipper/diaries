@@ -3,11 +3,14 @@
     width: auto;
     height: auto;
     background: white;
+    padding-left: .5em;
+    padding-right: .5em;
 }
 
-.EntryMenu > * {
+.EntryMenu button {
     width: 2em;
     display: inline-block;
+    font-size: 1em;
     overflow: hidden;
     vertical-align: top;
     padding: .5em;

@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import '../styles/App.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCompass } from '@fortawesome/free-solid-svg-icons';
 import { STATEContextProvider } from './STATEContext';
 import { REFContextProvider } from './REFContext';
+import { REFContext } from './REFContext';
 import DateList from './DateList';
 
 function App() {
@@ -16,6 +19,7 @@ function App() {
                 <button onClick={ event => checkMongo( event )}>check Mongo</button>
                 <button onClick={ event => retrieveDates( event )}>read Dates</button>
                 Diaries by GiannisClipper
+                <ScrollToCentralDate />
             </div>
 
             <DateList />
@@ -24,6 +28,17 @@ function App() {
         </REFContextProvider>
         </STATEContextProvider>
     );
+}
+
+const ScrollToCentralDate = () => {
+
+    const REF = useContext( REFContext );
+
+    return (
+        <button onClick={ event => REF.current.scrollToCentral( event )}>
+            <FontAwesomeIcon icon={ faCompass } className="icon" title="Μετακίνηση στην κεντρική ημ/νία" />
+        </button>
+    )
 }
 
 const fetch = require( 'node-fetch' );

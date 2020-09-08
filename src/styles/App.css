@@ -10,6 +10,11 @@ ul {
     list-style-type: none;
 }
 
+button {
+    cursor: pointer;
+    background-color: inherit;
+}
+
 .App {
     text-align: center;
     background-color: lightcoral;
@@ -21,6 +26,16 @@ ul {
     background-color: lightsalmon;
 }
 
+.App > .title * {
+    font: inherit;
+    color: inherit;
+    background-color: inherit;
+}
+
+.App > .title .icon {
+    font-size: 1.5em;
+}
+
 .modal {
     position: fixed;
     top: 0;
@@ -29,4 +44,3 @@ ul {
     height: 100%;
     background: rgba( 0, 0, 0, 0.5 );
 }
-

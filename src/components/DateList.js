@@ -62,6 +62,12 @@ function DateList() {
         }
     }
 
+    REF.current.scrollToCentral = event => {
+        const frame = elemRef.current;
+        const centralDate = frame.querySelector( '.ADate.central' );
+        frame.scrollTop = centralDate.offsetTop - ( frame.clientHeight * 0.25 );
+    }
+
     REF.current.retrieveDatesRequestDone = ( dateFrom, dateTill, dataFromDB ) => {
 
         STATE.dispatch( { 
