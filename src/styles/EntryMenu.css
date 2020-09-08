@@ -6,16 +6,3 @@
     padding-left: .5em;
     padding-right: .5em;
 }
-
-.EntryMenu button {
-    width: 2em;
-    display: inline-block;
-    font-size: 1em;
-    overflow: hidden;
-    vertical-align: top;
-    padding: .5em;
-}
-
-.EntryMenu .icon {
-    color: lightcoral;
-}

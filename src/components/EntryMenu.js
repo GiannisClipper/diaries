@@ -1,9 +1,75 @@
-import React, { useContext } from 'react';
+import React, { useContext, useRef } from 'react';
 import '../styles/EntryMenu.css';
+import { STATEContext } from './STATEContext';
 import { REFContext } from './REFContext';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrashAlt, faCut, faCamera, faClone, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { Modal } from './libs/Modal';
+import { MenuTool, EditTool, DeleteTool, CutTool, CopyTool, PasteTool, CloseTool } from './libs/Tools';
+
+function EntryMenuTool( { date, entry, inSequence } ) {
+
+    const STATE = useContext( STATEContext );
+    const REF = useContext( REFContext );
+
+    REF.current.openMenu = ( event, date, inSequence ) => {
+        STATE.dispatch( { 
+            type: 'OPEN_ENTRY_MENU',
+            payload: { date, inSequence },
+        } );
+    }
+
+    REF.current.closeMenu = ( event, date, inSequence ) => {
+        STATE.dispatch( { 
+            type: 'CLOSE_ENTRY_MENU',
+            payload: { date, inSequence },
+        } );
+    }
+
+    const menuToolRef = useRef( null );
+
+    return ( 
+        <MenuTool
+            onClick={event => {
+                REF.current.menuTool = menuToolRef.current;
+                REF.current.openMenu( event, date, inSequence );
+            }}
+            refference={menuToolRef}
+        />
+    );
+}
+
+function BlankEntryMenu( { date, entry, inSequence } ) {
+
+    const REF = useContext( REFContext );
+
+    let { top, left } = REF.current.menuTool.getBoundingClientRect();
+    top = `${top}px`;
+    left = `calc( ${left}px - 6em )`;
+    const style = { top, left };
+
+    return (
+        <Modal>
+            <div className='EntryMenu' style={style}>
+ 
+                <EditTool onClick={event => {
+                    REF.current.openCreateEntryForm( event, date, entry, inSequence );
+                    REF.current.closeMenu( event, date, inSequence );
+                }} />
+
+                <PasteTool onClick={event => {
+                    if ( REF.current.cut || REF.current.copy ) {
+                        REF.current.closeMenu( event, date, inSequence );
+                        REF.current.pasteEntry( date, entry, inSequence );
+                    }
+                }} />
+
+                <CloseTool onClick={event => {
+                    REF.current.closeMenu( event, date, inSequence )
+                }} />
+
+            </div>
+        </Modal>
+    );
+}
 
 function EntryMenu( { date, entry, inSequence } ) {
 
@@ -11,89 +77,47 @@ function EntryMenu( { date, entry, inSequence } ) {
 
     let { top, left } = REF.current.menuTool.getBoundingClientRect();
     top = `${top}px`;
-    left = entry.data.id ? `calc( ${left}px - 12em )` : `calc( ${left}px - 6em )`;
+    left = `calc( ${left}px - 12em )`;
     const style = { top, left };
 
-    if ( entry.data.id ) {
-        return (
-            <Modal>
-                <div className='EntryMenu' style={style}>
+    return (
+        <Modal>
+            <div className='EntryMenu' style={style}>
+ 
+                <EditTool onClick={event => {
+                    REF.current.openUpdateEntryForm( event, date, entry, inSequence );
+                    REF.current.closeMenu( event, date, inSequence );
+                }} />
 
-                    <button className='edit' onClick={event => {
-                        REF.current.openUpdateEntryForm( event, date, entry, inSequence );
+                <DeleteTool onClick={event => {
+                    REF.current.openDeleteEntryForm( event, date, entry, inSequence );
+                    REF.current.closeMenu( event, date, inSequence );
+                }} />
+
+                <CutTool onClick={event => {
+                    REF.current.cutEntry( date, entry, inSequence );
+                    REF.current.closeMenu( event, date, inSequence );
+                }} />
+
+                <CopyTool onClick={event => {
+                    REF.current.copyEntry( date, entry, inSequence );
+                    REF.current.closeMenu( event, date, inSequence );
+                }} />
+
+                <PasteTool onClick={event => {
+                    if ( REF.current.cut || REF.current.copy ) {
                         REF.current.closeMenu( event, date, inSequence );
-                    }}>
-                        <FontAwesomeIcon icon={ faEdit } className="icon" title="Επεξεργασία" />
-                    </button>
+                        REF.current.pasteEntry( date, entry, inSequence );
+                    }
+                }} />
 
-                    <button className='delete' onClick={event => {
-                        REF.current.openDeleteEntryForm( event, date, entry, inSequence );
-                        REF.current.closeMenu( event, date, inSequence );
-                    }}>
-                        <FontAwesomeIcon icon={ faTrashAlt } className="icon" title="Διαγραφή" />
-                    </button>
+                <CloseTool onClick={event => {
+                    REF.current.closeMenu( event, date, inSequence )
+                }} />
 
-                    <button className='cut' onClick={event => {
-                        REF.current.cutEntry( date, entry, inSequence );
-                        REF.current.closeMenu( event, date, inSequence );
-                    }}>
-                        <FontAwesomeIcon icon={ faCut } className="icon" title="Αποκοπή" />
-                    </button>
-
-                    <button className='copy' onClick={event => {
-                        REF.current.copyEntry( date, entry, inSequence );
-                        REF.current.closeMenu( event, date, inSequence );
-                    }}>
-                        <FontAwesomeIcon icon={ faCamera } className="icon" title="Αντιγραφή" />
-                    </button>
-
-                    <button className='paste' onClick={event => {
-                        if ( REF.current.cut || REF.current.copy ) {
-                            REF.current.closeMenu( event, date, inSequence );
-                            REF.current.pasteEntry( date, entry, inSequence );
-                        }
-                    }}>
-                        <FontAwesomeIcon icon={ faClone } className="icon" title="Επικόλληση" />
-                    </button>
-
-                    <button className='close' onClick={event => {
-                        REF.current.closeMenu( event, date, inSequence )
-                    }}>
-                        <FontAwesomeIcon icon={ faTimes } className="icon" title="Κλείσιμο" />
-                    </button>
-                </div>
-            </Modal>
-        );
-    } else {
-        return (
-            <Modal>
-                <div className='EntryMenu' style={style}>
-
-                    <button className='edit' onClick={event => {
-                        REF.current.openCreateEntryForm( event, date, entry, inSequence );
-                        REF.current.closeMenu( event, date, inSequence );
-                    }}>
-                        <FontAwesomeIcon icon={ faEdit } className="icon" title="Επεξεργασία" />
-                    </button>
-
-                    <button className='paste' onClick={event => {
-                        if ( REF.current.cut || REF.current.copy ) {
-                            REF.current.closeMenu( event, date, inSequence );
-                            REF.current.pasteEntry( date, entry, inSequence );
-                        }
-                    }}>
-                        <FontAwesomeIcon icon={ faClone } className="icon" title="Επικόλληση" />
-                    </button>
-
-                    <button className='close' onClick={event => {
-                        REF.current.closeMenu( event, date, inSequence )
-                    }}>
-                        <FontAwesomeIcon icon={ faTimes } className="icon" title="Κλείσιμο" />
-                    </button>
-                </div>
-            </Modal>
-        );
-    }
+            </div>
+        </Modal>
+    );
 }
 
-export default EntryMenu;
+export { EntryMenuTool, BlankEntryMenu, EntryMenu };

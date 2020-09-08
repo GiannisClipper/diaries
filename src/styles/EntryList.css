@@ -26,14 +26,6 @@
     padding: .5em;
 }
 
-.Entry .MenuTool {
-    width: 2em;
-    display: inline-block;
-    overflow: hidden;
-    vertical-align: top;
-    padding: .5em;
-}
-
-.icon {
+.Entry .icon {
     color: lightcoral;
 }

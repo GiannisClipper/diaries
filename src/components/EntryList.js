@@ -1,13 +1,14 @@
-import React, { useEffect, useRef, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import '../styles/EntryList.css';
 import { STATEContext } from './STATEContext';
 import { REFContext } from './REFContext';
 import { dateToYYYYMMDD } from '../helpers/dates';
 import { realFetch, mockFetch } from '../helpers/customFetch';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsisH, faBan } from '@fortawesome/free-solid-svg-icons';
+import { faBan } from '@fortawesome/free-solid-svg-icons';
+
 import { Loader } from './libs/Loader';
-import EntryMenu from './EntryMenu';
+import { EntryMenuTool, BlankEntryMenu, EntryMenu } from './EntryMenu';
 import EntryForm from './EntryForm';
 
 function EntryList( { date, entries } ) {
@@ -246,7 +247,6 @@ function Entry( { date, entry, inSequence } ) {
             onDragStart={onDragStart}
             onDragOver={onDragOver}
             onDrop={onDrop}
-            //onDoubleClick={event => REF.current.openForm( event, date, inSequence )}
         >
             <div className='data' title={`${entry.data.date}, ${inSequence}, ${entry.data.inSequence}, ${entry.data.id}`}>
                 {entry.data.note}
@@ -256,53 +256,19 @@ function Entry( { date, entry, inSequence } ) {
                 ? <Loader />
                 : entry.uiux.status.isSuspended
                 ? <FontAwesomeIcon icon={ faBan } className="icon" />
-                : <MenuTool date={date} entry={entry} inSequence={inSequence} />
+                : <EntryMenuTool date={date} entry={entry} inSequence={inSequence} />
             }
 
-            {entry.uiux.menu.isOpen ? <EntryMenu date={date} entry={entry} inSequence={inSequence} /> : null}
+            {!entry.uiux.menu.isOpen 
+                ? null
+                : !entry.data.id
+                ? <BlankEntryMenu date={date} entry={entry} inSequence={inSequence} />
+                : <EntryMenu date={date} entry={entry} inSequence={inSequence} />
+            }
 
             {entry.uiux.form.isOpen ? <EntryForm date={date} entry={entry} inSequence={inSequence} /> : null}
 
         </li> 
-    );
-}
-
-function MenuTool( { date, entry, inSequence } ) {
-
-    const STATE = useContext( STATEContext );
-    const REF = useContext( REFContext );
-
-    REF.current.openMenu = ( event, date, inSequence ) => {
-        //event.stopPropagation();
-
-        STATE.dispatch( { 
-            type: 'OPEN_ENTRY_MENU',
-            payload: { date, inSequence },
-        } );
-    }
-
-    REF.current.closeMenu = ( event, date, inSequence ) => {
-        //event.stopPropagation();
-
-        STATE.dispatch( { 
-            type: 'CLOSE_ENTRY_MENU',
-            payload: { date, inSequence },
-        } );
-    }
-
-    const menuToolRef = useRef( null );
-
-    return (
-        <button
-            className='MenuTool'
-            onClick={event => {
-                REF.current.menuTool = menuToolRef.current;
-                REF.current.openMenu( event, date, inSequence );
-            }}
-            ref={menuToolRef}
-        >
-            <FontAwesomeIcon icon={ faEllipsisH } className="icon" />
-        </button>
     );
 }
 
