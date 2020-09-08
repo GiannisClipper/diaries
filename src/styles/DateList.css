@@ -20,6 +20,10 @@
     background-color: lightsteelblue;
 }
 
+.ADate.central {
+    border: 1px dashed black;
+}
+
 .DateInfo {
     width: 10em;
     display: inline-block;

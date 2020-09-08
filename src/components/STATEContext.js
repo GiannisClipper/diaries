@@ -1,11 +1,11 @@
 import React, { createContext, useReducer, useEffect } from 'react';
 import { daysBetween, shiftDate, dateToYYYYMMDD } from '../helpers/dates';
 
-const today = new Date();
-today.setHours( 12 );
-today.setMinutes( 0 );
-today.setSeconds( 0 );
-today.setMilliseconds( 0 );
+const centralDate = new Date();
+centralDate.setHours( 12 );
+centralDate.setMinutes( 0 );
+centralDate.setSeconds( 0 );
+centralDate.setMilliseconds( 0 );
 
 const initState = {
     dates: [],
@@ -21,7 +21,8 @@ const initDate = () => ( {
             isOnRequest: false,
             dateFrom: '',
             dateTill: '',
-        }
+        },
+        position: {}  // isCentral
     }
 } );
 
@@ -55,6 +56,7 @@ const calcInitDates = ( date, num ) => {
         const _ = initDate();
         _.data.date = shiftDate( startDate, index );
         _.uiux.db = { isOnRequest: true, dateFrom: startDate, dateTill: shiftDate( startDate, num - 1 ) };
+        _.uiux.position = _.data.date.getTime() === centralDate.getTime() ? { isCentral: true } : {};
         _.data.entries.push( initEntry() );
         _.data.entries[ 0 ].uiux.db = { isOnRequest: true };
         return _;
@@ -138,7 +140,7 @@ const STATEReducer = ( state, action ) => {
     switch ( action.type ) {
 
         case 'ADD_INIT_DATES': {
-            const dates = calcInitDates( today, action.payload.num );
+            const dates = calcInitDates( centralDate, action.payload.num );
             return { ...state, dates };
 
         } case 'ADD_PREV_DATES': {

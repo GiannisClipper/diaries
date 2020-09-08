@@ -174,8 +174,10 @@ const ADate = React.memo( ( { aDate } ) => {  // to differ from native function 
 
     } );
 
+    const className = aDate.uiux.position.isCentral ? 'central' : '';
+
     return (
-        <li className="ADate">
+        <li className={`ADate ${className}`}>
             <DateInfo date={date} />
             <EntryList date={date} entries={entries} />
         </li>
