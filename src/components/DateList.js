@@ -71,6 +71,15 @@ function DateList() {
         } );
     }
 
+    REF.current.retrieveDatesRequestError = ( dateFrom, dateTill ) => {
+
+        STATE.dispatch( { 
+            type: 'RETRIEVE_DATES_REQUEST_ERROR',
+            payload: { dateFrom, dateTill },
+
+        } );
+    }
+
     useEffect( () => {
         if ( dates.length === 0 ) {
             console.log( 'add_init_dates' )
@@ -159,7 +168,7 @@ const ADate = React.memo( ( { aDate } ) => {  // to differ from native function 
             .catch( err => {
                 alert( `${err} (${method} ${uri}).` );
                 console.log( `${err} (${method} ${uri}).` );
-                REF.current.retrieveDatesRequestDone( dateFrom, dateTill, [] );
+                REF.current.retrieveDatesRequestError( dateFrom, dateTill );
             } );
         }
 

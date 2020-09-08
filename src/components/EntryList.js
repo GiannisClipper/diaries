@@ -5,7 +5,7 @@ import { REFContext } from './REFContext';
 import { dateToYYYYMMDD } from '../helpers/dates';
 import { realFetch, mockFetch } from '../helpers/customFetch';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisH, faBan } from '@fortawesome/free-solid-svg-icons';
 import { Loader } from './Loader';
 import EntryMenu from './EntryMenu';
 import EntryForm from './EntryForm';
@@ -226,7 +226,7 @@ function Entry( { date, entry, inSequence } ) {
     let onDragOver = event => allowDrop( event );
     let onDrop = event => doDrop( event, date, inSequence );
 
-    if ( entry.uiux.isUnderProcess ) {
+    if ( entry.uiux.status.isSuspended ) {
         draggable = null;
         onDragStart = null;
         onDragOver = null;
@@ -249,8 +249,8 @@ function Entry( { date, entry, inSequence } ) {
 
             {entry.uiux.db.isOnRequest
                 ? <Loader />
-                : entry.uiux.isUnderProcess
-                ? null
+                : entry.uiux.status.isSuspended
+                ? <FontAwesomeIcon icon={ faBan } className="icon" />
                 : <MenuTool date={date} entry={entry} inSequence={inSequence} />
             }
 
