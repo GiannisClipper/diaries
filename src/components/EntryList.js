@@ -6,6 +6,7 @@ import { dateToYYYYMMDD } from '../helpers/dates';
 import { realFetch, mockFetch } from '../helpers/customFetch';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
+import { Loader } from './Loader';
 import EntryMenu from './EntryMenu';
 import EntryForm from './EntryForm';
 
@@ -247,7 +248,7 @@ function Entry( { date, entry, inSequence } ) {
             </div>
 
             {entry.uiux.db.isOnRequest
-                ? <div className="loader"></div>
+                ? <Loader />
                 : entry.uiux.isUnderProcess
                 ? null
                 : <MenuTool date={date} entry={entry} inSequence={inSequence} />

@@ -49,6 +49,7 @@
 .EntryForm button {
     display: inline-block;
     width: calc( 50% - 3.5em );
+    height: 2.5em;
     font-family: inherit;
     font-size: inherit;
     padding: .5em;
@@ -72,4 +73,19 @@
 .EntryForm .id > input,
 .EntryForm .date > input {
     color: darkgrey;
+}
+
+.EntryForm button .icon {
+    color: black;
+}
+
+.EntryForm button .text {
+    display: inline;
+}
+
+.EntryForm button .loader {
+    margin: 0;
+    padding: 0;
+    width: 1.25em;
+    height: 1.25em;
 }

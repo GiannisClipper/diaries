@@ -4,6 +4,7 @@ import { REFContext } from './REFContext';
 import { dayNames } from '../helpers/dates';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { Loader } from './Loader';
 
 function EntryForm( { date, entry, inSequence } ) {
 
@@ -73,16 +74,16 @@ function EntryForm( { date, entry, inSequence } ) {
                         REF.current.entryRequest( date, inSequence );
                     }}>
                         {entry.uiux.db.isOnRequest
-                            ? <div className="loader icon"></div> 
+                            ? <Loader /> 
                             : <FontAwesomeIcon icon={ faCheck } className="icon" />}
-                        {`Επιβεβαίωση ${formArgs.confirmButtonLabel}`}
+                        <span className='text'>{`Επιβεβαίωση ${formArgs.confirmButtonLabel}`}</span>
                     </button>
 
                     <button
                         onClick={event => REF.current.closeEntryForm( event, date, inSequence )}
                     >
                         <FontAwesomeIcon icon={ faTimes } className="icon" />
-                        Ακύρωση
+                        <span className='text'>Ακύρωση</span>
                     </button>
 
                 </div>
