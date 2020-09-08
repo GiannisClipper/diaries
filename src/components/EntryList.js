@@ -220,11 +220,14 @@ function Entry( { date, entry, inSequence } ) {
 
     } );
 
-    const className = entry.data.id ? 'Entry' : 'Entry init';
-    let draggable = entry.data.id && !entry.uiux.form.isOpen ? 'true' : 'false';
+    let draggable = entry.data.id ? 'true' : null;
     let onDragStart = entry.data.id ? event => dragStart( event, date, entry, inSequence ) : null;
     let onDragOver = event => allowDrop( event );
     let onDrop = event => doDrop( event, date, inSequence );
+
+    if ( entry.uiux.form.isOpen ) {
+        draggable = null;
+    }
 
     if ( entry.uiux.status.isSuspended ) {
         draggable = null;
@@ -233,9 +236,11 @@ function Entry( { date, entry, inSequence } ) {
         onDrop = null;
     }
 
+    const className = draggable ? ' draggable' : '';
+
     return (
         <li 
-            className={className}
+            className={`Entry ${className}`}
             key={inSequence}
             draggable={draggable}
             onDragStart={onDragStart}

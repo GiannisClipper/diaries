@@ -12,6 +12,12 @@
     background-color: lightskyblue;
 }
 
+.Entry.draggable .data {
+    cursor: grab;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
+}
+
 .Entry .data {
     width: calc( 100% - 2em );
     display: inline-block;
