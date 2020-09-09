@@ -3,7 +3,7 @@ import '../styles/EntryMenu.css';
 import { STATEContext } from './STATEContext';
 import { REFContext } from './REFContext';
 import { Modal } from './libs/Modal';
-import { MenuTool, EditTool, DeleteTool, CutTool, CopyTool, PasteTool, CloseTool } from './libs/Tools';
+import { MenuTool, EditTool, AddNoteTool, AddPaymentTool, DeleteTool, CutTool, CopyTool, PasteTool, CloseTool } from './libs/Tools';
 
 function EntryMenuTool( { date, entry, inSequence } ) {
 
@@ -43,15 +43,20 @@ function BlankEntryMenu( { date, entry, inSequence } ) {
 
     let { top, left } = REF.current.menuTool.getBoundingClientRect();
     top = `${top}px`;
-    left = `calc( ${left}px - 6em )`;
+    left = `calc( ${left}px - 8em )`;
     const style = { top, left };
 
     return (
         <Modal>
             <div className='EntryMenu' style={style}>
  
-                <EditTool onClick={event => {
-                    REF.current.openCreateEntryForm( event, date, entry, inSequence );
+                <AddNoteTool onClick={event => {
+                    REF.current.openEntryForm( event, date, entry, inSequence, { isNote: true }, { isCreate: true } );
+                    REF.current.closeMenu( event, date, inSequence );
+                }} />
+
+                <AddPaymentTool onClick={event => {
+                    REF.current.openEntryForm( event, date, entry, inSequence, { isPayment: true }, { isCreate: true } );
                     REF.current.closeMenu( event, date, inSequence );
                 }} />
 
@@ -85,12 +90,12 @@ function EntryMenu( { date, entry, inSequence } ) {
             <div className='EntryMenu' style={style}>
  
                 <EditTool onClick={event => {
-                    REF.current.openUpdateEntryForm( event, date, entry, inSequence );
+                    REF.current.openEntryForm( event, date, entry, inSequence, { isNote: true }, { isUpdate: true } );
                     REF.current.closeMenu( event, date, inSequence );
                 }} />
 
                 <DeleteTool onClick={event => {
-                    REF.current.openDeleteEntryForm( event, date, entry, inSequence );
+                    REF.current.openEntryForm( event, date, entry, inSequence, { isNote: true }, { isDelete: true } );
                     REF.current.closeMenu( event, date, inSequence );
                 }} />
 

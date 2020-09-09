@@ -9,7 +9,8 @@ import { faBan } from '@fortawesome/free-solid-svg-icons';
 
 import { Loader } from './libs/Loader';
 import { EntryMenuTool, BlankEntryMenu, EntryMenu } from './EntryMenu';
-import EntryForm from './EntryForm';
+import NoteForm from './NoteForm';
+import PaymentForm from './PaymentForm';
 
 function EntryList( { date, entries } ) {
 
@@ -76,32 +77,15 @@ function Entry( { date, entry, inSequence } ) {
         REF.current.pasteEntry( date, entry, inSequence );
     }
 
-    REF.current.openCreateEntryForm = ( event, date, entry, inSequence ) => {
+    REF.current.openEntryForm = ( event, date, entry, inSequence, type, mode ) => {
         REF.current.saved = { date, entry, inSequence };
 
         STATE.dispatch( { 
             type: 'OPEN_ENTRY_FORM',
-            payload: { mode: { isCreate: true }, date, entry, inSequence },
+            payload: { date, entry, inSequence, type, mode },
         } );
     }
 
-    REF.current.openUpdateEntryForm = ( event, date, entry, inSequence ) => {
-        REF.current.saved = { date, entry, inSequence };
-
-        STATE.dispatch( { 
-            type: 'OPEN_ENTRY_FORM',
-            payload: { mode: { isUpdate: true }, date, entry, inSequence },
-        } );
-    }
-
-    REF.current.openDeleteEntryForm = ( event, date, entry, inSequence ) => {
-        REF.current.saved = { date, entry, inSequence };
-
-        STATE.dispatch( { 
-            type: 'OPEN_ENTRY_FORM',
-            payload: { mode: { isDelete: true }, date, entry, inSequence },
-        } );
-    }
 
     REF.current.closeEntryForm = ( event, date, inSequence ) => {
         //event.stopPropagation()
@@ -266,7 +250,12 @@ function Entry( { date, entry, inSequence } ) {
                 : <EntryMenu date={date} entry={entry} inSequence={inSequence} />
             }
 
-            {entry.uiux.form.isOpen ? <EntryForm date={date} entry={entry} inSequence={inSequence} /> : null}
+            {!entry.uiux.form.isOpen 
+                ? null
+                : !entry.uiux.type.isPayment
+                ? <NoteForm date={date} entry={entry} inSequence={inSequence} /> 
+                : <PaymentForm date={date} entry={entry} inSequence={inSequence} /> 
+            }
 
         </li> 
     );

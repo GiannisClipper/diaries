@@ -1,11 +1,11 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import '../styles/EntryForm.css';
 import { REFContext } from './REFContext';
 import { dayNames } from '../helpers/dates';
 import { Modal } from './libs/Modal';
 import { Form, Field } from './libs/Form';
 
-function EntryForm( { date, entry, inSequence } ) {
+function EntryForm( { className, date, entry, inSequence, data, children } ) {
 
     const REF = useContext( REFContext );
 
@@ -16,9 +16,9 @@ function EntryForm( { date, entry, inSequence } ) {
         date.getFullYear()
     );
 
-    let className, okLabel, cancelLabel;
+    let okLabel, cancelLabel;
 
-    className = 'EntryForm';
+    className = `${className} EntryForm`;
     okLabel = 'Επιβεβαίωση';
     cancelLabel = 'Ακύρωση';
 
@@ -41,8 +41,6 @@ function EntryForm( { date, entry, inSequence } ) {
     }
 
     const onClickCancel = event => REF.current.closeEntryForm( event, date, inSequence );
-
-    const [ data, setData ] = useState( { ...entry.data } );
 
     return (
         <Modal>
@@ -68,15 +66,8 @@ function EntryForm( { date, entry, inSequence } ) {
                     />
                 </Field>
 
-                <Field className="note" label="Σημείωμα">
-                    <textarea
-                        rows="10"
-                        cols="50"
-                        maxLength="1000"
-                        value={data.note}
-                        onChange={event => setData( { ...data, note: event.target.value } )}
-                    />
-                </Field>
+                {children}
+
             </Form>
         </Modal>
     );

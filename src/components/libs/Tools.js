@@ -1,7 +1,7 @@
 import React from 'react';
 import '../../styles/libs/Tools.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsisH, faEdit, faTrashAlt, faCut, faCamera, faClone, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisH, faEdit, faFont, faEuroSign, faTrashAlt, faCut, faCamera, faClone, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 function Tool( { className, icon, title, onClick, refference } ) {
     return (
@@ -18,6 +18,22 @@ const MenuTool = ( { onClick, refference } ) =>
         title='Menu'
         onClick={onClick}
         refference={refference}
+    />
+
+const AddNoteTool = ( { onClick } ) => 
+    <Tool 
+        className='Edit'
+        icon={faFont} 
+        title='Νέο σημείωμα'
+        onClick={onClick}
+    />
+
+const AddPaymentTool = ( { onClick } ) => 
+    <Tool 
+        className='Edit'
+        icon={faEuroSign} 
+        title='Νέα πληρωμή'
+        onClick={onClick}
     />
 
 const EditTool = ( { onClick } ) => 
@@ -68,4 +84,4 @@ const CloseTool = ( { onClick } ) =>
         onClick={onClick}
     />
 
-export { Tool, MenuTool, EditTool, DeleteTool, CutTool, CopyTool, PasteTool, CloseTool };
+export { Tool, MenuTool, AddNoteTool, AddPaymentTool, EditTool, DeleteTool, CutTool, CopyTool, PasteTool, CloseTool };

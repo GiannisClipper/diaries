@@ -41,6 +41,7 @@ const initEntry = () => ( {
     uiux: {
         menu: {},  // isOpen
         form: {},  // isOpen
+        type: {},  // isNote, isPayment
         mode: {},  // isCreate, isUpdate, isDelete
         db: {},  // isOnRequest
         status: {}  // isSuspended
@@ -272,11 +273,12 @@ const STATEReducer = ( state, action ) => {
         } case 'OPEN_ENTRY_FORM': {
 
             deconstructState();
-            const { mode, date, inSequence } = action.payload;
+            const { date, inSequence, type, mode } = action.payload;
 
             deconstructDate( getDateInSequence( date ) );
             deconstructEntry( inSequence );
             activeEntry.uiux.form = { isOpen: true };
+            activeEntry.uiux.type = type;
             activeEntry.uiux.mode = mode;
             constructEntry();
             constructDate();
@@ -291,8 +293,9 @@ const STATEReducer = ( state, action ) => {
             deconstructDate( getDateInSequence( date ) );
             deconstructEntry( inSequence );
             activeEntry.uiux.db = {};
-            activeEntry.uiux.mode = {};
             activeEntry.uiux.form = {};
+            activeEntry.uiux.type = {};
+            activeEntry.uiux.mode = {};
             constructEntry();
             constructDate();
 
