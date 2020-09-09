@@ -36,7 +36,7 @@ const ScrollToCentralDate = () => {
     const REF = useContext( REFContext );
 
     return (
-        <button onClick={ event => REF.current.scrollToCentral( event )}>
+        <button onClick={ event => REF.current.scrollToCentralDate( event )}>
             <FontAwesomeIcon icon={ faCompass } className="icon" title="Μετακίνηση στην κεντρική ημ/νία" />
         </button>
     )

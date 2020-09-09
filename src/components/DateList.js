@@ -13,7 +13,9 @@ function DateList() {
     const STATE = useContext( STATEContext );
     const REF = useContext( REFContext );
 
-    const { dates } = STATE.state;
+    const { data } = STATE.state;
+
+    const status = useRef( { isBeforeFirstRequest: true } );
 
     const elemRef = useRef( null );
     const scrollTop = useRef( 0 );
@@ -62,7 +64,7 @@ function DateList() {
         }
     }
 
-    REF.current.scrollToCentral = event => {
+    REF.current.scrollToCentralDate = event => {
         const frame = elemRef.current;
         const centralDate = frame.querySelector( '.ADate.central' );
         frame.scrollTop = centralDate.offsetTop - ( frame.clientHeight * 0.25 );
@@ -87,9 +89,15 @@ function DateList() {
     }
 
     useEffect( () => {
-        if ( dates.length === 0 ) {
+        if ( status.current.isBeforeFirstRequest ) {
             console.log( 'add_init_dates' )
+            status.current = { isAfterFirstRequest: true };
             STATE.dispatch( { type: 'ADD_INIT_DATES', payload: { num: 7 } } );
+
+        } else if ( status.current.isAfterFirstRequest ) {
+            console.log( 'scrollToCentralDate' )
+            status.current = {};
+            REF.current.scrollToCentralDate();
         }
 
         const frame = elemRef.current;
@@ -129,7 +137,7 @@ function DateList() {
                     Προηγούμενες ημ/νίες
                 </div>
                 <ul>
-                    { dates.map( aDate => (
+                    { data.dates.map( aDate => (
                         <ADate
                             key={aDate.data.date}
                             aDate={aDate}
