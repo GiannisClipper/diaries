@@ -4,6 +4,10 @@
     margin: 0;
 
     border: 0px dotted lightseagreen;
+
+    background-color: inherit;
+    font-family: inherit;
+    font-size: inherit;
 }
 
 ul {
@@ -12,6 +16,4 @@ ul {
 
 button {
     cursor: pointer;
-    background-color: inherit;
 }
-

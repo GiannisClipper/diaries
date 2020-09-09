@@ -1,11 +1,9 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import '../styles/EntryForm.css';
 import { REFContext } from './REFContext';
 import { dayNames } from '../helpers/dates';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
-import { Loader } from './libs/Loader';
 import { Modal } from './libs/Modal';
+import { Form, Field } from './libs/Form';
 
 function EntryForm( { date, entry, inSequence } ) {
 
@@ -18,45 +16,59 @@ function EntryForm( { date, entry, inSequence } ) {
         date.getFullYear()
     );
 
-    const formArgs = {};
+    let className, okLabel, cancelLabel;
+
+    className = 'EntryForm';
+    okLabel = 'Επιβεβαίωση';
+    cancelLabel = 'Ακύρωση';
 
     if ( entry.uiux.mode.isCreate ) {
-        formArgs.className = 'create';
-        formArgs.confirmButtonLabel = ' νέας εγγραφής';
+        className += ' create';
+        okLabel += ' νέας εγγραφής';
 
     } else if ( entry.uiux.mode.isUpdate ) {
-        formArgs.className = 'update';
-        formArgs.confirmButtonLabel = ' τροποποίησης';
+        className += ' update';
+        okLabel += ' τροποποίησης';
 
     } else if ( entry.uiux.mode.isDelete ) {
-        formArgs.className = 'delete';
-        formArgs.confirmButtonLabel = ' διαγραφής';
+        className += ' delete';
+        okLabel += ' διαγραφής';
     }
+
+    const onClickOk = event => {
+        entry.data = { ...data };
+        REF.current.entryRequest( date, inSequence );
+    }
+
+    const onClickCancel = event => REF.current.closeEntryForm( event, date, inSequence );
 
     const [ data, setData ] = useState( { ...entry.data } );
 
     return (
         <Modal>
-            <div className={`EntryForm ${formArgs.className}`}>
-
-                <div className="id">
-                    <span>Id:</span>
+            <Form
+                className={className}
+                okLabel={okLabel}
+                cancelLabel={cancelLabel}
+                onClickOk={onClickOk}
+                onClickCancel={onClickCancel}
+                isOnRequest={entry.uiux.db.isOnRequest}
+            >
+                <Field className="id" label="Id">
                     <input 
                         value={data.id}
                         readOnly
                     />
-                </div>
+                </Field>
 
-                <div className="date">
-                    <span>Ημ/νία:</span>
+                <Field className="date" label="Ημ/νία">
                     <input 
                         value={dateInfo}
                         readOnly
                     />
-                </div>
+                </Field>
 
-                <div className="note">
-                    <span>Σημείωμα:</span>
+                <Field className="note" label="Σημείωμα">
                     <textarea
                         rows="10"
                         cols="50"
@@ -64,31 +76,8 @@ function EntryForm( { date, entry, inSequence } ) {
                         value={data.note}
                         onChange={event => setData( { ...data, note: event.target.value } )}
                     />
-                </div>
-
-                <div className='buttons'>
-
-                    <span></span>
-
-                    <button onClick={event => {
-                        entry.data = { ...data };
-                        REF.current.entryRequest( date, inSequence );
-                    }}>
-                        {entry.uiux.db.isOnRequest
-                            ? <Loader /> 
-                            : <FontAwesomeIcon icon={ faCheck } className="icon" />}
-                        <span className='text'>{`Επιβεβαίωση ${formArgs.confirmButtonLabel}`}</span>
-                    </button>
-
-                    <button
-                        onClick={event => REF.current.closeEntryForm( event, date, inSequence )}
-                    >
-                        <FontAwesomeIcon icon={ faTimes } className="icon" />
-                        <span className='text'>Ακύρωση</span>
-                    </button>
-
-                </div>
-            </div>
+                </Field>
+            </Form>
         </Modal>
     );
 }
