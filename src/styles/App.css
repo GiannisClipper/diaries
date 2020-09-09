@@ -13,6 +13,8 @@
     font: inherit;
     color: inherit;
     background-color: inherit;
+    margin-left: .5em;
+    margin-right: .5em;
 }
 
 .App > .title .icon {

@@ -67,7 +67,7 @@ function DateList() {
     REF.current.scrollToCentralDate = event => {
         const frame = elemRef.current;
         const centralDate = frame.querySelector( '.ADate.central' );
-        frame.scrollTop = centralDate.offsetTop - ( frame.clientHeight * 0.25 );
+        frame.scrollTop = centralDate.offsetTop - ( frame.clientHeight * 0.10 );
     }
 
     REF.current.retrieveDatesRequestDone = ( dateFrom, dateTill, dataFromDB ) => {
@@ -98,30 +98,31 @@ function DateList() {
             console.log( 'scrollToCentralDate' )
             status.current = {};
             REF.current.scrollToCentralDate();
-        }
 
-        const frame = elemRef.current;
-        const content = frame.querySelector( '.content' );
-        const prev = frame.querySelector( '.prev' );
-        const next = frame.querySelector( '.next' );
+        } else {
+            const frame = elemRef.current;
+            const content = frame.querySelector( '.content' );
+            const prev = frame.querySelector( '.prev' );
+            const next = frame.querySelector( '.next' );
 
-        if ( scrollDirection.current.isUp ) {
-            const offsetDiff = content.offsetHeight - offsetHeight.current;
-            frame.scrollTop = scrollTop.current + offsetDiff;
-        }
+            if ( scrollDirection.current.isUp ) {
+                const offsetDiff = content.offsetHeight - offsetHeight.current;
+                frame.scrollTop = scrollTop.current + offsetDiff;
+            }
 
-        scrollDirection.current = {};
-        scrollTop.current = frame.scrollTop;
-        offsetHeight.current = content.offsetHeight;
+            scrollDirection.current = {};
+            scrollTop.current = frame.scrollTop;
+            offsetHeight.current = content.offsetHeight;
 
-        frame.addEventListener( 'scroll', handleScroll );
-        prev.addEventListener( 'click', handleScrollUp );
-        next.addEventListener( 'click', handleScrollDown );
+            frame.addEventListener( 'scroll', handleScroll );
+            prev.addEventListener( 'click', handleScrollUp );
+            next.addEventListener( 'click', handleScrollDown );
 
-        return () => {
-            frame.removeEventListener( 'scroll', handleScroll );
-            prev.removeEventListener( 'click', handleScrollUp );
-            next.removeEventListener( 'click', handleScrollDown );
+            return () => {
+                frame.removeEventListener( 'scroll', handleScroll );
+                prev.removeEventListener( 'click', handleScrollUp );
+                next.removeEventListener( 'click', handleScrollDown );
+            }
         }
     } );
 
