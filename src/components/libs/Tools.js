@@ -3,21 +3,21 @@ import '../../styles/libs/Tools.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisH, faEdit, faFont, faEuroSign, faTrashAlt, faCut, faCamera, faClone, faTimes } from '@fortawesome/free-solid-svg-icons';
 
-function Tool( { className, icon, title, onClick, refference } ) {
+function Tool( { className, icon, title, onClick, reference } ) {
     return (
-        <span className={`Tool ${className}`} onClick={onClick} ref={refference}>
+        <span className={`Tool ${className}`} onClick={onClick} ref={reference}>
             <FontAwesomeIcon icon={icon} className="icon" title={title} />
         </span>
     )
 }
 
-const MenuTool = ( { onClick, refference } ) => 
+const MenuTool = ( { onClick, reference } ) => 
     <Tool 
         className='Menu'
         icon={faEllipsisH} 
         title='Menu'
         onClick={onClick}
-        refference={refference}
+        reference={reference}
     />
 
 const AddNoteTool = ( { onClick } ) => 

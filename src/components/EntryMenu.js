@@ -32,7 +32,7 @@ function EntryMenuTool( { date, entry, inSequence } ) {
                 REF.current.menuTool = menuToolRef.current;
                 REF.current.openMenu( event, date, inSequence );
             }}
-            refference={menuToolRef}
+            reference={menuToolRef}
         />
     );
 }

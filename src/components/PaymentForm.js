@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '../styles/PaymentForm.css';
 import EntryForm from './EntryForm';
 import { Field } from './libs/Form';
+import { InputNumber } from './libs/Inputs';
 
 function PaymentForm( { date, entry, inSequence } ) {
 
@@ -25,14 +26,14 @@ function PaymentForm( { date, entry, inSequence } ) {
             </Field>
 
             <Field className="incoming" label="Είσπραξη">
-                <input
+                <InputNumber
                     value={data.incoming}
                     onChange={event => setData( { ...data, incoming: event.target.value } )}
                 />
             </Field>
 
             <Field className="outgoing" label="Πληρωμή">
-                <input
+                <InputNumber
                     value={data.outgoing}
                     onChange={event => setData( { ...data, outgoing: event.target.value } )}
                 />
