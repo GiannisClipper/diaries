@@ -8,7 +8,12 @@ centralDate.setSeconds( 0 );
 centralDate.setMilliseconds( 0 );
 
 const initState = {
-    dates: [],
+    data: {
+        dates: [],
+    },
+    uiux: {
+        // status: { isBeforeFirstRequest: true }  // isBeforeFirstRequest, isAfterFirstRequest
+    }
 };
 
 const initDate = () => ( {
@@ -99,11 +104,22 @@ const STATEReducer = ( state, action ) => {
     //https://stackoverflow.com/questions/54892403/usereducer-action-dispatched-twice
     //https://github.com/facebook/react/issues/16295
     
+    let data, uiux;
     let dates, prevDates, activeDate, nextDates;
     let entries, prevEntries, activeEntry, nextEntries;
 
     const getDateInSequence = date => {
         return daysBetween( dates[0].data.date, date );
+    }
+
+    const deconstructState = () => {
+        data = { ...state.data };
+        uiux = { ...state.uiux };
+        dates = [ ...data.dates ];
+    }
+
+    const constructState = () => {
+        return { data: { dates }, uiux };
     }
 
     const deconstructDate = dateInSequence => {
@@ -139,30 +155,49 @@ const STATEReducer = ( state, action ) => {
 
     switch ( action.type ) {
 
+        // case 'CHANGE_STATUS': {
+
+        //     deconstructState();
+        //     uiux = { ...uiux, ...action.payload };
+        //     return constructState();
+
+        // } 
         case 'ADD_INIT_DATES': {
-            const dates = calcInitDates( centralDate, action.payload.num );
-            return { ...state, dates };
+
+            deconstructState();
+            dates = calcInitDates( centralDate, action.payload.num );
+        //    uiux = { ...uiux, status: { isAfterFirstRequest: true } }
+            return constructState();
 
         } case 'ADD_PREV_DATES': {
-            dates = [ ...state.dates ];
+
+            deconstructState();
             const newDates = calcPrevDates( dates, action.payload.num );
-            return { ...state, dates: [ ...newDates, ...dates ] };
+            dates = [ ...newDates, ...dates ];
+            return constructState();
 
         } case 'ADD_NEXT_DATES': {
-            dates = [ ...state.dates ];
+
+            deconstructState();
             const newDates = calcNextDates( dates, action.payload.num );
-            return { ...state, dates: [ ...dates, ...newDates ] };
+            dates = [ ...dates, ...newDates ];
+            return constructState();
 
         } case 'REMOVE_PREV_DATES': {
-            dates = [ ...state.dates ];
-            return { ...state, dates: dates.slice( action.payload.num ) };
+
+            deconstructState();
+            dates = dates.slice( action.payload.num );
+            return constructState();
 
         } case 'REMOVE_NEXT_DATES': {
-            dates = [ ...state.dates ];
-            return { ...state, dates: dates.slice( 0, -action.payload.num ) };
+
+            deconstructState();
+            dates = dates.slice( 0, -action.payload.num );
+            return constructState();
 
         } case 'MOVE_ENTRY': {
-            dates = [ ...state.dates ];
+
+            deconstructState();
             const { cut, paste } = action.payload;
 
             if ( cut.date + cut.inSequence !== paste.date + paste.inSequence ) {
@@ -184,10 +219,11 @@ const STATEReducer = ( state, action ) => {
                 constructDate();
             }
 
-            return { ...state, dates };
+            return constructState();
 
         } case 'COPY_ENTRY': {
-            dates = [ ...state.dates ];
+
+            deconstructState();
             const { copy, paste } = action.payload;
 
             deconstructDate( getDateInSequence( copy.date ) );
@@ -203,10 +239,11 @@ const STATEReducer = ( state, action ) => {
             activeDate.data.entries.forEach( x => x.uiux.status = { isSuspended: true } );
             constructDate();
 
-            return { ...state, dates };
+            return constructState();
 
         } case 'OPEN_ENTRY_MENU': {
-            dates = [ ...state.dates ];
+
+            deconstructState();
             const { date, inSequence } = action.payload;
             const dateInSequence = getDateInSequence( date );
 
@@ -216,10 +253,11 @@ const STATEReducer = ( state, action ) => {
             constructEntry();
             constructDate();
 
-            return { ...state, dates };
+            return constructState();
 
         } case 'CLOSE_ENTRY_MENU': {
-            dates = [ ...state.dates ];
+
+            deconstructState();
             const { date, inSequence } = action.payload;
             const dateInSequence = getDateInSequence( date );
 
@@ -229,10 +267,11 @@ const STATEReducer = ( state, action ) => {
             constructEntry();
             constructDate();
 
-            return { ...state, dates };
+            return constructState();
 
         } case 'OPEN_ENTRY_FORM': {
-            dates = [ ...state.dates ];
+
+            deconstructState();
             const { mode, date, inSequence } = action.payload;
 
             deconstructDate( getDateInSequence( date ) );
@@ -242,10 +281,11 @@ const STATEReducer = ( state, action ) => {
             constructEntry();
             constructDate();
 
-            return { ...state, dates };
+            return constructState();
 
         } case 'CLOSE_ENTRY_FORM': {
-            dates = [ ...state.dates ];
+
+            deconstructState();
             const { date, inSequence } = action.payload;
 
             deconstructDate( getDateInSequence( date ) );
@@ -256,10 +296,11 @@ const STATEReducer = ( state, action ) => {
             constructEntry();
             constructDate();
 
-            return { ...state, dates };
+            return constructState();
 
         } case 'RETRIEVE_DATES_REQUEST_DONE': {
-            dates = [ ...state.dates ];
+
+            deconstructState();
             const { dateFrom, dateTill, dataFromDB } = action.payload;
             dataFromDB.sort( ( a, b ) => a.inSequence < b.inSequence ? -1 : a.inSequence > b.inSequence ? 1 : 0 );
 
@@ -284,10 +325,11 @@ const STATEReducer = ( state, action ) => {
                 constructDate();
             }
 
-            return { ...state, dates };
+            return constructState();
 
         } case 'RETRIEVE_DATES_REQUEST_ERROR': {
-            dates = [ ...state.dates ];
+
+            deconstructState();
             const { dateFrom, dateTill } = action.payload;
 
             const numDays = daysBetween( dateFrom, dateTill ) + 1;
@@ -305,10 +347,11 @@ const STATEReducer = ( state, action ) => {
                 constructDate();
             }
 
-            return { ...state, dates };
+            return constructState();
 
         } case 'ENTRY_REQUEST': {
-            dates = [ ...state.dates ];
+
+            deconstructState();
             const { date, inSequence } = action.payload;
 
             deconstructDate( getDateInSequence( date ) );
@@ -317,10 +360,11 @@ const STATEReducer = ( state, action ) => {
             constructEntry();
             constructDate();
 
-            return { ...state, dates };
+            return constructState();
 
         } case 'CREATE_ENTRY_REQUEST_DONE': {
-            dates = [ ...state.dates ];
+
+            deconstructState();
             const { date, inSequence, dataFromDB } = action.payload;
 
             deconstructDate( getDateInSequence( date ) );
@@ -336,10 +380,11 @@ const STATEReducer = ( state, action ) => {
             activeDate.data.entries.forEach( x => x.uiux.status = {} );
             constructDate();
 
-            return { ...state, dates };
+            return constructState();
 
         } case 'CREATE_ENTRY_REQUEST_ERROR': {
-            dates = [ ...state.dates ];
+
+            deconstructState();
             const { date, inSequence } = action.payload;
 
             deconstructDate( getDateInSequence( date ) );
@@ -349,10 +394,11 @@ const STATEReducer = ( state, action ) => {
             activeDate.data.entries.forEach( x => x.uiux.status = {} );
             constructDate();
 
-            return { ...state, dates };
+            return constructState();
 
         } case 'UPDATE_ENTRY_REQUEST_DONE': {
-            dates = [ ...state.dates ];
+
+            deconstructState();
             const { date, inSequence, dataFromDB } = action.payload;
 
             deconstructDate( getDateInSequence( date ) );
@@ -365,10 +411,11 @@ const STATEReducer = ( state, action ) => {
             activeDate.data.entries.forEach( x => x.uiux.status = {} );
             constructDate();
 
-            return { ...state, dates };
+            return constructState();
 
         } case 'UPDATE_ENTRY_REQUEST_ERROR': {
-            dates = [ ...state.dates ];
+
+            deconstructState();
             const { date, inSequence, saved } = action.payload;
 
             deconstructDate( getDateInSequence( date ) );
@@ -390,10 +437,11 @@ const STATEReducer = ( state, action ) => {
             activeDate.data.entries.forEach( x => x.uiux.status = {} );
             constructDate();
 
-            return { ...state, dates };
+            return constructState();
 
         } case 'DELETE_ENTRY_REQUEST_DONE': {
-            dates = [ ...state.dates ];
+
+            deconstructState();
             const { date, inSequence } = action.payload;
 
             deconstructDate( getDateInSequence( date ) );
@@ -403,10 +451,11 @@ const STATEReducer = ( state, action ) => {
             activeDate.data.entries.forEach( x => x.uiux.status = {} );
             constructDate();
 
-            return { ...state, dates };
+            return constructState();
 
         } case 'DELETE_ENTRY_REQUEST_ERROR': {
-            dates = [ ...state.dates ];
+
+            deconstructState();
             const { date, inSequence } = action.payload;
 
             deconstructDate( getDateInSequence( date ) );
@@ -418,7 +467,7 @@ const STATEReducer = ( state, action ) => {
             activeDate.data.entries.forEach( x => x.uiux.status = {} );
             constructDate();
 
-            return { ...state, dates };
+            return constructState();
 
         } default: {
             throw new Error();
