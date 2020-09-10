@@ -55,6 +55,7 @@ function EntryForm( { className, date, entry, inSequence, data, children } ) {
                 <Field className="id" label="Id">
                     <input 
                         value={data.id}
+                        tabIndex="-1"
                         readOnly
                     />
                 </Field>
@@ -62,6 +63,7 @@ function EntryForm( { className, date, entry, inSequence, data, children } ) {
                 <Field className="date" label="Ημ/νία">
                     <input 
                         value={dateInfo}
+                        tabIndex="-1"
                         readOnly
                     />
                 </Field>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import '../styles/PaymentForm.css';
 import EntryForm from './EntryForm';
 import { Field } from './libs/Form';
-import { InputNumber } from './libs/Inputs';
+import { InputNumber, InputFromList } from './libs/Inputs';
 
 function PaymentForm( { date, entry, inSequence } ) {
 
@@ -19,8 +19,17 @@ function PaymentForm( { date, entry, inSequence } ) {
             data={data}
         >
             <Field className="genre" label="Λογαριασμός">
-                <input
+                <InputFromList
                     value={data.genre}
+                    allValues={[
+                        'apple', 
+                        'tomato', 
+                        'banana', 
+                        'carot',
+                        'greenapple', 
+                        'greensalad',
+                        'ananas'
+                    ]}
                     onChange={event => setData( { ...data, genre: event.target.value } )}
                 />
             </Field>
@@ -47,8 +56,13 @@ function PaymentForm( { date, entry, inSequence } ) {
             </Field>
 
             <Field className="fund" label="Μέσο πληρωμής">
-                <input
+            <InputFromList
                     value={data.fund}
+                    allValues={[
+                        'Cash', 
+                        'Master', 
+                        'Visa'
+                    ]}
                     onChange={event => setData( { ...data, fund: event.target.value } )}
                 />
             </Field>

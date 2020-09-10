@@ -1,1 +1,6 @@
-/* Inputs.css */
+.InputRelation {
+    position: relative;
+}
+.InputRelation ul {
+    position: absolute;
+}
