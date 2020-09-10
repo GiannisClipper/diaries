@@ -175,7 +175,7 @@ const ADate = React.memo( ( { aDate } ) => {  // to differ from native function 
             const uri = `/.netlify/functions/retrieve-dates?range=${strFrom}-${strTill}`;
             const method = 'GET';
 
-            mockFetch( uri, { method } )
+            realFetch( uri, { method } )
             .then( res => {
                 alert( JSON.stringify( res ) );
                 REF.current.retrieveDatesRequestDone( dateFrom, dateTill, res );

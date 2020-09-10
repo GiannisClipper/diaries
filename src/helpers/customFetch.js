@@ -3,12 +3,20 @@ const fetch = require( 'node-fetch' );
 const realFetch = ( url, args ) => {
     args.headers = { 'Content-Type': 'application/json; charset=utf-8' };
 
+    let isError = false;
+
     return fetch( url, args )
         .then( res => {
-            if ( [ 200, 201 ].includes( res.status ) ) {
-                return res.json();
+            if ( ![ 200, 201 ].includes( res.status ) ) {
+                isError = true
             }
-            throw new Error( res.statusText );
+            return res.json();
+        } )
+        .then( res => {
+            if ( isError ) {
+                throw new Error( res.message )
+            }
+            return res
         } );
 }
 

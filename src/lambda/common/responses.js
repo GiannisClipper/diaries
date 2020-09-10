@@ -7,7 +7,7 @@ const responseOnSuccess = res => ( {
 const responseOnError = err => ( {
     headers: { 'Content-Type': 'application/json; charset=utf-8' },
     statusCode: 500,
-    body: JSON.stringify( { err: err.message } )
+    body: JSON.stringify( { message: err.message } )
 } );
 
 export { responseOnSuccess, responseOnError };
