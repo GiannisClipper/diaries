@@ -1,11 +1,13 @@
 import React, { useRef, useContext, useEffect } from 'react';
 import '../../styles/payments/GenreList.css';
 import { STATEContext } from '../STATEContext';
+import { REFContext } from '../REFContext';
 import { EditTool, DeleteTool } from '../libs/Tools';
+import GenreForm from './GenreForm';
 
 const namespace = 'payments';
 
-function GenreList() {
+function GenreList( { className } ) {
 
     const status = useRef( { isBeforeFirstRequest: true } );
 
@@ -28,7 +30,7 @@ function GenreList() {
     let index = -1;
 
     return (
-        <div className="PaymentGenreList">
+        <div className={`payments GenreList ${className}`}>
             <ul>
                 { genres.map( genre => (
                     <Genre index={++index} genre={genre} />
@@ -39,9 +41,33 @@ function GenreList() {
 }
 
 function Genre( { index, genre } ) {
+
+    const STATE = useContext( STATEContext );
+    const REF = useContext( REFContext );
+
+    const openForm = ( genre, index, mode ) => {
+        REF.current.saved = { genre };
+
+        STATE.dispatch( { 
+            namespace,
+            type: 'OPEN_FORM',
+            payload: { index, mode },
+        } );
+    }
+
+    const closeForm = ( index ) => {
+        STATE.dispatch( { 
+            namespace,
+            type: 'CLOSE_FORM',
+            payload: { index },
+        } );
+    }
+
+    const mode = !genre.id ? { isCreate: true } : { isUpdate: true };
+
     return (
         <li 
-            className={`PaymentGenre`}
+            className={`payments Genre`}
             key={index}
         >
             <div className='data' title={`${genre.data.id}`}>
@@ -49,18 +75,11 @@ function Genre( { index, genre } ) {
             </div>
 
             <div className='menu'>
-                <EditTool onClick={event => {
-                    // REF.current.openEntryForm( event, date, entry, inSequence, { isNote: true }, { isUpdate: true } );
-                    // REF.current.closeMenu( event, date, inSequence );
-                }} />
-
-                <DeleteTool onClick={event => {
-                    // REF.current.openEntryForm( event, date, entry, inSequence, { isNote: true }, { isDelete: true } );
-                    // REF.current.closeMenu( event, date, inSequence );
-                }} />
+                <EditTool onClick={event => openForm( genre, index, mode )} />
+                <DeleteTool onClick={event => openForm( genre, index, { isDelete: true } )} />
             </div>
 
-            {/* {genre.uiux.form.isOpen ? <PaymentGenreForm genre={genre} /> : null} */}
+            {genre.uiux.form.isOpen ? <GenreForm genre={genre} /> : null}
 
         </li> 
     );

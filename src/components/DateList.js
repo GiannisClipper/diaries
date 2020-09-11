@@ -72,26 +72,6 @@ function DateList() {
         frame.scrollTop = centralDate.offsetTop - ( frame.clientHeight * 0.10 );
     }
 
-    REF.current.retrieveDatesRequestDone = ( dateFrom, dateTill, dataFromDB ) => {
-
-        STATE.dispatch( { 
-            namespace,
-            type: 'RETRIEVE_DATES_REQUEST_DONE',
-            payload: { dateFrom, dateTill, dataFromDB },
-
-        } );
-    }
-
-    REF.current.retrieveDatesRequestError = ( dateFrom, dateTill ) => {
-
-        STATE.dispatch( { 
-            namespace,
-            type: 'RETRIEVE_DATES_REQUEST_ERROR',
-            payload: { dateFrom, dateTill },
-
-        } );
-    }
-
     useEffect( () => {
         if ( status.current.isBeforeFirstRequest ) {
             console.log( 'add_init_dates' )
@@ -160,9 +140,27 @@ function DateList() {
 
 const ADate = React.memo( ( { aDate } ) => {  // to differ from native function Date()
 
-    const REF = useContext( REFContext );
-
     const { date, entries } = aDate.data;
+
+    const STATE = useContext( STATEContext );
+
+    const retrieveDatesRequestDone = ( dateFrom, dateTill, dataFromDB ) => {
+        STATE.dispatch( { 
+            namespace,
+            type: 'RETRIEVE_DATES_REQUEST_DONE',
+            payload: { dateFrom, dateTill, dataFromDB },
+
+        } );
+    }
+
+    const retrieveDatesRequestError = ( dateFrom, dateTill ) => {
+        STATE.dispatch( { 
+            namespace,
+            type: 'RETRIEVE_DATES_REQUEST_ERROR',
+            payload: { dateFrom, dateTill },
+
+        } );
+    }
 
     useEffect( () => {
         console.log( 'Has rendered. ', date );
@@ -183,12 +181,12 @@ const ADate = React.memo( ( { aDate } ) => {  // to differ from native function 
             realFetch( uri, { method } )
             .then( res => {
                 alert( JSON.stringify( res ) );
-                REF.current.retrieveDatesRequestDone( dateFrom, dateTill, res );
+                retrieveDatesRequestDone( dateFrom, dateTill, res );
             } )
             .catch( err => {
                 alert( `${err} (${method} ${uri}).` );
                 console.log( `${err} (${method} ${uri}).` );
-                REF.current.retrieveDatesRequestError( dateFrom, dateTill );
+                retrieveDatesRequestError( dateFrom, dateTill );
             } );
         }
 

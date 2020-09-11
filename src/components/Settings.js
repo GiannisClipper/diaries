@@ -6,17 +6,21 @@ function Settings() {
 
     return (
         <div className="Settings" >
-            <div className="section centralDate">
-                <span>Κεντρική ημ/νία</span>
-                <input placeholder="YYY-MM-DD" />
+            <div className="section">
+                <span className="label">Κεντρική ημ/νία</span>
+                <span className="data">
+                    <input placeholder="YYY-MM-DD" />
+                </span>
             </div>
-            <div className="section paymentGenres">
-                <span>Κατηγορίες οικονομικών κινήσεων</span>
-                <GenreList />
+
+            <div className="section">
+                <span className="label">Κατηγορίες οικονομικών κινήσεων</span>
+                <GenreList className="data"/>
             </div>
-            <div className="section paymentFunds">
-                <span>Μέσα οικονομικών κινήσεων</span>
-                <span />
+
+            <div className="section">
+                <span className="label">Μέσα οικονομικών κινήσεων</span>
+                <span className="data"/>
             </div>
         </div>
     );

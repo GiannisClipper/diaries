@@ -12,7 +12,7 @@
     background-color: lightsteelblue;
 }
 
-.section :first-child {
+.section > .label {
     width: 10em;
     display: inline-block;
     vertical-align: top;
@@ -23,7 +23,7 @@
     text-align: left;
 }
 
-.section :last-child {
+.section > .data {
     width: calc( 100% - 10em );
     display: inline-block;
     vertical-align: top;

@@ -52,9 +52,9 @@ const initPayments = {
             isOutgoing: null,
         },
         uiux: {
-            db: {
-                isOnRequest: false,
-            },
+            form: {},  // isOpen
+            mode: {},  // isCreate, isUpdate, isDelete
+            db: {},  // isOnRequest
         }
     } ),
     fund: () => ( {
@@ -64,9 +64,9 @@ const initPayments = {
             code: '',
         },
         uiux: {
-            db: {
-                isOnRequest: false,
-            },
+            form: {},  // isOpen
+            mode: {},  // isCreate, isUpdate, isDelete
+            db: {},  // isOnRequest
         }
     } )
 }
