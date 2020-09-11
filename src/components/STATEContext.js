@@ -10,6 +10,7 @@ centralDate.setMilliseconds( 0 );
 const initState = {
     data: {
         dates: [],
+        paymentGenres: []
     },
     uiux: {
         // status: { isBeforeFirstRequest: true }  // isBeforeFirstRequest, isAfterFirstRequest
@@ -48,11 +49,32 @@ const initEntry = () => ( {
     }
 } );
 
+const initPaymentGenre = () => ( {
+    data: {
+        id: null,
+        code: '',
+        name: '',
+        isIncoming: null,
+    },
+    uiux: {
+        db: {
+            isOnRequest: false,
+        },
+    }
+} );
+
 const parseEntryFromDB = data => ( {
     id: data._id,
     date: data.date,
     note: data.note,
     inSequence: data.inSequence
+} )
+
+const parsePaymentGenreFromDB = data => ( {
+    id: data._id,
+    code: data.code,
+    name: data.name,
+    isIncoming: data.isIncoming
 } )
 
 const calcInitDates = ( date, num ) => {
@@ -108,6 +130,7 @@ const STATEReducer = ( state, action ) => {
     let data, uiux;
     let dates, prevDates, activeDate, nextDates;
     let entries, prevEntries, activeEntry, nextEntries;
+    let paymentGenres, prevPaymentGenres, activePaymentGenre, nextPaymentGenres;
 
     const getDateInSequence = date => {
         return daysBetween( dates[0].data.date, date );
@@ -117,10 +140,11 @@ const STATEReducer = ( state, action ) => {
         data = { ...state.data };
         uiux = { ...state.uiux };
         dates = [ ...data.dates ];
+        paymentGenres = [ ...data.paymentGenres ];
     }
 
     const constructState = () => {
-        return { data: { dates }, uiux };
+        return { data: { dates, paymentGenres }, uiux };
     }
 
     const deconstructDate = dateInSequence => {
@@ -156,18 +180,10 @@ const STATEReducer = ( state, action ) => {
 
     switch ( action.type ) {
 
-        // case 'CHANGE_STATUS': {
-
-        //     deconstructState();
-        //     uiux = { ...uiux, ...action.payload };
-        //     return constructState();
-
-        // } 
         case 'ADD_INIT_DATES': {
 
             deconstructState();
             dates = calcInitDates( centralDate, action.payload.num );
-        //    uiux = { ...uiux, status: { isAfterFirstRequest: true } }
             return constructState();
 
         } case 'ADD_PREV_DATES': {
@@ -470,6 +486,12 @@ const STATEReducer = ( state, action ) => {
             activeDate.data.entries.forEach( x => x.uiux.status = {} );
             constructDate();
 
+            return constructState();
+
+        } case 'ADD_INIT_PAYMENT_GENRES': {
+
+            deconstructState();
+            paymentGenres = [ initPaymentGenre() ];
             return constructState();
 
         } default: {
