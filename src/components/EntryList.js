@@ -12,6 +12,8 @@ import { EntryMenuTool, BlankEntryMenu, EntryMenu } from './EntryMenu';
 import NoteForm from './NoteForm';
 import PaymentForm from './PaymentForm';
 
+const namespace = 'entries';
+
 function EntryList( { date, entries } ) {
 
     let inSequence = -1;
@@ -54,12 +56,12 @@ function Entry( { date, entry, inSequence } ) {
         const { cut, copy, paste } = REF.current;
 
         if ( cut ) {
-            STATE.dispatch( { type: 'MOVE_ENTRY', payload: { cut, paste } } );
+            STATE.dispatch( { namespace, type: 'MOVE_ENTRY', payload: { cut, paste } } );
             REF.current.copy = { ...cut };
             REF.current.cut = null;
 
         } else if ( copy ) {
-            STATE.dispatch( { type: 'COPY_ENTRY', payload: { copy, paste } } );
+            STATE.dispatch( { namespace, type: 'COPY_ENTRY', payload: { copy, paste } } );
         }
     }
 
@@ -81,7 +83,8 @@ function Entry( { date, entry, inSequence } ) {
         REF.current.saved = { date, entry, inSequence };
 
         STATE.dispatch( { 
-            type: 'OPEN_ENTRY_FORM',
+            namespace,
+            type: 'OPEN_FORM',
             payload: { date, entry, inSequence, type, mode },
         } );
     }
@@ -90,14 +93,16 @@ function Entry( { date, entry, inSequence } ) {
     REF.current.closeEntryForm = ( event, date, inSequence ) => {
         //event.stopPropagation()
         STATE.dispatch( { 
-            type: 'CLOSE_ENTRY_FORM',
+            namespace,
+            type: 'CLOSE_FORM',
             payload: { date, inSequence },
         } );
     }
 
     REF.current.entryRequest = ( date, inSequence ) => {
         STATE.dispatch( { 
-            type: 'ENTRY_REQUEST',
+            namespace,
+            type: 'REQUEST',
             payload: { date, inSequence },
         } );
     }
@@ -105,7 +110,8 @@ function Entry( { date, entry, inSequence } ) {
     REF.current.createEntryRequestDone = ( date, inSequence, dataFromDB ) => {
 
         STATE.dispatch( { 
-            type: 'CREATE_ENTRY_REQUEST_DONE',
+            namespace,
+            type: 'CREATE_REQUEST_DONE',
             payload: { date, inSequence, dataFromDB },
         } );
     }
@@ -113,15 +119,17 @@ function Entry( { date, entry, inSequence } ) {
     REF.current.createEntryRequestError = ( date, inSequence ) => {
 
         STATE.dispatch( { 
-            type: 'CREATE_ENTRY_REQUEST_ERROR',
+            namespace,
+            type: 'CREATE_REQUEST_ERROR',
             payload: { date, inSequence },
         } );
     }
 
     REF.current.updateEntryRequestDone = ( date, inSequence, dataFromDB ) => {
 
-        STATE.dispatch( { 
-            type: 'UPDATE_ENTRY_REQUEST_DONE',
+        STATE.dispatch( {
+            namespace, 
+            type: 'UPDATE_REQUEST_DONE',
             payload: { date, inSequence, dataFromDB },
         } );
     }
@@ -129,7 +137,8 @@ function Entry( { date, entry, inSequence } ) {
     REF.current.updateEntryRequestError = ( date, inSequence ) => {
 
         STATE.dispatch( { 
-            type: 'UPDATE_ENTRY_REQUEST_ERROR',
+            namespace,
+            type: 'UPDATE_REQUEST_ERROR',
             payload: { date, inSequence, saved: REF.current.saved },
         } );
     }
@@ -137,7 +146,8 @@ function Entry( { date, entry, inSequence } ) {
     REF.current.deleteEntryRequestDone = ( date, inSequence, dataFromDB ) => {
 
         STATE.dispatch( { 
-            type: 'DELETE_ENTRY_REQUEST_DONE',
+            namespace,
+            type: 'DELETE_REQUEST_DONE',
             payload: { date, inSequence, dataFromDB },
         } );
     }
@@ -145,7 +155,8 @@ function Entry( { date, entry, inSequence } ) {
     REF.current.deleteEntryRequestError = ( date, inSequence ) => {
 
         STATE.dispatch( { 
-            type: 'DELETE_ENTRY_REQUEST_ERROR',
+            namespace,
+            type: 'DELETE_REQUEST_ERROR',
             payload: { date, inSequence },
         } );
     }

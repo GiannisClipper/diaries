@@ -8,6 +8,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBackward, faForward } from '@fortawesome/free-solid-svg-icons';
 import EntryList from './EntryList';
 
+const namespace = 'dates';
+
 function DateList() {
 
     const STATE = useContext( STATEContext );
@@ -44,7 +46,7 @@ function DateList() {
         const { top, height } = prev.getBoundingClientRect();
         if ( top + ( height * 0.1 ) > frameBounds.top ) {
             console.log( 'add_prev_dates' )
-            STATE.dispatch( { type: 'ADD_PREV_DATES', payload: { num: 7 } } );
+            STATE.dispatch( { namespace, type: 'ADD_PREV_DATES', payload: { num: 7 } } );
         }
     }
 
@@ -60,7 +62,7 @@ function DateList() {
         const { top, height } = next.getBoundingClientRect();
         if ( top + ( height * 0.9 ) < frameBounds.bottom ) {
             console.log( 'add_next_dates' )
-            STATE.dispatch( { type: 'ADD_NEXT_DATES', payload: { num: 7 } } );
+            STATE.dispatch( { namespace, type: 'ADD_NEXT_DATES', payload: { num: 7 } } );
         }
     }
 
@@ -73,6 +75,7 @@ function DateList() {
     REF.current.retrieveDatesRequestDone = ( dateFrom, dateTill, dataFromDB ) => {
 
         STATE.dispatch( { 
+            namespace,
             type: 'RETRIEVE_DATES_REQUEST_DONE',
             payload: { dateFrom, dateTill, dataFromDB },
 
@@ -82,6 +85,7 @@ function DateList() {
     REF.current.retrieveDatesRequestError = ( dateFrom, dateTill ) => {
 
         STATE.dispatch( { 
+            namespace,
             type: 'RETRIEVE_DATES_REQUEST_ERROR',
             payload: { dateFrom, dateTill },
 
@@ -92,7 +96,7 @@ function DateList() {
         if ( status.current.isBeforeFirstRequest ) {
             console.log( 'add_init_dates' )
             status.current = { isAfterFirstRequest: true };
-            STATE.dispatch( { type: 'ADD_INIT_DATES', payload: { num: 7 } } );
+            STATE.dispatch( { namespace, type: 'INITIALIZE_LIST', payload: { num: 7 } } );
 
         } else if ( status.current.isAfterFirstRequest ) {
             console.log( 'scrollToCentralDate' )
@@ -175,6 +179,7 @@ const ADate = React.memo( ( { aDate } ) => {  // to differ from native function 
             const uri = `/.netlify/functions/retrieve-dates?range=${strFrom}-${strTill}`;
             const method = 'GET';
 
+            //mockFetch( uri, { method } )
             realFetch( uri, { method } )
             .then( res => {
                 alert( JSON.stringify( res ) );
@@ -189,7 +194,7 @@ const ADate = React.memo( ( { aDate } ) => {  // to differ from native function 
 
     } );
 
-    const className = aDate.uiux.position.isCentral ? 'central' : '';
+    const className = aDate.uiux.isTheCentral ? 'central' : '';
 
     return (
         <li className={`ADate ${className}`}>

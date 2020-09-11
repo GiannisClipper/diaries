@@ -3,6 +3,8 @@ import '../styles/Settings.css';
 import { STATEContext } from './STATEContext';
 import { EditTool, DeleteTool } from './libs/Tools';
 
+const namespace = 'paymentGenres';
+
 function Settings() {
 
     return (
@@ -35,7 +37,7 @@ function PaymentGenreList() {
         if ( status.current.isBeforeFirstRequest ) {
             console.log( 'add_init_genres' )
             status.current = {};
-            STATE.dispatch( { type: 'ADD_INIT_PAYMENT_GENRES' } );
+            STATE.dispatch( { namespace, type: 'INITIALIZE_LIST' } );
         }
     } );
 

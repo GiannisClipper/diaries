@@ -5,6 +5,8 @@ import { REFContext } from './REFContext';
 import { Modal } from './libs/Modal';
 import { MenuTool, EditTool, AddNoteTool, AddPaymentTool, DeleteTool, CutTool, CopyTool, PasteTool, CloseTool } from './libs/Tools';
 
+const namespace = 'entries';
+
 function EntryMenuTool( { date, entry, inSequence } ) {
 
     const STATE = useContext( STATEContext );
@@ -12,14 +14,16 @@ function EntryMenuTool( { date, entry, inSequence } ) {
 
     REF.current.openMenu = ( event, date, inSequence ) => {
         STATE.dispatch( { 
-            type: 'OPEN_ENTRY_MENU',
+            namespace,
+            type: 'OPEN_MENU',
             payload: { date, inSequence },
         } );
     }
 
     REF.current.closeMenu = ( event, date, inSequence ) => {
         STATE.dispatch( { 
-            type: 'CLOSE_ENTRY_MENU',
+            namespace,
+            type: 'CLOSE_MENU',
             payload: { date, inSequence },
         } );
     }
