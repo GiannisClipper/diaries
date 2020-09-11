@@ -1,7 +1,7 @@
 import React, { createContext, useReducer, useEffect } from 'react';
 import { initState } from '../storage/schemas';
 import { datesReducer, entriesReducer } from '../storage/datesReducer';
-import paymentGenresReducer from '../storage/paymentGenresReducer';
+import paymentsReducer from '../storage/paymentsReducer';
 
 const STATEReducer = ( state, action ) => {
 
@@ -17,8 +17,8 @@ const STATEReducer = ( state, action ) => {
             data = entriesReducer( data, action );
             return { data, uiux };
     
-            } case 'paymentGenres': {
-            data = paymentGenresReducer( data, action );
+        } case 'payments': {
+            data = paymentsReducer( data, action );
             return { data, uiux };
 
         } default: {

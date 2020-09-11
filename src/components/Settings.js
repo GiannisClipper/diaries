@@ -3,7 +3,7 @@ import '../styles/Settings.css';
 import { STATEContext } from './STATEContext';
 import { EditTool, DeleteTool } from './libs/Tools';
 
-const namespace = 'paymentGenres';
+const namespace = 'payments';
 
 function Settings() {
 
@@ -31,13 +31,13 @@ function PaymentGenreList() {
 
     const STATE = useContext( STATEContext );
 
-    const { paymentGenres } = STATE.state.data;
+    const { genres } = STATE.state.data.payments;
 
     useEffect( () => {
         if ( status.current.isBeforeFirstRequest ) {
             console.log( 'add_init_genres' )
             status.current = {};
-            STATE.dispatch( { namespace, type: 'INITIALIZE_LIST' } );
+            STATE.dispatch( { namespace, type: 'INITIALIZE_GENRE_LIST' } );
         }
     } );
 
@@ -50,7 +50,7 @@ function PaymentGenreList() {
     return (
         <div className="PaymentGenreList">
             <ul>
-                { paymentGenres.map( genre => (
+                { genres.map( genre => (
                     <PaymentGenre index={++index} genre={genre} />
                 ) ) }
             </ul>

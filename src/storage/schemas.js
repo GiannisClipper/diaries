@@ -1,7 +1,10 @@
 const initState = {
     data: {
         dates: [],
-        paymentGenres: [],
+        payments: {
+            genres: [],
+            funds: [],
+        },
     },
     uiux: {
     }
@@ -39,18 +42,33 @@ const initEntry = () => ( {
     }
 } );
 
-const initPaymentGenre = () => ( {
-    data: {
-        id: null,
-        code: '',
-        name: '',
-        isIncoming: null,
-    },
-    uiux: {
-        db: {
-            isOnRequest: false,
+const initPayments = {
+    genre: () => ( {
+        data: {
+            id: null,
+            name: '',
+            code: '',
+            isIncoming: null,
+            isOutgoing: null,
         },
-    }
-} );
+        uiux: {
+            db: {
+                isOnRequest: false,
+            },
+        }
+    } ),
+    fund: () => ( {
+        data: {
+            id: null,
+            name: '',
+            code: '',
+        },
+        uiux: {
+            db: {
+                isOnRequest: false,
+            },
+        }
+    } )
+}
 
-export { initState, initDate, initEntry, initPaymentGenre };
+export { initState, initDate, initEntry, initPayments };
