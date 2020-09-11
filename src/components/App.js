@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import '../styles/libs/initialize.css';
 import '../styles/App.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -9,10 +10,10 @@ import { REFContext } from './REFContext';
 import DateList from './DateList';
 
 function App() {
-
     return (
         <STATEContextProvider>
         <REFContextProvider>
+        <BrowserRouter>
         <div className="App">
 
             <div className="title">
@@ -20,9 +21,15 @@ function App() {
                 <ScrollToCentralDate />
             </div>
 
-            <DateList />
+            {/* <DateList /> */}
+            <Switch>
+                <Route exact path='/dates' component={DateList} />
+                <Route render={() => (<Redirect to={{ pathname: '/dates' }} />)} />
+            </Switch>
+
 
         </div>
+        </BrowserRouter>
         </REFContextProvider>
         </STATEContextProvider>
     );
