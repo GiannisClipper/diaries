@@ -8,6 +8,7 @@ import { STATEContextProvider } from './STATEContext';
 import { REFContextProvider } from './REFContext';
 import { REFContext } from './REFContext';
 import DateList from './DateList';
+import Settings from './Settings';
 
 function App() {
     return (
@@ -24,6 +25,7 @@ function App() {
             {/* <DateList /> */}
             <Switch>
                 <Route exact path='/dates' component={DateList} />
+                <Route exact path='/settings' component={Settings} />
                 <Route render={() => (<Redirect to={{ pathname: '/dates' }} />)} />
             </Switch>
 

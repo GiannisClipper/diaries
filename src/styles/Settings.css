@@ -1,0 +1,32 @@
+.Settings {
+    width: 80%;
+    margin: auto;
+    height: 90vh;
+    overflow: auto;
+}
+
+.section {
+    width: 100%;
+    margin-top: .5em;
+    margin-bottom: .5em;
+    background-color: lightsteelblue;
+}
+
+.section :first-child {
+    width: 10em;
+    display: inline-block;
+    vertical-align: top;
+    padding: .5em;
+
+    color: lightcoral;
+    font-weight: 700;
+    text-align: left;
+}
+
+.section :last-child {
+    width: calc( 100% - 10em );
+    display: inline-block;
+    vertical-align: top;
+    padding: .5em;
+
+}
