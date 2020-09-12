@@ -1,23 +1,30 @@
 const fetch = require( 'node-fetch' );
 
-const realFetch = ( url, args ) => {
+const realFetch = async ( url, args ) => {
     args.headers = { 'Content-Type': 'application/json; charset=utf-8' };
 
-    let isError = false;
+    const error = { message: '' };
 
-    return fetch( url, args )
-        .then( res => {
-            if ( ![ 200, 201 ].includes( res.status ) ) {
-                isError = true
-            }
-            return res.json();
-        } )
-        .then( res => {
-            if ( isError ) {
-                throw new Error( res.message )
-            }
-            return res
-        } );
+    let res = await fetch( url, args );
+
+    if ( ![ 200, 201 ].includes( res.status ) ) {
+        error.message += `${res.status} ${res.statusText}`;
+    }
+  
+    try {
+        res = await res.json();
+    } catch( err ) {
+        res = {};
+    }
+
+    if ( error.message !== '' ) {
+        const message = res.message && res.message !== error.message 
+            ? `${error.message} (${res.message})`
+            : error.message;
+        throw new Error( message );
+    }
+ 
+    return res;
 }
 
 const mockFetch = ( url, args ) => {
