@@ -1,0 +1,14 @@
+.payments.GenreMenu {
+    width: 4em;
+    display: inline-block;
+    vertical-align: top;
+    text-align: left;
+    padding: 0;
+}
+
+.payments.GenreMenu * {
+    color: lightcoral;
+    width: 1.75em;
+    height: 1.75em;
+    padding: .25em;
+}

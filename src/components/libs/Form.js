@@ -7,10 +7,10 @@ import { Loader } from './Loader';
 function Field( { className, label, children } ) {
     return (
         <div className={`Field ${className}`}>
-            <span>
+            <span className='label'>
                 {label}
             </span>
-            <span>
+            <span className='value'>
                 {children}
             </span>
         </div>

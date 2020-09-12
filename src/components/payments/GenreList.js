@@ -3,6 +3,7 @@ import '../../styles/payments/GenreList.css';
 import { STATEContext } from '../STATEContext';
 import { REFContext } from '../REFContext';
 import { EditTool, DeleteTool } from '../libs/Tools';
+import GenreMenu from './GenreMenu';
 import GenreForm from './GenreForm';
 
 const namespace = 'payments';
@@ -45,7 +46,7 @@ function Genre( { index, genre } ) {
     const STATE = useContext( STATEContext );
     const REF = useContext( REFContext );
 
-    const openForm = ( genre, index, mode ) => {
+    const openForm = mode => {
         REF.current.saved = { genre };
 
         STATE.dispatch( { 
@@ -55,7 +56,7 @@ function Genre( { index, genre } ) {
         } );
     }
 
-    const closeForm = ( index ) => {
+    const closeForm = () => {
         STATE.dispatch( { 
             namespace,
             type: 'CLOSE_FORM',
@@ -74,12 +75,9 @@ function Genre( { index, genre } ) {
                 {`${genre.data.isIncoming ? 'Ε' : 'Π'} ${genre.data.code} ${genre.data.name}`}
             </div>
 
-            <div className='menu'>
-                <EditTool onClick={event => openForm( genre, index, mode )} />
-                <DeleteTool onClick={event => openForm( genre, index, { isDelete: true } )} />
-            </div>
+            <GenreMenu openForm={openForm} mode={mode} />
 
-            {genre.uiux.form.isOpen ? <GenreForm genre={genre} /> : null}
+            {genre.uiux.form.isOpen ? <GenreForm genre={genre} index={index} closeForm={closeForm} /> : null}
 
         </li> 
     );

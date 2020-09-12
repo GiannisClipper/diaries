@@ -1,7 +1,7 @@
 .Form {
     position: fixed;
     width: 80%;
-    top: 50%;
+    top: calc( 100% * 0.4 );
     left: 50%;
     transform: translate( -50%, -50% );
     padding-top: 1em;
@@ -18,23 +18,25 @@
     background-color: lightskyblue;
 }
 
-.Form .Field.buttons {
-    background-color: transparent;
-}
-
-.Form .Field > span:nth-child(1) {
+.Form .Field > .label {
     vertical-align: top;
     display: inline-block;
     width: 6em;
-    height: 100%;
     padding: .5em;
+    background-color: inherit;
+}
+
+.Form .Field > .value {
+    vertical-align: top;
+    display: inline-block;
+    width: calc( 100% - 6em );
+    padding: .5em;
+    background-color: white;
 }
 
 .Form .Field input,
 .Form .Field textarea {
-    width: calc( 100% - 6em );
-    padding: .5em;
-    background-color: white;
+    width: inherit;
 }
 
 .Form.delete .Field input,
@@ -42,9 +44,16 @@
     pointer-events: none;
 }
 
+.Form .Field.buttons,
+.Form .Field.buttons .label,
+.Form .Field.buttons .value {
+    padding: 0;
+    background-color: transparent;
+}
+
 .Form .Field.buttons button {
     display: inline-block;
-    width: calc( 50% - 3.5em );
+    width: calc( 50% - .5em );
     height: 2.5em;
     padding: .5em;
 }

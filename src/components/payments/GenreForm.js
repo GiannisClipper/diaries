@@ -3,14 +3,14 @@ import '../../styles/payments/GenreForm.css';
 import { Modal } from '../libs/Modal';
 import { CRUDForm, Field } from '../libs/Form';
 
-function GenreForm( { genre, index } ) {
+function GenreForm( { genre, index, closeForm } ) {
 
     let className = 'payments GenreForm';
 
     const [ data, setData ] = useState( { ...genre.data } );
 
     const onClickOk = () => null;
-    const onClickCancel = () => null;
+    const onClickCancel = closeForm;
 
     return (
         <Modal>
@@ -22,6 +22,14 @@ function GenreForm( { genre, index } ) {
                 isOnRequest={genre.uiux.db.isOnRequest}
 
             >
+                <Field className="id" label="Id">
+                    <input 
+                        value={data.id}
+                        tabIndex="-1"
+                        readOnly
+                    />
+                </Field>
+
                 <Field className="name" label="Ονομασία">
                     <input
                         value={data.name}
@@ -29,24 +37,30 @@ function GenreForm( { genre, index } ) {
                     />
                 </Field>
 
-                <Field className="code" label="Κωδικός">
+                <Field className="is" label="Εγγραφές">
+                    <div className="isIncoming">
+                        <input 
+                            type="checkbox" 
+                            checked={data.isIncoming}
+                            onChange={event => setData( { ...data, isIncoming: event.target.checked } )}
+                        />
+                        Εισπράξεων
+                    </div>
+ 
+                    <div className="isOutgoing">
+                        <input 
+                            type="checkbox" 
+                            checked={data.isOutgoing}
+                            onChange={event => setData( { ...data, isOutgoing: event.target.checked } )}
+                        />
+                        Πληρωμών
+                    </div>
+                </Field>
+
+                <Field className="code" label="Λογ.Κωδικ.">
                     <input
                         value={data.code}
                         onChange={event => setData( { ...data, code: event.target.value } )}
-                    />
-                </Field>
-
-                <Field className="isIncoming" label="Εισπράξεων">
-                    <input
-                        value={data.isIncoming}
-                        onChange={event => setData( { ...data, isIncoming: event.target.value } )}
-                    />
-                </Field>
-
-                <Field className="isOutgoing" label="Πληρωμών">
-                    <input
-                        value={data.isOutgoing}
-                        onChange={event => setData( { ...data, isOutgoing: event.target.value } )}
                     />
                 </Field>
 

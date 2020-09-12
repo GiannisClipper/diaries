@@ -1,3 +1,20 @@
-payments.GenreForm .Field.id input {
+.payments.GenreForm .Field.id input {
     color: darkgrey;
+}
+
+.payments.GenreForm .Field .isIncoming,
+.payments.GenreForm .Field .isOutgoing {
+    display: inline-block;
+    padding-right: 1em;
+}
+
+.payments.GenreForm input[type=checkbox] {
+    margin-right: .5em;
+
+    /* scale checkboxes */
+    -ms-transform: scale(1.25); /* IE */
+    -moz-transform: scale(1.25); /* FF */
+    -webkit-transform: scale(1.25); /* Safari and Chrome */
+    -o-transform: scale(1.25); /* Opera */
+    transform: scale(1.25);
 }
