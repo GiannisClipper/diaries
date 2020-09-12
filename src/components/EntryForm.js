@@ -3,7 +3,7 @@ import '../styles/EntryForm.css';
 import { REFContext } from './REFContext';
 import { dayNames } from '../helpers/dates';
 import { Modal } from './libs/Modal';
-import { Form, Field } from './libs/Form';
+import { CRUDForm, Field } from './libs/Form';
 
 function EntryForm( { className, date, entry, inSequence, data, children } ) {
 
@@ -16,25 +16,6 @@ function EntryForm( { className, date, entry, inSequence, data, children } ) {
         date.getFullYear()
     );
 
-    let okLabel, cancelLabel;
-
-    className = `${className} EntryForm`;
-    okLabel = 'Επιβεβαίωση';
-    cancelLabel = 'Ακύρωση';
-
-    if ( entry.uiux.mode.isCreate ) {
-        className += ' create';
-        okLabel += ' νέας εγγραφής';
-
-    } else if ( entry.uiux.mode.isUpdate ) {
-        className += ' update';
-        okLabel += ' τροποποίησης';
-
-    } else if ( entry.uiux.mode.isDelete ) {
-        className += ' delete';
-        okLabel += ' διαγραφής';
-    }
-
     const onClickOk = event => {
         entry.data = { ...data };
         REF.current.entryRequest( date, inSequence );
@@ -44,10 +25,9 @@ function EntryForm( { className, date, entry, inSequence, data, children } ) {
 
     return (
         <Modal>
-            <Form
+            <CRUDForm
                 className={className}
-                okLabel={okLabel}
-                cancelLabel={cancelLabel}
+                mode={entry.uiux.mode}
                 onClickOk={onClickOk}
                 onClickCancel={onClickCancel}
                 isOnRequest={entry.uiux.db.isOnRequest}
@@ -70,7 +50,7 @@ function EntryForm( { className, date, entry, inSequence, data, children } ) {
 
                 {children}
 
-            </Form>
+            </CRUDForm>
         </Modal>
     );
 }

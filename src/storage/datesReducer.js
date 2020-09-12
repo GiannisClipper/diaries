@@ -235,7 +235,7 @@ const entriesReducer = ( data, action ) => {
 
             return { ...data, dates };
 
-        } case 'OPEN_ENTRY_MENU': {
+        } case 'OPEN_MENU': {
 
             dates = [ ...data.dates ];
             const { date, inSequence } = action.payload;
@@ -415,7 +415,7 @@ const entriesReducer = ( data, action ) => {
             return { ...data, dates };
 
         } default: {
-            throw new Error();
+            throw new Error( action.type );
     }
     }
 }

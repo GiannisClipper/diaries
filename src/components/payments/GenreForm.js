@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../../styles/payments/GenreForm.css';
 import { Modal } from '../libs/Modal';
-import { Form, Field } from '../libs/Form';
+import { CRUDForm, Field } from '../libs/Form';
 
 function GenreForm( { genre, index } ) {
 
@@ -9,33 +9,14 @@ function GenreForm( { genre, index } ) {
 
     const [ data, setData ] = useState( { ...genre.data } );
 
-    let okLabel, cancelLabel;
-
-    okLabel = 'Επιβεβαίωση';
-    cancelLabel = 'Ακύρωση';
-
-    if ( genre.uiux.mode.isCreate ) {
-        className += ' create';
-        okLabel += ' νέας εγγραφής';
-
-    } else if ( genre.uiux.mode.isUpdate ) {
-        className += ' update';
-        okLabel += ' τροποποίησης';
-
-    } else if ( genre.uiux.mode.isDelete ) {
-        className += ' delete';
-        okLabel += ' διαγραφής';
-    }
-
     const onClickOk = () => null;
     const onClickCancel = () => null;
 
     return (
         <Modal>
-            <Form
+            <CRUDForm
                 className={className}
-                okLabel={okLabel}
-                cancelLabel={cancelLabel}
+                mode={genre.uiux.mode}
                 onClickOk={onClickOk}
                 onClickCancel={onClickCancel}
                 isOnRequest={genre.uiux.db.isOnRequest}
@@ -69,7 +50,7 @@ function GenreForm( { genre, index } ) {
                     />
                 </Field>
 
-            </Form>
+            </CRUDForm>
         </Modal>
     );
 }

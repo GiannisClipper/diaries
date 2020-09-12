@@ -45,4 +45,38 @@ function Form( { className, okLabel, cancelLabel, onClickOk, onClickCancel, isOn
     );
 }
 
-export { Field, Form };
+function CRUDForm( { className, mode, onClickOk, onClickCancel, isOnRequest, children } ) {
+
+    let okLabel, cancelLabel;
+
+    okLabel = 'Επιβεβαίωση';
+    cancelLabel = 'Ακύρωση';
+
+    if ( mode.isCreate ) {
+        className += ' create';
+        okLabel += ' νέας εγγραφής';
+
+    } else if ( mode.isUpdate ) {
+        className += ' update';
+        okLabel += ' τροποποίησης';
+
+    } else if ( mode.isDelete ) {
+        className += ' delete';
+        okLabel += ' διαγραφής';
+    }
+
+    return (
+        <Form
+            className={className}
+            okLabel={okLabel}
+            cancelLabel={cancelLabel}
+            onClickOk={onClickOk}
+            onClickCancel={onClickCancel}
+            isOnRequest={isOnRequest}
+        >
+            {children}
+        </Form>
+    );
+}
+
+export { Field, Form, CRUDForm };
