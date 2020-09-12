@@ -3,13 +3,18 @@ import '../../styles/payments/GenreForm.css';
 import { Modal } from '../libs/Modal';
 import { CRUDForm, Field } from '../libs/Form';
 
-function GenreForm( { genre, index, closeForm } ) {
+function GenreForm( { genre, index, closeForm, doRequest } ) {
 
     let className = 'payments GenreForm';
 
     const [ data, setData ] = useState( { ...genre.data } );
+    //const changes = Object.keys( data ).filter( x => data[ x ] !== genre.data[ x ] );
 
-    const onClickOk = () => null;
+    const onClickOk = event => {
+        genre.data = { ...data };
+        doRequest( genre, index );
+    }
+
     const onClickCancel = closeForm;
 
     return (

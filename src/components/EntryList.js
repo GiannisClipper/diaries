@@ -123,7 +123,6 @@ function Entry( { date, entry, inSequence } ) {
     }
 
     const createRequestDone = ( date, inSequence, dataFromDB ) => {
-
         STATE.dispatch( { 
             namespace,
             type: 'CREATE_REQUEST_DONE',
@@ -132,7 +131,6 @@ function Entry( { date, entry, inSequence } ) {
     }
 
     const createRequestError = ( date, inSequence ) => {
-
         STATE.dispatch( { 
             namespace,
             type: 'CREATE_REQUEST_ERROR',
@@ -141,7 +139,6 @@ function Entry( { date, entry, inSequence } ) {
     }
 
     const updateRequestDone = ( date, inSequence, dataFromDB ) => {
-
         STATE.dispatch( {
             namespace, 
             type: 'UPDATE_REQUEST_DONE',
@@ -150,7 +147,6 @@ function Entry( { date, entry, inSequence } ) {
     }
 
     const updateRequestError = ( date, inSequence ) => {
-
         STATE.dispatch( { 
             namespace,
             type: 'UPDATE_REQUEST_ERROR',
@@ -159,7 +155,6 @@ function Entry( { date, entry, inSequence } ) {
     }
 
     const deleteRequestDone = ( date, inSequence, dataFromDB ) => {
-
         STATE.dispatch( { 
             namespace,
             type: 'DELETE_REQUEST_DONE',
@@ -168,7 +163,6 @@ function Entry( { date, entry, inSequence } ) {
     }
 
     const deleteRequestError = ( date, inSequence ) => {
-
         STATE.dispatch( { 
             namespace,
             type: 'DELETE_REQUEST_ERROR',
