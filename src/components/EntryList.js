@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBan } from '@fortawesome/free-solid-svg-icons';
 
 import { Loader } from './libs/Loader';
-import { EntryMenuTool, BlankEntryMenu, EntryMenu } from './EntryMenu';
+import { EntryMenuTool, BlankEntryMenu, ExistEntryMenu } from './EntryMenu';
 import NoteForm from './NoteForm';
 import PaymentForm from './PaymentForm';
 
@@ -34,37 +34,6 @@ function Entry( { date, entry, inSequence } ) {
     const STATE = useContext( STATEContext );
     const REF = useContext( REFContext );
 
-    REF.current.cutEntry = ( date, entry, inSequence ) => {
-        REF.current.cut = { date, inSequence };
-        REF.current.copy = null;
-        REF.current.paste = null;
-
-        REF.current.saved = { date, entry, inSequence };
-    }
-
-    REF.current.copyEntry = ( date, entry, inSequence ) => {
-        REF.current.cut = null;
-        REF.current.copy = { date, inSequence };
-        REF.current.paste = null;
-
-        REF.current.saved = { date, entry, inSequence };
-    }
-
-    REF.current.pasteEntry = ( date, entry, inSequence ) => {
-        REF.current.paste = { date, inSequence };
-
-        const { cut, copy, paste } = REF.current;
-
-        if ( cut ) {
-            STATE.dispatch( { namespace, type: 'MOVE_ENTRY', payload: { cut, paste } } );
-            REF.current.copy = { ...cut };
-            REF.current.cut = null;
-
-        } else if ( copy ) {
-            STATE.dispatch( { namespace, type: 'COPY_ENTRY', payload: { copy, paste } } );
-        }
-    }
-
     const dragStart = ( event, date, entry, inSequence ) => {
         REF.current.cutEntry( date, entry, inSequence );
         event.dataTransfer.effectAllowed = 'move';
@@ -79,7 +48,54 @@ function Entry( { date, entry, inSequence } ) {
         REF.current.pasteEntry( date, entry, inSequence );
     }
 
-    REF.current.openEntryForm = ( event, date, entry, inSequence, type, mode ) => {
+    const doCut = ( date, entry, inSequence ) => {
+        REF.current.cut = { date, inSequence };
+        REF.current.copy = null;
+        REF.current.paste = null;
+
+        REF.current.saved = { date, entry, inSequence };
+    }
+
+    const doCopy = ( date, entry, inSequence ) => {
+        REF.current.cut = null;
+        REF.current.copy = { date, inSequence };
+        REF.current.paste = null;
+
+        REF.current.saved = { date, entry, inSequence };
+    }
+
+    const doPaste = ( date, entry, inSequence ) => {
+        REF.current.paste = { date, inSequence };
+
+        const { cut, copy, paste } = REF.current;
+
+        if ( cut ) {
+            STATE.dispatch( { namespace, type: 'MOVE_ENTRY', payload: { cut, paste } } );
+            REF.current.copy = { ...cut };
+            REF.current.cut = null;
+
+        } else if ( copy ) {
+            STATE.dispatch( { namespace, type: 'COPY_ENTRY', payload: { copy, paste } } );
+        }
+    }
+
+    const openMenu = ( event, date, inSequence ) => {
+        STATE.dispatch( { 
+            namespace,
+            type: 'OPEN_MENU',
+            payload: { date, inSequence },
+        } );
+    }
+
+    const closeMenu = ( event, date, inSequence ) => {
+        STATE.dispatch( { 
+            namespace,
+            type: 'CLOSE_MENU',
+            payload: { date, inSequence },
+        } );
+    }
+
+    const openForm = ( event, date, entry, inSequence, type, mode ) => {
         REF.current.saved = { date, entry, inSequence };
 
         STATE.dispatch( { 
@@ -90,8 +106,7 @@ function Entry( { date, entry, inSequence } ) {
     }
 
 
-    REF.current.closeEntryForm = ( event, date, inSequence ) => {
-        //event.stopPropagation()
+    const closeForm = ( event, date, inSequence ) => {
         STATE.dispatch( { 
             namespace,
             type: 'CLOSE_FORM',
@@ -99,7 +114,7 @@ function Entry( { date, entry, inSequence } ) {
         } );
     }
 
-    REF.current.entryRequest = ( date, inSequence ) => {
+    const doRequest = ( date, inSequence ) => {
         STATE.dispatch( { 
             namespace,
             type: 'REQUEST',
@@ -107,7 +122,7 @@ function Entry( { date, entry, inSequence } ) {
         } );
     }
 
-    REF.current.createEntryRequestDone = ( date, inSequence, dataFromDB ) => {
+    const createRequestDone = ( date, inSequence, dataFromDB ) => {
 
         STATE.dispatch( { 
             namespace,
@@ -116,7 +131,7 @@ function Entry( { date, entry, inSequence } ) {
         } );
     }
 
-    REF.current.createEntryRequestError = ( date, inSequence ) => {
+    const createRequestError = ( date, inSequence ) => {
 
         STATE.dispatch( { 
             namespace,
@@ -125,7 +140,7 @@ function Entry( { date, entry, inSequence } ) {
         } );
     }
 
-    REF.current.updateEntryRequestDone = ( date, inSequence, dataFromDB ) => {
+    const updateRequestDone = ( date, inSequence, dataFromDB ) => {
 
         STATE.dispatch( {
             namespace, 
@@ -134,7 +149,7 @@ function Entry( { date, entry, inSequence } ) {
         } );
     }
 
-    REF.current.updateEntryRequestError = ( date, inSequence ) => {
+    const updateRequestError = ( date, inSequence ) => {
 
         STATE.dispatch( { 
             namespace,
@@ -143,7 +158,7 @@ function Entry( { date, entry, inSequence } ) {
         } );
     }
 
-    REF.current.deleteEntryRequestDone = ( date, inSequence, dataFromDB ) => {
+    const deleteRequestDone = ( date, inSequence, dataFromDB ) => {
 
         STATE.dispatch( { 
             namespace,
@@ -152,7 +167,7 @@ function Entry( { date, entry, inSequence } ) {
         } );
     }
 
-    REF.current.deleteEntryRequestError = ( date, inSequence ) => {
+    const deleteRequestError = ( date, inSequence ) => {
 
         STATE.dispatch( { 
             namespace,
@@ -171,32 +186,32 @@ function Entry( { date, entry, inSequence } ) {
                 inSequence: inSequence
             };
 
-            const requestArgs = {};
+            let url, method, idInResponse, onDone, onError;
 
             if ( entry.uiux.mode.isCreate ) {
-                requestArgs.url = `/.netlify/functions/create-entry`;
-                requestArgs.method = 'POST';
-                requestArgs.idInResponse = res => res.insertedId;
-                requestArgs.onDone = REF.current.createEntryRequestDone;
-                requestArgs.onError = REF.current.createEntryRequestError;
+                url = `/.netlify/functions/create-entry`;
+                method = 'POST';
+                idInResponse = res => res.insertedId;
+                onDone = createRequestDone;
+                onError = createRequestError;
 
             } else if ( entry.uiux.mode.isUpdate ) {
-                requestArgs.url = `/.netlify/functions/update-entry?id=${entry.data.id}`;
-                requestArgs.method = 'PUT';
-                requestArgs.idInResponse = () => entry.data.id;
-                requestArgs.onDone = REF.current.updateEntryRequestDone;
-                requestArgs.onError = REF.current.updateEntryRequestError;
+                url = `/.netlify/functions/update-entry?id=${entry.data.id}`;
+                method = 'PUT';
+                idInResponse = () => entry.data.id;
+                onDone = updateRequestDone;
+                onError = updateRequestError;
 
             } else if ( entry.uiux.mode.isDelete ) {
-                requestArgs.url = `/.netlify/functions/delete-entry?id=${entry.data.id}`;
-                requestArgs.method = 'DELETE';
-                requestArgs.idInResponse = () => entry.data.id;
-                requestArgs.onDone = REF.current.deleteEntryRequestDone;
-                requestArgs.onError = REF.current.deleteEntryRequestError;
+                url = `/.netlify/functions/delete-entry?id=${entry.data.id}`;
+                method = 'DELETE';
+                idInResponse = () => entry.data.id;
+                onDone = deleteRequestDone;
+                onError = deleteRequestError;
             }
 
-            realFetch( requestArgs.url , {
-                method: requestArgs.method,
+            realFetch( url , {
+                method: method,
                 body: JSON.stringify( {
                     oldSaved: { date: dateToYYYYMMDD( REF.current.saved.date ), inSequence: REF.current.saved.inSequence },
                     newSaved: { date: dateToYYYYMMDD( date ), inSequence },
@@ -205,12 +220,12 @@ function Entry( { date, entry, inSequence } ) {
             } )
             .then( res => {
                 alert( JSON.stringify( res ) );
-                const dataFromDB = { ...dataToDB, _id: requestArgs.idInResponse( res ) };
-                requestArgs.onDone( date, inSequence, dataFromDB );
+                const dataFromDB = { ...dataToDB, _id: idInResponse( res ) };
+                onDone( date, inSequence, dataFromDB );
             } )
             .catch( err => { 
                 alert( err );
-                requestArgs.onError( date, inSequence, {} );
+                onError( date, inSequence, {} );
             } );
         }
 
@@ -251,21 +266,53 @@ function Entry( { date, entry, inSequence } ) {
                 ? <Loader />
                 : entry.uiux.status.isSuspended
                 ? <FontAwesomeIcon icon={ faBan } className="icon" />
-                : <EntryMenuTool date={date} entry={entry} inSequence={inSequence} />
+                : <EntryMenuTool date={date} entry={entry} inSequence={inSequence} openMenu={openMenu} />
             }
 
             {!entry.uiux.menu.isOpen 
                 ? null
                 : !entry.data.id
-                ? <BlankEntryMenu date={date} entry={entry} inSequence={inSequence} />
-                : <EntryMenu date={date} entry={entry} inSequence={inSequence} />
+                ? 
+                <BlankEntryMenu 
+                    date={date} 
+                    entry={entry} 
+                    inSequence={inSequence}
+                    openForm={openForm}
+                    closeMenu={closeMenu}
+                    doPaste={doPaste}
+                />
+                : 
+                <ExistEntryMenu 
+                    date={date} 
+                    entry={entry} 
+                    inSequence={inSequence}
+                    openForm={openForm}
+                    closeMenu={closeMenu}
+                    doCut={doCut}
+                    doCopy={doCopy}
+                    doPaste={doPaste}
+                />
             }
 
             {!entry.uiux.form.isOpen 
                 ? null
                 : !entry.uiux.type.isPayment
-                ? <NoteForm date={date} entry={entry} inSequence={inSequence} /> 
-                : <PaymentForm date={date} entry={entry} inSequence={inSequence} /> 
+                ?
+                <NoteForm 
+                    date={date} 
+                    entry={entry} 
+                    inSequence={inSequence} 
+                    doRequest={doRequest}
+                    closeForm={closeForm}
+                /> 
+                : 
+                <PaymentForm 
+                    date={date} 
+                    entry={entry} 
+                    inSequence={inSequence} 
+                    doRequest={doRequest}
+                    closeForm={closeForm}
+                /> 
             }
 
         </li> 

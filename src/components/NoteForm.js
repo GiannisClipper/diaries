@@ -3,7 +3,7 @@ import '../styles/NoteForm.css';
 import EntryForm from './EntryForm';
 import { Field } from './libs/Form';
 
-function NoteForm( { date, entry, inSequence } ) {
+function NoteForm( { date, entry, inSequence, doRequest, closeForm } ) {
 
     const className = 'NoteForm';
 
@@ -16,6 +16,8 @@ function NoteForm( { date, entry, inSequence } ) {
             entry={entry}
             inSequence={inSequence}
             data={data}
+            doRequest={doRequest}
+            closeForm={closeForm}
         >
             <Field className="note" label="Σημείωμα">
                 <textarea

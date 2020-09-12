@@ -4,7 +4,7 @@ import EntryForm from './EntryForm';
 import { Field } from './libs/Form';
 import { InputNumber, InputFromList } from './libs/Inputs';
 
-function PaymentForm( { date, entry, inSequence } ) {
+function PaymentForm( { date, entry, inSequence, doRequest, closeForm } ) {
 
     const className = 'PaymentForm';
 
@@ -17,6 +17,8 @@ function PaymentForm( { date, entry, inSequence } ) {
             entry={entry}
             inSequence={inSequence}
             data={data}
+            doRequest={doRequest}
+            closeForm={closeForm}
         >
             <Field className="genre" label="Λογαριασμός">
                 <InputFromList

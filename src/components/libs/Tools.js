@@ -68,12 +68,13 @@ const CopyTool = ( { onClick } ) =>
         onClick={onClick}
     />
 
-const PasteTool = ( { onClick } ) => 
+const PasteTool = ( { onClick, disabled } ) => 
     <Tool 
         className='Paste'
         icon={faClone} 
         title='Επικόλληση'
         onClick={onClick}
+        disabled={disabled}
     />
 
 const CloseTool = ( { onClick } ) => 

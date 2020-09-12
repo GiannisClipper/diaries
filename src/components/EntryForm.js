@@ -1,13 +1,10 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import '../styles/EntryForm.css';
-import { REFContext } from './REFContext';
 import { dayNames } from '../helpers/dates';
 import { Modal } from './libs/Modal';
 import { CRUDForm, Field } from './libs/Form';
 
-function EntryForm( { className, date, entry, inSequence, data, children } ) {
-
-    const REF = useContext( REFContext );
+function EntryForm( { className, date, entry, inSequence, data, doRequest, closeForm, children } ) {
 
     const dateInfo = (
         dayNames[ date.getDay() ] + ' ' +
@@ -18,10 +15,10 @@ function EntryForm( { className, date, entry, inSequence, data, children } ) {
 
     const onClickOk = event => {
         entry.data = { ...data };
-        REF.current.entryRequest( date, inSequence );
+        doRequest( date, inSequence );
     }
 
-    const onClickCancel = event => REF.current.closeEntryForm( event, date, inSequence );
+    const onClickCancel = event => closeForm( event, date, inSequence );
 
     return (
         <Modal>
