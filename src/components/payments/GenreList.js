@@ -28,7 +28,7 @@ function GenreList( { className } ) {
     } );
 
     useEffect( () => {
-        console.log( 'Has rendered. ', 'PaymentGenreList' );
+        console.log( 'Has rendered. ', 'payments/GenreList' );
     } );
 
     let index = -1;
@@ -37,7 +37,7 @@ function GenreList( { className } ) {
         <div className={`payments GenreList ${className}`}>
             <ul>
                 { genres.map( genre => (
-                    <Genre index={++index} genre={genre} />
+                    <Genre key={++index} index={index} genre={genre} />
                 ) ) }
             </ul>
         </div>
@@ -140,66 +140,59 @@ function Genre( { index, genre } ) {
     }
 
     useEffect( () => {
-        if ( genre.uiux.db.isOnRequest && Object.keys( genre.uiux.mode ).length !== 0 ) {
-            console.log( 'Requesting... ', genre.uiux.mode, genre.data.id )
+        if ( genre.uiux.db.isOnRequest ) {
 
-            const dataToDB = parseGenreToDB( genre.data );
+            const doFetch = ( url, args, onDone, onError, dataFromDB ) => {
+                console.log( 'Requesting... ', genre.uiux.mode, genre.data.id )
 
-            let url, method, idInResponse, onDone, onError;
-
-            if ( genre.uiux.mode.isRetrieveAll ) {
-                url = `/.netlify/functions/payments-genre`;
-                method = 'GET';
-                onDone = retrieveAllRequestDone;
-                onError = retrieveAllRequestError;
-
-                realFetch( url , { method } )
+                realFetch( url, args )
                 .then( res => {
                     alert( JSON.stringify( res ) );
-                    const dataFromDB = res;
-                    onDone( dataFromDB );
+                    onDone( dataFromDB( res ) );
                 } )
                 .catch( err => { 
                     alert( err );
                     onError();
                 } );
+            }
 
-            } else {
-                if ( genre.uiux.mode.isCreate ) {
-                    url = `/.netlify/functions/payments-genre`;
-                    method = 'POST';
-                    idInResponse = res => res.insertedId;
-                    onDone = createRequestDone;
-                    onError = createRequestError;    
-        
-                } else if ( genre.uiux.mode.isUpdate ) {
-                    url = `/.netlify/functions/payments-genre?id=${genre.data.id}`;
-                    method = 'PUT';
-                    idInResponse = () => genre.data.id;
-                    onDone = updateRequestDone;
-                    onError = updateRequestError;
+            if ( genre.uiux.mode.isCreate ) {
+                const url = `/.netlify/functions/payments-genre`;
+                const dataToDB = parseGenreToDB( genre.data );
+                const args = { method: 'POST', body: JSON.stringify( { data: dataToDB } ) };
+                const onDone = createRequestDone;
+                const onError = createRequestError;
+                const idInResponse = res => res.insertedId;
+                const dataFromDB = res => ( { ...dataToDB, _id: idInResponse( res ) } );
+                doFetch( url, args, onDone, onError, dataFromDB );
 
-                } else if ( genre.uiux.mode.isDelete ) {
-                    url = `/.netlify/functions/payments-genre?id=${genre.data.id}`;
-                    method = 'DELETE';
-                    idInResponse = () => genre.data.id;
-                    onDone = deleteRequestDone;
-                    onError = deleteRequestError;
-                }
+            } else if ( genre.uiux.mode.isRetrieveAll ) {
+                const url = `/.netlify/functions/payments-genre`;
+                const args = { method: 'GET' };
+                const onDone = retrieveAllRequestDone;
+                const onError = retrieveAllRequestError;
+                const dataFromDB = res => res;
+                doFetch( url, args, onDone, onError, dataFromDB );
 
-                realFetch( url , {
-                    method: method,
-                    body: JSON.stringify( { data: dataToDB } )
-                } )
-                .then( res => {
-                    alert( JSON.stringify( res ) );
-                    const dataFromDB = { ...dataToDB, _id: idInResponse( res ) };
-                    onDone( index, dataFromDB );
-                } )
-                .catch( err => { 
-                    alert( err );
-                    onError( index );
-                } );
+            } else if ( genre.uiux.mode.isUpdate ) {
+                const url = `/.netlify/functions/payments-genre?id=${genre.data.id}`;
+                const dataToDB = parseGenreToDB( genre.data );
+                const args = { method: 'PUT', body: JSON.stringify( { data: dataToDB } ) };
+                const onDone = updateRequestDone;
+                const onError = updateRequestError;
+                const idInResponse = res => genre.data.id;
+                const dataFromDB = res => ( { ...dataToDB, _id: idInResponse( res ) } );
+                doFetch( url, args, onDone, onError, dataFromDB );
+
+            } else if ( genre.uiux.mode.isDelete ) {
+                const url = `/.netlify/functions/payments-genre?id=${genre.data.id}`;
+                const dataToDB = parseGenreToDB( genre.data );
+                const args = { method: 'DELETE', body: JSON.stringify( { data: dataToDB } ) };
+                const onDone = deleteRequestDone;
+                const onError = deleteRequestError;
+                const idInResponse = () => genre.data.id;
+                const dataFromDB = res => ( { ...dataToDB, _id: idInResponse( res ) } );
+                doFetch( url, args, onDone, onError, dataFromDB );
             }
         }
     } );

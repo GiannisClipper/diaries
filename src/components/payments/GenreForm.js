@@ -29,7 +29,7 @@ function GenreForm( { genre, index, closeForm, doRequest } ) {
             >
                 <Field className="id" label="Id">
                     <input 
-                        value={data.id}
+                        value={data.id || ''}
                         tabIndex="-1"
                         readOnly
                     />
