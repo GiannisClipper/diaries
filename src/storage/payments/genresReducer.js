@@ -62,12 +62,32 @@ const genresReducer = ( data, action ) => {
             payments = { ...payments, genres };
             return { ...data, payments };
 
-        } case 'DO_REQUEST': {
+        } case 'DO_VALIDATE': {
+            let payments = { ...data.payments };
+            let genres = [ ...payments.genres ];
+            const { index } = action.payload;
+
+            genres[ index ].uiux.process = { isOnValidate: true };
+
+            payments = { ...payments, genres };
+            return { ...data, payments };
+
+        } case 'VALIDATE_DONE': {
             let payments = { ...data.payments };
             let genres = [ ...payments.genres ];
             const { index } = action.payload;
 
             genres[ index ].uiux.process = { isOnRequest: true };
+
+            payments = { ...payments, genres };
+            return { ...data, payments };
+
+        } case 'VALIDATE_ERROR': {
+            let payments = { ...data.payments };
+            let genres = [ ...payments.genres ];
+            const { index } = action.payload;
+
+            genres[ index ].uiux.process = {};
 
             payments = { ...payments, genres };
             return { ...data, payments };

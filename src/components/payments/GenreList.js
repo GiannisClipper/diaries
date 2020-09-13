@@ -37,17 +37,19 @@ function GenreList( { className } ) {
         <div className={`payments GenreList ${className}`}>
             <ul>
                 { genres.map( genre => (
-                    <Genre key={++index} index={index} genre={genre} />
+                    <Genre key={++index} index={index} genres={genres} />
                 ) ) }
             </ul>
         </div>
     );
 }
 
-function Genre( { index, genre } ) {
+function Genre( { index, genres } ) {
 
     const STATE = useContext( STATEContext );
     const REF = useContext( REFContext );
+
+    const genre = genres[ index ];
 
     const openForm = mode => {
         REF.current.saved = { genre };
@@ -64,14 +66,6 @@ function Genre( { index, genre } ) {
             namespace,
             type: 'CLOSE_FORM',
             payload: { index },
-        } );
-    }
-
-    const doRequest = ( genre, index ) => {
-        STATE.dispatch( { 
-            namespace,
-            type: 'DO_REQUEST',
-            payload: { genre, index },
         } );
     }
 
@@ -140,6 +134,7 @@ function Genre( { index, genre } ) {
     }
 
     useEffect( () => {
+
         if ( genre.uiux.process.isOnRequest ) {
 
             const doFetch = ( url, args, onDone, onError, dataFromDB ) => {
@@ -208,12 +203,15 @@ function Genre( { index, genre } ) {
                 {`${genre.data.isIncoming ? 'Ε' : 'Π'} ${genre.data.code} ${genre.data.name}`}
             </div>
 
-            {genre.uiux.process.isOnRequest
+            {genre.uiux.process.isOnValidate || genre.uiux.process.isOnRequest
                 ? <Loader />
                 : <GenreMenu openForm={openForm} mode={mode} />
             }
 
-            {genre.uiux.form.isOpen ? <GenreForm genre={genre} index={index} doRequest={doRequest} closeForm={closeForm} /> : null}
+            {genre.uiux.form.isOpen 
+                ? <GenreForm genres={genres} index={index} closeForm={closeForm} /> 
+                : null
+            }
 
         </li> 
     );
