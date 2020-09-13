@@ -24,7 +24,7 @@ function GenreForm( { genre, index, closeForm, doRequest } ) {
                 mode={genre.uiux.mode}
                 onClickOk={onClickOk}
                 onClickCancel={onClickCancel}
-                isOnRequest={genre.uiux.db.isOnRequest}
+                isOnRequest={genre.uiux.process.isOnRequest}
 
             >
                 <Field className="id" label="Id">

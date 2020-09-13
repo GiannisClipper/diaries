@@ -11,7 +11,7 @@ const genresReducer = ( data, action ) => {
 
             genres = [ initPayments.genre() ];
             genres[ 0 ].uiux.mode = { isRetrieveAll: true };
-            genres[ 0 ].uiux.db = { isOnRequest: true };
+            genres[ 0 ].uiux.process = { isOnRequest: true };
 
             payments = { ...payments, genres };
             return { ...data, payments };
@@ -55,7 +55,7 @@ const genresReducer = ( data, action ) => {
             let genres = [ ...payments.genres ];
             const { index } = action.payload;
 
-            genres[ index ].uiux.db = {};
+            genres[ index ].uiux.process = {};
             genres[ index ].uiux.form = {};
             genres[ index ].uiux.mode = {};
 
@@ -67,7 +67,7 @@ const genresReducer = ( data, action ) => {
             let genres = [ ...payments.genres ];
             const { index } = action.payload;
 
-            genres[ index ].uiux.db = { isOnRequest: true };
+            genres[ index ].uiux.process = { isOnRequest: true };
 
             payments = { ...payments, genres };
             return { ...data, payments };
@@ -78,7 +78,7 @@ const genresReducer = ( data, action ) => {
             const { index, dataFromDB } = action.payload;
 
             genres[ index ].data = parseGenreFromDB( dataFromDB );
-            genres[ index ].uiux.db = {};
+            genres[ index ].uiux.process = {};
             genres[ index ].uiux.mode = {};
             genres[ index ].uiux.form = {};
             genres.push( initPayments.genre() );
@@ -104,7 +104,7 @@ const genresReducer = ( data, action ) => {
             genres[ index ] = initPayments.genre();
 
             genres[ index ].data = parseGenreFromDB( dataFromDB );
-            genres[ index ].uiux.db = {};
+            genres[ index ].uiux.process = {};
             genres[ index ].uiux.mode = {};
             genres[ index ].uiux.form = {};
 
@@ -117,7 +117,7 @@ const genresReducer = ( data, action ) => {
             const { index, saved } = action.payload;
 
             genres[ index ].data = { ...saved.genre.data };
-            genres[ index ].uiux.db = {};
+            genres[ index ].uiux.process = {};
             genres[ index ].uiux.mode = {};
             genres[ index ].uiux.form = {};
 
@@ -139,7 +139,7 @@ const genresReducer = ( data, action ) => {
             let genres = [ ...payments.genres ];
             const { index } = action.payload;
 
-            genres[ index ].uiux.db = {};
+            genres[ index ].uiux.process = {};
             genres[ index ].uiux.mode = {};
             genres[ index ].uiux.form = {};
 

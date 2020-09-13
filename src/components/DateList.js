@@ -165,12 +165,12 @@ const ADate = React.memo( ( { aDate } ) => {  // to differ from native function 
     useEffect( () => {
         console.log( 'Has rendered. ', date );
 
-        const { db } = aDate.uiux;
+        const { process } = aDate.uiux;
 
-        if ( db.isOnRequest && db.dateFrom.getTime() === date.getTime() ) {
+        if ( process.isOnRequest && process.dateFrom.getTime() === date.getTime() ) {
             console.log( 'Requesting... ', date )
 
-            const { dateFrom, dateTill } = db;
+            const { dateFrom, dateTill } = process;
             const strFrom = dateToYYYYMMDD( dateFrom );
             const strTill = dateToYYYYMMDD( dateTill );
 

@@ -171,7 +171,7 @@ function Entry( { date, entry, inSequence } ) {
     }
 
     useEffect( () => {
-        if ( entry.uiux.db.isOnRequest && Object.keys( entry.uiux.mode ).length !== 0 ) {
+        if ( entry.uiux.process.isOnRequest && Object.keys( entry.uiux.mode ).length !== 0 ) {
             console.log( 'Requesting... ', entry.uiux.mode, entry.data.id )
 
             const dataToDB = {
@@ -256,7 +256,7 @@ function Entry( { date, entry, inSequence } ) {
                 {entry.data.note}
             </div>
 
-            {entry.uiux.db.isOnRequest
+            {entry.uiux.process.isOnRequest
                 ? <Loader />
                 : entry.uiux.status.isSuspended
                 ? <FontAwesomeIcon icon={ faBan } className="icon" />

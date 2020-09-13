@@ -36,10 +36,10 @@ const datesReducer = ( data, action ) => {
         newDates = newDates.map( ( x, index ) => {
             const _ = initDate();
             _.data.date = shiftDate( startDate, index );
-            _.uiux.db = { isOnRequest: true, dateFrom: startDate, dateTill: shiftDate( startDate, num - 1 ) };
+            _.uiux.process = { isOnRequest: true, dateFrom: startDate, dateTill: shiftDate( startDate, num - 1 ) };
             _.uiux.isTheCentral = _.data.date.getTime() === centralDate.getTime() ? true : false;
             _.data.entries.push( initEntry() );
-            _.data.entries[ 0 ].uiux.db = { isOnRequest: true };
+            _.data.entries[ 0 ].uiux.process = { isOnRequest: true };
             return _;
         } );
     
@@ -52,9 +52,9 @@ const datesReducer = ( data, action ) => {
         newDates = newDates.map( ( x, index ) => {
             const _ = initDate();
             _.data.date = shiftDate( startDate, index );
-            _.uiux.db = { isOnRequest: true, dateFrom: startDate, dateTill: shiftDate( startDate, num - 1 ) };
+            _.uiux.process = { isOnRequest: true, dateFrom: startDate, dateTill: shiftDate( startDate, num - 1 ) };
             _.data.entries.push( initEntry() );
-            _.data.entries[ 0 ].uiux.db = { isOnRequest: true };
+            _.data.entries[ 0 ].uiux.process = { isOnRequest: true };
             return _;
         } );
     
@@ -67,9 +67,9 @@ const datesReducer = ( data, action ) => {
         newDates = newDates.map( ( x, index ) => {
             const _ = initDate();
             _.data.date = shiftDate( startDate, index );
-            _.uiux.db = { isOnRequest: true, dateFrom: startDate, dateTill: shiftDate( startDate, num - 1 ) };
+            _.uiux.process = { isOnRequest: true, dateFrom: startDate, dateTill: shiftDate( startDate, num - 1 ) };
             _.data.entries.push( initEntry() );
-            _.data.entries[ 0 ].uiux.db = { isOnRequest: true };
+            _.data.entries[ 0 ].uiux.process = { isOnRequest: true };
             return _;
         } );
     
@@ -132,7 +132,7 @@ const datesReducer = ( data, action ) => {
 
                 deconstructDate( getDateInSequence( date ) );
                 activeDate.data.entries = entries;
-                activeDate.uiux.db = {};
+                activeDate.uiux.process = {};
                 activeDate.uiux.mode = {};
                 constructDate();
             }
@@ -154,7 +154,7 @@ const datesReducer = ( data, action ) => {
 
                 deconstructDate( getDateInSequence( date ) );
                 activeDate.data.entries = entries;
-                activeDate.uiux.db = {};
+                activeDate.uiux.process = {};
                 activeDate.uiux.mode = {};
                 constructDate();
             }
@@ -198,7 +198,7 @@ const entriesReducer = ( data, action ) => {
                 deconstructDate( getDateInSequence( cut.date ) );
                 deconstructEntry( cut.inSequence );
                 const entryToMove = { ...activeEntry };
-                entryToMove.uiux.db = { isOnRequest: true };
+                entryToMove.uiux.process = { isOnRequest: true };
                 entryToMove.uiux.mode = { isUpdate: true };
 
                 activeEntry = [];
@@ -223,7 +223,7 @@ const entriesReducer = ( data, action ) => {
             deconstructDate( getDateInSequence( copy.date ) );
             deconstructEntry( copy.inSequence );
             const entryToCopy = { ...activeEntry };
-            entryToCopy.uiux.db = { isOnRequest: true };
+            entryToCopy.uiux.process = { isOnRequest: true };
             entryToCopy.uiux.mode = { isCreate: true };
 
             deconstructDate( getDateInSequence( paste.date ) );
@@ -285,7 +285,7 @@ const entriesReducer = ( data, action ) => {
 
             deconstructDate( getDateInSequence( date ) );
             deconstructEntry( inSequence );
-            activeEntry.uiux.db = {};
+            activeEntry.uiux.process = {};
             activeEntry.uiux.form = {};
             activeEntry.uiux.type = {};
             activeEntry.uiux.mode = {};
@@ -301,7 +301,7 @@ const entriesReducer = ( data, action ) => {
 
             deconstructDate( getDateInSequence( date ) );
             deconstructEntry( inSequence );
-            activeEntry.uiux.db = { isOnRequest: true };
+            activeEntry.uiux.process = { isOnRequest: true };
             constructEntry();
             constructDate();
 
@@ -315,7 +315,7 @@ const entriesReducer = ( data, action ) => {
             deconstructDate( getDateInSequence( date ) );
             deconstructEntry( inSequence );
             activeEntry.data = parseEntryFromDB( dataFromDB );
-            activeEntry.uiux.db = {};
+            activeEntry.uiux.process = {};
             activeEntry.uiux.mode = {};
             activeEntry.uiux.form = {};
             if ( nextEntries.length === 0 ) {
@@ -349,7 +349,7 @@ const entriesReducer = ( data, action ) => {
             deconstructDate( getDateInSequence( date ) );
             deconstructEntry( inSequence );
             activeEntry.data = parseEntryFromDB( dataFromDB );
-            activeEntry.uiux.db = {};
+            activeEntry.uiux.process = {};
             activeEntry.uiux.mode = {};
             activeEntry.uiux.form = {};
             constructEntry();
@@ -374,7 +374,7 @@ const entriesReducer = ( data, action ) => {
             deconstructDate( getDateInSequence( saved.date ) );
             deconstructEntry( saved.inSequence );
             entryToMoveBack.data = { ...saved.entry.data };
-            entryToMoveBack.uiux.db = {};
+            entryToMoveBack.uiux.process = {};
             activeEntry.uiux.mode = {};
             entryToMoveBack.uiux.form = {};
             activeEntry = [ entryToMoveBack, { ...activeEntry } ];
@@ -405,7 +405,7 @@ const entriesReducer = ( data, action ) => {
 
             deconstructDate( getDateInSequence( date ) );
             deconstructEntry( inSequence );
-            activeEntry.uiux.db = {};
+            activeEntry.uiux.process = {};
             activeEntry.uiux.mode = {};
             activeEntry.uiux.form = {};
             constructEntry();

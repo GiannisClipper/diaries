@@ -27,7 +27,7 @@ function EntryForm( { className, date, entry, inSequence, data, doRequest, close
                 mode={entry.uiux.mode}
                 onClickOk={onClickOk}
                 onClickCancel={onClickCancel}
-                isOnRequest={entry.uiux.db.isOnRequest}
+                isOnRequest={entry.uiux.process.isOnRequest}
             >
                 <Field className="id" label="Id">
                     <input 

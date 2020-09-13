@@ -91,7 +91,7 @@ function Genre( { index, genre } ) {
         } );
     }
 
-    const createRequestDone = ( index, dataFromDB ) => {
+    const createRequestDone = dataFromDB => {
         STATE.dispatch( { 
             namespace,
             type: 'CREATE_REQUEST_DONE',
@@ -99,7 +99,7 @@ function Genre( { index, genre } ) {
         } );
     }
 
-    const createRequestError = index => {
+    const createRequestError = () => {
         STATE.dispatch( { 
             namespace,
             type: 'CREATE_REQUEST_ERROR',
@@ -107,7 +107,7 @@ function Genre( { index, genre } ) {
         } );
     }
 
-    const updateRequestDone = ( index, dataFromDB ) => {
+    const updateRequestDone = dataFromDB => {
         STATE.dispatch( {
             namespace, 
             type: 'UPDATE_REQUEST_DONE',
@@ -115,7 +115,7 @@ function Genre( { index, genre } ) {
         } );
     }
 
-    const updateRequestError = index => {
+    const updateRequestError = () => {
         STATE.dispatch( { 
             namespace,
             type: 'UPDATE_REQUEST_ERROR',
@@ -123,7 +123,7 @@ function Genre( { index, genre } ) {
         } );
     }
 
-    const deleteRequestDone = ( index, dataFromDB ) => {
+    const deleteRequestDone = dataFromDB => {
         STATE.dispatch( { 
             namespace,
             type: 'DELETE_REQUEST_DONE',
@@ -140,7 +140,7 @@ function Genre( { index, genre } ) {
     }
 
     useEffect( () => {
-        if ( genre.uiux.db.isOnRequest ) {
+        if ( genre.uiux.process.isOnRequest ) {
 
             const doFetch = ( url, args, onDone, onError, dataFromDB ) => {
                 console.log( 'Requesting... ', genre.uiux.mode, genre.data.id )
@@ -208,7 +208,7 @@ function Genre( { index, genre } ) {
                 {`${genre.data.isIncoming ? 'Ε' : 'Π'} ${genre.data.code} ${genre.data.name}`}
             </div>
 
-            {genre.uiux.db.isOnRequest
+            {genre.uiux.process.isOnRequest
                 ? <Loader />
                 : <GenreMenu openForm={openForm} mode={mode} />
             }

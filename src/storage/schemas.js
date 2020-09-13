@@ -16,7 +16,7 @@ const initDate = () => ( {
         entries: [],
     },
     uiux: {
-        db: {
+        process: {
             isOnRequest: false,
             dateFrom: '',
             dateTill: '',
@@ -37,7 +37,7 @@ const initEntry = () => ( {
         form: {},  // isOpen
         type: {},  // isNote, isPayment
         mode: {},  // isCreate, isUpdate, isDelete
-        db: {},  // isOnRequest
+        process: {},  // isOnRequest
         status: {},  // isSuspended
     }
 } );
@@ -54,7 +54,7 @@ const initPayments = {
         uiux: {
             form: {},  // isOpen
             mode: {},  // isCreate, isUpdate, isDelete
-            db: {},  // isOnRequest
+            process: {},  // isOnRequest
         }
     } ),
     fund: () => ( {
@@ -66,7 +66,7 @@ const initPayments = {
         uiux: {
             form: {},  // isOpen
             mode: {},  // isCreate, isUpdate, isDelete
-            db: {},  // isOnRequest
+            process: {},  // isOnRequest
         }
     } )
 }
