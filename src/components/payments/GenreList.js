@@ -4,7 +4,8 @@ import { STATEContext } from '../STATEContext';
 import { REFContext } from '../REFContext';
 import { realFetch, mockFetch } from '../../helpers/customFetch';
 import { parseGenreToDB } from '../../storage/payments/parsers';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBan } from '@fortawesome/free-solid-svg-icons';
 import { Loader } from '../libs/Loader';
 import GenreMenu from './GenreMenu';
 import GenreForm from './GenreForm';
@@ -237,6 +238,8 @@ function Genre( { index, genres } ) {
 
             {genre.uiux.process.isOnValidation || genre.uiux.process.isOnRequest
                 ? <Loader />
+                : genre.uiux.status.isSuspended
+                ? <FontAwesomeIcon icon={ faBan } className="icon" />
                 : <GenreMenu openForm={openForm} mode={mode} />
             }
 

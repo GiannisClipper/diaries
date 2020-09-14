@@ -54,7 +54,8 @@ const initPayments = {
         uiux: {
             form: {},  // isOpen
             mode: {},  // isCreate, isUpdate, isDelete
-            process: {},  // isOnRequest
+            process: {},  // isOnRequest, isOnValidation, isOnValidationDone
+            status: {},  // isSuspended
         }
     } ),
     fund: () => ( {
@@ -66,7 +67,8 @@ const initPayments = {
         uiux: {
             form: {},  // isOpen
             mode: {},  // isCreate, isUpdate, isDelete
-            process: {},  // isOnRequest
+            process: {},  // isOnRequest, isOnValidation, isOnValidationDone
+            status: {},  // isSuspended
         }
     } )
 }

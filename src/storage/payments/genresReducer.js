@@ -34,7 +34,9 @@ const genresReducer = ( data, action ) => {
             let payments = { ...data.payments };
 
             const genres = [];
-            genres.push( initPayments.genre() );
+            const genre = initPayments.genre();
+            genre.uiux.status = { isSuspended: true }
+            genres.push( genre );
 
             payments = { ...payments, genres };
             return { ...data, payments };
