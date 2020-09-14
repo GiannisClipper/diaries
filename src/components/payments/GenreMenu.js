@@ -6,7 +6,10 @@ function GenreMenu( { openForm, mode } ) {
     return (
         <div className='payments GenreMenu'>
             <EditTool onClick={event => openForm( mode )} />
-            <DeleteTool onClick={event => openForm( { isDelete: true } )} />
+            {mode.isCreate
+                ? null
+                : <DeleteTool onClick={event => openForm( { isDelete: true } )} />
+            }
         </div>
     );
 }

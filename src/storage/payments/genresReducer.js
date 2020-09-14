@@ -25,6 +25,7 @@ const genresReducer = ( data, action ) => {
                 genres.push( initPayments.genre() );
                 genres[ genres.length - 1 ].data = parseGenreFromDB( x );
             } );
+            genres.sort( ( x, y ) => x.data.code - y.data.code );
             genres.push( initPayments.genre() );
 
             payments = { ...payments, genres };
@@ -113,6 +114,7 @@ const genresReducer = ( data, action ) => {
             genres[ index ].uiux.process = {};
             genres[ index ].uiux.mode = {};
             genres[ index ].uiux.form = {};
+            genres.sort( ( x, y ) => x.data.code - y.data.code );
             genres.push( initPayments.genre() );
 
             payments = { ...payments, genres };
@@ -139,6 +141,9 @@ const genresReducer = ( data, action ) => {
             genres[ index ].uiux.process = {};
             genres[ index ].uiux.mode = {};
             genres[ index ].uiux.form = {};
+            genres.pop();
+            genres.sort( ( x, y ) => x.data.code - y.data.code );
+            genres.push( initPayments.genre() );
 
             payments = { ...payments, genres };
             return { ...data, payments };

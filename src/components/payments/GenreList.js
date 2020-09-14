@@ -227,13 +227,24 @@ function Genre( { index, genres } ) {
 
     const mode = !genre.data.id ? { isCreate: true } : { isUpdate: true };
 
+    const typeInfo = mode.isCreate
+        ? ''
+        : genre.data.isIncoming && genre.data.isOutgoing
+        ? 'Μ'
+        : genre.data.isIncoming
+        ? 'Ε'
+        : genre.data.isOutgoing
+        ? 'Π'
+        : '-';
+
     return (
         <li 
             className={`payments Genre`}
             key={index}
         >
             <div className='data' title={`${genre.data.id}`}>
-                {`${genre.data.isIncoming ? 'Ε' : 'Π'} ${genre.data.code} ${genre.data.name}`}
+                <span className='code'>{`${typeInfo}${genre.data.code}`}</span>
+                <span className='name'>{genre.data.name}</span>
             </div>
 
             {genre.uiux.process.isOnValidation || genre.uiux.process.isOnRequest

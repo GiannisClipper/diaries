@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBan } from '@fortawesome/free-solid-svg-icons';
 
 import { Loader } from './libs/Loader';
-import { EntryMenuTool, BlankEntryMenu, ExistEntryMenu } from './EntryMenu';
+import { EntryMenuTool, BlankEntryMenu, ExistsEntryMenu } from './EntryMenu';
 import NoteForm from './NoteForm';
 import PaymentForm from './PaymentForm';
 
@@ -35,7 +35,7 @@ function Entry( { date, entry, inSequence } ) {
     const REF = useContext( REFContext );
 
     const dragStart = ( event, date, entry, inSequence ) => {
-        REF.current.cutEntry( date, entry, inSequence );
+        doCut( date, entry, inSequence );
         event.dataTransfer.effectAllowed = 'move';
     }
 
@@ -45,7 +45,7 @@ function Entry( { date, entry, inSequence } ) {
 
     const doDrop = ( event, date, inSequence ) => {
         event.preventDefault();
-        REF.current.pasteEntry( date, entry, inSequence );
+        doPaste( date, entry, inSequence );
     }
 
     const doCut = ( date, entry, inSequence ) => {
@@ -276,7 +276,7 @@ function Entry( { date, entry, inSequence } ) {
                     doPaste={doPaste}
                 />
                 : 
-                <ExistEntryMenu 
+                <ExistsEntryMenu 
                     date={date} 
                     entry={entry} 
                     inSequence={inSequence}

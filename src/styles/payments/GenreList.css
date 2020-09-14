@@ -18,6 +18,11 @@
     padding: .5em;
 }
 
+.payments.Genre .data .code {
+    font-family: monospace;
+    margin-right: .5em;
+}
+
 .payments.Genre .icon {
     color: lightcoral;
 }

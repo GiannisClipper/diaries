@@ -73,7 +73,7 @@ function BlankEntryMenu( { date, entry, inSequence, openForm, closeMenu, doPaste
     );
 }
 
-function ExistEntryMenu( { date, entry, inSequence, openForm, closeMenu, doCut, doCopy, doPaste } ) {
+function ExistsEntryMenu( { date, entry, inSequence, openForm, closeMenu, doCut, doCopy, doPaste } ) {
 
     const REF = useContext( REFContext );
 
@@ -117,4 +117,4 @@ function ExistEntryMenu( { date, entry, inSequence, openForm, closeMenu, doCut, 
     );
 }
 
-export { EntryMenuTool, BlankEntryMenu, ExistEntryMenu };
+export { EntryMenuTool, BlankEntryMenu, ExistsEntryMenu };
