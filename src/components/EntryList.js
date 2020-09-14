@@ -114,10 +114,34 @@ function Entry( { date, entry, inSequence } ) {
         } );
     }
 
+    const doValidation = ( date, inSequence ) => {
+        STATE.dispatch( { 
+            namespace,
+            type: 'DO_VALIDATION',
+            payload: { date, inSequence },
+        } );
+    }
+
+    const validationDone = ( date, inSequence ) => {
+        STATE.dispatch( { 
+            namespace,
+            type: 'VALIDATION_DONE',
+            payload: { date, inSequence },
+        } );
+    }
+
+    const validationError = ( date, inSequence ) => {
+        STATE.dispatch( { 
+            namespace,
+            type: 'VALIDATION_ERROR',
+            payload: { date, inSequence },
+        } );
+    }
+
     const doRequest = ( date, inSequence ) => {
         STATE.dispatch( { 
             namespace,
-            type: 'REQUEST',
+            type: 'DO_REQUEST',
             payload: { date, inSequence },
         } );
     }
@@ -296,16 +320,22 @@ function Entry( { date, entry, inSequence } ) {
                     date={date} 
                     entry={entry} 
                     inSequence={inSequence} 
-                    doRequest={doRequest}
                     closeForm={closeForm}
+                    doValidation={doValidation}
+                    validationDone={validationDone}
+                    validationError={validationError}
+                    doRequest={doRequest}
                 /> 
                 : 
                 <PaymentForm 
                     date={date} 
                     entry={entry} 
                     inSequence={inSequence} 
-                    doRequest={doRequest}
                     closeForm={closeForm}
+                    doValidation={doValidation}
+                    validationDone={validationDone}
+                    validationError={validationError}
+                    doRequest={doRequest}
                 /> 
             }
 

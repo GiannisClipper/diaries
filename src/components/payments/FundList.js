@@ -1,4 +1,4 @@
-import React, { useRef, useContext, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import '../../styles/payments/FundList.css';
 import { STATEContext } from '../STATEContext';
 import { REFContext } from '../REFContext';
@@ -14,17 +14,20 @@ const namespace = 'payments.funds';
 
 function FundList( { className } ) {
 
+    const REF = useContext( REFContext );
 
     const STATE = useContext( STATEContext );
 
     const { funds } = STATE.state.data.payments;
 
-    useEffect( () => {
-        if ( !STATE.state.uiux.isInitialized.funds ) {
+    //useEffect( () => {
+        // if ( !STATE.state.uiux.isInitialized.funds ) {
+        if ( !REF.current.initializedFunds ) {
+            REF.current[ 'initializedFunds' ] = true;
             console.log( 'add_init_funds' )
             STATE.dispatch( { namespace, type: 'INITIALIZE_LIST' } );
         }
-    } );
+    //} );
 
     useEffect( () => {
         console.log( 'Has rendered. ', 'payments/FundList' );

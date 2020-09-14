@@ -294,7 +294,43 @@ const entriesReducer = ( data, action ) => {
 
             return { ...data, dates };
 
-        } case 'REQUEST': {
+        } case 'DO_VALIDATION': {
+            dates = [ ...data.dates ];
+            const { date, inSequence } = action.payload;
+
+            deconstructDate( getDateInSequence( date ) );
+            deconstructEntry( inSequence );
+            activeEntry.uiux.process = { isOnValidation: true };
+            constructEntry();
+            constructDate();
+
+            return { ...data, dates };
+
+        } case 'VALIDATION_DONE': {
+            dates = [ ...data.dates ];
+            const { date, inSequence } = action.payload;
+
+            deconstructDate( getDateInSequence( date ) );
+            deconstructEntry( inSequence );
+            activeEntry.uiux.process = { isOnValidationDone: true };
+            constructEntry();
+            constructDate();
+
+            return { ...data, dates };
+
+        } case 'VALIDATION_ERROR': {
+            dates = [ ...data.dates ];
+            const { date, inSequence } = action.payload;
+
+            deconstructDate( getDateInSequence( date ) );
+            deconstructEntry( inSequence );
+            activeEntry.uiux.process = {};
+            constructEntry();
+            constructDate();
+
+            return { ...data, dates };
+
+        } case 'DO_REQUEST': {
 
             dates = [ ...data.dates ];
             const { date, inSequence } = action.payload;

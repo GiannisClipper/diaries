@@ -1,4 +1,4 @@
-import React, { useRef, useContext, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import '../../styles/payments/GenreList.css';
 import { STATEContext } from '../STATEContext';
 import { REFContext } from '../REFContext';
@@ -14,16 +14,21 @@ const namespace = 'payments.genres';
 
 function GenreList( { className } ) {
 
+    const REF = useContext( REFContext );
+
     const STATE = useContext( STATEContext );
 
     const { genres } = STATE.state.data.payments;
 
-    useEffect( () => {
-        if ( !STATE.state.uiux.isInitialized.genres ) {
+//    useEffect( () => {
+        // if ( !STATE.state.uiux.isInitialized.genres ) {
+        if ( !REF.current.initializedGenres ) {
+            REF.current[ 'initializedGenres' ] = true;
+    
             console.log( 'add_init_genres' )
             STATE.dispatch( { namespace, type: 'INITIALIZE_LIST' } );
         }
-    } );
+//    } );
 
     useEffect( () => {
         console.log( 'Has rendered. ', 'payments/GenreList' );
