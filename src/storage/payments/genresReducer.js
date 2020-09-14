@@ -62,32 +62,42 @@ const genresReducer = ( data, action ) => {
             payments = { ...payments, genres };
             return { ...data, payments };
 
-        } case 'DO_VALIDATE': {
+        } case 'DO_VALIDATION': {
             let payments = { ...data.payments };
             let genres = [ ...payments.genres ];
             const { index } = action.payload;
 
-            genres[ index ].uiux.process = { isOnValidate: true };
+            genres[ index ].uiux.process = { isOnValidation: true };
 
             payments = { ...payments, genres };
             return { ...data, payments };
 
-        } case 'VALIDATE_DONE': {
+        } case 'VALIDATION_DONE': {
             let payments = { ...data.payments };
             let genres = [ ...payments.genres ];
             const { index } = action.payload;
 
-            genres[ index ].uiux.process = { isOnRequest: true };
+            genres[ index ].uiux.process = { isOnValidationDone: true };
 
             payments = { ...payments, genres };
             return { ...data, payments };
 
-        } case 'VALIDATE_ERROR': {
+        } case 'VALIDATION_ERROR': {
             let payments = { ...data.payments };
             let genres = [ ...payments.genres ];
             const { index } = action.payload;
 
             genres[ index ].uiux.process = {};
+
+            payments = { ...payments, genres };
+            return { ...data, payments };
+
+        } case 'DO_REQUEST': {
+            let payments = { ...data.payments };
+            let genres = [ ...payments.genres ];
+            const { index } = action.payload;
+
+            genres[ index ].uiux.process = { isOnRequest: true };
 
             payments = { ...payments, genres };
             return { ...data, payments };

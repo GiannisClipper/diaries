@@ -1,73 +1,51 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../styles/payments/GenreForm.css';
-import { STATEContext } from '../STATEContext';
 import { Modal } from '../libs/Modal';
 import { CRUDForm, Field } from '../libs/Form';
-import { isBlank, isFound } from '../../helpers/validates';
+import { isBlank, isFound } from '../../helpers/validation';
 
-const namespace = 'payments.genres';
-
-function GenreForm( { genres, index, closeForm } ) {
-
+function GenreForm( { genres, index, closeForm, doValidation, validationDone, validationError, doRequest } ) {
+    
     const genre = genres[ index ];
-
-    let className = 'payments GenreForm';
-
-    const STATE = useContext( STATEContext );
 
     const [ data, setData ] = useState( { ...genre.data } );
     //const changes = Object.keys( data ).filter( x => data[ x ] !== genre.data[ x ] );
 
-    const doValidate = index => {
-        STATE.dispatch( { 
-            namespace,
-            type: 'DO_VALIDATE',
-            payload: { index },
-        } );
-    }
-
-    const validateDone = index => {
-        STATE.dispatch( { 
-            namespace,
-            type: 'VALIDATE_DONE',
-            payload: { index },
-        } );
-    }
-
-    const validateError = index => {
-        STATE.dispatch( { 
-            namespace,
-            type: 'VALIDATE_ERROR',
-            payload: { index },
-        } );
-    }
     const onClickOk = event => {
         genre.data = { ...data };
-        doValidate( index );
+        genre.uiux.mode.isCreate || genre.uiux.mode.isUpdate
+            ? doValidation( index )
+            : doRequest( index )
     }
 
     const onClickCancel = closeForm;
 
     useEffect( () => {
-        if ( genre.uiux.process.isOnValidate ) {
+    
+        if ( genre.uiux.process.isOnValidation ) {
+
             let errors = '';
             errors += isBlank( data.name ) ? 'Η Ονομασία δεν μπορεί να είναι κενή.\n' : '';
             errors += !isBlank( data.name ) && isFound( genres.map( x=> x.data.name), data.name, index ) ? 'Η Ονομασία υπάρχει ήδη.\n' : '';
             errors += !isBlank( data.code ) && isFound( genres.map( x=> x.data.code), data.code, index ) ? 'Ο Λογιστικός Κωδικός υπάρχει ήδη.\n' : '';
 
             if ( errors === '' ) {
-                validateDone( index )
+                validationDone( index )
+
             } else {
                 alert( errors );
-                validateError( index );
+                validationError( index );
             }
+
+        } else if ( genre.uiux.process.isOnValidationDone ) {
+            doRequest( index );
         }
     } );
 
     return (
         <Modal>
             <CRUDForm
-                className={className}
+                className='payments GenreForm'
                 mode={genre.uiux.mode}
                 onClickOk={onClickOk}
                 onClickCancel={onClickCancel}

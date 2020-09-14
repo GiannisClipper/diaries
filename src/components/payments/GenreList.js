@@ -69,6 +69,38 @@ function Genre( { index, genres } ) {
         } );
     }
 
+    const doValidation = index => {
+        STATE.dispatch( { 
+            namespace,
+            type: 'DO_VALIDATION',
+            payload: { index },
+        } );
+    }
+
+    const validationDone = index => {
+        STATE.dispatch( { 
+            namespace,
+            type: 'VALIDATION_DONE',
+            payload: { index },
+        } );
+    }
+
+    const validationError = index => {
+        STATE.dispatch( { 
+            namespace,
+            type: 'VALIDATION_ERROR',
+            payload: { index },
+        } );
+    }
+
+    const doRequest = index => {
+        STATE.dispatch( { 
+            namespace,
+            type: 'DO_REQUEST',
+            payload: { index },
+        } );
+    }
+
     const retrieveAllRequestDone = dataFromDB => {
         STATE.dispatch( { 
             namespace,
@@ -203,14 +235,24 @@ function Genre( { index, genres } ) {
                 {`${genre.data.isIncoming ? 'Ε' : 'Π'} ${genre.data.code} ${genre.data.name}`}
             </div>
 
-            {genre.uiux.process.isOnValidate || genre.uiux.process.isOnRequest
+            {genre.uiux.process.isOnValidation || genre.uiux.process.isOnRequest
                 ? <Loader />
                 : <GenreMenu openForm={openForm} mode={mode} />
             }
 
             {genre.uiux.form.isOpen 
-                ? <GenreForm genres={genres} index={index} closeForm={closeForm} /> 
-                : null
+                ? 
+                <GenreForm 
+                    genres={genres} 
+                    index={index} 
+                    closeForm={closeForm}
+                    doValidation={doValidation}
+                    validationDone={validationDone}
+                    validationError={validationError}
+                    doRequest={doRequest}
+                /> 
+                : 
+                null
             }
 
         </li> 
