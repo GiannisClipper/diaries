@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import '../styles/libs/initialize.css';
 import '../styles/App.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,14 +6,13 @@ import { faCompass } from '@fortawesome/free-solid-svg-icons';
 import { STATEContextProvider } from './STATEContext';
 import { REFContextProvider } from './REFContext';
 import { REFContext } from './REFContext';
-import DateList from './DateList';
-import Settings from './Settings';
+import Routes from './Routes';
 
 function App() {
+
     return (
         <STATEContextProvider>
         <REFContextProvider>
-        <BrowserRouter>
         <div className="App">
 
             <div className="title">
@@ -22,16 +20,9 @@ function App() {
                 <ScrollToCentralDate />
             </div>
 
-            {/* <DateList /> */}
-            <Switch>
-                <Route exact path='/dates' component={DateList} />
-                <Route exact path='/settings' component={Settings} />
-                <Route render={() => (<Redirect to={{ pathname: '/dates' }} />)} />
-            </Switch>
-
+            <Routes />
 
         </div>
-        </BrowserRouter>
         </REFContextProvider>
         </STATEContextProvider>
     );
