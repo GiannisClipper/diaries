@@ -5,12 +5,5 @@ const parseEntryFromDB = data => ( {
     inSequence: data.inSequence
 } )
 
-const parsePaymentGenreFromDB = data => ( {
-    id: data._id,
-    code: data.code,
-    name: data.name,
-    isIncoming: data.isIncoming
-} )
-
-export { parseEntryFromDB, parsePaymentGenreFromDB };
+export { parseEntryFromDB };
 

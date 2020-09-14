@@ -2,6 +2,7 @@ import React, { createContext, useReducer, useEffect } from 'react';
 import { initState } from '../storage/schemas';
 import { datesReducer, entriesReducer } from '../storage/datesReducer';
 import genresReducer from '../storage/payments/genresReducer';
+import fundsReducer from '../storage/payments/fundsReducer';
 
 const STATEReducer = ( state, action ) => {
 
@@ -18,8 +19,10 @@ const STATEReducer = ( state, action ) => {
             return { data, uiux };
     
         } case 'payments.genres': {
-            data = genresReducer( data, action );
-            return { data, uiux };
+            return genresReducer( state, action );
+
+        } case 'payments.funds': {
+            return fundsReducer( state, action );
 
         } default: {
             throw new Error();

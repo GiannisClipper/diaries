@@ -1,12 +1,12 @@
 import { initPayments } from '../schemas';
 import { parseGenreFromDB } from './parsers';
 
-const genresReducer = ( data, action ) => {
+const genresReducer = ( state, action ) => {
 
     switch ( action.type ) {
 
         case 'INITIALIZE_LIST': {
-            let payments = { ...data.payments };
+            let payments = { ...state.data.payments };
             let genres = [ ...payments.genres ];
 
             genres = [ initPayments.genre() ];
@@ -14,10 +14,14 @@ const genresReducer = ( data, action ) => {
             genres[ 0 ].uiux.process = { isOnRequest: true };
 
             payments = { ...payments, genres };
-            return { ...data, payments };
+
+            const isInitialized = { ...state.uiux.isInitialized };
+            isInitialized[ 'genres' ] = true;
+
+            return { data: { ...state.data, payments }, uiux: { ...state.uiux, isInitialized } };
 
         } case 'RETRIEVE_ALL_REQUEST_DONE': {
-            let payments = { ...data.payments };
+            let payments = { ...state.data.payments };
             const { dataFromDB } = action.payload;
 
             const genres = [];
@@ -29,10 +33,10 @@ const genresReducer = ( data, action ) => {
             genres.push( initPayments.genre() );
 
             payments = { ...payments, genres };
-            return { ...data, payments };
+            return { ...state, data: { ...state.data, payments } };
 
         } case 'RETRIEVE_ALL_REQUEST_ERROR': {
-            let payments = { ...data.payments };
+            let payments = { ...state.data.payments };
 
             const genres = [];
             const genre = initPayments.genre();
@@ -40,10 +44,10 @@ const genresReducer = ( data, action ) => {
             genres.push( genre );
 
             payments = { ...payments, genres };
-            return { ...data, payments };
+            return { ...state, data: { ...state.data, payments } };
 
         } case 'OPEN_FORM': {
-            let payments = { ...data.payments };
+            let payments = { ...state.data.payments };
             let genres = [ ...payments.genres ];
             const { index, mode } = action.payload;
 
@@ -51,10 +55,10 @@ const genresReducer = ( data, action ) => {
             genres[ index ].uiux.mode = mode;
 
             payments = { ...payments, genres };
-            return { ...data, payments };
+            return { ...state, data: { ...state.data, payments } };
 
         } case 'CLOSE_FORM': {
-            let payments = { ...data.payments };
+            let payments = { ...state.data.payments };
             let genres = [ ...payments.genres ];
             const { index } = action.payload;
 
@@ -63,50 +67,50 @@ const genresReducer = ( data, action ) => {
             genres[ index ].uiux.mode = {};
 
             payments = { ...payments, genres };
-            return { ...data, payments };
+            return { ...state, data: { ...state.data, payments } };
 
         } case 'DO_VALIDATION': {
-            let payments = { ...data.payments };
+            let payments = { ...state.data.payments };
             let genres = [ ...payments.genres ];
             const { index } = action.payload;
 
             genres[ index ].uiux.process = { isOnValidation: true };
 
             payments = { ...payments, genres };
-            return { ...data, payments };
+            return { ...state, data: { ...state.data, payments } };
 
         } case 'VALIDATION_DONE': {
-            let payments = { ...data.payments };
+            let payments = { ...state.data.payments };
             let genres = [ ...payments.genres ];
             const { index } = action.payload;
 
             genres[ index ].uiux.process = { isOnValidationDone: true };
 
             payments = { ...payments, genres };
-            return { ...data, payments };
+            return { ...state, data: { ...state.data, payments } };
 
         } case 'VALIDATION_ERROR': {
-            let payments = { ...data.payments };
+            let payments = { ...state.data.payments };
             let genres = [ ...payments.genres ];
             const { index } = action.payload;
 
             genres[ index ].uiux.process = {};
 
             payments = { ...payments, genres };
-            return { ...data, payments };
+            return { ...state, data: { ...state.data, payments } };
 
         } case 'DO_REQUEST': {
-            let payments = { ...data.payments };
+            let payments = { ...state.data.payments };
             let genres = [ ...payments.genres ];
             const { index } = action.payload;
 
             genres[ index ].uiux.process = { isOnRequest: true };
 
             payments = { ...payments, genres };
-            return { ...data, payments };
+            return { ...state, data: { ...state.data, payments } };
 
         } case 'CREATE_REQUEST_DONE': {
-            let payments = { ...data.payments };
+            let payments = { ...state.data.payments };
             let genres = [ ...payments.genres ];
             const { index, dataFromDB } = action.payload;
 
@@ -118,25 +122,24 @@ const genresReducer = ( data, action ) => {
             genres.push( initPayments.genre() );
 
             payments = { ...payments, genres };
-            return { ...data, payments };
+            return { ...state, data: { ...state.data, payments } };
 
         } case 'CREATE_REQUEST_ERROR': {
-            let payments = { ...data.payments };
+            let payments = { ...state.data.payments };
             let genres = [ ...payments.genres ];
             const { index } = action.payload;
 
             genres[ index ] = initPayments.genre();
 
             payments = { ...payments, genres };
-            return { ...data, payments };
+            return { ...state, data: { ...state.data, payments } };
 
         } case 'UPDATE_REQUEST_DONE': {
-            let payments = { ...data.payments };
+            let payments = { ...state.data.payments };
             let genres = [ ...payments.genres ];
             const { index, dataFromDB } = action.payload;
 
             genres[ index ] = initPayments.genre();
-
             genres[ index ].data = parseGenreFromDB( dataFromDB );
             genres[ index ].uiux.process = {};
             genres[ index ].uiux.mode = {};
@@ -146,10 +149,10 @@ const genresReducer = ( data, action ) => {
             genres.push( initPayments.genre() );
 
             payments = { ...payments, genres };
-            return { ...data, payments };
+            return { ...state, data: { ...state.data, payments } };
 
         } case 'UPDATE_REQUEST_ERROR': {
-            let payments = { ...data.payments };
+            let payments = { ...state.data.payments };
             let genres = [ ...payments.genres ];
             const { index, saved } = action.payload;
 
@@ -159,20 +162,20 @@ const genresReducer = ( data, action ) => {
             genres[ index ].uiux.form = {};
 
             payments = { ...payments, genres };
-            return { ...data, payments };
+            return { ...state, data: { ...state.data, payments } };
 
         } case 'DELETE_REQUEST_DONE': {
-            let payments = { ...data.payments };
+            let payments = { ...state.data.payments };
             let genres = [ ...payments.genres ];
             const { index } = action.payload;
 
             genres.splice( index, 1 );
 
             payments = { ...payments, genres };
-            return { ...data, payments };
+            return { ...state, data: { ...state.data, payments } };
 
         } case 'DELETE_REQUEST_ERROR': {
-            let payments = { ...data.payments };
+            let payments = { ...state.data.payments };
             let genres = [ ...payments.genres ];
             const { index } = action.payload;
 
@@ -181,7 +184,7 @@ const genresReducer = ( data, action ) => {
             genres[ index ].uiux.form = {};
 
             payments = { ...payments, genres };
-            return { ...data, payments };
+            return { ...state, data: { ...state.data, payments } };
 
         } default: {
             throw new Error();

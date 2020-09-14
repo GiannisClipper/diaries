@@ -13,5 +13,16 @@ const parseGenreFromDB = data => ( {
     isOutgoing: data.isOutgoing,
 } )
 
-export { parseGenreToDB, parseGenreFromDB };
+const parseFundToDB = data => ( {
+    code: data.code,
+    name: data.name
+} );
+
+const parseFundFromDB = data => ( {
+    id: data._id,
+    code: data.code,
+    name: data.name,
+} )
+
+export { parseGenreToDB, parseGenreFromDB, parseFundToDB, parseFundFromDB };
 

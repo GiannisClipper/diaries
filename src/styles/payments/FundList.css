@@ -1,4 +1,4 @@
-.payments.Genre ul {
+.payments.Fund ul {
     width: 100%;
     display: block;
     margin-top: .5em;
@@ -6,7 +6,7 @@
     background-color: lightskyblue;
 }
 
-.payments.Genre .data {
+.payments.Fund .data {
     width: calc( 100% - 4em );
     display: inline-block;
     vertical-align: top;
@@ -14,11 +14,11 @@
     padding: .5em;
 }
 
-.payments.Genre .data .code {
+.payments.Fund .data .code {
     font-family: monospace;
     margin-right: .5em;
 }
 
-.payments.Genre .icon {
+.payments.Fund .icon {
     color: lightcoral;
 }

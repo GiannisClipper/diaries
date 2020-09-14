@@ -1,6 +1,7 @@
 import React from 'react';
 import '../styles/Settings.css';
 import GenreList from "./payments/GenreList";
+import FundList from "./payments/FundList";
 
 function Settings() {
 
@@ -9,7 +10,9 @@ function Settings() {
             <div className="section">
                 <span className="label">Κεντρική ημ/νία</span>
                 <span className="data">
-                    <input placeholder="YYY-MM-DD" />
+                    <span className="centralDate">
+                        <input placeholder="YYYY-MM-DD" />
+                    </span>
                 </span>
             </div>
 
@@ -20,7 +23,7 @@ function Settings() {
 
             <div className="section">
                 <span className="label">Μέσα οικονομικών κινήσεων</span>
-                <span className="data"/>
+                <FundList className="data"/>
             </div>
         </div>
     );

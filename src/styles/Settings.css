@@ -28,5 +28,11 @@
     display: inline-block;
     vertical-align: top;
     padding: .5em;
+}
 
+.section > .data .centralDate {
+    display: inline-block;
+    width: 100%;
+    text-align: left;
+    padding-left: .5em;
 }

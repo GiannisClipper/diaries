@@ -1,56 +1,57 @@
 import React, { useRef, useContext, useEffect } from 'react';
-import '../../styles/payments/GenreList.css';
+import '../../styles/payments/FundList.css';
 import { STATEContext } from '../STATEContext';
 import { REFContext } from '../REFContext';
 import { realFetch, mockFetch } from '../../helpers/customFetch';
-import { parseGenreToDB } from '../../storage/payments/parsers';
+import { parseFundToDB } from '../../storage/payments/parsers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBan } from '@fortawesome/free-solid-svg-icons';
 import { Loader } from '../libs/Loader';
 import GenreMenu from './GenreMenu';
-import GenreForm from './GenreForm';
+import FundForm from './FundForm';
 
-const namespace = 'payments.genres';
+const namespace = 'payments.funds';
 
-function GenreList( { className } ) {
+function FundList( { className } ) {
+
 
     const STATE = useContext( STATEContext );
 
-    const { genres } = STATE.state.data.payments;
+    const { funds } = STATE.state.data.payments;
 
     useEffect( () => {
-        if ( !STATE.state.uiux.isInitialized.genres ) {
-            console.log( 'add_init_genres' )
+        if ( !STATE.state.uiux.isInitialized.funds ) {
+            console.log( 'add_init_funds' )
             STATE.dispatch( { namespace, type: 'INITIALIZE_LIST' } );
         }
     } );
 
     useEffect( () => {
-        console.log( 'Has rendered. ', 'payments/GenreList' );
+        console.log( 'Has rendered. ', 'payments/FundList' );
     } );
 
     let index = -1;
 
     return (
-        <div className={`payments GenreList ${className}`}>
+        <div className={`payments FundList ${className}`}>
             <ul>
-                { genres.map( genre => (
-                    <Genre key={++index} index={index} genres={genres} />
+                { funds.map( fund => (
+                    <Fund key={++index} index={index} funds={funds} />
                 ) ) }
             </ul>
         </div>
     );
 }
 
-function Genre( { index, genres } ) {
+function Fund( { index, funds } ) {
 
     const STATE = useContext( STATEContext );
     const REF = useContext( REFContext );
 
-    const genre = genres[ index ];
+    const fund = funds[ index ];
 
     const openForm = mode => {
-        REF.current.saved = { genre };
+        REF.current.saved = { fund };
 
         STATE.dispatch( { 
             namespace,
@@ -165,10 +166,10 @@ function Genre( { index, genres } ) {
 
     useEffect( () => {
 
-        if ( genre.uiux.process.isOnRequest ) {
+        if ( fund.uiux.process.isOnRequest ) {
 
             const doFetch = ( url, args, onDone, onError, dataFromDB ) => {
-                console.log( 'Requesting... ', genre.uiux.mode, genre.data.id )
+                console.log( 'Requesting... ', fund.uiux.mode, fund.data.id )
 
                 realFetch( url, args )
                 .then( res => {
@@ -181,9 +182,9 @@ function Genre( { index, genres } ) {
                 } );
             }
 
-            if ( genre.uiux.mode.isCreate ) {
-                const url = `/.netlify/functions/payments-genre`;
-                const dataToDB = parseGenreToDB( genre.data );
+            if ( fund.uiux.mode.isCreate ) {
+                const url = `/.netlify/functions/payments-fund`;
+                const dataToDB = parseFundToDB( fund.data );
                 const args = { method: 'POST', body: JSON.stringify( { data: dataToDB } ) };
                 const onDone = createRequestDone;
                 const onError = createRequestError;
@@ -191,70 +192,60 @@ function Genre( { index, genres } ) {
                 const dataFromDB = res => ( { ...dataToDB, _id: idInResponse( res ) } );
                 doFetch( url, args, onDone, onError, dataFromDB );
 
-            } else if ( genre.uiux.mode.isRetrieveAll ) {
-                const url = `/.netlify/functions/payments-genre`;
+            } else if ( fund.uiux.mode.isRetrieveAll ) {
+                const url = `/.netlify/functions/payments-fund`;
                 const args = { method: 'GET' };
                 const onDone = retrieveAllRequestDone;
                 const onError = retrieveAllRequestError;
                 const dataFromDB = res => res;
                 doFetch( url, args, onDone, onError, dataFromDB );
 
-            } else if ( genre.uiux.mode.isUpdate ) {
-                const url = `/.netlify/functions/payments-genre?id=${genre.data.id}`;
-                const dataToDB = parseGenreToDB( genre.data );
+            } else if ( fund.uiux.mode.isUpdate ) {
+                const url = `/.netlify/functions/payments-fund?id=${fund.data.id}`;
+                const dataToDB = parseFundToDB( fund.data );
                 const args = { method: 'PUT', body: JSON.stringify( { data: dataToDB } ) };
                 const onDone = updateRequestDone;
                 const onError = updateRequestError;
-                const idInResponse = res => genre.data.id;
+                const idInResponse = res => fund.data.id;
                 const dataFromDB = res => ( { ...dataToDB, _id: idInResponse( res ) } );
                 doFetch( url, args, onDone, onError, dataFromDB );
 
-            } else if ( genre.uiux.mode.isDelete ) {
-                const url = `/.netlify/functions/payments-genre?id=${genre.data.id}`;
-                const dataToDB = parseGenreToDB( genre.data );
+            } else if ( fund.uiux.mode.isDelete ) {
+                const url = `/.netlify/functions/payments-fund?id=${fund.data.id}`;
+                const dataToDB = parseFundToDB( fund.data );
                 const args = { method: 'DELETE', body: JSON.stringify( { data: dataToDB } ) };
                 const onDone = deleteRequestDone;
                 const onError = deleteRequestError;
-                const idInResponse = () => genre.data.id;
+                const idInResponse = () => fund.data.id;
                 const dataFromDB = res => ( { ...dataToDB, _id: idInResponse( res ) } );
                 doFetch( url, args, onDone, onError, dataFromDB );
             }
         }
     } );
 
-    const mode = !genre.data.id ? { isCreate: true } : { isUpdate: true };
-
-    const typeInfo = mode.isCreate
-        ? ''
-        : genre.data.isIncoming && genre.data.isOutgoing
-        ? 'Μ'
-        : genre.data.isIncoming
-        ? 'Ε'
-        : genre.data.isOutgoing
-        ? 'Π'
-        : '-';
+    const mode = !fund.data.id ? { isCreate: true } : { isUpdate: true };
 
     return (
         <li 
-            className={`payments Genre`}
+            className={`payments Fund`}
             key={index}
         >
-            <div className='data' title={`${genre.data.id}`}>
-                <span className='code'>{`${typeInfo}${genre.data.code}`}</span>
-                <span className='name'>{genre.data.name}</span>
+            <div className='data' title={`${fund.data.id}`}>
+                <span className='code'>{fund.data.code}</span>
+                <span className='name'>{fund.data.name}</span>
             </div>
 
-            {genre.uiux.process.isOnValidation || genre.uiux.process.isOnRequest
+            {fund.uiux.process.isOnValidation || fund.uiux.process.isOnRequest
                 ? <Loader />
-                : genre.uiux.status.isSuspended
+                : fund.uiux.status.isSuspended
                 ? <FontAwesomeIcon icon={ faBan } className="icon" />
                 : <GenreMenu openForm={openForm} mode={mode} />
             }
 
-            {genre.uiux.form.isOpen 
+            {fund.uiux.form.isOpen 
                 ? 
-                <GenreForm 
-                    genres={genres} 
+                <FundForm 
+                    funds={funds} 
                     index={index} 
                     closeForm={closeForm}
                     doValidation={doValidation}
@@ -270,4 +261,4 @@ function Genre( { index, genres } ) {
     );
 }
 
-export default GenreList;
+export default FundList;
