@@ -195,8 +195,21 @@ function Entry( { date, entry, inSequence } ) {
     }
 
     useEffect( () => {
-        if ( entry.uiux.process.isOnRequest && Object.keys( entry.uiux.mode ).length !== 0 ) {
-            console.log( 'Requesting... ', entry.uiux.mode, entry.data.id )
+        if ( entry.uiux.process.isOnRequest ) {
+
+            const doFetch = ( date, inSequence, url, args, onDone, onError, dataFromDB ) => {
+                console.log( 'Requesting... ', entry.uiux.mode, entry.data.id )
+
+                realFetch( url, args )
+                .then( res => {
+                    alert( JSON.stringify( res ) );
+                    onDone( date, inSequence, dataFromDB( res ) );
+                } )
+                .catch( err => { 
+                    alert( err );
+                    onError( date, inSequence, {} );
+                } );
+            }
 
             const dataToDB = {
                 date: dateToYYYYMMDD( date ),
@@ -204,47 +217,39 @@ function Entry( { date, entry, inSequence } ) {
                 inSequence: inSequence
             };
 
-            let url, method, idInResponse, onDone, onError;
+            const body = () => JSON.stringify( {
+                oldSaved: { date: dateToYYYYMMDD( REF.current.saved.date ), inSequence: REF.current.saved.inSequence },
+                newSaved: { date: dateToYYYYMMDD( date ), inSequence },
+                data: dataToDB
+            } );
 
             if ( entry.uiux.mode.isCreate ) {
-                url = `/.netlify/functions/create-entry`;
-                method = 'POST';
-                idInResponse = res => res.insertedId;
-                onDone = createRequestDone;
-                onError = createRequestError;
+                const url = `/.netlify/functions/create-entry`;
+                const args = { method: 'POST', body: body() };
+                const onDone = createRequestDone;
+                const onError = createRequestError;
+                const idInResponse = res => res.insertedId;
+                const dataFromDB = res => ( { ...dataToDB, _id: idInResponse( res ) } );
+                doFetch( date, inSequence, url, args, onDone, onError, dataFromDB );
 
             } else if ( entry.uiux.mode.isUpdate ) {
-                url = `/.netlify/functions/update-entry?id=${entry.data.id}`;
-                method = 'PUT';
-                idInResponse = () => entry.data.id;
-                onDone = updateRequestDone;
-                onError = updateRequestError;
+                const url = `/.netlify/functions/update-entry?id=${entry.data.id}`;
+                const args = { method: 'PUT', body: body() };
+                const onDone = updateRequestDone;
+                const onError = updateRequestError;
+                const idInResponse = () => entry.data.id;
+                const dataFromDB = res => ( { ...dataToDB, _id: idInResponse( res ) } );
+                doFetch( date, inSequence, url, args, onDone, onError, dataFromDB );
 
             } else if ( entry.uiux.mode.isDelete ) {
-                url = `/.netlify/functions/delete-entry?id=${entry.data.id}`;
-                method = 'DELETE';
-                idInResponse = () => entry.data.id;
-                onDone = deleteRequestDone;
-                onError = deleteRequestError;
+                const url = `/.netlify/functions/delete-entry?id=${entry.data.id}`;
+                const args = { method: 'DELETE', body: body() };
+                const onDone = deleteRequestDone;
+                const onError = deleteRequestError;
+                const idInResponse = () => entry.data.id;
+                const dataFromDB = res => ( { ...dataToDB, _id: idInResponse( res ) } );
+                doFetch( date, inSequence, url, args, onDone, onError, dataFromDB );
             }
-
-            realFetch( url , {
-                method: method,
-                body: JSON.stringify( {
-                    oldSaved: { date: dateToYYYYMMDD( REF.current.saved.date ), inSequence: REF.current.saved.inSequence },
-                    newSaved: { date: dateToYYYYMMDD( date ), inSequence },
-                    data: dataToDB
-                } )
-            } )
-            .then( res => {
-                alert( JSON.stringify( res ) );
-                const dataFromDB = { ...dataToDB, _id: idInResponse( res ) };
-                onDone( date, inSequence, dataFromDB );
-            } )
-            .catch( err => { 
-                alert( err );
-                onError( date, inSequence, {} );
-            } );
         }
 
     } );

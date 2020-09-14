@@ -181,10 +181,12 @@ function Genre( { index, genres } ) {
                 } );
             }
 
+            const dataToDB = parseGenreToDB( genre.data );
+            const body = JSON.stringify( { data: dataToDB } );
+        
             if ( genre.uiux.mode.isCreate ) {
                 const url = `/.netlify/functions/payments-genre`;
-                const dataToDB = parseGenreToDB( genre.data );
-                const args = { method: 'POST', body: JSON.stringify( { data: dataToDB } ) };
+                const args = { method: 'POST', body };
                 const onDone = createRequestDone;
                 const onError = createRequestError;
                 const idInResponse = res => res.insertedId;
@@ -204,8 +206,7 @@ function Genre( { index, genres } ) {
 
             } else if ( genre.uiux.mode.isUpdate ) {
                 const url = `/.netlify/functions/payments-genre?id=${genre.data.id}`;
-                const dataToDB = parseGenreToDB( genre.data );
-                const args = { method: 'PUT', body: JSON.stringify( { data: dataToDB } ) };
+                const args = { method: 'PUT', body };
                 const onDone = updateRequestDone;
                 const onError = updateRequestError;
                 const idInResponse = res => genre.data.id;
@@ -214,8 +215,7 @@ function Genre( { index, genres } ) {
 
             } else if ( genre.uiux.mode.isDelete ) {
                 const url = `/.netlify/functions/payments-genre?id=${genre.data.id}`;
-                const dataToDB = parseGenreToDB( genre.data );
-                const args = { method: 'DELETE', body: JSON.stringify( { data: dataToDB } ) };
+                const args = { method: 'DELETE', body };
                 const onDone = deleteRequestDone;
                 const onError = deleteRequestError;
                 const idInResponse = () => genre.data.id;
