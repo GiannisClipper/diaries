@@ -14,11 +14,7 @@ const genresReducer = ( state, action ) => {
             genres[ 0 ].uiux.process = { isOnRequest: true };
 
             payments = { ...payments, genres };
-
-            const isInitialized = { ...state.uiux.isInitialized };
-            isInitialized[ 'genres' ] = true;
-
-            return { data: { ...state.data, payments }, uiux: { ...state.uiux, isInitialized } };
+            return { ...state, data: { ...state.data, payments } };
 
         } case 'RETRIEVE_ALL_REQUEST_DONE': {
             let payments = { ...state.data.payments };

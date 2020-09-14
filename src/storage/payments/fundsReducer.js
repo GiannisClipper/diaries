@@ -14,11 +14,7 @@ const fundsReducer = ( state, action ) => {
             funds[ 0 ].uiux.process = { isOnRequest: true };
 
             payments = { ...payments, funds };
-
-            const isInitialized = { ...state.uiux.isInitialized };
-            isInitialized[ 'funds' ] = true;
-
-            return { data: { ...state.data, payments }, uiux: { ...state.uiux, isInitialized } };
+            return { ...state, data: { ...state.data, payments } };
 
         } case 'RETRIEVE_ALL_REQUEST_DONE': {
             let payments = { ...state.data.payments };

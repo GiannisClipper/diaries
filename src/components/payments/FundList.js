@@ -20,17 +20,14 @@ function FundList( { className } ) {
 
     const { funds } = STATE.state.data.payments;
 
-    //useEffect( () => {
-        // if ( !STATE.state.uiux.isInitialized.funds ) {
-        if ( !REF.current.initializedFunds ) {
-            REF.current[ 'initializedFunds' ] = true;
+    useEffect( () => {
+        console.log( 'Has rendered. ', 'payments/FundList' );
+
+        if ( !REF.current.initialization.funds ) {
+            REF.current.initialization[ 'funds' ] = { beforeRequest: true };
             console.log( 'add_init_funds' )
             STATE.dispatch( { namespace, type: 'INITIALIZE_LIST' } );
         }
-    //} );
-
-    useEffect( () => {
-        console.log( 'Has rendered. ', 'payments/FundList' );
     } );
 
     let index = -1;
@@ -168,7 +165,6 @@ function Fund( { index, funds } ) {
     }
 
     useEffect( () => {
-
         if ( fund.uiux.process.isOnRequest ) {
 
             const doFetch = ( url, args, onDone, onError, dataFromDB ) => {
@@ -196,12 +192,15 @@ function Fund( { index, funds } ) {
                 doFetch( url, args, onDone, onError, dataFromDB );
 
             } else if ( fund.uiux.mode.isRetrieveAll ) {
-                const url = `/.netlify/functions/payments-fund`;
-                const args = { method: 'GET' };
-                const onDone = retrieveAllRequestDone;
-                const onError = retrieveAllRequestError;
-                const dataFromDB = res => res;
-                doFetch( url, args, onDone, onError, dataFromDB );
+                if ( REF.current.initialization.funds.beforeRequest ) {
+                    REF.current.initialization[ 'funds' ] = { afterRequest: true };
+                    const url = `/.netlify/functions/payments-fund`;
+                    const args = { method: 'GET' };
+                    const onDone = retrieveAllRequestDone;
+                    const onError = retrieveAllRequestError;
+                    const dataFromDB = res => res;
+                    doFetch( url, args, onDone, onError, dataFromDB );
+                }
 
             } else if ( fund.uiux.mode.isUpdate ) {
                 const url = `/.netlify/functions/payments-fund?id=${fund.data.id}`;

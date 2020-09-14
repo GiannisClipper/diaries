@@ -20,18 +20,14 @@ function GenreList( { className } ) {
 
     const { genres } = STATE.state.data.payments;
 
-//    useEffect( () => {
-        // if ( !STATE.state.uiux.isInitialized.genres ) {
-        if ( !REF.current.initializedGenres ) {
-            REF.current[ 'initializedGenres' ] = true;
-    
-            console.log( 'add_init_genres' )
-            STATE.dispatch( { namespace, type: 'INITIALIZE_LIST' } );
-        }
-//    } );
-
     useEffect( () => {
         console.log( 'Has rendered. ', 'payments/GenreList' );
+
+        if ( !REF.current.initialization.genres ) {
+            REF.current.initialization[ 'genres' ] = { beforeRequest: true };
+            console.log( 'add_init_genres' )
+            STATE.dispatch( { namespace, type: 'INITIALIZE_LIST' } );
+        }    
     } );
 
     let index = -1;
@@ -169,7 +165,6 @@ function Genre( { index, genres } ) {
     }
 
     useEffect( () => {
-
         if ( genre.uiux.process.isOnRequest ) {
 
             const doFetch = ( url, args, onDone, onError, dataFromDB ) => {
@@ -197,12 +192,15 @@ function Genre( { index, genres } ) {
                 doFetch( url, args, onDone, onError, dataFromDB );
 
             } else if ( genre.uiux.mode.isRetrieveAll ) {
-                const url = `/.netlify/functions/payments-genre`;
-                const args = { method: 'GET' };
-                const onDone = retrieveAllRequestDone;
-                const onError = retrieveAllRequestError;
-                const dataFromDB = res => res;
-                doFetch( url, args, onDone, onError, dataFromDB );
+                if ( REF.current.initialization.genres.beforeRequest ) {
+                    REF.current.initialization[ 'genres' ] = { afterRequest: true };
+                    const url = `/.netlify/functions/payments-genre`;
+                    const args = { method: 'GET' };
+                    const onDone = retrieveAllRequestDone;
+                    const onError = retrieveAllRequestError;
+                    const dataFromDB = res => res;
+                    doFetch( url, args, onDone, onError, dataFromDB );
+                }
 
             } else if ( genre.uiux.mode.isUpdate ) {
                 const url = `/.netlify/functions/payments-genre?id=${genre.data.id}`;

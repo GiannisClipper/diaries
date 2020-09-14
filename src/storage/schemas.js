@@ -7,7 +7,6 @@ const initState = {
         },
     },
     uiux: {
-        isInitialized: {},  // genres, funds
     }
 };
 
