@@ -14,7 +14,16 @@ const fundsReducer = ( state, action ) => {
             funds[ 0 ].uiux.process = { isOnRequest: true };
 
             payments = { ...payments, funds };
-            return { ...state, data: { ...state.data, payments } };
+            const { init } = state.uiux;
+            init.payments.funds = { isBeforeRequest: true };
+
+            return { uiux: { ...state.uiux, init }, data: { ...state.data, payments } };
+
+        } case 'INITIALIZE_LIST_AFTER_REQUEST': {
+            const { init } = state.uiux;
+            init.payments.funds = { isAfterRequest: true };
+
+            return { uiux: { ...state.uiux, init }, data: state.data };
 
         } case 'RETRIEVE_ALL_REQUEST_DONE': {
             let payments = { ...state.data.payments };
@@ -29,7 +38,10 @@ const fundsReducer = ( state, action ) => {
             funds.push( initPayments.fund() );
 
             payments = { ...payments, funds };
-            return { ...state, data: { ...state.data, payments } };
+            const { init } = state.uiux;
+            init.payments.funds = { isDone: true };
+
+            return { uiux: { ...state.uiux, init }, data: { ...state.data, payments } };
 
         } case 'RETRIEVE_ALL_REQUEST_ERROR': {
             let payments = { ...state.data.payments };
@@ -40,7 +52,10 @@ const fundsReducer = ( state, action ) => {
             funds.push( fund );
 
             payments = { ...payments, funds };
-            return { ...state, data: { ...state.data, payments } };
+            const { init } = state.uiux;
+            init.payments.funds = { isError: true };
+
+            return { uiux: { ...state.uiux, init }, data: { ...state.data, payments } };
 
         } case 'OPEN_FORM': {
             let payments = { ...state.data.payments };

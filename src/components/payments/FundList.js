@@ -7,6 +7,7 @@ import { parseFundToDB } from '../../storage/payments/parsers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBan } from '@fortawesome/free-solid-svg-icons';
 import { Loader } from '../libs/Loader';
+import FundInit from './FundInit';
 import GenreMenu from './GenreMenu';
 import FundForm from './FundForm';
 
@@ -14,26 +15,19 @@ const namespace = 'payments.funds';
 
 function FundList( { className } ) {
 
-    const REF = useContext( REFContext );
-
     const STATE = useContext( STATEContext );
 
     const { funds } = STATE.state.data.payments;
 
     useEffect( () => {
         console.log( 'Has rendered. ', 'payments/FundList' );
-
-        if ( !REF.current.initialization.funds ) {
-            REF.current.initialization[ 'funds' ] = { beforeRequest: true };
-            console.log( 'add_init_funds' )
-            STATE.dispatch( { namespace, type: 'INITIALIZE_LIST' } );
-        }
     } );
 
     let index = -1;
 
     return (
         <div className={`payments FundList ${className}`}>
+            <FundInit />
             <ul>
                 { funds.map( fund => (
                     <Fund key={++index} index={index} funds={funds} />
@@ -48,6 +42,7 @@ function Fund( { index, funds } ) {
     const STATE = useContext( STATEContext );
     const REF = useContext( REFContext );
 
+    const { uiux } = STATE.state;
     const fund = funds[ index ];
 
     const openForm = mode => {
@@ -97,22 +92,6 @@ function Fund( { index, funds } ) {
             namespace,
             type: 'DO_REQUEST',
             payload: { index },
-        } );
-    }
-
-    const retrieveAllRequestDone = dataFromDB => {
-        STATE.dispatch( { 
-            namespace,
-            type: 'RETRIEVE_ALL_REQUEST_DONE',
-            payload: { dataFromDB },
-        } );
-    }
-
-    const retrieveAllRequestError = () => {
-        STATE.dispatch( { 
-            namespace,
-            type: 'RETRIEVE_ALL_REQUEST_ERROR',
-            payload: {},
         } );
     }
 
@@ -192,17 +171,6 @@ function Fund( { index, funds } ) {
                 const idInResponse = res => res.insertedId;
                 const dataFromDB = res => ( { ...dataToDB, _id: idInResponse( res ) } );
                 doFetch( url, args, onDone, onError, dataFromDB );
-
-            } else if ( fund.uiux.mode.isRetrieveAll ) {
-                if ( REF.current.initialization.funds.beforeRequest ) {
-                    REF.current.initialization[ 'funds' ] = { afterRequest: true };
-                    const url = `/.netlify/functions/payments-fund`;
-                    const args = { method: 'GET' };
-                    const onDone = retrieveAllRequestDone;
-                    const onError = retrieveAllRequestError;
-                    const dataFromDB = res => res;
-                    doFetch( url, args, onDone, onError, dataFromDB );
-                }
 
             } else if ( fund.uiux.mode.isUpdate ) {
                 const url = `/.netlify/functions/payments-fund?id=${fund.data.id}`;

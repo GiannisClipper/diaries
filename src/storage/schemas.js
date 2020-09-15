@@ -7,6 +7,13 @@ const initState = {
         },
     },
     uiux: {
+        init: {
+            dates: null,
+            payments: {
+                genres: null,
+                funds: null,
+            },
+        }
     }
 };
 

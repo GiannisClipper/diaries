@@ -7,6 +7,7 @@ import { parseGenreToDB } from '../../storage/payments/parsers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBan } from '@fortawesome/free-solid-svg-icons';
 import { Loader } from '../libs/Loader';
+import GenreInit from './GenreInit';
 import GenreMenu from './GenreMenu';
 import GenreForm from './GenreForm';
 
@@ -14,26 +15,19 @@ const namespace = 'payments.genres';
 
 function GenreList( { className } ) {
 
-    const REF = useContext( REFContext );
-
     const STATE = useContext( STATEContext );
 
     const { genres } = STATE.state.data.payments;
 
     useEffect( () => {
         console.log( 'Has rendered. ', 'payments/GenreList' );
-
-        if ( !REF.current.initialization.genres ) {
-            REF.current.initialization[ 'genres' ] = { beforeRequest: true };
-            console.log( 'add_init_genres' )
-            STATE.dispatch( { namespace, type: 'INITIALIZE_LIST' } );
-        }    
     } );
 
     let index = -1;
 
     return (
         <div className={`payments GenreList ${className}`}>
+            <GenreInit />
             <ul>
                 { genres.map( genre => (
                     <Genre key={++index} index={index} genres={genres} />
@@ -97,22 +91,6 @@ function Genre( { index, genres } ) {
             namespace,
             type: 'DO_REQUEST',
             payload: { index },
-        } );
-    }
-
-    const retrieveAllRequestDone = dataFromDB => {
-        STATE.dispatch( { 
-            namespace,
-            type: 'RETRIEVE_ALL_REQUEST_DONE',
-            payload: { dataFromDB },
-        } );
-    }
-
-    const retrieveAllRequestError = () => {
-        STATE.dispatch( { 
-            namespace,
-            type: 'RETRIEVE_ALL_REQUEST_ERROR',
-            payload: {},
         } );
     }
 
@@ -192,17 +170,6 @@ function Genre( { index, genres } ) {
                 const idInResponse = res => res.insertedId;
                 const dataFromDB = res => ( { ...dataToDB, _id: idInResponse( res ) } );
                 doFetch( url, args, onDone, onError, dataFromDB );
-
-            } else if ( genre.uiux.mode.isRetrieveAll ) {
-                if ( REF.current.initialization.genres.beforeRequest ) {
-                    REF.current.initialization[ 'genres' ] = { afterRequest: true };
-                    const url = `/.netlify/functions/payments-genre`;
-                    const args = { method: 'GET' };
-                    const onDone = retrieveAllRequestDone;
-                    const onError = retrieveAllRequestError;
-                    const dataFromDB = res => res;
-                    doFetch( url, args, onDone, onError, dataFromDB );
-                }
 
             } else if ( genre.uiux.mode.isUpdate ) {
                 const url = `/.netlify/functions/payments-genre?id=${genre.data.id}`;
