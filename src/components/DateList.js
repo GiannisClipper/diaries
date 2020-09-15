@@ -6,6 +6,8 @@ import { dayNames, monthNames } from '../helpers/dates';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBackward, faForward } from '@fortawesome/free-solid-svg-icons';
 import DateInit from './DateInit';
+import GenreInit from './payments/GenreInit';
+import FundInit from './payments/FundInit';
 import EntryList from './EntryList';
 
 const namespace = 'dates';
@@ -109,6 +111,8 @@ function DateList() {
 
     return (
         <div className="DateList frame" ref={elemRef}>
+            <GenreInit />
+            <FundInit />
             <DateInit />
             <div className="content">
                 <div className="prev">
