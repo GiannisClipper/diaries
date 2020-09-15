@@ -22,7 +22,7 @@ const constructDate = () => {
     dates = [ ...prevDates, activeDate, ...nextDates ];
 }
 
-const datesReducer = ( data, action ) => {
+const datesReducer = ( state, action ) => {
 
     const centralDate = new Date();
     centralDate.setHours( 12 );
@@ -80,39 +80,51 @@ const datesReducer = ( data, action ) => {
 
         case 'INITIALIZE_LIST': {
 
-            dates = [ ...data.dates ];
+            dates = [ ...state.data.dates ];
             dates = calcInitDates( centralDate, action.payload.num );
-            return { ...data, dates };
+            const { init } = state.uiux;
+            init.dates = { 
+                isBeforeRequest: true, 
+                dateFrom: dates[ 0 ].data.date,
+                dateTill: dates[ dates.length - 1 ].data.date 
+            };
+            return { uiux: { ...state.uiux, init }, data: { ...state.data, dates } };
 
+        } case 'INITIALIZE_LIST_AFTER_REQUEST': {
+
+            const { init } = state.uiux;
+            init.dates = { isAfterRequest: true };
+            return { uiux: { ...state.uiux, init }, data: state.data };
+        
         } case 'ADD_PREV_DATES': {
 
-            dates = [ ...data.dates ];
+            dates = [ ...state.data.dates ];
             const newDates = calcPrevDates( dates, action.payload.num );
             dates = [ ...newDates, ...dates ];
-            return { ...data, dates };
+            const { init } = state.uiux;
+            init.dates = { 
+                isBeforeRequest: true, 
+                dateFrom: newDates[ 0 ].data.date,
+                dateTill: newDates[ newDates.length - 1 ].data.date 
+            };
+            return { uiux: { ...state.uiux, init }, data: { ...state.data, dates } };
 
         } case 'ADD_NEXT_DATES': {
 
-            dates = [ ...data.dates ];
+            dates = [ ...state.data.dates ];
             const newDates = calcNextDates( dates, action.payload.num );
             dates = [ ...dates, ...newDates ];
-            return { ...data, dates };
-
-        // } case 'REMOVE_PREV_DATES': {
-
-        //     dates = [ ...data.dates ];
-        //     dates = dates.slice( action.payload.num );
-        //     return { ...data, dates };
-
-        // } case 'REMOVE_NEXT_DATES': {
-
-        //     dates = [ ...data.dates ];
-        //     dates = dates.slice( 0, -action.payload.num );
-        //     return { ...data, dates };
+            const { init } = state.uiux;
+            init.dates = { 
+                isBeforeRequest: true, 
+                dateFrom: newDates[ 0 ].data.date,
+                dateTill: newDates[ newDates.length - 1 ].data.date 
+            };
+            return { uiux: { ...state.uiux, init }, data: { ...state.data, dates } };
 
         } case 'RETRIEVE_DATES_REQUEST_DONE': {
 
-            dates = [ ...data.dates ];
+            dates = [ ...state.data.dates ];
             const { dateFrom, dateTill, dataFromDB } = action.payload;
             dataFromDB.sort( ( a, b ) => a.inSequence < b.inSequence ? -1 : a.inSequence > b.inSequence ? 1 : 0 );
 
@@ -137,11 +149,13 @@ const datesReducer = ( data, action ) => {
                 constructDate();
             }
 
-            return { ...data, dates };
+            const { init } = state.uiux;
+            init.dates = { isDone: true };
+            return { uiux: { ...state.uiux, init }, data: { ...state.data, dates } };
 
         } case 'RETRIEVE_DATES_REQUEST_ERROR': {
 
-            dates = [ ...data.dates ];
+            dates = [ ...state.data.dates ];
             const { dateFrom, dateTill } = action.payload;
 
             const numDays = daysBetween( dateFrom, dateTill ) + 1;
@@ -159,7 +173,9 @@ const datesReducer = ( data, action ) => {
                 constructDate();
             }
 
-            return { ...data, dates };
+            const { init } = state.uiux;
+            init.dates = { isError: true };
+            return { uiux: { ...state.uiux, init }, data: { ...state.data, dates } };
 
         } default: {
             throw new Error();

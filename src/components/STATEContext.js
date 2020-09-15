@@ -11,8 +11,7 @@ const STATEReducer = ( state, action ) => {
     switch ( action.namespace ) {
     
         case 'dates': {
-            data = datesReducer( data, action );
-            return { data, uiux };
+            return datesReducer( state, action );
 
         } case 'entries': {
             data = entriesReducer( data, action );

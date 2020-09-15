@@ -8,10 +8,10 @@ const initState = {
     },
     uiux: {
         init: {
-            dates: null,
+            dates: null,  // isBeforeRequest (dateFrom, dateTill), isAfterRequest, isDone, isError
             payments: {
-                genres: null,
-                funds: null,
+                genres: null,  // isBeforeRequest, isAfterRequest, isDone, isError
+                funds: null,  // isBeforeRequest, isAfterRequest, isDone, isError
             },
         }
     }
@@ -23,11 +23,7 @@ const initDate = () => ( {
         entries: [],
     },
     uiux: {
-        process: {
-            isOnRequest: false,
-            dateFrom: '',
-            dateTill: '',
-        },
+        process: {},  // isOnRequest
         isTheCentral: null,
     }
 } );

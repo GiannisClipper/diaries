@@ -2,10 +2,10 @@ import React, { useEffect, useRef, useContext } from 'react';
 import '../styles/DateList.css';
 import { STATEContext } from './STATEContext';
 import { REFContext } from './REFContext';
-import { dayNames, monthNames, dateToYYYYMMDD } from '../helpers/dates';
-import { realFetch, mockFetch } from '../helpers/customFetch';
+import { dayNames, monthNames } from '../helpers/dates';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBackward, faForward } from '@fortawesome/free-solid-svg-icons';
+import DateInit from './DateInit';
 import EntryList from './EntryList';
 
 const namespace = 'dates';
@@ -15,9 +15,8 @@ function DateList() {
     const STATE = useContext( STATEContext );
     const REF = useContext( REFContext );
 
+    const { init } = STATE.state.uiux;
     const { data } = STATE.state;
-
-    const status = useRef( { isBeforeFirstRequest: true } );
 
     const elemRef = useRef( null );
     const scrollTop = useRef( 0 );
@@ -73,17 +72,11 @@ function DateList() {
     }
 
     useEffect( () => {
-        if ( status.current.isBeforeFirstRequest ) {
-            console.log( 'add_init_dates' )
-            status.current = { isAfterFirstRequest: true };
-            STATE.dispatch( { namespace, type: 'INITIALIZE_LIST', payload: { num: 7 } } );
-
-        } else if ( status.current.isAfterFirstRequest ) {
+        if ( init.dates && init.dates.isAfterRequest ) {
             console.log( 'scrollToCentralDate' )
-            status.current = {};
             REF.current.scrollToCentralDate();
 
-        } else {
+        } else if ( init.dates && ( init.dates.isDone || init.dates.isError ) ) {
             const frame = elemRef.current;
             const content = frame.querySelector( '.content' );
             const prev = frame.querySelector( '.prev' );
@@ -116,6 +109,7 @@ function DateList() {
 
     return (
         <div className="DateList frame" ref={elemRef}>
+            <DateInit />
             <div className="content">
                 <div className="prev">
                     <FontAwesomeIcon icon={ faBackward } className="icon" />
@@ -142,54 +136,8 @@ const ADate = React.memo( ( { aDate } ) => {  // to differ from native function 
 
     const { date, entries } = aDate.data;
 
-    const STATE = useContext( STATEContext );
-
-    const retrieveDatesRequestDone = ( dateFrom, dateTill, dataFromDB ) => {
-        STATE.dispatch( { 
-            namespace,
-            type: 'RETRIEVE_DATES_REQUEST_DONE',
-            payload: { dateFrom, dateTill, dataFromDB },
-
-        } );
-    }
-
-    const retrieveDatesRequestError = ( dateFrom, dateTill ) => {
-        STATE.dispatch( { 
-            namespace,
-            type: 'RETRIEVE_DATES_REQUEST_ERROR',
-            payload: { dateFrom, dateTill },
-
-        } );
-    }
-
     useEffect( () => {
         console.log( 'Has rendered. ', date );
-
-        const { process } = aDate.uiux;
-
-        if ( process.isOnRequest && process.dateFrom.getTime() === date.getTime() ) {
-            console.log( 'Requesting... ', date )
-
-            const { dateFrom, dateTill } = process;
-            const strFrom = dateToYYYYMMDD( dateFrom );
-            const strTill = dateToYYYYMMDD( dateTill );
-
-            const uri = `/.netlify/functions/retrieve-dates?range=${strFrom}-${strTill}`;
-            const method = 'GET';
-
-            //mockFetch( uri, { method } )
-            realFetch( uri, { method } )
-            .then( res => {
-                alert( JSON.stringify( res ) );
-                retrieveDatesRequestDone( dateFrom, dateTill, res );
-            } )
-            .catch( err => {
-                alert( `${err} (${method} ${uri}).` );
-                console.log( `${err} (${method} ${uri}).` );
-                retrieveDatesRequestError( dateFrom, dateTill );
-            } );
-        }
-
     } );
 
     const className = aDate.uiux.isTheCentral ? 'central' : '';
