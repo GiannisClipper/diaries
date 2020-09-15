@@ -8,10 +8,10 @@ const initState = {
     },
     uiux: {
         init: {
-            dates: null,  // isBeforeRequest (dateFrom, dateTill), isAfterRequest, isDone, isError
+            dates: {},  // isBeforeRequest (dateFrom, dateTill), isAfterRequest, isDone, isError
             payments: {
-                genres: null,  // isBeforeRequest, isAfterRequest, isDone, isError
-                funds: null,  // isBeforeRequest, isAfterRequest, isDone, isError
+                genres: {},  // isBeforeRequest, isAfterRequest, isDone, isError
+                funds: {},  // isBeforeRequest, isAfterRequest, isDone, isError
             },
         }
     }

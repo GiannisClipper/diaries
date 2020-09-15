@@ -42,9 +42,8 @@ function FundInit() {
 
     useEffect( () => {
 
-        if ( !init.payments.funds ) {
+        if ( Object.keys( init.payments.funds ).length === 0 ) {
             console.log( 'To_init_funds...' )
-
             initializeList();
 
         } else if ( init.payments.funds.isBeforeRequest ) {

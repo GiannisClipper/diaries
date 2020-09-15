@@ -41,10 +41,8 @@ function GenreInit() {
     }
 
     useEffect( () => {
-
-        if ( !init.payments.genres ) {
+        if ( Object.keys( init.payments.genres ).length === 0 ) {
             console.log( 'To_init_genres...' )
-
             initializeList();
 
         } else if ( init.payments.genres.isBeforeRequest ) {

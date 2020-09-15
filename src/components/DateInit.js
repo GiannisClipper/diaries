@@ -45,11 +45,7 @@ function DateInit() {
     }
 
     useEffect( () => {
-        if ( init.payments.genres && ( init.payments.genres.isDone || init.payments.genres.isError ) 
-            && init.payments.funds && ( init.payments.funds.isDone || init.payments.funds.isError ) ) {
-
-            if ( !init.dates ) {
-
+            if ( Object.keys( init.dates ).length === 0 ) {
                 console.log( 'To_init_dates...' )
                 initializeList();
 
@@ -58,28 +54,30 @@ function DateInit() {
                 const strFrom = dateToYYYYMMDD( dateFrom );
                 const strTill = dateToYYYYMMDD( dateTill );
 
-                if ( init.payments.genres.isDone || init.payments.funds.isDone ) {
-                    console.log( 'Requesting... ', strFrom, strTill )
-                    const uri = `/.netlify/functions/retrieve-dates?range=${strFrom}-${strTill}`;
-                    const method = 'GET';
+                if ( init.payments.genres && init.payments.funds ) {
+    
+                    if ( init.payments.genres.isDone || init.payments.funds.isDone ) {
+                        console.log( 'Requesting... ', strFrom, strTill )
+                        const uri = `/.netlify/functions/retrieve-dates?range=${strFrom}-${strTill}`;
+                        const method = 'GET';
 
-                    //mockFetch( uri, { method } )
-                    realFetch( uri, { method } )
-                        .then( res => {
-                            alert( JSON.stringify( res ) );
-                            retrieveDatesRequestDone( dateFrom, dateTill, res );
-                        } )
-                        .catch( err => {
-                            alert( `${err} (${method} ${uri}).` );
-                            console.log( `${err} (${method} ${uri}).` );
-                            retrieveDatesRequestError( dateFrom, dateTill );
-                        } );
-                    initializeListAfterRequest();
+                        //mockFetch( uri, { method } )
+                        realFetch( uri, { method } )
+                            .then( res => {
+                                alert( JSON.stringify( res ) );
+                                retrieveDatesRequestDone( dateFrom, dateTill, res );
+                            } )
+                            .catch( err => {
+                                alert( `${err} (${method} ${uri}).` );
+                                console.log( `${err} (${method} ${uri}).` );
+                                retrieveDatesRequestError( dateFrom, dateTill );
+                            } );
+                        initializeListAfterRequest();
 
-                } else {
-                    retrieveDatesRequestError( dateFrom, dateTill );
-                    initializeListAfterRequest();
-                }
+                    } else if ( init.payments.genres.isError || init.payments.funds.isError ) {
+                        retrieveDatesRequestError( dateFrom, dateTill );
+                        initializeListAfterRequest();
+                    }
             }
         }
     } );
