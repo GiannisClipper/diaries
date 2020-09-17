@@ -5,7 +5,19 @@ import { Modal } from './libs/Modal';
 import { CRUDForm, Field } from './libs/Form';
 import { isBlank } from '../helpers/validation';
 
-function EntryForm( { className, date, entry, inSequence, data, closeForm, doValidation, validationDone, validationError, doRequest, children } ) {
+function EntryForm( { 
+        className, 
+        date, 
+        entry, 
+        inSequence, 
+        formData, 
+        closeForm, 
+        doValidation, 
+        validationDone, 
+        validationError, 
+        doRequest, 
+        children 
+    } ) {
 
     const dateInfo = (
         dayNames[ date.getDay() ] + ' ' +
@@ -15,7 +27,7 @@ function EntryForm( { className, date, entry, inSequence, data, closeForm, doVal
     );
 
     const onClickOk = event => {
-        entry.data = { ...data };
+        entry.data = { ...formData };
         doValidation( date, inSequence );
         entry.uiux.mode.isCreate || entry.uiux.mode.isUpdate
             ? doValidation( date, inSequence )
@@ -29,7 +41,7 @@ function EntryForm( { className, date, entry, inSequence, data, closeForm, doVal
         if ( entry.uiux.process.isOnValidation ) {
 
             let errors = '';
-            errors += isBlank( data.note ) ? 'Το Σημείωμα δεν μπορεί να είναι κενό.\n' : '';
+            errors += isBlank( formData.note ) ? 'Το Σημείωμα δεν μπορεί να είναι κενό.\n' : '';
 
             if ( errors === '' ) {
                 validationDone( date, inSequence )
@@ -55,7 +67,7 @@ function EntryForm( { className, date, entry, inSequence, data, closeForm, doVal
             >
                 <Field className="id" label="Id">
                     <input 
-                        value={data.id}
+                        value={formData.id}
                         tabIndex="-1"
                         readOnly
                     />

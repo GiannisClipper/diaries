@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import '../styles/PaymentForm.css';
+import { STATEContext } from './STATEContext';
 import EntryForm from './EntryForm';
 import { Field } from './libs/Form';
 import { InputNumber, InputFromList } from './libs/Inputs';
@@ -8,7 +9,13 @@ function PaymentForm( { date, entry, inSequence, closeForm, doValidation, valida
 
     const className = 'PaymentForm';
 
-    const [ data, setData ] = useState( { ...entry.data } );
+    const  { data } = useContext( STATEContext ).state;
+
+    const allGenres = data.payments.genres.map( x=> x.data.name );
+
+    const allFunds = data.payments.funds.map( x=> x.data.name );
+
+    const [ formData, setFormData ] = useState( { ...entry.data } );
 
     return (
         <EntryForm
@@ -16,7 +23,7 @@ function PaymentForm( { date, entry, inSequence, closeForm, doValidation, valida
             date={date}
             entry={entry}
             inSequence={inSequence}
-            data={data}
+            formData={formData}
             closeForm={closeForm}
             doValidation={doValidation}
             validationDone={validationDone}
@@ -25,50 +32,38 @@ function PaymentForm( { date, entry, inSequence, closeForm, doValidation, valida
         >
             <Field className="genre" label="Λογαριασμός">
                 <InputFromList
-                    value={data.genre}
-                    allValues={[
-                        'apple', 
-                        'tomato', 
-                        'banana', 
-                        'carot',
-                        'greenapple', 
-                        'greensalad',
-                        'ananas'
-                    ]}
-                    onChange={event => setData( { ...data, genre: event.target.value } )}
+                    value={formData.genre}
+                    allValues={allGenres}
+                    onChange={event => setFormData( { ...formData, genre: event.target.value } )}
                 />
             </Field>
 
             <Field className="incoming" label="Είσπραξη">
                 <InputNumber
-                    value={data.incoming}
-                    onChange={event => setData( { ...data, incoming: event.target.value } )}
+                    value={formData.incoming}
+                    onChange={event => setFormData( { ...formData, incoming: event.target.value } )}
                 />
             </Field>
 
             <Field className="outgoing" label="Πληρωμή">
                 <InputNumber
-                    value={data.outgoing}
-                    onChange={event => setData( { ...data, outgoing: event.target.value } )}
+                    value={formData.outgoing}
+                    onChange={event => setFormData( { ...formData, outgoing: event.target.value } )}
                 />
             </Field>
 
             <Field className="remark" label="Αιτιολογία">
                 <input
-                    value={data.remark}
-                    onChange={event => setData( { ...data, remark: event.target.value } )}
+                    value={formData.remark}
+                    onChange={event => setFormData( { ...formData, remark: event.target.value } )}
                 />
             </Field>
 
             <Field className="fund" label="Μέσο πληρωμής">
             <InputFromList
-                    value={data.fund}
-                    allValues={[
-                        'Cash', 
-                        'Master', 
-                        'Visa'
-                    ]}
-                    onChange={event => setData( { ...data, fund: event.target.value } )}
+                    value={formData.fund}
+                    allValues={allFunds}
+                    onChange={event => setFormData( { ...formData, fund: event.target.value } )}
                 />
             </Field>
         </EntryForm>

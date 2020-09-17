@@ -47,7 +47,7 @@ function InputFromList( { className, allValues, value, onChange } ) {
         const prevValue = match.value;
         const prevValues = match.values;
         let values = prevValue !== '' && value.includes( prevValue ) ? prevValues : allValues;
-        values = values.filter( x => x.includes( value ) );
+        values = values.filter( x => x.includes( value === ' ' ? '' : value ) );
         setMatch( { value, values } );
     }
 
@@ -63,7 +63,7 @@ function InputFromList( { className, allValues, value, onChange } ) {
         const prevValues = match.values;
         let values = prevValue !== '' && value.includes( prevValue ) ? prevValues : allValues;
         values = values.filter( x => x.includes( value ) );
-        value = values.length > 0 ? values[ 0 ] : '';
+        value = value.trim() !== '' && values.length > 0 ? values[ 0 ] : '';
         setMatch( { value, values } );
         onChange( event );
     }
