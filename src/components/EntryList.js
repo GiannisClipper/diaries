@@ -22,7 +22,7 @@ function EntryList( { date, entries } ) {
         <div className="EntryList">
             <ul>
                 { entries.map( entry => (
-                    <Entry date={date} entry={entry} inSequence={++inSequence} />
+                    <Entry date={date} entry={entry} inSequence={++inSequence} key={inSequence} />
                 ) ) }
             </ul>
         </div>

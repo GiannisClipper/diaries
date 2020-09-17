@@ -1,6 +1,9 @@
-.InputRelation {
+.InputFromList {
     position: relative;
 }
-.InputRelation ul {
+.InputFromList ul {
     position: absolute;
+}
+.InputFromList ul li.index {
+    background-color: lightgoldenrodyellow;
 }

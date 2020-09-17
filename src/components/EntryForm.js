@@ -67,7 +67,7 @@ function EntryForm( {
             >
                 <Field className="id" label="Id">
                     <input 
-                        value={formData.id}
+                        value={formData.id || ''}
                         tabIndex="-1"
                         readOnly
                     />
