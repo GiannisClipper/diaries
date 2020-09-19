@@ -77,6 +77,10 @@ function ExistsEntryMenu( { date, entry, inSequence, openForm, closeMenu, doCut,
 
     const REF = useContext( REFContext );
 
+    const type = entry.data.type === 'payment'
+        ? { isPayment: true }
+        : { isNote: true };
+
     return (
         <EntryMenu 
             date={date}
@@ -84,12 +88,12 @@ function ExistsEntryMenu( { date, entry, inSequence, openForm, closeMenu, doCut,
             inSequence={inSequence}
         >
             <EditTool onClick={event => {
-                openForm( event, date, entry, inSequence, { isNote: true }, { isUpdate: true } );
+                openForm( event, date, entry, inSequence, type, { isUpdate: true } );
                 closeMenu( event, date, inSequence );
             }} />
 
             <DeleteTool onClick={event => {
-                openForm( event, date, entry, inSequence, { isNote: true }, { isDelete: true } );
+                openForm( event, date, entry, inSequence, type, { isDelete: true } );
                 closeMenu( event, date, inSequence );
             }} />
 

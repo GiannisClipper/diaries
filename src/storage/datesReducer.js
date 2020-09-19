@@ -1,6 +1,8 @@
 import { initDate, initEntry } from './schemas';
 import { daysBetween, shiftDate, dateToYYYYMMDD } from '../helpers/dates';
-import { parseEntryFromDB } from './parsers';
+import { initNotes, initPayments } from './schemas';
+import { parseNoteFromDB } from './notes/parsers';
+import { parsePaymentFromDB } from './payments/parsers';
 
 let dates, prevDates, activeDate, nextDates;
 let entries, prevEntries, activeEntry, nextEntries;
@@ -127,6 +129,7 @@ const datesReducer = ( state, action ) => {
             dates = [ ...state.data.dates ];
             const { dateFrom, dateTill, dataFromDB } = action.payload;
             dataFromDB.sort( ( a, b ) => a.inSequence < b.inSequence ? -1 : a.inSequence > b.inSequence ? 1 : 0 );
+            const { genres, funds } = state.data.payments;
 
             const numDays = daysBetween( dateFrom, dateTill ) + 1;
             for ( let i = 0; i < numDays; i++ ) { 
@@ -136,7 +139,9 @@ const datesReducer = ( state, action ) => {
                 const entries = [];
                 for ( const entryFromDB of dateFromDB ) {
                     const entry = initEntry();
-                    entry.data = parseEntryFromDB( entryFromDB );
+                    entry.data = entryFromDB.type === 'payment'
+                        ? parsePaymentFromDB( entryFromDB, genres, funds )
+                        : parseNoteFromDB( entryFromDB )
                     entries.push( entry );
                 }
                 const entry = initEntry();
@@ -201,13 +206,13 @@ const constructEntry = () => {
     activeDate.data.entries = entries;
 }
 
-const entriesReducer = ( data, action ) => {
+const entriesReducer = ( state, action ) => {
 
     switch ( action.type ) {
 
         case 'MOVE_ENTRY': {
 
-            dates = [ ...data.dates ];
+            dates = [ ...state.data.dates ];
             const { cut, paste } = action.payload;
 
             if ( cut.date + cut.inSequence !== paste.date + paste.inSequence ) {
@@ -229,11 +234,11 @@ const entriesReducer = ( data, action ) => {
                 constructDate();
             }
 
-            return { ...data, dates };
+            return { uiux: state.uiux, data: { ...state.data, dates } };
 
         } case 'COPY_ENTRY': {
 
-            dates = [ ...data.dates ];
+            dates = [ ...state.data.dates ];
             const { copy, paste } = action.payload;
 
             deconstructDate( getDateInSequence( copy.date ) );
@@ -249,11 +254,11 @@ const entriesReducer = ( data, action ) => {
             activeDate.data.entries.forEach( x => x.uiux.status = { isSuspended: true } );
             constructDate();
 
-            return { ...data, dates };
+            return { uiux: state.uiux, data: { ...state.data, dates } };
 
         } case 'OPEN_MENU': {
 
-            dates = [ ...data.dates ];
+            dates = [ ...state.data.dates ];
             const { date, inSequence } = action.payload;
             const dateInSequence = getDateInSequence( date );
 
@@ -263,11 +268,11 @@ const entriesReducer = ( data, action ) => {
             constructEntry();
             constructDate();
 
-            return { ...data, dates };
+            return { uiux: state.uiux, data: { ...state.data, dates } };
 
         } case 'CLOSE_MENU': {
 
-            dates = [ ...data.dates ];
+            dates = [ ...state.data.dates ];
             const { date, inSequence } = action.payload;
             const dateInSequence = getDateInSequence( date );
 
@@ -277,11 +282,11 @@ const entriesReducer = ( data, action ) => {
             constructEntry();
             constructDate();
 
-            return { ...data, dates };
+            return { uiux: state.uiux, data: { ...state.data, dates } };
 
         } case 'OPEN_FORM': {
 
-            dates = [ ...data.dates ];
+            dates = [ ...state.data.dates ];
             const { date, inSequence, type, mode } = action.payload;
 
             deconstructDate( getDateInSequence( date ) );
@@ -289,14 +294,19 @@ const entriesReducer = ( data, action ) => {
             activeEntry.uiux.form = { isOpen: true };
             activeEntry.uiux.type = type;
             activeEntry.uiux.mode = mode;
+            if ( mode.isCreate ) {
+                activeEntry.data = type.isPayment
+                    ? { ...activeEntry.data, ...initPayments.payment().data }
+                    : { ...activeEntry.data, ...initNotes.note().data };
+            }
             constructEntry();
             constructDate();
 
-            return { ...data, dates };
+            return { uiux: state.uiux, data: { ...state.data, dates } };
 
         } case 'CLOSE_FORM': {
 
-            dates = [ ...data.dates ];
+            dates = [ ...state.data.dates ];
             const { date, inSequence } = action.payload;
 
             deconstructDate( getDateInSequence( date ) );
@@ -308,10 +318,11 @@ const entriesReducer = ( data, action ) => {
             constructEntry();
             constructDate();
 
-            return { ...data, dates };
+            return { uiux: state.uiux, data: { ...state.data, dates } };
 
         } case 'DO_VALIDATION': {
-            dates = [ ...data.dates ];
+
+            dates = [ ...state.data.dates ];
             const { date, inSequence } = action.payload;
 
             deconstructDate( getDateInSequence( date ) );
@@ -320,10 +331,11 @@ const entriesReducer = ( data, action ) => {
             constructEntry();
             constructDate();
 
-            return { ...data, dates };
+            return { uiux: state.uiux, data: { ...state.data, dates } };
 
         } case 'VALIDATION_DONE': {
-            dates = [ ...data.dates ];
+
+            dates = [ ...state.data.dates ];
             const { date, inSequence } = action.payload;
 
             deconstructDate( getDateInSequence( date ) );
@@ -332,10 +344,11 @@ const entriesReducer = ( data, action ) => {
             constructEntry();
             constructDate();
 
-            return { ...data, dates };
+            return { uiux: state.uiux, data: { ...state.data, dates } };
 
         } case 'VALIDATION_ERROR': {
-            dates = [ ...data.dates ];
+
+            dates = [ ...state.data.dates ];
             const { date, inSequence } = action.payload;
 
             deconstructDate( getDateInSequence( date ) );
@@ -344,11 +357,11 @@ const entriesReducer = ( data, action ) => {
             constructEntry();
             constructDate();
 
-            return { ...data, dates };
+            return { uiux: state.uiux, data: { ...state.data, dates } };
 
         } case 'DO_REQUEST': {
 
-            dates = [ ...data.dates ];
+            dates = [ ...state.data.dates ];
             const { date, inSequence } = action.payload;
 
             deconstructDate( getDateInSequence( date ) );
@@ -357,16 +370,20 @@ const entriesReducer = ( data, action ) => {
             constructEntry();
             constructDate();
 
-            return { ...data, dates };
+            return { uiux: state.uiux, data: { ...state.data, dates } };
 
         } case 'CREATE_REQUEST_DONE': {
 
-            dates = [ ...data.dates ];
+            dates = [ ...state.data.dates ];
             const { date, inSequence, dataFromDB } = action.payload;
+            const { genres, funds } = state.data.payments;
 
             deconstructDate( getDateInSequence( date ) );
             deconstructEntry( inSequence );
-            activeEntry.data = parseEntryFromDB( dataFromDB );
+            activeEntry.data = dataFromDB.type === 'payment'
+                ? parsePaymentFromDB( dataFromDB, genres, funds )
+                : parseNoteFromDB( dataFromDB )
+
             activeEntry.uiux.process = {};
             activeEntry.uiux.mode = {};
             activeEntry.uiux.form = {};
@@ -377,11 +394,11 @@ const entriesReducer = ( data, action ) => {
             activeDate.data.entries.forEach( x => x.uiux.status = {} );
             constructDate();
 
-            return { ...data, dates };
+            return { uiux: state.uiux, data: { ...state.data, dates } };
 
         } case 'CREATE_REQUEST_ERROR': {
 
-            dates = [ ...data.dates ];
+            dates = [ ...state.data.dates ];
             const { date, inSequence } = action.payload;
 
             deconstructDate( getDateInSequence( date ) );
@@ -391,16 +408,20 @@ const entriesReducer = ( data, action ) => {
             activeDate.data.entries.forEach( x => x.uiux.status = {} );
             constructDate();
 
-            return { ...data, dates };
+            return { uiux: state.uiux, data: { ...state.data, dates } };
 
         } case 'UPDATE_REQUEST_DONE': {
 
-            dates = [ ...data.dates ];
+            dates = [ ...state.data.dates ];
             const { date, inSequence, dataFromDB } = action.payload;
+            const { genres, funds } = state.data.payments;
 
             deconstructDate( getDateInSequence( date ) );
             deconstructEntry( inSequence );
-            activeEntry.data = parseEntryFromDB( dataFromDB );
+            activeEntry.data = dataFromDB.type === 'payment'
+                ? parsePaymentFromDB( dataFromDB, genres, funds )
+                : parseNoteFromDB( dataFromDB )
+
             activeEntry.uiux.process = {};
             activeEntry.uiux.mode = {};
             activeEntry.uiux.form = {};
@@ -408,11 +429,11 @@ const entriesReducer = ( data, action ) => {
             activeDate.data.entries.forEach( x => x.uiux.status = {} );
             constructDate();
 
-            return { ...data, dates };
+            return { uiux: state.uiux, data: { ...state.data, dates } };
 
         } case 'UPDATE_REQUEST_ERROR': {
 
-            dates = [ ...data.dates ];
+            dates = [ ...state.data.dates ];
             const { date, inSequence, saved } = action.payload;
 
             deconstructDate( getDateInSequence( date ) );
@@ -434,11 +455,11 @@ const entriesReducer = ( data, action ) => {
             activeDate.data.entries.forEach( x => x.uiux.status = {} );
             constructDate();
 
-            return { ...data, dates };
+            return { uiux: state.uiux, data: { ...state.data, dates } };
 
         } case 'DELETE_REQUEST_DONE': {
 
-            dates = [ ...data.dates ];
+            dates = [ ...state.data.dates ];
             const { date, inSequence } = action.payload;
 
             deconstructDate( getDateInSequence( date ) );
@@ -448,11 +469,11 @@ const entriesReducer = ( data, action ) => {
             activeDate.data.entries.forEach( x => x.uiux.status = {} );
             constructDate();
 
-            return { ...data, dates };
+            return { uiux: state.uiux, data: { ...state.data, dates } };
 
         } case 'DELETE_REQUEST_ERROR': {
 
-            dates = [ ...data.dates ];
+            dates = [ ...state.data.dates ];
             const { date, inSequence } = action.payload;
 
             deconstructDate( getDateInSequence( date ) );
@@ -464,7 +485,7 @@ const entriesReducer = ( data, action ) => {
             activeDate.data.entries.forEach( x => x.uiux.status = {} );
             constructDate();
 
-            return { ...data, dates };
+            return { uiux: state.uiux, data: { ...state.data, dates } };
 
         } default: {
             throw new Error( action.type );

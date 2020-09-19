@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import '../../styles/libs/Inputs.css';
 
-function InputNumber( { className, value, onChange } ) {
+function InputNumber( { className, value, onChange, readOnly } ) {
 
     const _onKeyPress = event => {
         const _key = event.key;
@@ -26,6 +26,7 @@ function InputNumber( { className, value, onChange } ) {
             value={value}
             onKeyPress={_onKeyPress}
             onChange={_onChange}
+            readOnly={readOnly}
         />
     )
 }
@@ -89,7 +90,7 @@ function InputFromList( { className, allValues, value, onChange } ) {
         let { value, values, index } = match;
         value = index >= 0 && value ? values[ index ] : '';
         setMatch( { value, values, index } );
-        onChange( event );  // This is an `InputFromList` attribute
+        onChange( { target: { value } } );  // This is an `InputFromList` attribute
     }
 
     useEffect( () => {

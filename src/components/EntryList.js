@@ -4,13 +4,15 @@ import { STATEContext } from './STATEContext';
 import { REFContext } from './REFContext';
 import { dateToYYYYMMDD } from '../helpers/dates';
 import { realFetch, mockFetch } from '../helpers/customFetch';
+import { parseNoteToDB } from '../storage/notes/parsers';
+import { parsePaymentToDB } from '../storage/payments/parsers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBan } from '@fortawesome/free-solid-svg-icons';
 
 import { Loader } from './libs/Loader';
 import { EntryMenuTool, BlankEntryMenu, ExistsEntryMenu } from './EntryMenu';
-import NoteForm from './NoteForm';
-import PaymentForm from './PaymentForm';
+import NoteForm from './notes/NoteForm';
+import PaymentForm from './payments/PaymentForm';
 
 const namespace = 'entries';
 
@@ -211,11 +213,11 @@ function Entry( { date, entry, inSequence } ) {
                 } );
             }
 
-            const dataToDB = {
-                date: dateToYYYYMMDD( date ),
-                note: entry.data.note,
-                inSequence: inSequence
-            };
+            const { genres, funds } = STATE.state.data.payments;
+
+            const dataToDB = entry.uiux.type.isPayment
+                ? parsePaymentToDB( { ...entry.data, date: dateToYYYYMMDD( date ), inSequence }, genres, funds )
+                : parseNoteToDB( { ...entry.data, date: dateToYYYYMMDD( date ), inSequence } );
 
             const body = () => JSON.stringify( {
                 oldSaved: { date: dateToYYYYMMDD( REF.current.saved.date ), inSequence: REF.current.saved.inSequence },
@@ -282,7 +284,7 @@ function Entry( { date, entry, inSequence } ) {
             onDrop={onDrop}
         >
             <div className='data' title={`${entry.data.date}, ${inSequence}, ${entry.data.inSequence}, ${entry.data.id}`}>
-                {entry.data.note}
+                <EntryRepr entry={entry} />
             </div>
 
             {entry.uiux.process.isOnRequest
@@ -346,6 +348,24 @@ function Entry( { date, entry, inSequence } ) {
 
         </li> 
     );
+}
+
+const EntryRepr = ( { entry } ) => {
+
+    const { data } = entry;
+    let repr = '';
+
+    if ( data.type === 'note' ) {
+        repr = data.note;
+
+    } else if ( data.type === 'payment' ) {
+        repr += data.incoming ? `Είσπραξη ${data.incoming} ` : '';
+        repr += data.outgoing ? `Πληρωμή ${data.outgoing} ` : '';
+        repr += `(${data.fund_name}) ${data.genre_name}`;
+        repr += data.remark ? `-${data.remark}` : '';
+    }
+
+    return <>{repr}</>
 }
 
 export default EntryList;

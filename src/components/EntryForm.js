@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import '../styles/EntryForm.css';
 import { dayNames } from '../helpers/dates';
 import { Modal } from './libs/Modal';
 import { CRUDForm, Field } from './libs/Form';
-import { isBlank } from '../helpers/validation';
 
 function EntryForm( { 
         className, 
@@ -35,26 +34,6 @@ function EntryForm( {
     }
 
     const onClickCancel = event => closeForm( event, date, inSequence );
-
-    useEffect( () => {
-    
-        if ( entry.uiux.process.isOnValidation ) {
-
-            let errors = '';
-            errors += isBlank( formData.note ) ? 'Το Σημείωμα δεν μπορεί να είναι κενό.\n' : '';
-
-            if ( errors === '' ) {
-                validationDone( date, inSequence )
-
-            } else {
-                alert( errors );
-                validationError( date, inSequence );
-            }
-
-        } else if ( entry.uiux.process.isOnValidationDone ) {
-            doRequest( date, inSequence );
-        }
-    } );
 
     return (
         <Modal>

@@ -32,7 +32,7 @@ const initEntry = () => ( {
     data: {
         id: null,
         date: '',
-        note: '',
+        type: '', // 'note', 'payment'
         inSequence: 0,
     },
     uiux: {
@@ -45,7 +45,29 @@ const initEntry = () => ( {
     }
 } );
 
+const initNotes = {
+    note: () => ( {
+        data: {
+            type: 'note',
+            note: '',
+        },
+        uiux : {}
+    } ),
+}
+
 const initPayments = {
+    payment: () => ( {
+        data: {
+            type: 'payment',
+            genre_name: '',
+            incoming: null,
+            outgoing: null,
+            remark: '',
+            fund_name: '',
+        },
+        uiux : {}
+    } ),
+
     genre: () => ( {
         data: {
             id: null,
@@ -61,6 +83,7 @@ const initPayments = {
             status: {},  // isSuspended
         }
     } ),
+
     fund: () => ( {
         data: {
             id: null,
@@ -76,4 +99,4 @@ const initPayments = {
     } )
 }
 
-export { initState, initDate, initEntry, initPayments };
+export { initState, initDate, initEntry, initNotes, initPayments };

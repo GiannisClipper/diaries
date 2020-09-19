@@ -1,4 +1,4 @@
-const isBlank = value => !value.trim() ? true : false;
+const isBlank = value => !value || !value.trim() ? true : false;
 
 const isFound = ( values, value, index = -1 ) => {
     for ( let i = 0; i < values.length; i++ ) {

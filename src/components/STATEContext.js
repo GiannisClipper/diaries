@@ -6,16 +6,13 @@ import fundsReducer from '../storage/payments/fundsReducer';
 
 const STATEReducer = ( state, action ) => {
 
-    let { data, uiux } = state;
-
     switch ( action.namespace ) {
     
         case 'dates': {
             return datesReducer( state, action );
 
         } case 'entries': {
-            data = entriesReducer( data, action );
-            return { data, uiux };
+            return entriesReducer( state, action );
     
         } case 'payments.genres': {
             return genresReducer( state, action );
