@@ -7,6 +7,7 @@ import { STATEContextProvider } from './STATEContext';
 import { REFContextProvider } from './REFContext';
 import { REFContext } from './REFContext';
 import Routes from './Routes';
+import { realFetch, mockFetch } from '../helpers/customFetch';
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
                 <GotoSettings />
                 <span>Diaries by GiannisClipper</span>
                 <ScrollToCentralDate />
+                <Dev />
             </div>
 
             <Routes />
@@ -49,6 +51,21 @@ const ScrollToCentralDate = () => {
     return (
         <button onClick={ event => REF.current.scrollToCentralDate( event )}>
             <FontAwesomeIcon icon={ faCompass } className="icon" title="Μετακίνηση στην κεντρική ημ/νία" />
+        </button>
+    )
+}
+const Dev = () => {
+    return (
+        <button onClick={ event => {
+            realFetch( `/.netlify/functions/dev`, { method: 'GET' } )
+            .then( res => {
+                alert( JSON.stringify( res ) );
+            } )
+            .catch( err => { 
+                alert( err );
+            } );
+        } }>
+            Dev
         </button>
     )
 }
