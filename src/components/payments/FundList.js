@@ -42,7 +42,6 @@ function Fund( { index, funds } ) {
     const STATE = useContext( STATEContext );
     const REF = useContext( REFContext );
 
-    const { uiux } = STATE.state;
     const fund = funds[ index ];
 
     const openForm = mode => {

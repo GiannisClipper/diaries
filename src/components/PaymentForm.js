@@ -11,9 +11,9 @@ function PaymentForm( { date, entry, inSequence, closeForm, doValidation, valida
 
     const  { data } = useContext( STATEContext ).state;
 
-    const allGenres = data.payments.genres.map( x=> x.data.name );
+    const allGenres = data.payments.genres.map( x => x.data.name ).filter( x => x !== '' );
 
-    const allFunds = data.payments.funds.map( x=> x.data.name );
+    const allFunds = data.payments.funds.map( x => x.data.name ).filter( x => x !== '' );
 
     const [ formData, setFormData ] = useState( { ...entry.data } );
 

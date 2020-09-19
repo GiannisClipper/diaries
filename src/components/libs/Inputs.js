@@ -61,30 +61,27 @@ function InputFromList( { className, allValues, value, onChange } ) {
     }
 
     const _onKeyDown = event => {
+        listStatus.current = { isOpen: true };
         event = event || window.event;
         let { value, values, index } = match;
 
-        if ( listStatus.current.isOpen ) {
-            if ( match.values.length > 0 ) {
-                if ( event.keyCode === 38 ) {
-                    index = index > 0 ? index - 1 : match.values.length - 1;
-                    setMatch( { value, values, index } );
+        if ( match.values.length > 0 ) {
+            if ( event.keyCode === 38 ) {
+                index = index > 0 ? index - 1 : match.values.length - 1;
+                setMatch( { value, values, index } );
 
-                } else if ( event.keyCode === 40 ) {
-                    index = index < match.values.length - 1 ? index + 1 : 0;
-                    setMatch( { value, values, index } );
+            } else if ( event.keyCode === 40 ) {
+                index = index < match.values.length - 1 ? index + 1 : 0;
+                setMatch( { value, values, index } );
 
-                } else if ( event.keyCode === 13 ) {
-                    // listStatus.current = {};
-                    // value = index >= 0 && value ? values[ index ] : '';
-                    // values = value ? [ value ] : [];
-                    // index = value ? 0 : -1;
-                    // setMatch( { value, values, index } );            
-                    //inputRef.current.blur( { target: value } );
-                }
+            } else if ( event.keyCode === 13 ) {
+                listStatus.current = {};
+                value = index >= 0 ? values[ index ] : null;
+                values = value ? [ value ] : [];
+                index = value ? 0 : -1;
+                setMatch( { value, values, index } );
             }
         }
-        setMatch( { value: match.value, values: match.values, index } );
     }
 
     const _onBlur = event => {
