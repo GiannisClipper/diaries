@@ -13,9 +13,16 @@ function PaymentForm( { date, entry, inSequence, closeForm, doValidation, valida
 
     const  { data } = useContext( STATEContext ).state;
 
-    const allGenres = data.payments.genres.map( x => x.data.name ).filter( x => x !== '' );
+    // const allGenres = data.payments.genres.map( x => x.data.name ).filter( x => x !== '' );
+    // const allFunds = data.payments.funds.map( x => x.data.name ).filter( x => x !== '' );
 
-    const allFunds = data.payments.funds.map( x => x.data.name ).filter( x => x !== '' );
+    let allGenres = [ ...data.payments.genres ].reverse();
+    allGenres = allGenres.filter( ( x, i ) => i === 0 || !allGenres[ i - 1 ].data.code.startsWith( x.data.code ) );
+    allGenres = allGenres.map( x => x.data.name ).filter( x => x !== '' );
+
+    let allFunds = [ ...data.payments.funds ].reverse();
+    allFunds = allFunds.filter( ( x, i ) => i === 0 || !allFunds[ i - 1 ].data.code.startsWith( x.data.code ) );
+    allFunds = allFunds.map( x => x.data.name ).filter( x => x !== '' );
 
     const [ formData, setFormData ] = useState( { ...entry.data } );
 
@@ -110,7 +117,7 @@ function PaymentForm( { date, entry, inSequence, closeForm, doValidation, valida
             </Field>
 
             <Field className="fund" label="Μέσο πληρωμής">
-            <InputFromList
+                <InputFromList
                     value={formData.fund_name}
                     allValues={allFunds}
                     onChange={event => setFormData( { ...formData, fund_name: event.target.value } )}
