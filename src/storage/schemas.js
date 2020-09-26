@@ -1,5 +1,6 @@
 const initState = {
     data: {
+        users: [],
         dates: [],
         payments: {
             genres: [],
@@ -8,6 +9,7 @@ const initState = {
     },
     uiux: {
         init: {
+            users: {},  // isBeforeRequest, isAfterRequest, isDone, isError
             dates: {},  // isBeforeRequest (dateFrom, dateTill), isAfterRequest, isDone, isError
             payments: {
                 genres: {},  // isBeforeRequest, isAfterRequest, isDone, isError
@@ -16,6 +18,24 @@ const initState = {
         }
     }
 };
+
+const initUser = () => ( {
+    data: {
+        id: null,
+        username: '',
+        password: '',
+        email: '',
+        isAdmin: null,
+        isUser: null,
+        remarks: '',
+    },
+    uiux: {
+        form: {},  // isOpen
+        mode: {},  // isCreate, isUpdate, isDelete
+        process: {},  // isOnRequest, isOnValidation, isOnValidationDone
+        status: {},  // isSuspended
+    }
+} );
 
 const initDate = () => ( {
     data: {
@@ -99,4 +119,4 @@ const initPayments = {
     } )
 }
 
-export { initState, initDate, initEntry, initNotes, initPayments };
+export { initState, initUser, initDate, initEntry, initNotes, initPayments };

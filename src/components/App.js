@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import '../styles/libs/initialize.css';
 import '../styles/App.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faCog, faCompass } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faBookOpen, faCog, faCompass } from '@fortawesome/free-solid-svg-icons';
 import { STATEContextProvider } from './STATEContext';
 import { REFContextProvider } from './REFContext';
 import { REFContext } from './REFContext';
@@ -17,6 +17,7 @@ function App() {
         <div className="App">
 
             <div className="title">
+                <GotoUsers />
                 <GotoDates />
                 <GotoSettings />
                 <span>Diaries by GiannisClipper</span>
@@ -32,10 +33,17 @@ function App() {
     );
 }
 
+const GotoUsers = () => {
+    return (
+        <a href="/users"> 
+            <FontAwesomeIcon icon={ faUser } className="icon" title="Χρήστες" />
+        </a>
+    )
+}
 const GotoDates = () => {
     return (
         <a href="/dates"> 
-            <FontAwesomeIcon icon={ faHome } className="icon" title="Ημερολόγο" />
+            <FontAwesomeIcon icon={ faBookOpen } className="icon" title="Ημερολόγο" />
         </a>
     )
 }

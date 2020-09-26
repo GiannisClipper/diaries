@@ -1,0 +1,35 @@
+.UserList {
+    width: 80%;
+    margin: auto;
+    height: 90vh;
+    overflow: auto;
+}
+
+.UserList > .section > .label {
+    width: 10em;
+    display: inline-block;
+    vertical-align: top;
+    padding: .5em;
+    color: lightcoral;
+    font-weight: 700;
+    text-align: left;
+}
+
+.UserList > .section > ul {
+    width: calc( 100% - 10em );
+    display: inline-block;
+    vertical-align: top;
+    padding: .5em;
+}
+
+.User .data {
+    width: calc( 100% - 4em );
+    display: inline-block;
+    vertical-align: top;
+    text-align: left;
+    padding: .5em;
+}
+
+.User .icon {
+    color: lightcoral;
+}

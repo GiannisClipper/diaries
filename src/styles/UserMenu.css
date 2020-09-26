@@ -1,0 +1,14 @@
+.UserMenu {
+    width: 4em;
+    display: inline-block;
+    vertical-align: top;
+    text-align: left;
+    padding: 0;
+}
+
+.UserMenu * {
+    color: lightcoral;
+    width: 1.5em;
+    height: 1.5em;
+    padding: .25em;
+}
