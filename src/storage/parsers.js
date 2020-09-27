@@ -1,3 +1,5 @@
+const bcrypt = require( 'bcryptjs' );
+
 const parseUserFromDB = ( data ) => ( {
     id: data._id,
     username: data.username,
@@ -10,7 +12,7 @@ const parseUserFromDB = ( data ) => ( {
 
 const parseUserToDB = ( data ) => ( {
     username: data.username,
-    password: data.password,
+    password: bcrypt.hashSync( data.password, bcrypt.genSaltSync( 8 ) ),
     email: data.email,
     isAdmin: data.isAdmin,
     isUser: data.isUser,
