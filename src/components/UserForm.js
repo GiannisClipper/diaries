@@ -9,9 +9,9 @@ function UserForm( { users, index, closeForm, doValidation, validationDone, vali
     const user = users[ index ];
 
     const [ data, setData ] = useState( { ...user.data } );
+    //const changes = Object.keys( data ).filter( x => data[ x ] !== user.data[ x ] );
 
     const onClickOk = event => {
-        user.data = { ...data };
         user.uiux.mode.isCreate || user.uiux.mode.isUpdate
             ? doValidation( index )
             : doRequest( index )
@@ -27,6 +27,9 @@ function UserForm( { users, index, closeForm, doValidation, validationDone, vali
             errors += isBlank( data.username ) ? 'Το Όνομα χρήστη δεν μπορεί να είναι κενό.\n' : '';
             errors += !isBlank( data.username ) && isFound( users.map( x=> x.data.username), data.username, index ) ? 'Το Όνομα xρήστη υπάρχει ήδη.\n' : '';
             errors += data.password !== data.password2 ? 'Διαφορά στην πληκτρολόγηση του Κωδικού εισόδου.\n' : '';
+
+            data.password = data.password && data.password === user.data.password ? undefined : data.password;
+            user.data = { ...data };
 
             if ( errors === '' ) {
                 validationDone( index )
