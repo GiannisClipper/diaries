@@ -36,7 +36,7 @@ function EntryForm( {
     const onClickCancel = event => closeForm( event, date, inSequence );
 
     return (
-        <Modal>
+        <Modal className='centeredness'>
             <CRUDForm
                 className={className}
                 mode={entry.uiux.mode}

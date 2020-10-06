@@ -45,14 +45,13 @@ function UserForm( { users, index, closeForm, doValidation, validationDone, vali
     } );
 
     return (
-        <Modal>
+        <Modal className='centeredness'>
             <CRUDForm
                 className='UserForm'
                 mode={user.uiux.mode}
                 onClickOk={onClickOk}
                 onClickCancel={onClickCancel}
                 isOnRequest={user.uiux.process.isOnRequest}
-
             >
                 <Field className="id" label="Id">
                     <input 
@@ -92,7 +91,7 @@ function UserForm( { users, index, closeForm, doValidation, validationDone, vali
                     />
                 </Field>
 
-                <Field className="is" label="Πρόσβαση">
+                <Field className="is" label="Πρόσβαση ως">
                     <div className="isAdmin">
                         <input 
                             type="checkbox"

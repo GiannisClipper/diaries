@@ -5,6 +5,7 @@ import { faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { Loader } from './Loader';
 
 function Field( { className, label, children } ) {
+  
     return (
         <div className={`Field ${className}`}>
             <span className='label'>
@@ -17,14 +18,51 @@ function Field( { className, label, children } ) {
     );
 }
 
-function Form( { className, okLabel, cancelLabel, onClickOk, onClickCancel, isOnRequest, children } ) {
+function Form( { className, children } ) {
+
+    return (
+        <div className={`Form ${className}`}>
+            {children}
+        </div> 
+    );
+}
+
+function OkForm( { className, okLabel, onClickOk, isOnRequest, children } ) {
+
+    className = `OkForm ${className}`
+
+    okLabel = okLabel || 'ΟΚ';
+
+    return (
+        <Form
+            className={className}
+        >
+            {children}
+
+            <Field className='buttons'>
+                <button className="ok" onClick={onClickOk}>
+                    {isOnRequest
+                        ? <Loader /> 
+                        : <FontAwesomeIcon className="icon" icon={ faCheck } />}
+                    <span>{okLabel}</span>
+                </button>
+            </Field>
+
+        </Form>
+    );
+}
+
+function OkCancelForm( { className, okLabel, cancelLabel, onClickOk, onClickCancel, isOnRequest, children } ) {
+
+    className = `OkCancelForm ${className}`
 
     okLabel = okLabel || 'ΟΚ';
     cancelLabel = cancelLabel || 'ΑΚΥΡΟ';
 
     return (
-        <div className={`Form ${className}`}>
-
+        <Form
+            className={className}
+        >
             {children}
 
             <Field className='buttons'>
@@ -41,11 +79,13 @@ function Form( { className, okLabel, cancelLabel, onClickOk, onClickCancel, isOn
                 </button>
             </Field>
 
-        </div> 
+        </Form>
     );
 }
 
 function CRUDForm( { className, mode, onClickOk, onClickCancel, isOnRequest, children } ) {
+
+    className = `CRUDForm ${className}`
 
     let okLabel, cancelLabel;
 
@@ -66,7 +106,7 @@ function CRUDForm( { className, mode, onClickOk, onClickCancel, isOnRequest, chi
     }
 
     return (
-        <Form
+        <OkCancelForm
             className={className}
             okLabel={okLabel}
             cancelLabel={cancelLabel}
@@ -75,8 +115,8 @@ function CRUDForm( { className, mode, onClickOk, onClickCancel, isOnRequest, chi
             isOnRequest={isOnRequest}
         >
             {children}
-        </Form>
+        </OkCancelForm>
     );
 }
 
-export { Field, Form, CRUDForm };
+export { Field, Form, OkForm, OkCancelForm, CRUDForm };

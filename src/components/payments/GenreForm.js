@@ -43,7 +43,7 @@ function GenreForm( { genres, index, closeForm, doValidation, validationDone, va
     } );
 
     return (
-        <Modal>
+        <Modal className='centeredness'>
             <CRUDForm
                 className='payments GenreForm'
                 mode={genre.uiux.mode}

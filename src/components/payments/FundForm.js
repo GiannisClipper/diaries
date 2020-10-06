@@ -43,7 +43,7 @@ function FundForm( { funds, index, closeForm, doValidation, validationDone, vali
     } );
 
     return (
-        <Modal>
+        <Modal className='centeredness'>
             <CRUDForm
                 className='payments FundForm'
                 mode={fund.uiux.mode}
