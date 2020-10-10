@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import '../../styles/payments/GenreForm.css';
 import { Modal } from '../libs/Modal';
 import { CRUDForm } from '../libs/Form';
 import { Field } from '../libs/Field';
+import { InputCheck } from '../libs/InputCheck';
 import { isBlank, isFound } from '../../helpers/validation';
 
 function GenreForm( { genres, index, closeForm, doValidation, validationDone, validationError, doRequest } ) {
@@ -50,7 +50,6 @@ function GenreForm( { genres, index, closeForm, doValidation, validationDone, va
                 onClickOk={onClickOk}
                 onClickCancel={onClickCancel}
                 isOnRequest={genre.uiux.process.isOnRequest}
-
             >
                 <Field label="Id">
                     <input 
@@ -68,23 +67,16 @@ function GenreForm( { genres, index, closeForm, doValidation, validationDone, va
                 </Field>
 
                 <Field label="Εγγραφές">
-                    <div className="isIncoming">
-                        <input 
-                            type="checkbox" 
-                            checked={data.isIncoming}
-                            onChange={event => setData( { ...data, isIncoming: event.target.checked } )}
-                        />
-                        Εισπράξεων
-                    </div>
- 
-                    <div className="isOutgoing">
-                        <input 
-                            type="checkbox" 
-                            checked={data.isOutgoing}
-                            onChange={event => setData( { ...data, isOutgoing: event.target.checked } )}
-                        />
-                        Πληρωμών
-                    </div>
+                    <InputCheck
+                        checked={data.isIncoming}
+                        onChange={event => setData( { ...data, isIncoming: event.target.checked } )}
+                        label='Εισπράξεων'
+                    />
+                    <InputCheck
+                        checked={data.isOutgoing}
+                        onChange={event => setData( { ...data, isOutgoing: event.target.checked } )}
+                        label='Πληρωμών'
+                    />                        
                 </Field>
 
                 <Field label="Λογ.Κωδικ.">

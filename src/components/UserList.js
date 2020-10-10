@@ -1,5 +1,4 @@
 import React, { useContext, useEffect } from 'react';
-import styled, { css } from 'styled-components';
 import { STATEContext } from './STATEContext';
 import { REFContext } from './REFContext';
 import { realFetch, mockFetch } from '../helpers/customFetch';

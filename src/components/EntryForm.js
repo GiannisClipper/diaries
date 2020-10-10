@@ -5,15 +5,12 @@ import { CRUDForm } from './libs/Form';
 import { Field } from './libs/Field';
 
 function EntryForm( { 
-        className, 
         date, 
         entry, 
         inSequence, 
         formData, 
         closeForm, 
         doValidation, 
-        validationDone, 
-        validationError, 
         doRequest, 
         children 
     } ) {
@@ -38,13 +35,12 @@ function EntryForm( {
     return (
         <Modal centeredness>
             <CRUDForm
-                className={className}
                 mode={entry.uiux.mode}
                 onClickOk={onClickOk}
                 onClickCancel={onClickCancel}
                 isOnRequest={entry.uiux.process.isOnRequest}
             >
-                <Field className="id" label="Id">
+                <Field label="Id">
                     <input 
                         value={formData.id || ''}
                         tabIndex="-1"
@@ -52,7 +48,7 @@ function EntryForm( {
                     />
                 </Field>
 
-                <Field className="date" label="Ημ/νία">
+                <Field label="Ημ/νία">
                     <input 
                         value={dateInfo}
                         tabIndex="-1"

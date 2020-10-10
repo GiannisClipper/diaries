@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import '../../styles/payments/FundForm.css';
 import { Modal } from '../libs/Modal';
 import { CRUDForm } from '../libs/Form';
 import { Field } from '../libs/Field';
@@ -50,7 +49,6 @@ function FundForm( { funds, index, closeForm, doValidation, validationDone, vali
                 onClickOk={onClickOk}
                 onClickCancel={onClickCancel}
                 isOnRequest={fund.uiux.process.isOnRequest}
-
             >
                 <Field label="Id">
                     <input 

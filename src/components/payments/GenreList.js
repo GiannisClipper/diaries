@@ -1,5 +1,4 @@
 import React, { useContext, useEffect } from 'react';
-import '../../styles/payments/GenreList.css';
 import { STATEContext } from '../STATEContext';
 import { REFContext } from '../REFContext';
 import { realFetch, mockFetch } from '../../helpers/customFetch';
@@ -7,13 +6,14 @@ import { parseGenreToDB } from '../../storage/payments/parsers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBan } from '@fortawesome/free-solid-svg-icons';
 import { Loader } from '../libs/Loader';
+import { RowBox, RowData, RowMenu } from '../libs/List';
 import GenreInit from './GenreInit';
 import GenreMenu from './GenreMenu';
 import GenreForm from './GenreForm';
 
 const namespace = 'payments.genres';
 
-function GenreList( { className } ) {
+function GenreList() {
 
     const STATE = useContext( STATEContext );
 
@@ -26,14 +26,12 @@ function GenreList( { className } ) {
     let index = -1;
 
     return (
-        <div className={`payments GenreList ${className}`}>
+        <ul>
             <GenreInit />
-            <ul>
-                { genres.map( genre => (
-                    <Genre key={++index} index={index} genres={genres} />
-                ) ) }
-            </ul>
-        </div>
+            { genres.map( genre => (
+                <Genre key={++index} index={index} genres={genres} />
+            ) ) }
+        </ul>
     );
 }
 
@@ -205,21 +203,20 @@ function Genre( { index, genres } ) {
         : '-';
 
     return (
-        <li 
-            className={`payments Genre`}
-            key={index}
-        >
-            <div className='data' title={`${genre.data.id}`}>
-                <span className='code'>{`${typeInfo}${genre.data.code}`}</span>
-                <span className='name'>{genre.data.name}</span>
-            </div>
+        <RowBox key={index}>
+            <RowData title={`${genre.data.id}`}>
+                <span>{`${typeInfo}${genre.data.code}`}</span>
+                <span>{genre.data.name}</span>
+            </RowData>
 
-            {genre.uiux.process.isOnValidation || genre.uiux.process.isOnRequest
-                ? <Loader />
-                : genre.uiux.status.isSuspended
-                ? <FontAwesomeIcon icon={ faBan } className="icon" />
-                : <GenreMenu openForm={openForm} mode={mode} />
-            }
+            <RowMenu>
+                {genre.uiux.process.isOnValidation || genre.uiux.process.isOnRequest
+                    ? <Loader />
+                    : genre.uiux.status.isSuspended
+                    ? <FontAwesomeIcon icon={ faBan } className="icon" />
+                    : <GenreMenu openForm={openForm} mode={mode} />
+                }
+            </RowMenu>
 
             {genre.uiux.form.isOpen 
                 ? 
@@ -236,7 +233,7 @@ function Genre( { index, genres } ) {
                 null
             }
 
-        </li> 
+        </RowBox> 
     );
 }
 

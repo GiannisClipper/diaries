@@ -1,5 +1,4 @@
 import React, { useContext, useEffect } from 'react';
-import '../../styles/payments/FundList.css';
 import { STATEContext } from '../STATEContext';
 import { REFContext } from '../REFContext';
 import { realFetch, mockFetch } from '../../helpers/customFetch';
@@ -7,13 +6,14 @@ import { parseFundToDB } from '../../storage/payments/parsers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBan } from '@fortawesome/free-solid-svg-icons';
 import { Loader } from '../libs/Loader';
+import { RowBox, RowData, RowMenu } from '../libs/List';
 import FundInit from './FundInit';
 import GenreMenu from './GenreMenu';
 import FundForm from './FundForm';
 
 const namespace = 'payments.funds';
 
-function FundList( { className } ) {
+function FundList() {
 
     const STATE = useContext( STATEContext );
 
@@ -26,14 +26,12 @@ function FundList( { className } ) {
     let index = -1;
 
     return (
-        <div className={`payments FundList ${className}`}>
+        <ul>
             <FundInit />
-            <ul>
-                { funds.map( fund => (
-                    <Fund key={++index} index={index} funds={funds} />
-                ) ) }
-            </ul>
-        </div>
+            { funds.map( fund => (
+                <Fund key={++index} index={index} funds={funds} />
+            ) ) }
+        </ul>
     );
 }
 
@@ -195,21 +193,20 @@ function Fund( { index, funds } ) {
     const mode = !fund.data.id ? { isCreate: true } : { isUpdate: true };
 
     return (
-        <li 
-            className={`payments Fund`}
-            key={index}
-        >
-            <div className='data' title={`${fund.data.id}`}>
+        <RowBox key={index}>
+            <RowData title={`${fund.data.id}`}>
                 <span className='code'>{fund.data.code}</span>
                 <span className='name'>{fund.data.name}</span>
-            </div>
+            </RowData>
 
-            {fund.uiux.process.isOnValidation || fund.uiux.process.isOnRequest
-                ? <Loader />
-                : fund.uiux.status.isSuspended
-                ? <FontAwesomeIcon icon={ faBan } className="icon" />
-                : <GenreMenu openForm={openForm} mode={mode} />
-            }
+            <RowMenu>
+                {fund.uiux.process.isOnValidation || fund.uiux.process.isOnRequest
+                    ? <Loader />
+                    : fund.uiux.status.isSuspended
+                    ? <FontAwesomeIcon icon={ faBan } className="icon" />
+                    : <GenreMenu openForm={openForm} mode={mode} />
+                }
+            </RowMenu>
 
             {fund.uiux.form.isOpen 
                 ? 
@@ -225,8 +222,7 @@ function Fund( { index, funds } ) {
                 : 
                 null
             }
-
-        </li> 
+        </RowBox>
     );
 }
 

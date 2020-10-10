@@ -23,7 +23,6 @@ const BlockBox = styled.div`
     display: flex;
     margin: auto;
     margin-top: 1em;
-    margin-bottom: 1em;
     text-align: left;
 `;
 

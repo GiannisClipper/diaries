@@ -1,31 +1,24 @@
 import React from 'react';
-import '../styles/Settings.css';
+import { List, Block } from './libs/List';
 import GenreList from "./payments/GenreList";
 import FundList from "./payments/FundList";
 
 function Settings() {
 
     return (
-        <div className="Settings" >
-            <div className="section">
-                <span className="label">Κεντρική ημ/νία</span>
-                <span className="data">
-                    <span className="centralDate">
-                        <input placeholder="YYYY-MM-DD" />
-                    </span>
-                </span>
-            </div>
+        <List>
+            <Block label='Κεντρική ημ/νία'>
+                <input placeholder="YYYY-MM-DD" />
+            </Block>
 
-            <div className="section">
-                <span className="label">Κατηγορίες οικονομικών κινήσεων</span>
-                <GenreList className="data"/>
-            </div>
+            <Block label='Κατηγορίες οικονομικών κινήσεων'>
+                <GenreList />
+            </Block>
 
-            <div className="section">
-                <span className="label">Μέσα οικονομικών κινήσεων</span>
-                <FundList className="data"/>
-            </div>
-        </div>
+            <Block label='Μέσα οικονομικών κινήσεων'>
+                <FundList />
+            </Block>
+        </List>
     );
 }
 
