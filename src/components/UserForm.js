@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/UserForm.css';
 import { Modal } from './libs/Modal';
-import { CRUDForm, Field } from './libs/Form';
+import { CRUDForm } from './libs/Form';
+import { Field } from './libs/Field';
+import { InputEmail } from './libs/InputEmail';
 import { isBlank, isFound } from '../helpers/validation';
 
 function UserForm( { users, index, closeForm, doValidation, validationDone, validationError, doRequest } ) {
@@ -45,15 +47,14 @@ function UserForm( { users, index, closeForm, doValidation, validationDone, vali
     } );
 
     return (
-        <Modal className='centeredness'>
+        <Modal centeredness>
             <CRUDForm
-                className='UserForm'
                 mode={user.uiux.mode}
                 onClickOk={onClickOk}
                 onClickCancel={onClickCancel}
                 isOnRequest={user.uiux.process.isOnRequest}
             >
-                <Field className="id" label="Id">
+                <Field label="Id">
                     <input 
                         value={data.id || ''}
                         tabIndex="-1"
@@ -61,14 +62,14 @@ function UserForm( { users, index, closeForm, doValidation, validationDone, vali
                     />
                 </Field>
 
-                <Field className="username" label="Όνομα χρήστη">
+                <Field label="Όνομα χρήστη">
                     <input
                         value={data.username}
                         onChange={event => setData( { ...data, username: event.target.value } )}
                     />
                 </Field>
 
-                <Field className="password" label="Κωδικός εισόδου">
+                <Field label="Κωδικός εισόδου">
                     <input
                         type="password"
                         value={data.password}
@@ -76,7 +77,7 @@ function UserForm( { users, index, closeForm, doValidation, validationDone, vali
                     />
                 </Field>
 
-                <Field className="password2" label="Επανάληψη κωδικού">
+                <Field label="Επανάληψη κωδικού">
                     <input
                         type="password"
                         value={data.password2}
@@ -84,14 +85,14 @@ function UserForm( { users, index, closeForm, doValidation, validationDone, vali
                     />
                 </Field>
 
-                <Field className="email" label="Email">
-                    <input
+                <Field label="Email">
+                    <InputEmail
                         value={data.email}
                         onChange={event => setData( { ...data, email: event.target.value } )}
                     />
                 </Field>
 
-                <Field className="is" label="Πρόσβαση ως">
+                <Field label="Πρόσβαση ως">
                     <div className="isAdmin">
                         <input 
                             type="checkbox"
@@ -111,7 +112,7 @@ function UserForm( { users, index, closeForm, doValidation, validationDone, vali
                     </div>
                 </Field>
 
-                <Field className="remark" label="Σημειώσεις">
+                <Field label="Σημειώσεις">
                     <input
                         value={data.remark}
                         onChange={event => setData( { ...data, remark: event.target.value } )}

@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import '../../styles/NoteForm.css';
 import EntryForm from '../EntryForm';
-import { Field } from '../libs/Form';
+import { Field } from '../libs/Field';
 import { isBlank } from '../../helpers/validation';
 
 function NoteForm( { date, entry, inSequence, closeForm, doValidation, validationDone, validationError, doRequest } ) {
-
-    const className = 'NoteForm';
 
     const [ formData, setData ] = useState( { ...entry.data } );
 
@@ -32,7 +29,6 @@ function NoteForm( { date, entry, inSequence, closeForm, doValidation, validatio
 
     return (
         <EntryForm
-            className={className}
             date={date}
             entry={entry}
             inSequence={inSequence}
@@ -43,7 +39,7 @@ function NoteForm( { date, entry, inSequence, closeForm, doValidation, validatio
             validationError={validationError}
             doRequest={doRequest}
         >
-            <Field className="note" label="Σημείωμα">
+            <Field label="Σημείωμα">
                 <textarea
                     rows="10"
                     cols="50"

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import '../../styles/payments/FundForm.css';
 import { Modal } from '../libs/Modal';
-import { CRUDForm, Field } from '../libs/Form';
+import { CRUDForm } from '../libs/Form';
+import { Field } from '../libs/Field';
 import { isBlank, isFound } from '../../helpers/validation';
 
 function FundForm( { funds, index, closeForm, doValidation, validationDone, validationError, doRequest } ) {
@@ -43,16 +44,15 @@ function FundForm( { funds, index, closeForm, doValidation, validationDone, vali
     } );
 
     return (
-        <Modal className='centeredness'>
+        <Modal centeredness>
             <CRUDForm
-                className='payments FundForm'
                 mode={fund.uiux.mode}
                 onClickOk={onClickOk}
                 onClickCancel={onClickCancel}
                 isOnRequest={fund.uiux.process.isOnRequest}
 
             >
-                <Field className="id" label="Id">
+                <Field label="Id">
                     <input 
                         value={data.id || ''}
                         tabIndex="-1"
@@ -60,14 +60,14 @@ function FundForm( { funds, index, closeForm, doValidation, validationDone, vali
                     />
                 </Field>
 
-                <Field className="name" label="Ονομασία">
+                <Field label="Ονομασία">
                     <input
                         value={data.name}
                         onChange={event => setData( { ...data, name: event.target.value } )}
                     />
                 </Field>
 
-                <Field className="code" label="Λογ.Κωδικ.">
+                <Field label="Λογ.Κωδικ.">
                     <input
                         value={data.code}
                         onChange={event => setData( { ...data, code: event.target.value } )}

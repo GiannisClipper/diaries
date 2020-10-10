@@ -2,14 +2,13 @@ import React, { useContext, useState, useEffect } from 'react';
 import '../../styles/PaymentForm.css';
 import { STATEContext } from '../STATEContext';
 import EntryForm from '../EntryForm';
-import { Field } from '../libs/Form';
-import { InputNumber, InputFromList } from '../libs/Inputs';
+import { Field } from '../libs/Field';
+import { InputNumber } from '../libs/InputNumber';
+import { InputFromList } from '../libs/InputFromList';
 import { isBlank } from '../../helpers/validation';
 import { getFromList } from '../../storage/payments/parsers';
 
 function PaymentForm( { date, entry, inSequence, closeForm, doValidation, validationDone, validationError, doRequest } ) {
-
-    const className = 'PaymentForm';
 
     const  { data } = useContext( STATEContext ).state;
 
@@ -71,7 +70,6 @@ function PaymentForm( { date, entry, inSequence, closeForm, doValidation, valida
 
     return (
         <EntryForm
-            className={className}
             date={date}
             entry={entry}
             inSequence={inSequence}
@@ -82,7 +80,7 @@ function PaymentForm( { date, entry, inSequence, closeForm, doValidation, valida
             validationError={validationError}
             doRequest={doRequest}
         >
-            <Field className="genre" label="Κατηγορία">
+            <Field label="Κατηγορία">
                 <InputFromList
                     value={formData.genre_name}
                     allValues={allGenres}
@@ -93,30 +91,32 @@ function PaymentForm( { date, entry, inSequence, closeForm, doValidation, valida
                 />
             </Field>
 
-            <Field className="incoming" label="Είσπραξη">
+            <Field label="Είσπραξη">
                 <InputNumber
+                    decimals="2"
                     value={formData.incoming || ''}
                     onChange={event => setFormData( { ...formData, incoming: event.target.value } )}
                     readOnly={!formData.isIncoming}
                 />
             </Field>
 
-            <Field className="outgoing" label="Πληρωμή">
+            <Field label="Πληρωμή">
                 <InputNumber
+                    decimals="2"
                     value={formData.outgoing || ''}
                     onChange={event => setFormData( { ...formData, outgoing: event.target.value } )}
                     readOnly={!formData.isOutgoing}
                 />
             </Field>
 
-            <Field className="remark" label="Αιτιολογία">
+            <Field label="Αιτιολογία">
                 <input
                     value={formData.remark}
                     onChange={event => setFormData( { ...formData, remark: event.target.value } )}
                 />
             </Field>
 
-            <Field className="fund" label="Μέσο πληρωμής">
+            <Field label="Μέσο πληρωμής">
                 <InputFromList
                     value={formData.fund_name}
                     allValues={allFunds}

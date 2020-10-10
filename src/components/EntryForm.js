@@ -2,7 +2,8 @@ import React from 'react';
 import '../styles/EntryForm.css';
 import { dayNames } from '../helpers/dates';
 import { Modal } from './libs/Modal';
-import { CRUDForm, Field } from './libs/Form';
+import { CRUDForm } from './libs/Form';
+import { Field } from './libs/Field';
 
 function EntryForm( { 
         className, 
@@ -36,7 +37,7 @@ function EntryForm( {
     const onClickCancel = event => closeForm( event, date, inSequence );
 
     return (
-        <Modal className='centeredness'>
+        <Modal centeredness>
             <CRUDForm
                 className={className}
                 mode={entry.uiux.mode}
