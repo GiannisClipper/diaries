@@ -1,36 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import '../../styles/libs/Inputs.css';
 
-function InputNumber( { className, value, onChange, readOnly } ) {
-
-    const _onKeyPress = event => {
-        const _key = event.key;
-        if ( !'-.0123456789'.includes( _key ) ) {
-            event.preventDefault();
-        }
-    }
-
-    const _onChange = event => {
-        const _val = event.target.value;
-
-        if ( !_val.substr( 1, ).includes( '-' ) ) {
-            if ( _val.indexOf( '.' ) === _val.lastIndexOf( '.' ) ) {
-                onChange( event );
-            }
-        }
-    }
-
-    return (
-        <input
-            className={`InputNumber ${className}`}
-            value={value}
-            onKeyPress={_onKeyPress}
-            onChange={_onChange}
-            readOnly={readOnly}
-        />
-    )
-}
-
 function InputFromList( { className, allValues, value, onChange } ) {
 
     const inputRef = useRef( null );
@@ -95,8 +65,9 @@ function InputFromList( { className, allValues, value, onChange } ) {
 
     useEffect( () => {
         if ( ulRef.current && !ulRef.current.style.left ) {
-            let { width, height } = inputRef.current.getBoundingClientRect();
-            ulRef.current.style.left = `${0}px`;
+            let { left, width, height } = inputRef.current.getBoundingClientRect();
+            console.log( left, width, height )
+            ulRef.current.style.left = `${left}px`;
             ulRef.current.style.top = `${height}px`;
             ulRef.current.style.width = `${width}px`;
             ulRef.current.style.height = `${height}px`;
@@ -135,4 +106,4 @@ function InputFromList( { className, allValues, value, onChange } ) {
     )
 }
 
-export { InputNumber, InputFromList };
+export { InputFromList };
