@@ -1,19 +1,27 @@
 import React from 'react';
-import '../../styles/libs/Tools.css';
+import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisH, faEdit, faFont, faEuroSign, faTrashAlt, faCut, faCamera, faClone, faTimes } from '@fortawesome/free-solid-svg-icons';
 
-function Tool( { className, icon, title, onClick, reference } ) {
+const ToolBox = styled.span`
+    width: 2em;
+    display: inline-block;
+    vertical-align: top;
+    padding: .5em;
+    font-size: 1em;
+    cursor: pointer;
+`;
+
+function Tool( { icon, title, onClick, reference } ) {
     return (
-        <span className={`Tool ${className}`} onClick={onClick} ref={reference}>
+        <ToolBox onClick={onClick} ref={reference}>
             <FontAwesomeIcon icon={icon} className="icon" title={title} />
-        </span>
+        </ToolBox>
     )
 }
 
 const MenuTool = ( { onClick, reference } ) => 
     <Tool 
-        className='Menu'
         icon={faEllipsisH} 
         title='Menu'
         onClick={onClick}
@@ -22,7 +30,6 @@ const MenuTool = ( { onClick, reference } ) =>
 
 const AddNoteTool = ( { onClick } ) => 
     <Tool 
-        className='Edit'
         icon={faFont} 
         title='Νέο σημείωμα'
         onClick={onClick}
@@ -30,7 +37,6 @@ const AddNoteTool = ( { onClick } ) =>
 
 const AddPaymentTool = ( { onClick } ) => 
     <Tool 
-        className='Edit'
         icon={faEuroSign} 
         title='Νέα πληρωμή'
         onClick={onClick}
@@ -38,7 +44,6 @@ const AddPaymentTool = ( { onClick } ) =>
 
 const EditTool = ( { onClick } ) => 
     <Tool 
-        className='Edit'
         icon={faEdit} 
         title='Επεξεργασία'
         onClick={onClick}
@@ -46,7 +51,6 @@ const EditTool = ( { onClick } ) =>
 
 const DeleteTool = ( { onClick } ) => 
     <Tool 
-        className='Delete'
         icon={faTrashAlt} 
         title='Διαγραφή'
         onClick={onClick}
@@ -54,7 +58,6 @@ const DeleteTool = ( { onClick } ) =>
 
 const CutTool = ( { onClick } ) => 
     <Tool 
-        className='Cut'
         icon={faCut} 
         title='Αποκοπή'
         onClick={onClick}
@@ -62,7 +65,6 @@ const CutTool = ( { onClick } ) =>
 
 const CopyTool = ( { onClick } ) => 
     <Tool 
-        className='Copy'
         icon={faCamera} 
         title='Αντιγραφή'
         onClick={onClick}
@@ -70,7 +72,6 @@ const CopyTool = ( { onClick } ) =>
 
 const PasteTool = ( { onClick, disabled } ) => 
     <Tool 
-        className='Paste'
         icon={faClone} 
         title='Επικόλληση'
         onClick={onClick}
@@ -79,7 +80,6 @@ const PasteTool = ( { onClick, disabled } ) =>
 
 const CloseTool = ( { onClick } ) => 
     <Tool 
-        className='Close'
         icon={faTimes} 
         title='Κλείσιμο'
         onClick={onClick}
