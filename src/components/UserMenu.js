@@ -1,5 +1,4 @@
 import React from 'react';
-import '../styles/UserMenu.css';
 import { EditTool, DeleteTool } from './libs/Tools';
 
 function UserMenu( { openForm, mode } ) {

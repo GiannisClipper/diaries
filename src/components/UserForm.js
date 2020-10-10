@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import '../styles/UserForm.css';
 import { Modal } from './libs/Modal';
 import { CRUDForm } from './libs/Form';
 import { Field } from './libs/Field';
 import { InputEmail } from './libs/InputEmail';
+import { InputCheck } from './libs/InputCheck';
 import { isBlank, isFound } from '../helpers/validation';
 
 function UserForm( { users, index, closeForm, doValidation, validationDone, validationError, doRequest } ) {
@@ -92,24 +92,17 @@ function UserForm( { users, index, closeForm, doValidation, validationDone, vali
                     />
                 </Field>
 
-                <Field label="Πρόσβαση ως">
-                    <div className="isAdmin">
-                        <input 
-                            type="checkbox"
-                            checked={data.isAdmin}
-                            onChange={event => setData( { ...data, isAdmin: event.target.checked } )}
-                        />
-                        Διαχειριστής
-                    </div>
- 
-                    <div className="isUser">
-                        <input 
-                            type="checkbox" 
-                            checked={data.isUser}
-                            onChange={event => setData( { ...data, isUser: event.target.checked } )}
-                        />
-                        Απλός χρήστης
-                    </div>
+                <Field label="Δικαιώματα">
+                    <InputCheck
+                        checked={data.isAdmin}
+                        onChange={event => setData( { ...data, isAdmin: event.target.checked } )}
+                        label='Διαχειριστή'
+                    />
+                    <InputCheck
+                        checked={data.isUser}
+                        onChange={event => setData( { ...data, isUser: event.target.checked } )}
+                        label='Απλού χρήστη'
+                    />                        
                 </Field>
 
                 <Field label="Σημειώσεις">

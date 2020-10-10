@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 const Box = styled.div`
     width: 80%;
@@ -31,7 +31,6 @@ const Value = styled.span`
 `;
 
 function Field( { label, children } ) {
-  
     return (
         <Box>
             <Label>
@@ -54,11 +53,10 @@ const ButtonsValue = styled( Value )`
 `;
 
 function ButtonsField( { children } ) {
-  
     return (
         <Box>
             <ButtonsLabel />
-            <ButtonsValue length={children.length}>
+            <ButtonsValue>
                 {children}
             </ButtonsValue>
         </Box>

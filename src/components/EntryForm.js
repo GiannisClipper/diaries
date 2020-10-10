@@ -1,5 +1,4 @@
 import React from 'react';
-import '../styles/EntryForm.css';
 import { dayNames } from '../helpers/dates';
 import { Modal } from './libs/Modal';
 import { CRUDForm } from './libs/Form';

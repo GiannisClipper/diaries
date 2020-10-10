@@ -1,5 +1,4 @@
 import React, { useContext, useState, useEffect } from 'react';
-import '../../styles/PaymentForm.css';
 import { STATEContext } from '../STATEContext';
 import EntryForm from '../EntryForm';
 import { Field } from '../libs/Field';

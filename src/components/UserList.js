@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import '../styles/UserList.css';
+import styled, { css } from 'styled-components';
 import { STATEContext } from './STATEContext';
 import { REFContext } from './REFContext';
 import { realFetch, mockFetch } from '../helpers/customFetch';
@@ -7,6 +7,7 @@ import { parseUserToDB } from '../storage/parsers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBan } from '@fortawesome/free-solid-svg-icons';
 import { Loader } from './libs/Loader';
+import { List, Block, RowBox, RowData, RowMenu } from './libs/List';
 import UserInit from './UserInit';
 import UserMenu from './UserMenu';
 import UserForm from './UserForm';
@@ -26,17 +27,16 @@ function UserList( { className } ) {
     let index = -1;
 
     return (
-        <div className={`UserList ${className}`}>
+        <List>
             <UserInit />
-            <div className="section">
-                <span className="label">Χρήστες εφαρμογής</span>
+            <Block label="Χρήστες εφαρμογής">
                 <ul>
-                    { (console.log( 'users', users ), users.map( user => (
+                    { users.map( user => (
                         <User key={++index} index={index} users={users} />
-                    ) ) ) }
+                    ) ) }
                 </ul>
-            </div>
-        </div>
+            </Block>
+        </List>
     );
 }
 
@@ -198,22 +198,21 @@ function User( { index, users } ) {
     const mode = !user.data.id ? { isCreate: true } : { isUpdate: true };
 
     return (
-        <li 
-            className={`User`}
-            key={index}
-        >
-            <div className='data' title={`${user.data.id}`}>
-                <span className='username'>{user.data.username}</span>
-                <span className='email'>{user.data.email}</span>
-                <span className='remark'>{user.data.remark}</span>
-            </div>
+        <RowBox key={index}>
+            <RowData title={`${user.data.id}`}>
+                <span>{user.data.username}</span>
+                <span>{user.data.email}</span>
+                <span>{user.data.remark}</span>
+            </RowData>
 
-            {user.uiux.process.isOnValidation || user.uiux.process.isOnRequest
-                ? <Loader />
-                : user.uiux.status.isSuspended
-                ? <FontAwesomeIcon icon={ faBan } className="icon" />
-                : <UserMenu openForm={openForm} mode={mode} />
-            }
+            <RowMenu>
+                {user.uiux.process.isOnValidation || user.uiux.process.isOnRequest
+                    ? <Loader />
+                    : user.uiux.status.isSuspended
+                    ? <FontAwesomeIcon icon={ faBan } className="icon" />
+                    : <UserMenu openForm={openForm} mode={mode} />
+                }
+            </RowMenu>
 
             {user.uiux.form.isOpen 
                 ? 
@@ -229,8 +228,7 @@ function User( { index, users } ) {
                 : 
                 null
             }
-
-        </li> 
+        </RowBox>
     );
 }
 
