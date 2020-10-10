@@ -1,11 +1,30 @@
 import React, { useRef, useState, useEffect } from 'react';
-import '../../styles/libs/Inputs.css';
+import styled, { css } from 'styled-components';
+
+const Box = styled.span`
+    position: relative;
+`;
+
+const List = styled.ul`
+    position: absolute;
+    left: ${props => props.listPos.left}px;
+    top: ${props => props.listPos.top}px;
+    width: ${props => props.listPos.width}px;
+    height: ${props => props.listPos.height}px;
+    z-index: 999;
+`;
+
+const Item = styled.li`
+    ${props => props.index && css`
+        background: lightgoldenrodyellow;
+    `}
+`;
 
 function InputFromList( { className, allValues, value, onChange } ) {
 
-    const inputRef = useRef( null );
+    const [ listPos, setListPos ] = useState( {} );
 
-    const ulRef = useRef( null );
+    const inputRef = useRef( null );
 
     const listStatus = useRef( {} );
 
@@ -64,22 +83,15 @@ function InputFromList( { className, allValues, value, onChange } ) {
     }
 
     useEffect( () => {
-        if ( ulRef.current && !ulRef.current.style.left ) {
-            let { left, width, height } = inputRef.current.getBoundingClientRect();
-            console.log( left, width, height )
-            ulRef.current.style.left = `${left}px`;
-            ulRef.current.style.top = `${height}px`;
-            ulRef.current.style.width = `${width}px`;
-            ulRef.current.style.height = `${height}px`;
-        }
-    } );
+        let { left, width, height } = inputRef.current.getBoundingClientRect();
+        console.log( left, width, height )
+        setListPos( { left: 0, top: height, width, height } );
+    }, [] );
 
     let _key = -1;
 
     return (
-        <span
-            className={`InputFromList ${className}`}
-        >
+        <Box>
             <input ref={inputRef}
                 value={match.value || ''}
                 onFocus={_onFocus}
@@ -89,20 +101,16 @@ function InputFromList( { className, allValues, value, onChange } ) {
             />
 
             {listStatus.current.isOpen
-                ? <ul ref={ulRef}>
-                    {match.values.map( value => 
-                        <li 
-                            key={++_key}
-                            className={_key === match.index ? 'index' : null}
-                            onMouseDown={() => _onMouseDown( value )}
-                        > 
-                            {value} 
-                        </li> 
+                ? <List listPos={listPos}>
+                    {match.values.map( value =>
+                        ++_key === match.index
+                            ? <Item index key={_key} onMouseDown={() => _onMouseDown( value )}> {value} </Item>
+                            : <Item key={_key} onMouseDown={() => _onMouseDown( value )}> {value} </Item>
                     )}
-                </ul>
+                </List>
                 : null
             }
-        </span>
+        </Box>
     )
 }
 
