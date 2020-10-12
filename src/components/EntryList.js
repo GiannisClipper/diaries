@@ -1,5 +1,4 @@
 import React, { useEffect, useContext } from 'react';
-import '../styles/EntryList.css';
 import { STATEContext } from './STATEContext';
 import { REFContext } from './REFContext';
 import { dateToYYYYMMDD } from '../helpers/dates';
@@ -13,23 +12,59 @@ import { Loader } from './libs/Loader';
 import { EntryMenuTool, BlankEntryMenu, ExistsEntryMenu } from './EntryMenu';
 import NoteForm from './notes/NoteForm';
 import PaymentForm from './payments/PaymentForm';
+import styled, { css } from 'styled-components';
 
 const namespace = 'entries';
+
+const List = styled.ul`
+    display: inline-block;
+    vertical-align: top;
+    width: 100%;
+`;
 
 function EntryList( { date, entries } ) {
 
     let inSequence = -1;
 
     return (
-        <div className="EntryList">
-            <ul>
+            <List>
                 { entries.map( entry => (
                     <Entry date={date} entry={entry} inSequence={++inSequence} key={inSequence} />
                 ) ) }
-            </ul>
-        </div>
+            </List>
     );
 }
+
+const RowBox = styled.li`
+    display: block;
+    width: 100%;
+    margin-top: .5em;
+    margin-bottom: .5em;
+    background-color: lightskyblue;
+    .icon {
+        color: lightcoral;
+    }
+`;
+
+const RowData = styled.span`
+    display: inline-block;
+    vertical-align: top;
+    width: calc( 100% - 2em );
+    text-align: left;
+    padding: .5em;
+
+    ${props => props.draggable && css`
+        cursor: grab;
+        cursor: -moz-grab;
+        cursor: -webkit-grab;
+    `}
+`;
+
+const RowMenu = styled.span`
+    .icon {
+        color: lightcoral;
+    }
+`;
 
 function Entry( { date, entry, inSequence } ) {
 
@@ -272,27 +307,29 @@ function Entry( { date, entry, inSequence } ) {
         onDrop = null;
     }
 
-    const className = draggable ? ' draggable' : '';
-
     return (
-        <li 
-            className={`Entry ${className}`}
+        <RowBox
             key={inSequence}
             draggable={draggable}
             onDragStart={onDragStart}
             onDragOver={onDragOver}
             onDrop={onDrop}
         >
-            <div className='data' title={`${entry.data.date}, ${inSequence}, ${entry.data.inSequence}, ${entry.data.id}`}>
+            <RowData 
+                draggable={draggable}
+                title={`${entry.data.date}, ${inSequence}, ${entry.data.inSequence}, ${entry.data.id}`}
+            >
                 <EntryRepr entry={entry} />
-            </div>
+            </RowData>
 
-            {entry.uiux.process.isOnRequest
-                ? <Loader />
-                : entry.uiux.status.isSuspended
-                ? <FontAwesomeIcon icon={ faBan } className="icon" />
-                : <EntryMenuTool date={date} entry={entry} inSequence={inSequence} openMenu={openMenu} />
-            }
+            <RowMenu>
+                {entry.uiux.process.isOnRequest
+                    ? <Loader />
+                    : entry.uiux.status.isSuspended
+                    ? <FontAwesomeIcon icon={ faBan } className="icon" />
+                    : <EntryMenuTool date={date} entry={entry} inSequence={inSequence} openMenu={openMenu} />
+                }
+            </RowMenu>
 
             {!entry.uiux.menu.isOpen 
                 ? null
@@ -346,7 +383,7 @@ function Entry( { date, entry, inSequence } ) {
                 /> 
             }
 
-        </li> 
+        </RowBox> 
     );
 }
 
@@ -356,7 +393,7 @@ const EntryRepr = ( { entry } ) => {
     let repr = '';
 
     if ( data.type === 'note' ) {
-        repr = data.note;
+        repr += data.note;
 
     } else if ( data.type === 'payment' ) {
         repr += data.incoming ? `Είσπραξη ${data.incoming} ` : '';

@@ -2,12 +2,16 @@ import React from 'react';
 import styled from 'styled-components';
 
 const ListBox = styled.div`
-    min-height: 100vh;
-    //min-width: 100vw;
     display: flex;
     flex-direction: column;
     align-items: center;
     //justify-content: center;
+
+    height: 100vh;
+    //width: 100vw;
+    width: 80%;
+    margin: auto;
+    margin-top: 1em;
 `;
 
 function List( { children } ) {
@@ -19,11 +23,12 @@ function List( { children } ) {
 }
 
 const BlockBox = styled.div`
-    width: 80%;
     display: flex;
-    margin: auto;
-    margin-top: 1em;
+
+    width: 100%;
+    margin-bottom: 1em;
     text-align: left;
+
 `;
 
 const BlockLabel = styled.span`

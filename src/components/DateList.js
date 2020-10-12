@@ -1,16 +1,65 @@
 import React, { useEffect, useRef, useContext } from 'react';
-import '../styles/DateList.css';
 import { STATEContext } from './STATEContext';
 import { REFContext } from './REFContext';
-import { dayNames, monthNames } from '../helpers/dates';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBackward, faForward } from '@fortawesome/free-solid-svg-icons';
 import DateInit from './DateInit';
 import GenreInit from './payments/GenreInit';
 import FundInit from './payments/FundInit';
-import EntryList from './EntryList';
+import ADate from './ADate';
+import styled from 'styled-components';
 
 const namespace = 'dates';
+
+const ListBox = styled.div`
+    // display: flex;
+    // flex-direction: column;
+    // align-items: center;
+
+    width: 80%;
+    margin: auto;
+    height: 90vh;
+    overflow: auto;
+    //margin-top: 1em;
+`;
+
+const ContentBox = styled.div`
+    border: 0px solid blue;
+`;
+
+function List( { reference, children } ) {
+    return (
+        <ListBox ref={reference}>
+            {children}
+        </ListBox>
+    );
+}
+
+const StyledPrevButton = styled.button`
+    margin-right: 1em;
+`;
+
+function PrevButton( { reference } ) {
+    return (
+        <StyledPrevButton ref={reference}>
+            <FontAwesomeIcon icon={ faBackward } className="icon" />
+            Προηγούμενες ημ/νίες
+        </StyledPrevButton>
+    );
+}
+
+const StyledNextButton = styled.button`
+    margin-left: 1em;
+`;
+
+function NextButton( { reference } ) {
+    return (
+        <StyledNextButton ref={reference}>
+            Επόμενες ημ/νίες
+            <FontAwesomeIcon icon={ faForward } className="icon" />
+        </StyledNextButton>
+    );
+}
 
 function DateList() {
 
@@ -20,15 +69,19 @@ function DateList() {
     const { init } = STATE.state.uiux;
     const { data } = STATE.state;
 
-    const elemRef = useRef( null );
+    const prevRef = useRef( null );
+    const listRef = useRef( null );
+    const contentRef = useRef( null );
+    const centralRef = useRef( null );
+    const nextRef = useRef( null );
     const scrollTop = useRef( 0 );
     const scrollDirection = useRef( {} );
     const offsetHeight = useRef( 0 ); 
 
     const handleScroll = event => {
         event.stopPropagation();
-        const frame = elemRef.current;
-        if ( frame.scrollTop < scrollTop.current ) {
+        const list = listRef.current;
+        if ( list.scrollTop < scrollTop.current ) {
             handleScrollUp( event );
         } else {
             handleScrollDown( event );
@@ -36,41 +89,41 @@ function DateList() {
     }
 
     const handleScrollUp = event => {
-        const frame = elemRef.current;
+        const list = listRef.current;
         scrollDirection.current = { isUp: true };
-        scrollTop.current = frame.scrollTop;
-        const content = frame.querySelector( '.content' );
+        scrollTop.current = list.scrollTop;
+        const content = contentRef.current;
         offsetHeight.current = content.offsetHeight;
 
-        const prev = frame.querySelector( '.prev' );
-        const frameBounds = frame.getBoundingClientRect();
+        const prev = prevRef.current;
+        const listBounds = list.getBoundingClientRect();
         const { top, height } = prev.getBoundingClientRect();
-        if ( top + ( height * 0.1 ) > frameBounds.top ) {
+        if ( top + ( height * 0.1 ) > listBounds.top ) {
             console.log( 'add_prev_dates' )
             STATE.dispatch( { namespace, type: 'ADD_PREV_DATES', payload: { num: 7 } } );
         }
     }
 
     const handleScrollDown = event => {
-        const frame = elemRef.current;
+        const list = listRef.current;
         scrollDirection.current = { isDown: true };
-        scrollTop.current = frame.scrollTop;
-        const content = frame.querySelector( '.content' );
+        scrollTop.current = list.scrollTop;
+        const content = contentRef.current;
         offsetHeight.current = content.offsetHeight;
 
-        const next = frame.querySelector( '.next' );
-        const frameBounds = frame.getBoundingClientRect();
+        const next = nextRef.current;
+        const listBounds = list.getBoundingClientRect();
         const { top, height } = next.getBoundingClientRect();
-        if ( top + ( height * 0.9 ) < frameBounds.bottom ) {
+        if ( top + ( height * 0.9 ) < listBounds.bottom ) {
             console.log( 'add_next_dates' )
             STATE.dispatch( { namespace, type: 'ADD_NEXT_DATES', payload: { num: 7 } } );
         }
     }
 
     REF.current.scrollToCentralDate = event => {
-        const frame = elemRef.current;
-        const centralDate = frame.querySelector( '.ADate.central' );
-        frame.scrollTop = centralDate.offsetTop - ( frame.clientHeight * 0.10 );
+        const list = listRef.current;
+        const central = centralRef.current;
+        list.scrollTop = central.offsetTop - ( list.clientHeight * 0.10 );
     }
 
     useEffect( () => {
@@ -79,26 +132,26 @@ function DateList() {
             REF.current.scrollToCentralDate();
 
         } else if ( init.dates && ( init.dates.isDone || init.dates.isError ) ) {
-            const frame = elemRef.current;
-            const content = frame.querySelector( '.content' );
-            const prev = frame.querySelector( '.prev' );
-            const next = frame.querySelector( '.next' );
+            const list = listRef.current;
+            const content = contentRef.current;
+            const prev = prevRef.current;
+            const next = nextRef.current;
 
             if ( scrollDirection.current.isUp ) {
                 const offsetDiff = content.offsetHeight - offsetHeight.current;
-                frame.scrollTop = scrollTop.current + offsetDiff;
+                list.scrollTop = scrollTop.current + offsetDiff;
             }
 
             scrollDirection.current = {};
-            scrollTop.current = frame.scrollTop;
+            scrollTop.current = list.scrollTop;
             offsetHeight.current = content.offsetHeight;
 
-            frame.addEventListener( 'scroll', handleScroll );
+            list.addEventListener( 'scroll', handleScroll );
             prev.addEventListener( 'click', handleScrollUp );
             next.addEventListener( 'click', handleScrollDown );
 
             return () => {
-                frame.removeEventListener( 'scroll', handleScroll );
+                list.removeEventListener( 'scroll', handleScroll );
                 prev.removeEventListener( 'click', handleScrollUp );
                 next.removeEventListener( 'click', handleScrollDown );
             }
@@ -110,71 +163,24 @@ function DateList() {
     } );
 
     return (
-        <div className="DateList frame" ref={elemRef}>
-            <GenreInit />
-            <FundInit />
-            <DateInit />
-            <div className="content">
-                <div className="prev">
-                    <FontAwesomeIcon icon={ faBackward } className="icon" />
-                    Προηγούμενες ημ/νίες
-                </div>
+        <List reference={listRef}>
+            <ContentBox ref={contentRef}>
+                <GenreInit />
+                <FundInit />
+                <DateInit />
+                <PrevButton reference={prevRef} />
                 <ul>
-                    { data.dates.map( aDate => (
+                    {data.dates.map( aDate => (
                         <ADate
                             key={aDate.data.date}
                             aDate={aDate}
+                            reference={aDate.uiux.isTheCentral ? centralRef : null}
                         /> 
-                    ) ) }
+                    ) )}
                 </ul>
-                <div className="next">
-                    Επόμενες ημ/νίες
-                    <FontAwesomeIcon icon={ faForward } className="icon" />
-                </div>
-            </div>
-        </div>
-    );
-}
-
-const ADate = React.memo( ( { aDate } ) => {  // to differ from native function Date()
-
-    const { date, entries } = aDate.data;
-
-    useEffect( () => {
-        console.log( 'Has rendered. ', date );
-    } );
-
-    const className = aDate.uiux.isTheCentral ? 'central' : '';
-
-    return (
-        <li className={`ADate ${className}`}>
-            <DateInfo date={date} />
-            <EntryList date={date} entries={entries} />
-        </li>
-    );
-} );
-
-function DateInfo( { date } ) {
-    const dayName = dayNames[ date.getDay() ];
-    const dateNum = date.getDate().toString().padStart( 2, '0' );
-    const monthName = monthNames[ date.getMonth() ];
-    const yearNum = date.getFullYear();
-
-    return (
-        <div className="DateInfo">
-
-            <span className="year-month">
-                { `${yearNum} ${monthName}` }
-            </span>
-
-            <span className="dateNum">
-                { `${dateNum}` }
-            </span>
-
-            <span className="day">
-                { `${dayName}` }
-            </span>
-        </div>
+                <NextButton reference={nextRef} />
+            </ContentBox>
+        </List>
     );
 }
 
