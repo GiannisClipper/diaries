@@ -1,5 +1,6 @@
 import React, { useState, useEffect  } from 'react';
-import { ListBox, List, Block } from './libs/List';
+import { ListBox } from './libs/List';
+import { BlockBox, BlockLabel, BlockValue } from './libs/Block';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { Loader } from './libs/Loader';
@@ -55,29 +56,44 @@ function Signin() {
 
     return (
         <AuthList>
-            <Block label='Όνομα χρήστη'>
-                <input
-                    value={data.username}
-                    onChange={event => setData( { ...data, username: event.target.value } )}
-                />
-            </Block>
 
-            <Block label='Κωδικός εισόδου'>
-                <input
-                    type="password"
-                    value={data.password}
-                    onChange={event => setData( { ...data, password: event.target.value } )}
-                />
-            </Block>
+            <BlockBox>
+                <BlockLabel>
+                    Όνομα χρήστη
+                </BlockLabel>
+                <BlockValue>
+                    <input
+                        value={data.username}
+                        onChange={event => setData( { ...data, username: event.target.value } )}
+                    />
+                </BlockValue>
+            </BlockBox>
 
-            <Block label=''>
-                <button className="ok" onClick={onClickOk}>
-                    {isOnRequest
-                        ? <Loader /> 
-                        : <FontAwesomeIcon className="icon" icon={ faCheck } />}
-                    <span>Είσοδος</span>
-                </button>
-            </Block>
+            <BlockBox>
+                <BlockLabel>
+                    Κωδικός εισόδου
+                </BlockLabel>
+                <BlockValue>
+                    <input
+                        type="password"
+                        value={data.password}
+                        onChange={event => setData( { ...data, password: event.target.value } )}
+                    />
+                </BlockValue>
+            </BlockBox>
+
+            <BlockBox>
+                <BlockLabel />
+                <BlockValue>
+                    <button className="ok" onClick={onClickOk}>
+                        {isOnRequest
+                            ? <Loader /> 
+                            : <FontAwesomeIcon className="icon" icon={ faCheck } />}
+                        <span>Είσοδος</span>
+                    </button>
+                </BlockValue>
+            </BlockBox>
+
         </AuthList>
     );
 }

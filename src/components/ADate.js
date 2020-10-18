@@ -2,11 +2,9 @@ import React, { useEffect } from 'react';
 import EntryList from './EntryList';
 import DateInfo from './DateInfo';
 import styled, { css } from 'styled-components';
+import StyledBlock from './libs/Block';
 
-const BlockBox = styled.div`
-    display: flex;
-
-    width: 100%;
+const BlockBox = styled( StyledBlock.BlockBox )`
     margin-bottom: .5em;
     text-align: left;
 
@@ -15,23 +13,14 @@ const BlockBox = styled.div`
     `}
 `;
 
-const BlockLabel = styled.span`
-    vertical-align: top;
-    display: inline-block;
+const BlockLabel = styled( StyledBlock.BlockLabel )`
     width: 10em;
-    //padding: .5em;
-    background-color: lightsteelblue;
-    color: lightcoral;
-    font-weight: 700;
+    padding: 0;
 `;
 
-const BlockValue = styled.span`
-    vertical-align: top;
-    display: inline-block;
+const BlockValue = styled( StyledBlock.BlockValue )`
     width: calc( 100% - 10em );
-    min-height: 100%;
-    //padding: .5em;
-    background-color: lightsteelblue;
+    padding: 0;
 `;
 
 const ADate = React.memo( ( { aDate, reference } ) => {  // to differ from native function Date()

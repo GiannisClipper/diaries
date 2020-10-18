@@ -1,24 +1,42 @@
 import React from 'react';
-import { List, Block } from './libs/List';
+import { ListBox } from './libs/List';
+import { BlockBox, BlockLabel, BlockValue } from './libs/Block';
 import GenreList from "./payments/GenreList";
 import FundList from "./payments/FundList";
 
 function Settings() {
 
     return (
-        <List>
-            <Block label='Κεντρική ημ/νία'>
-                <input placeholder="YYYY-MM-DD" />
-            </Block>
+        <ListBox>
 
-            <Block label='Κατηγορίες οικονομικών κινήσεων'>
-                <GenreList />
-            </Block>
+            <BlockBox>
+                <BlockLabel>
+                    Κεντρική ημ/νία
+                </BlockLabel>
+                <BlockValue>
+                    <input placeholder="YYYY-MM-DD" />
+                </BlockValue>
+            </BlockBox>
 
-            <Block label='Μέσα οικονομικών κινήσεων'>
-                <FundList />
-            </Block>
-        </List>
+            <BlockBox>
+                <BlockLabel>
+                    Κατηγορίες οικονομικών κινήσεων
+                </BlockLabel>
+                <BlockValue>
+                    <GenreList />
+                </BlockValue>
+            </BlockBox>
+
+            <BlockBox>
+                <BlockLabel>
+                    Μέσα οικονομικών κινήσεων
+                </BlockLabel>
+                <BlockValue>
+                    <FundList />
+                </BlockValue>
+            </BlockBox>
+
+        </ListBox>
     );
 }
 

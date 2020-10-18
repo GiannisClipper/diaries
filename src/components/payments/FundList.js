@@ -6,7 +6,7 @@ import { parseFundToDB } from '../../storage/payments/parsers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBan } from '@fortawesome/free-solid-svg-icons';
 import { Loader } from '../libs/Loader';
-import { RowBox, RowData, RowMenu } from '../libs/List';
+import { RowBox, RowValue, RowMenu } from '../libs/Row';
 import FundInit from './FundInit';
 import GenreMenu from './GenreMenu';
 import FundForm from './FundForm';
@@ -194,10 +194,10 @@ function Fund( { index, funds } ) {
 
     return (
         <RowBox key={index}>
-            <RowData title={`${fund.data.id}`}>
+            <RowValue title={`${fund.data.id}`}>
                 <span className='code'>{fund.data.code}</span>
                 <span className='name'>{fund.data.name}</span>
-            </RowData>
+            </RowValue>
 
             <RowMenu>
                 {fund.uiux.process.isOnValidation || fund.uiux.process.isOnRequest

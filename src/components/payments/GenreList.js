@@ -6,7 +6,7 @@ import { parseGenreToDB } from '../../storage/payments/parsers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBan } from '@fortawesome/free-solid-svg-icons';
 import { Loader } from '../libs/Loader';
-import { RowBox, RowData, RowMenu } from '../libs/List';
+import { RowBox, RowValue, RowMenu } from '../libs/Row';
 import GenreInit from './GenreInit';
 import GenreMenu from './GenreMenu';
 import GenreForm from './GenreForm';
@@ -204,10 +204,10 @@ function Genre( { index, genres } ) {
 
     return (
         <RowBox key={index}>
-            <RowData title={`${genre.data.id}`}>
+            <RowValue title={`${genre.data.id}`}>
                 <span>{`${typeInfo}${genre.data.code}`}</span>
                 <span>{genre.data.name}</span>
-            </RowData>
+            </RowValue>
 
             <RowMenu>
                 {genre.uiux.process.isOnValidation || genre.uiux.process.isOnRequest

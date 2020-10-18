@@ -8,19 +8,15 @@ import GenreInit from './payments/GenreInit';
 import FundInit from './payments/FundInit';
 import ADate from './ADate';
 import styled from 'styled-components';
+import StyledList from './libs/List';
 
 const namespace = 'dates';
 
-const ListBox = styled.div`
-    // display: flex;
-    // flex-direction: column;
-    // align-items: center;
-
-    width: 80%;
+const ListBox = styled( StyledList.ListBox )`
+    display: block;
     margin: auto;
     height: 90vh;
     overflow: auto;
-    //margin-top: 1em;
 `;
 
 const ContentBox = styled.div`

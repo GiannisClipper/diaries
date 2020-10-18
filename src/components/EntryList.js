@@ -13,6 +13,7 @@ import { EntryMenuTool, BlankEntryMenu, ExistsEntryMenu } from './EntryMenu';
 import NoteForm from './notes/NoteForm';
 import PaymentForm from './payments/PaymentForm';
 import styled, { css } from 'styled-components';
+import StyledRow from './libs/Row';
 
 const namespace = 'entries';
 
@@ -35,9 +36,7 @@ function EntryList( { date, entries } ) {
     );
 }
 
-const RowBox = styled.li`
-    display: block;
-    width: 100%;
+const RowBox = styled( StyledRow.RowBox )`
     margin-top: .5em;
     margin-bottom: .5em;
     background-color: lightskyblue;
@@ -46,12 +45,8 @@ const RowBox = styled.li`
     }
 `;
 
-const RowData = styled.span`
-    display: inline-block;
-    vertical-align: top;
+const RowValue = styled( StyledRow.RowValue )`
     width: calc( 100% - 2em );
-    text-align: left;
-    padding: .5em;
 
     ${props => props.draggable && css`
         cursor: grab;
@@ -60,7 +55,8 @@ const RowData = styled.span`
     `}
 `;
 
-const RowMenu = styled.span`
+const RowMenu = styled( StyledRow.RowMenu )`
+    width: 2em;
     .icon {
         color: lightcoral;
     }
@@ -315,12 +311,12 @@ function Entry( { date, entry, inSequence } ) {
             onDragOver={onDragOver}
             onDrop={onDrop}
         >
-            <RowData 
+            <RowValue
                 draggable={draggable}
                 title={`${entry.data.date}, ${inSequence}, ${entry.data.inSequence}, ${entry.data.id}`}
             >
                 <EntryRepr entry={entry} />
-            </RowData>
+            </RowValue>
 
             <RowMenu>
                 {entry.uiux.process.isOnRequest

@@ -6,7 +6,9 @@ import { parseUserToDB } from '../storage/parsers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBan } from '@fortawesome/free-solid-svg-icons';
 import { Loader } from './libs/Loader';
-import { List, Block, RowBox, RowData, RowMenu } from './libs/List';
+import { ListBox } from './libs/List';
+import { BlockBox, BlockLabel, BlockValue } from './libs/Block';
+import { RowBox, RowValue, RowMenu } from './libs/Row';
 import UserInit from './UserInit';
 import UserMenu from './UserMenu';
 import UserForm from './UserForm';
@@ -26,16 +28,21 @@ function UserList( { className } ) {
     let index = -1;
 
     return (
-        <List>
+        <ListBox>
             <UserInit />
-            <Block label="Χρήστες εφαρμογής">
-                <ul>
-                    { users.map( user => (
-                        <User key={++index} index={index} users={users} />
-                    ) ) }
-                </ul>
-            </Block>
-        </List>
+            <BlockBox>
+                <BlockLabel>
+                    Χρήστες εφαρμογής
+                </BlockLabel>
+                <BlockValue>
+                    <ul>
+                        { users.map( user => (
+                            <User key={++index} index={index} users={users} />
+                        ) ) }
+                    </ul>
+                </BlockValue>
+            </BlockBox>
+        </ListBox>
     );
 }
 
@@ -198,11 +205,11 @@ function User( { index, users } ) {
 
     return (
         <RowBox key={index}>
-            <RowData title={`${user.data.id}`}>
+            <RowValue title={`${user.data.id}`}>
                 <span>{user.data.username}</span>
                 <span>{user.data.email}</span>
                 <span>{user.data.remark}</span>
-            </RowData>
+            </RowValue>
 
             <RowMenu>
                 {user.uiux.process.isOnValidation || user.uiux.process.isOnRequest
