@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Modal } from './libs/Modal';
 import { CRUDForm } from './libs/Form';
-import { Field } from './libs/Field';
+import { InputBox, InputLabel, InputValue } from './libs/InputBox';
 import { InputEmail } from './libs/InputEmail';
 import { InputCheck } from './libs/InputCheck';
 import { isBlank, isFound } from '../helpers/validation';
@@ -54,63 +54,98 @@ function UserForm( { users, index, closeForm, doValidation, validationDone, vali
                 onClickCancel={onClickCancel}
                 isOnRequest={user.uiux.process.isOnRequest}
             >
-                <Field label="Id">
-                    <input 
-                        value={data.id || ''}
-                        tabIndex="-1"
-                        readOnly
-                    />
-                </Field>
+                <InputBox>
+                    <InputLabel>
+                        Id
+                    </InputLabel>
+                    <InputValue>
+                        <input 
+                            value={data.id || ''}
+                            tabIndex="-1"
+                            readOnly
+                        />
+                    </InputValue>
+                </InputBox>
 
-                <Field label="Όνομα χρήστη">
-                    <input
-                        value={data.username}
-                        onChange={event => setData( { ...data, username: event.target.value } )}
-                    />
-                </Field>
+                <InputBox>
+                    <InputLabel>
+                        Όνομα χρήστη
+                    </InputLabel>
+                    <InputValue>
+                        <input
+                            value={data.username}
+                            onChange={event => setData( { ...data, username: event.target.value } )}
+                        />
+                    </InputValue>
+                </InputBox>
 
-                <Field label="Κωδικός εισόδου">
-                    <input
-                        type="password"
-                        value={data.password}
-                        onChange={event => setData( { ...data, password: event.target.value } )}
-                    />
-                </Field>
+                <InputBox>
+                    <InputLabel>
+                        Κωδικός εισόδου
+                    </InputLabel>
+                    <InputValue>
+                        <input
+                            type="password"
+                            value={data.password}
+                            onChange={event => setData( { ...data, password: event.target.value } )}
+                        />
+                    </InputValue>
+                </InputBox>
 
-                <Field label="Επανάληψη κωδικού">
-                    <input
-                        type="password"
-                        value={data.password2}
-                        onChange={event => setData( { ...data, password2: event.target.value } )}
-                    />
-                </Field>
+                <InputBox>
+                    <InputLabel>
+                        Επανάληψη κωδικού
+                    </InputLabel>
+                    <InputValue>
+                        <input
+                            type="password"
+                            value={data.password2}
+                            onChange={event => setData( { ...data, password2: event.target.value } )}
+                        />
+                    </InputValue>
+                </InputBox>
 
-                <Field label="Email">
-                    <InputEmail
-                        value={data.email}
-                        onChange={event => setData( { ...data, email: event.target.value } )}
-                    />
-                </Field>
+                <InputBox>
+                    <InputLabel>
+                        Email
+                    </InputLabel>
+                    <InputValue>
+                        <InputEmail
+                            value={data.email}
+                            onChange={event => setData( { ...data, email: event.target.value } )}
+                        />
+                    </InputValue>
+                </InputBox>
 
-                <Field label="Δικαιώματα">
-                    <InputCheck
-                        checked={data.isAdmin}
-                        onChange={event => setData( { ...data, isAdmin: event.target.checked } )}
-                        label='Διαχειριστή'
-                    />
-                    <InputCheck
-                        checked={data.isUser}
-                        onChange={event => setData( { ...data, isUser: event.target.checked } )}
-                        label='Απλού χρήστη'
-                    />                        
-                </Field>
+                <InputBox>
+                    <InputLabel>
+                        Δικαιώματα
+                    </InputLabel>
+                    <InputValue>
+                        <InputCheck
+                            checked={data.isAdmin}
+                            onChange={event => setData( { ...data, isAdmin: event.target.checked } )}
+                            label='Διαχειριστή'
+                        />
+                        <InputCheck
+                            checked={data.isUser}
+                            onChange={event => setData( { ...data, isUser: event.target.checked } )}
+                            label='Απλού χρήστη'
+                        />                        
+                    </InputValue>
+                </InputBox>
 
-                <Field label="Σημειώσεις">
-                    <input
-                        value={data.remark}
-                        onChange={event => setData( { ...data, remark: event.target.value } )}
-                    />
-                </Field>
+                <InputBox>
+                    <InputLabel>
+                        Σημειώσεις
+                    </InputLabel>
+                    <InputValue>
+                        <input
+                            value={data.remark}
+                            onChange={event => setData( { ...data, remark: event.target.value } )}
+                        />
+                    </InputValue>
+                </InputBox>
 
             </CRUDForm>
         </Modal>

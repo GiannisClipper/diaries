@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import EntryForm from '../EntryForm';
-import { Field } from '../libs/Field';
+import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
 import { isBlank } from '../../helpers/validation';
 
 function NoteForm( { date, entry, inSequence, closeForm, doValidation, validationDone, validationError, doRequest } ) {
@@ -39,15 +39,22 @@ function NoteForm( { date, entry, inSequence, closeForm, doValidation, validatio
             validationError={validationError}
             doRequest={doRequest}
         >
-            <Field label="Σημείωμα">
-                <textarea
-                    rows="10"
-                    cols="50"
-                    maxLength="1000"
-                    value={formData.note}
-                    onChange={event => setData( { ...formData, note: event.target.value } )}
-                />
-            </Field>
+
+            <InputBox>
+                <InputLabel>
+                    Σημείωμα
+                </InputLabel>
+                <InputValue>
+                    <textarea
+                        rows="10"
+                        cols="50"
+                        maxLength="1000"
+                        value={formData.note}
+                        onChange={event => setData( { ...formData, note: event.target.value } )}
+                    />
+                </InputValue>
+            </InputBox>
+
         </EntryForm>
     );
 }

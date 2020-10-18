@@ -13,7 +13,7 @@ import { EntryMenuTool, BlankEntryMenu, ExistsEntryMenu } from './EntryMenu';
 import NoteForm from './notes/NoteForm';
 import PaymentForm from './payments/PaymentForm';
 import styled, { css } from 'styled-components';
-import StyledRow from './libs/Row';
+import StyledRow from './libs/RowBox';
 
 const namespace = 'entries';
 

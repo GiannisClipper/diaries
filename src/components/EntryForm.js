@@ -2,7 +2,7 @@ import React from 'react';
 import { dayNames } from '../helpers/dates';
 import { Modal } from './libs/Modal';
 import { CRUDForm } from './libs/Form';
-import { Field } from './libs/Field';
+import { InputBox, InputLabel, InputValue } from './libs/InputBox';
 
 function EntryForm( { 
         date, 
@@ -40,21 +40,31 @@ function EntryForm( {
                 onClickCancel={onClickCancel}
                 isOnRequest={entry.uiux.process.isOnRequest}
             >
-                <Field label="Id">
-                    <input 
-                        value={formData.id || ''}
-                        tabIndex="-1"
-                        readOnly
-                    />
-                </Field>
+                <InputBox>
+                    <InputLabel>
+                        Id
+                    </InputLabel>
+                    <InputValue>
+                        <input 
+                            value={formData.id || ''}
+                            tabIndex="-1"
+                            readOnly
+                        />
+                    </InputValue>
+                </InputBox>
 
-                <Field label="Ημ/νία">
-                    <input 
-                        value={dateInfo}
-                        tabIndex="-1"
-                        readOnly
-                    />
-                </Field>
+                <InputBox>
+                    <InputLabel>
+                        Ημ/νία
+                    </InputLabel>
+                    <InputValue>
+                        <input 
+                            value={dateInfo}
+                            tabIndex="-1"
+                            readOnly
+                        />
+                    </InputValue>
+                </InputBox>
 
                 {children}
 

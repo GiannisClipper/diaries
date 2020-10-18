@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { STATEContext } from '../STATEContext';
 import EntryForm from '../EntryForm';
-import { Field } from '../libs/Field';
+import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
 import { InputNumber } from '../libs/InputNumber';
 import { InputFromList } from '../libs/InputFromList';
 import { isBlank } from '../../helpers/validation';
@@ -79,49 +79,76 @@ function PaymentForm( { date, entry, inSequence, closeForm, doValidation, valida
             validationError={validationError}
             doRequest={doRequest}
         >
-            <Field label="Κατηγορία">
-                <InputFromList
-                    value={formData.genre_name}
-                    allValues={allGenres}
-                    onChange={event => {
-                        const genre_name = event.target.value;
-                        setFormData( { ...formData, genre_name, ...setupGenre( genre_name ) } );
-                    }}
-                />
-            </Field>
+    
+            <InputBox>
+                <InputLabel>
+                    Κατηγορία
+                </InputLabel>
+                <InputValue>
+                    <InputFromList
+                        value={formData.genre_name}
+                        allValues={allGenres}
+                        onChange={event => {
+                            const genre_name = event.target.value;
+                            setFormData( { ...formData, genre_name, ...setupGenre( genre_name ) } );
+                        }}
+                    />
+                </InputValue>
+            </InputBox>
 
-            <Field label="Είσπραξη">
-                <InputNumber
-                    decimals="2"
-                    value={formData.incoming || ''}
-                    onChange={event => setFormData( { ...formData, incoming: event.target.value } )}
-                    readOnly={!formData.isIncoming}
-                />
-            </Field>
+            <InputBox>
+                <InputLabel>
+                    Είσπραξη
+                </InputLabel>
+                <InputValue>
+                    <InputNumber
+                        decimals="2"
+                        value={formData.incoming || ''}
+                        onChange={event => setFormData( { ...formData, incoming: event.target.value } )}
+                        readOnly={!formData.isIncoming}
+                    />
+                </InputValue>
+            </InputBox>
 
-            <Field label="Πληρωμή">
-                <InputNumber
-                    decimals="2"
-                    value={formData.outgoing || ''}
-                    onChange={event => setFormData( { ...formData, outgoing: event.target.value } )}
-                    readOnly={!formData.isOutgoing}
-                />
-            </Field>
+            <InputBox>
+                <InputLabel>
+                    Πληρωμή
+                </InputLabel>
+                <InputValue>
+                    <InputNumber
+                        decimals="2"
+                        value={formData.outgoing || ''}
+                        onChange={event => setFormData( { ...formData, outgoing: event.target.value } )}
+                        readOnly={!formData.isOutgoing}
+                    />
+                </InputValue>
+            </InputBox>
 
-            <Field label="Αιτιολογία">
-                <input
-                    value={formData.remark}
-                    onChange={event => setFormData( { ...formData, remark: event.target.value } )}
-                />
-            </Field>
+            <InputBox>
+                <InputLabel>
+                    Αιτιολογία
+                </InputLabel>
+                <InputValue>
+                    <input
+                        value={formData.remark}
+                        onChange={event => setFormData( { ...formData, remark: event.target.value } )}
+                    />
+                </InputValue>
+            </InputBox>
 
-            <Field label="Μέσο πληρωμής">
-                <InputFromList
-                    value={formData.fund_name}
-                    allValues={allFunds}
-                    onChange={event => setFormData( { ...formData, fund_name: event.target.value } )}
-                />
-            </Field>
+            <InputBox>
+                <InputLabel>
+                    Μέσο πληρωμής
+                </InputLabel>
+                <InputValue>
+                    <InputFromList
+                        value={formData.fund_name}
+                        allValues={allFunds}
+                        onChange={event => setFormData( { ...formData, fund_name: event.target.value } )}
+                    />
+                </InputValue>
+            </InputBox>
+
         </EntryForm>
     );
 }

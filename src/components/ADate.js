@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import EntryList from './EntryList';
 import DateInfo from './DateInfo';
 import styled, { css } from 'styled-components';
-import StyledBlock from './libs/Block';
+import StyledBlock from './libs/BlockBox';
 
 const BlockBox = styled( StyledBlock.BlockBox )`
     margin-bottom: .5em;

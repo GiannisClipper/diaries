@@ -8,7 +8,7 @@ import GenreInit from './payments/GenreInit';
 import FundInit from './payments/FundInit';
 import ADate from './ADate';
 import styled from 'styled-components';
-import StyledList from './libs/List';
+import StyledList from './libs/ListBox';
 
 const namespace = 'dates';
 

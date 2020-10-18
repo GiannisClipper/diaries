@@ -6,7 +6,7 @@ import { parseFundToDB } from '../../storage/payments/parsers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBan } from '@fortawesome/free-solid-svg-icons';
 import { Loader } from '../libs/Loader';
-import { RowBox, RowValue, RowMenu } from '../libs/Row';
+import { RowBox, RowValue, RowMenu } from '../libs/RowBox';
 import FundInit from './FundInit';
 import GenreMenu from './GenreMenu';
 import FundForm from './FundForm';

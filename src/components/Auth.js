@@ -1,6 +1,6 @@
 import React, { useState, useEffect  } from 'react';
-import { ListBox } from './libs/List';
-import { BlockBox, BlockLabel, BlockValue } from './libs/Block';
+import { ListBox } from './libs/ListBox';
+import { BlockBox, BlockLabel, BlockValue } from './libs/BlockBox';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { Loader } from './libs/Loader';

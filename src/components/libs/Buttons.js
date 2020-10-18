@@ -4,28 +4,30 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { Loader } from './Loader';
 
-const StyledButton = styled.button`
+const Button = styled.button`
     display: inline-block;
     width: calc( 50% - .5em );
     height: 2.5em;
     padding: .5em;
+
     .icon {
         padding: 0;
         width: 1em;
         height: 1em;
         color: black;
     }
+
     span:last-child {
         margin-left: .25em;
     }
 `;
 
-const StyledOkButton = styled( StyledButton )`
+const StyledOkButton = styled( Button )`
     margin-right: .5em;
     background-color: ${props => props.isDelete ? 'red' : 'seagreen'};
 `;
 
-const StyledCancelButton = styled( StyledButton )`
+const StyledCancelButton = styled( Button )`
     margin-left: .5em;
     background-color: tomato;
 `;

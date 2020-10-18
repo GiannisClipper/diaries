@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ButtonsField } from './Field';
-import { OkButton, CancelButton } from './Button';
+import { ButtonBox, ButtonLabel, ButtonValue } from './ButtonBox';
+import { OkButton, CancelButton } from './Buttons';
 
 const StyledForm = styled.div`
     width: 80%;
@@ -23,9 +23,12 @@ function OkForm( { okLabel, onClickOk, isOnRequest, isDelete, children } ) {
         <Form>
             {children}
 
-            <ButtonsField>
-                <OkButton label={okLabel} onClick={onClickOk} isOnRequest={isOnRequest} isDelete={isDelete} />
-            </ButtonsField>
+            <ButtonBox>
+                <ButtonLabel />
+                <ButtonValue>
+                    <OkButton label={okLabel} onClick={onClickOk} isOnRequest={isOnRequest} isDelete={isDelete} />
+                </ButtonValue>
+            </ButtonBox>
 
         </Form>
     );
@@ -36,10 +39,13 @@ function OkCancelForm( { okLabel, cancelLabel, onClickOk, onClickCancel, isOnReq
         <Form>
             {children}
 
-            <ButtonsField>
-                <OkButton label={okLabel} onClick={onClickOk} isOnRequest={isOnRequest} isDelete={isDelete} />
-                <CancelButton label={cancelLabel} onClick={onClickCancel} />
-            </ButtonsField>
+            <ButtonBox>
+                <ButtonLabel />
+                <ButtonValue>
+                    <OkButton label={okLabel} onClick={onClickOk} isOnRequest={isOnRequest} isDelete={isDelete} />
+                    <CancelButton label={cancelLabel} onClick={onClickCancel} />
+                </ButtonValue>
+            </ButtonBox>
 
         </Form>
     );

@@ -1,6 +1,6 @@
 import React from 'react';
-import { ListBox } from './libs/List';
-import { BlockBox, BlockLabel, BlockValue } from './libs/Block';
+import { ListBox } from './libs/ListBox';
+import { BlockBox, BlockLabel, BlockValue } from './libs/BlockBox';
 import GenreList from "./payments/GenreList";
 import FundList from "./payments/FundList";
 

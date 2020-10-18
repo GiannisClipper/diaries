@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Modal } from '../libs/Modal';
 import { CRUDForm } from '../libs/Form';
-import { Field } from '../libs/Field';
+import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
 import { InputCheck } from '../libs/InputCheck';
 import { isBlank, isFound } from '../../helpers/validation';
 
@@ -51,40 +51,60 @@ function GenreForm( { genres, index, closeForm, doValidation, validationDone, va
                 onClickCancel={onClickCancel}
                 isOnRequest={genre.uiux.process.isOnRequest}
             >
-                <Field label="Id">
-                    <input 
-                        value={data.id || ''}
-                        tabIndex="-1"
-                        readOnly
-                    />
-                </Field>
+                <InputBox>
+                    <InputLabel>
+                        Id
+                    </InputLabel>
+                    <InputValue>
+                        <input 
+                            value={data.id || ''}
+                            tabIndex="-1"
+                            readOnly
+                        />
+                    </InputValue>
+                </InputBox>
 
-                <Field label="Ονομασία">
-                    <input
-                        value={data.name}
-                        onChange={event => setData( { ...data, name: event.target.value } )}
-                    />
-                </Field>
+                <InputBox>
+                    <InputLabel>
+                        Ονομασία
+                    </InputLabel>
+                    <InputValue>
+                        <input
+                            value={data.name}
+                            onChange={event => setData( { ...data, name: event.target.value } )}
+                        />
+                    </InputValue>
+                </InputBox>
 
-                <Field label="Εγγραφές">
-                    <InputCheck
-                        checked={data.isIncoming}
-                        onChange={event => setData( { ...data, isIncoming: event.target.checked } )}
-                        label='Εισπράξεων'
-                    />
-                    <InputCheck
-                        checked={data.isOutgoing}
-                        onChange={event => setData( { ...data, isOutgoing: event.target.checked } )}
-                        label='Πληρωμών'
-                    />                        
-                </Field>
+                <InputBox>
+                    <InputLabel>
+                        Εγγραφές
+                    </InputLabel>
+                    <InputValue>
+                        <InputCheck
+                            checked={data.isIncoming}
+                            onChange={event => setData( { ...data, isIncoming: event.target.checked } )}
+                            label='Εισπράξεων'
+                        />
+                        <InputCheck
+                            checked={data.isOutgoing}
+                            onChange={event => setData( { ...data, isOutgoing: event.target.checked } )}
+                            label='Πληρωμών'
+                        />                        
+                    </InputValue>
+                </InputBox>
 
-                <Field label="Λογ.Κωδικ.">
-                    <input
-                        value={data.code}
-                        onChange={event => setData( { ...data, code: event.target.value } )}
-                    />
-                </Field>
+                <InputBox>
+                    <InputLabel>
+                        Λογ.Κωδικ.
+                    </InputLabel>
+                    <InputValue>
+                        <input
+                            value={data.code}
+                            onChange={event => setData( { ...data, code: event.target.value } )}
+                        />
+                    </InputValue>
+                </InputBox>
 
             </CRUDForm>
         </Modal>
