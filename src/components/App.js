@@ -1,38 +1,85 @@
 import React, { useContext } from 'react';
-import '../styles/libs/initialize.css';
-import '../styles/App.css';
+import styled from 'styled-components';
+import { InitStyle, centeredness } from './libs/InitStyle'; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faBookOpen, faCog, faCompass } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faBookOpen, faCog, faCompass, faDoorOpen, faDoorClosed } from '@fortawesome/free-solid-svg-icons';
 import { STATEContextProvider } from './STATEContext';
 import { REFContextProvider } from './REFContext';
 import { REFContext } from './REFContext';
 import Routes from './Routes';
 import { realFetch, mockFetch } from '../helpers/customFetch';
 
+const AppHeader = styled.div`
+    position: fixed;
+    top: 0;
+    width: 100%;
+
+    height: 8vh;
+    line-height: 8vh;
+    background-color: lightsalmon;
+
+    text-align: center;
+
+    * {
+        font: inherit;
+        color: inherit;
+        background-color: inherit;
+        margin-left: .5em;
+        margin-right: .5em;
+    }
+
+    .icon {
+        font-size: 1.5em;
+    }
+`;
+
+const AppMain= styled.div`
+    padding-top: 8vh;
+    text-align: center;
+    ${props => props.centeredness && centeredness}
+`;
+
 function App() {
 
     return (
         <STATEContextProvider>
         <REFContextProvider>
-        <div className="App">
+        <InitStyle />
 
-            <div className="title">
-                <GotoUsers />
-                <GotoDates />
-                <GotoSettings />
-                <span>Diaries by GiannisClipper</span>
-                <ScrollToCentralDate />
-                <Dev />
-            </div>
+        <AppHeader>
+            <GotoSignin />
+            <GotoSignout />
+            <GotoUsers />
+            <GotoDates />
+            <GotoSettings />
+            <span>Diaries by GiannisClipper</span>
+            <ScrollToCentralDate />
+            <Dev />
+        </AppHeader>
 
+        <AppMain centeredness>
             <Routes />
+        </AppMain>
 
-        </div>
         </REFContextProvider>
         </STATEContextProvider>
     );
 }
 
+const GotoSignin = () => {
+    return (
+        <a href="/signin"> 
+            <FontAwesomeIcon icon={ faDoorOpen } className="icon" title="Είσοδος" />
+        </a>
+    )
+}
+const GotoSignout = () => {
+    return (
+        <a href="/signout"> 
+            <FontAwesomeIcon icon={ faDoorClosed } className="icon" title="Έξοδος" />
+        </a>
+    )
+}
 const GotoUsers = () => {
     return (
         <a href="/users"> 
