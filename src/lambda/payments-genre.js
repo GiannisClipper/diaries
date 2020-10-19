@@ -1,7 +1,7 @@
 import { ObjectId } from 'mongodb';
+import { verifyToken } from './common/token';
 import { connectDB } from './common/connectDB';
 import { responseOnSuccess, responseOnError } from './common/responses';
-import { verifyToken } from './common/token';
 
 exports.handler = async function( event, context, callback ) {
     // Allows to freeze open connections to a database
