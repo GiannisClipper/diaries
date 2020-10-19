@@ -105,7 +105,7 @@ function Signin() {
                 realFetch( url, args )
                 .then( res => {
                     //alert( JSON.stringify( res ) );
-                    if ( !res.username ) { 
+                    if ( !res.token ) {
                         throw new Error( 'Τα στοιχεία εισόδου είναι λανθασμένα.' ); 
                     }
                     onDone( dataFromDB( res ) );
@@ -127,8 +127,6 @@ function Signin() {
             doFetch( url, args, onDone, onError, dataFromDB );
 
         }
-        console.log( 'signin', signin )
-
     } );
 
     return (
@@ -176,6 +174,7 @@ function Signin() {
 }
     
 function Signout() {
+    localStorage.removeItem( 'token' );
     return <></>
 }
 

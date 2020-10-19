@@ -1,7 +1,13 @@
 const fetch = require( 'node-fetch' );
 
 const realFetch = async ( url, args ) => {
-    args.headers = { 'Content-Type': 'application/json; charset=utf-8' };
+
+    const token = localStorage.getItem( 'token' );
+
+    args.headers = { 
+        'Content-Type': 'application/json; charset=utf-8',
+        Authorization: `Token ${token}`
+    };
 
     const error = { message: '' };
 

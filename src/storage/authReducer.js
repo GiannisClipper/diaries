@@ -28,12 +28,14 @@ const authReducer = ( state, action ) => {
             const signin = state.data.signin;
             signin.uiux.process = {};
             signin.data = action.payload;
+            localStorage.setItem( 'token', signin.data.token );
             return { ...state, data: { ...state.data, signin } };
 
         } case 'SIGNIN_REQUEST_ERROR': {
             const signin = state.data.signin;
             signin.uiux.process = {};
             signin.data = {};
+            localStorage.setItem( 'token', signin.data.token );
             return { ...state, data: { ...state.data, signin } };
 
         } default: {

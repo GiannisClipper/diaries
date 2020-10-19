@@ -28,7 +28,6 @@ const parseUserToDB = ( data ) => {
 }
 
 const parseSigninFromDB = ( data ) => ( {
-    username: data.username,
     token: data.token,
 } )
 

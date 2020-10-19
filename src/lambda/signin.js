@@ -1,5 +1,6 @@
 import { connectDB } from './common/connectDB';
 import { responseOnSuccess, responseOnError } from './common/responses';
+import { createToken } from './common/token';
 const bcrypt = require( 'bcryptjs' );
 
 exports.handler = async function( event, context, callback ) {
@@ -19,6 +20,12 @@ exports.handler = async function( event, context, callback ) {
 
             if ( !result || !bcrypt.compareSync( data.password, result.password ) ) {
                 result = {};
+            } else {
+                const payload = {
+                    user_id: result._id,
+                    username: result.username,
+                }
+                result = { token: createToken( payload ) };
             }
 
             console.log( result );
