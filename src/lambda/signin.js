@@ -1,6 +1,6 @@
 import { connectDB } from './common/connectDB';
-import { responseOnSuccess, responseOnError } from './common/responses';
 import { createToken } from './common/token';
+import { responseOnSuccess, responseOnError } from './common/responses';
 const bcrypt = require( 'bcryptjs' );
 
 exports.handler = async function( event, context, callback ) {

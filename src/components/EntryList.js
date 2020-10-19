@@ -257,7 +257,7 @@ function Entry( { date, entry, inSequence } ) {
             } );
 
             if ( entry.uiux.mode.isCreate ) {
-                const url = `/.netlify/functions/create-entry`;
+                const url = `/.netlify/functions/entry`;
                 const args = { method: 'POST', body: body() };
                 const onDone = createRequestDone;
                 const onError = createRequestError;
@@ -266,7 +266,7 @@ function Entry( { date, entry, inSequence } ) {
                 doFetch( date, inSequence, url, args, onDone, onError, dataFromDB );
 
             } else if ( entry.uiux.mode.isUpdate ) {
-                const url = `/.netlify/functions/update-entry?id=${entry.data.id}`;
+                const url = `/.netlify/functions/entry?id=${entry.data.id}`;
                 const args = { method: 'PUT', body: body() };
                 const onDone = updateRequestDone;
                 const onError = updateRequestError;
@@ -275,7 +275,7 @@ function Entry( { date, entry, inSequence } ) {
                 doFetch( date, inSequence, url, args, onDone, onError, dataFromDB );
 
             } else if ( entry.uiux.mode.isDelete ) {
-                const url = `/.netlify/functions/delete-entry?id=${entry.data.id}`;
+                const url = `/.netlify/functions/entry?id=${entry.data.id}`;
                 const args = { method: 'DELETE', body: body() };
                 const onDone = deleteRequestDone;
                 const onError = deleteRequestError;

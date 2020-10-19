@@ -1,4 +1,5 @@
 import { ObjectId } from 'mongodb';
+import { verifyToken } from './common/token';
 import { connectDB } from './common/connectDB';
 import { responseOnSuccess, responseOnError } from './common/responses';
 
@@ -7,6 +8,12 @@ exports.handler = async function( event, context, callback ) {
     context.callbackWaitsForEmptyEventLoop = false;
 
     try {
+        let token = event.headers.authorization;
+        const payload = verifyToken( token );
+        if ( payload.error ) {
+            throw new Error( `No authorization (${payload.error}).` );
+        }
+
         const [ client ] = await connectDB();
         const db = client.db( 'diaries' );
         const collection = db.collection( 'payments_funds' );

@@ -1,7 +1,7 @@
 import { ObjectId } from 'mongodb';
+import { verifyToken } from './common/token';
 import { connectDB } from './common/connectDB';
 import { responseOnSuccess, responseOnError } from './common/responses';
-import { verifyToken } from './common/token';
 const bcrypt = require( 'bcryptjs' );
 
 exports.handler = async function( event, context, callback ) {

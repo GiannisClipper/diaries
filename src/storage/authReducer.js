@@ -1,5 +1,3 @@
-import { initSignin } from './schemas';
-
 const authReducer = ( state, action ) => {
 
     switch ( action.type ) {
@@ -35,7 +33,7 @@ const authReducer = ( state, action ) => {
             const signin = state.data.signin;
             signin.uiux.process = {};
             signin.data = {};
-            localStorage.setItem( 'token', signin.data.token );
+            localStorage.removeItem( 'token' );
             return { ...state, data: { ...state.data, signin } };
 
         } default: {

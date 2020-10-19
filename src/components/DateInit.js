@@ -58,7 +58,7 @@ function DateInit() {
     
                     if ( init.payments.genres.isDone || init.payments.funds.isDone ) {
                         console.log( 'Requesting... ', strFrom, strTill )
-                        const uri = `/.netlify/functions/retrieve-dates?range=${strFrom}-${strTill}`;
+                        const uri = `/.netlify/functions/entry?range=${strFrom}-${strTill}`;
                         const method = 'GET';
 
                         //mockFetch( uri, { method } )
