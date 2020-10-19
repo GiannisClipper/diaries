@@ -1,8 +1,10 @@
+import { isBlank } from "../helpers/validation";
+
 const parseUserFromDB = ( data ) => ( {
     id: data._id,
     username: data.username,
-    password: data.password,
-    password2: data.password,
+    password: '',
+    password2: '',
     email: data.email,
     isAdmin: data.isAdmin,
     isUser: data.isUser,
@@ -18,11 +20,21 @@ const parseUserToDB = ( data ) => {
         remark: data.remark,
     }
 
-    if ( data.password !== undefined ) {
+    if ( data.password ) {
         result.password = data.password;
     }
 
     return result;
 }
 
-export { parseUserFromDB, parseUserToDB };
+const parseSigninFromDB = ( data ) => ( {
+    username: data.username,
+    token: data.token,
+} )
+
+const parseSigninToDB = ( data ) => ( {
+    username: data.username,
+    password: data.password,
+} )
+
+export { parseUserFromDB, parseUserToDB, parseSigninFromDB, parseSigninToDB };

@@ -1,4 +1,7 @@
-import React, { useState, useEffect  } from 'react';
+import React, { useContext, useState, useEffect  } from 'react';
+import { STATEContext } from './STATEContext';
+import { realFetch, mockFetch } from '../helpers/customFetch';
+import { parseSigninToDB, parseSigninFromDB } from '../storage/parsers';
 import { ListBox } from './libs/ListBox';
 import { BlockBox, BlockLabel, BlockValue } from './libs/BlockBox';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -13,46 +16,120 @@ const AuthList = styled( ListBox )`
     border: 1px dotted red;
 `;
 
-function Signin() {
-//function UserForm( { users, index, closeForm, doValidation, validationDone, validationError, doRequest } ) {
+const namespace = 'auth';
 
-    // const user = users[ index ];
+function Signin() {
+
+    const STATE = useContext( STATEContext );
+
+    const { signin } = STATE.state.data;
 
     const [ data, setData ] = useState( { username: null, password: null } );
 
-    const isOnRequest = false;
-
-    const onClickOk = event => {
-        alert( 'do validation & request' )
-        // user.uiux.mode.isCreate || user.uiux.mode.isUpdate
-        //     ? doValidation( index )
-        //     : doRequest( index )
+    const doValidation = payload => {
+        STATE.dispatch( { 
+            namespace,
+            type: 'DO_VALIDATION',
+            payload: payload,
+        } );
     }
 
-    //const onClickCancel = closeForm;
+    const validationDone = payload => {
+        STATE.dispatch( { 
+            namespace,
+            type: 'VALIDATION_DONE',
+            payload: payload,
+        } );
+    }
 
-    // useEffect( () => {
+    const validationError = payload => {
+        STATE.dispatch( { 
+            namespace,
+            type: 'VALIDATION_ERROR',
+            payload: payload,
+        } );
+    }
+
+    const doRequest = payload => {
+        STATE.dispatch( { 
+            namespace,
+            type: 'DO_REQUEST',
+            payload: payload,
+        } );
+    }
+
+    const signinRequestDone = dataFromDB => {
+        STATE.dispatch( { 
+            namespace,
+            type: 'SIGNIN_REQUEST_DONE',
+            payload: { ...dataFromDB },
+        } );
+    }
+
+    const signinRequestError = () => {
+        STATE.dispatch( { 
+            namespace,
+            type: 'SIGNIN_REQUEST_ERROR',
+            payload: {},
+        } );
+    }
+
+    const onClickOk = event => {
+        doValidation( data )
+    }
+
+    useEffect( () => {
     
-    //     if ( user.uiux.process.isOnValidation ) {
+        if ( signin.uiux.process.isOnValidation ) {
 
-    //         let errors = '';
-    //         errors += isBlank( data.username ) ? 'Το Όνομα χρήστη δεν μπορεί να είναι κενό.\n' : '';
+            let errors = '';
+            errors += isBlank( data.username ) ? 'Το Όνομα χρήστη δεν μπορεί να είναι κενό.\n' : '';
+            errors += isBlank( data.password ) ? 'Ο Κωδικός εισόδου δεν μπορεί να είναι κενός.\n' : '';
 
-    //         data.password = data.password && data.password === user.data.password ? undefined : data.password;
-    //         user.data = { ...data };
+            if ( errors === '' ) {
+                validationDone( data )
 
-    //         if ( errors === '' ) {
-    //             validationDone( index )
+            } else {
+                alert( errors );
+                validationError( data );
+            }
 
-    //         } else {
-    //             alert( errors );
-    //             validationError( index );
-    //         }
+        } else if ( signin.uiux.process.isOnValidationDone ) {
+            doRequest( data );
 
-    //     } else if ( user.uiux.process.isOnValidationDone ) {
-    //         doRequest( index );
-    //     }
-    // } );
+        } else if ( signin.uiux.process.isOnRequest ) {
+
+            const doFetch = ( url, args, onDone, onError, dataFromDB ) => {
+                console.log( 'Requesting... ', 'signin', data.username )
+
+                realFetch( url, args )
+                .then( res => {
+                    //alert( JSON.stringify( res ) );
+                    if ( !res.username ) { 
+                        throw new Error( 'Τα στοιχεία εισόδου είναι λανθασμένα.' ); 
+                    }
+                    onDone( dataFromDB( res ) );
+                } )
+                .catch( err => { 
+                    alert( err );
+                    onError();
+                } );
+            }
+
+            const dataToDB = parseSigninToDB( data );
+            const body = JSON.stringify( { data: dataToDB } );
+
+            const url = `/.netlify/functions/signin`;
+            const args = { method: 'POST', body };
+            const onDone = signinRequestDone;
+            const onError = signinRequestError;
+            const dataFromDB = parseSigninFromDB;
+            doFetch( url, args, onDone, onError, dataFromDB );
+
+        }
+        console.log( 'signin', signin )
+
+    } );
 
     return (
         <AuthList>
@@ -86,7 +163,7 @@ function Signin() {
                 <BlockLabel />
                 <BlockValue>
                     <button className="ok" onClick={onClickOk}>
-                        {isOnRequest
+                        {signin.uiux.process.isOnRequest
                             ? <Loader /> 
                             : <FontAwesomeIcon className="icon" icon={ faCheck } />}
                         <span>Είσοδος</span>

@@ -1,5 +1,6 @@
 import React, { createContext, useReducer, useEffect } from 'react';
 import { initState } from '../storage/schemas';
+import authReducer from '../storage/authReducer';
 import usersReducer from '../storage/usersReducer';
 import { datesReducer, entriesReducer } from '../storage/datesReducer';
 import genresReducer from '../storage/payments/genresReducer';
@@ -9,7 +10,10 @@ const STATEReducer = ( state, action ) => {
 
     switch ( action.namespace ) {
     
-        case 'users': {
+        case 'auth': {
+            return authReducer( state, action );
+
+        } case 'users': {
             return usersReducer( state, action );
 
         } case 'dates': {

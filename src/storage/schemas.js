@@ -1,5 +1,16 @@
+const initSignin = () => ( {
+    data: {
+        username: '',
+        token: '',
+    },
+    uiux: {
+        process: {},  // isOnRequest, isOnValidation, isOnValidationDone
+    }
+})
+
 const initState = {
     data: {
+        signin: initSignin(),
         users: [],
         dates: [],
         payments: {
@@ -119,4 +130,4 @@ const initPayments = {
     } )
 }
 
-export { initState, initUser, initDate, initEntry, initNotes, initPayments };
+export { initState, initSignin, initUser, initDate, initEntry, initNotes, initPayments };

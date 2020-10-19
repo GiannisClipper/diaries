@@ -20,6 +20,8 @@ exports.handler = async function( event, context, callback ) {
         } else if ( event.httpMethod === 'POST' ) {
             const body = JSON.parse( event.body )
             const data = body.data;
+            data.password = bcrypt.hashSync( data.password, bcrypt.genSaltSync( 8 ) );
+
             const result = await collection.insertOne( data );
             console.log( result );
             callback( null, responseOnSuccess( result ) );
@@ -28,11 +30,9 @@ exports.handler = async function( event, context, callback ) {
             const id = event.queryStringParameters[ 'id' ];
             const body = JSON.parse( event.body );
             const data = body.data;
-
             if ( data.password !== undefined ) {
-                data.password = !data.password ? data.password : bcrypt.hashSync( data.password, bcrypt.genSaltSync( 8 ) );
+                data.password = bcrypt.hashSync( data.password, bcrypt.genSaltSync( 8 ) );
             }
-            //Object.keys( data ).forEach( key => data[ key ] === undefined ? delete data[ key ] : null );
  
             const result = await collection.updateOne( { _id: ObjectId( id ) }, { $set: data } );
             console.log( result );
