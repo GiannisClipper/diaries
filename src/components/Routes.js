@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { STATEContext } from './STATEContext';
 import { REFContext } from './REFContext';
 import { realFetch, mockFetch } from '../helpers/customFetch';
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, Redirect, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { centeredness } from './libs/InitStyle';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -14,37 +14,37 @@ import Settings from './Settings';
 
 const GotoSignin = () => {
     return (
-        <a href="/signin"> 
+        <Link to="/signin"> 
             <FontAwesomeIcon icon={ faDoorOpen } className="icon" title="Είσοδος" />
-        </a>
+        </Link>
     )
 }
 const GotoSignout = () => {
     return (
-        <a href="/signout"> 
+        <Link to="/signout"> 
             <FontAwesomeIcon icon={ faDoorClosed } className="icon" title="Έξοδος" />
-        </a>
+        </Link>
     )
 }
 const GotoUsers = () => {
     return (
-        <a href="/users"> 
+        <Link to="/users"> 
             <FontAwesomeIcon icon={ faUser } className="icon" title="Χρήστες" />
-        </a>
+        </Link>
     )
 }
 const GotoDates = () => {
     return (
-        <a href="/dates"> 
+        <Link to="/dates"> 
             <FontAwesomeIcon icon={ faBookOpen } className="icon" title="Ημερολόγο" />
-        </a>
+        </Link>
     )
 }
 const GotoSettings = () => {
     return (
-        <a href="/settings"> 
+        <Link to="/settings"> 
             <FontAwesomeIcon icon={ faCog } className="icon" title="Ρυθμίσεις" />
-        </a>
+        </Link>
     )
 }
 const ScrollToCentralDate = () => {
