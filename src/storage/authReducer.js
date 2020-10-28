@@ -36,6 +36,13 @@ const authReducer = ( state, action ) => {
             localStorage.removeItem( 'token' );
             return { ...state, data: { ...state.data, signin } };
 
+        } case 'DO_SIGNOUT': {
+            const signin = state.data.signin;
+            signin.uiux.process = {};
+            signin.data = action.payload;
+            localStorage.removeItem( 'token' );
+            return { ...state, data: { ...state.data, signin } };
+
         } default: {
             throw new Error();
         }

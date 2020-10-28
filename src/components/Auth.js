@@ -19,9 +19,7 @@ const AuthList = styled( ListBox )`
 
 const namespace = 'auth';
 
-function Signin( props ) {
-
-    const { setToken } = props;
+function Signin() {
 
     const STATE = useContext( STATEContext );
 
@@ -128,10 +126,6 @@ function Signin( props ) {
             const onError = signinRequestError;
             const dataFromDB = parseSigninFromDB;
             doFetch( url, args, onDone, onError, dataFromDB );
-        } else {
-
-            setToken( localStorage.getItem( 'token' ) );
-
         }
 
     } );
@@ -178,10 +172,22 @@ function Signin( props ) {
     );
 }
     
-function Signout( props ) {
-    const { setToken } = props;
-    localStorage.removeItem( 'token' );
-    setToken( localStorage.getItem( 'token' ) );
+function Signout() {
+
+    const STATE = useContext( STATEContext );
+
+    const doSignout = () => {
+        STATE.dispatch( { 
+            namespace,
+            type: 'DO_SIGNOUT',
+            payload: {},
+        } );
+    }
+
+    useEffect( () => {
+        doSignout();
+    } );
+
     return <></>
 }
 

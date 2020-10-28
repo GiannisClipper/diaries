@@ -1,7 +1,7 @@
 const initSignin = () => ( {
     data: {
         username: '',
-        token: '',
+        token: localStorage.getItem( 'token' ),
     },
     uiux: {
         process: {},  // isOnRequest, isOnValidation, isOnValidationDone

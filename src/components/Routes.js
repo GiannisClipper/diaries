@@ -169,24 +169,26 @@ function AppLayout( props ) {
 
 function Routes() {
 
-    const [ token, setToken ] = useState( localStorage.getItem( 'token' ) );
+    const STATE = useContext( STATEContext );
+
+    const { signin } = STATE.state.data;
 
     return (
         <BrowserRouter>
-            {token
+            {signin.data.token
             ?
                 <Switch>
                     <Route exact path='/' render={() => (<AppLayout layout="home" />)} />
                     <Route exact path='/dates' render={() => (<AppLayout layout="dates" />)} />
                     <Route exact path='/users' render={() => (<AppLayout layout="users" />)} />
                     <Route exact path='/settings' render={() => (<AppLayout layout="settings" />)} />
-                    <Route exact path='/signout' render={() => (<AppLayout layout="signout" setToken={setToken} />)} />
+                    <Route exact path='/signout' render={() => (<AppLayout layout="signout" />)} />
                     <Route exact path='/signin' render={() => (<Redirect to={{ pathname: '/' }} />)} />
                     <Route render={() => (<AppLayout layout="404" />)} />
                 </Switch>
             :
                 <Switch>
-                    <Route exact path='/signin' render={() => (<AppLayout layout="signin" setToken={setToken} />)} />
+                    <Route exact path='/signin' render={() => (<AppLayout layout="signin" />)} />
                     <Route render={() => (<Redirect to={{ pathname: '/signin' }} />)} />
                 </Switch>
             }
