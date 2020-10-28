@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect  } from 'react';
+import { Redirect } from 'react-router-dom';
 import { STATEContext } from './STATEContext';
 import { realFetch, mockFetch } from '../helpers/customFetch';
 import { parseSigninToDB, parseSigninFromDB } from '../storage/parsers';
@@ -18,7 +19,9 @@ const AuthList = styled( ListBox )`
 
 const namespace = 'auth';
 
-function Signin() {
+function Signin( props ) {
+
+    const { setToken } = props;
 
     const STATE = useContext( STATEContext );
 
@@ -79,7 +82,7 @@ function Signin() {
     }
 
     useEffect( () => {
-    
+
         if ( signin.uiux.process.isOnValidation ) {
 
             let errors = '';
@@ -125,13 +128,16 @@ function Signin() {
             const onError = signinRequestError;
             const dataFromDB = parseSigninFromDB;
             doFetch( url, args, onDone, onError, dataFromDB );
+        } else {
+
+            setToken( localStorage.getItem( 'token' ) );
 
         }
+
     } );
 
-    return (
+    return ( 
         <AuthList>
-
             <BlockBox>
                 <BlockLabel>
                     Όνομα χρήστη
@@ -168,13 +174,14 @@ function Signin() {
                     </button>
                 </BlockValue>
             </BlockBox>
-
         </AuthList>
     );
 }
     
-function Signout() {
+function Signout( props ) {
+    const { setToken } = props;
     localStorage.removeItem( 'token' );
+    setToken( localStorage.getItem( 'token' ) );
     return <></>
 }
 

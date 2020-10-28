@@ -1,4 +1,5 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
+import { STATEContext } from './STATEContext';
 import { REFContext } from './REFContext';
 import { realFetch, mockFetch } from '../helpers/customFetch';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
@@ -106,7 +107,7 @@ function Error404() {
 
 function AppLayout( props ) {
 
-    const { layout } = props;
+    const { layout, setToken } = props;
 
     return (
         <>
@@ -152,8 +153,8 @@ function AppLayout( props ) {
 
         <AppMain centeredness>
             { layout === 'home' ? <></>
-            : layout === 'signin' ? <Signin />
-            : layout === 'signout' ? <Signout />
+            : layout === 'signin' ? <Signin setToken={setToken} />
+            : layout === 'signout' ? <Signout setToken={setToken} />
             : layout === 'dates' ? <DateList />
             : layout === 'users' ? <UserList />
             : layout === 'settings' ? <Settings />
@@ -165,23 +166,24 @@ function AppLayout( props ) {
 
 function Routes() {
 
-    const token = localStorage.getItem( 'token' );
+    const [ token, setToken ] = useState( localStorage.getItem( 'token' ) );
 
     return (
         <BrowserRouter>
-            { token
+            {token
             ?
                 <Switch>
                     <Route exact path='/' render={() => (<AppLayout layout="home" />)} />
-                    <Route exact path='/signout' render={() => (<AppLayout layout="signout" />)} />
-                    <Route exact path='/users' render={() => (<AppLayout layout="users" />)} />
                     <Route exact path='/dates' render={() => (<AppLayout layout="dates" />)} />
+                    <Route exact path='/users' render={() => (<AppLayout layout="users" />)} />
                     <Route exact path='/settings' render={() => (<AppLayout layout="settings" />)} />
+                    <Route exact path='/signout' render={() => (<AppLayout layout="signout" setToken={setToken} />)} />
+                    <Route exact path='/signin' render={() => (<Redirect to={{ pathname: '/' }} />)} />
                     <Route render={() => (<AppLayout layout="404" />)} />
                 </Switch>
             :
                 <Switch>
-                    <Route exact path='/signin' render={() => (<AppLayout layout="signin" />)} />
+                    <Route exact path='/signin' render={() => (<AppLayout layout="signin" setToken={setToken} />)} />
                     <Route render={() => (<Redirect to={{ pathname: '/signin' }} />)} />
                 </Switch>
             }
