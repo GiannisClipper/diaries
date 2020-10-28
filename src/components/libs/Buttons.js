@@ -24,12 +24,15 @@ const Button = styled.button`
 
 const StyledOkButton = styled( Button )`
     margin-right: .5em;
-    background-color: ${props => props.isDelete ? 'red' : 'seagreen'};
+    background-color: ${props => props.isDelete 
+        ? props.theme.app.button.caution
+        : props.theme.app.button.ok
+    };
 `;
 
 const StyledCancelButton = styled( Button )`
     margin-left: .5em;
-    background-color: tomato;
+    background-color: ${props => props.theme.app.button.cancel};
 `;
 
 function OkButton( { label, onClick, isOnRequest, isDelete } ) {

@@ -15,7 +15,7 @@ import UserForm from './UserForm';
 
 const namespace = 'users';
 
-function UserList( { className } ) {
+function UserList() {
 
     const STATE = useContext( STATEContext );
 

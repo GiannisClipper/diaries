@@ -7,7 +7,6 @@ const StyledDateInfo = styled.div`
     display: inline-block;
     vertical-align: top;
     margin-bottom: .5em;
-    color: lightcoral;
     font-weight: 700;
     text-align: left;
     span {

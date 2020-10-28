@@ -14,7 +14,8 @@ const InputLabel = styled.span`
     display: inline-block;
     width: 6em;
     padding: .5em;
-    background-color: lightskyblue;
+    background-color: ${props => props.theme.page.background.front};
+    color: ${props => props.theme.app.font.normal};
 `;
 
 const InputValue = styled.span`
@@ -23,9 +24,10 @@ const InputValue = styled.span`
     width: calc( 100% - 6em );
     min-height: 100%;
     padding: .5em;
-    background-color: white;
+    background-color: ${props => props.theme.page.background.normal};
     input, textarea {
         width: inherit;
+        color: ${props => props.theme.app.font.normal};
     }
 `;
 

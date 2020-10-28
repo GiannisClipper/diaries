@@ -3,6 +3,9 @@ import styled from 'styled-components';
 const RowBox = styled.li`
     display: block;
     width: 100%;
+    .icon {
+        color: ${props => props.theme.app.background.normal};
+    }
 `;
 
 const RowValue = styled.span`
@@ -19,7 +22,6 @@ const RowMenu = styled.span`
     vertical-align: top;
     text-align: left;
     .icon {
-        color: lightcoral;
         width: 1.5em;
         height: 1.5em;
         padding: .25em;    

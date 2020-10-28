@@ -31,15 +31,14 @@ const InitStyle = createGlobalStyle`
     }
 
     input:-moz-read-only { /* For Firefox */
-        color: darkgray;
+        color: ${props => props.theme.app.font.disabled};
     }
     
     input:read-only {
-        color: darkgray;
+        color: ${props => props.theme.app.font.disabled};
     }
 
     body {
-        background: lightcoral;
         height: 100vh;
     }
 `;

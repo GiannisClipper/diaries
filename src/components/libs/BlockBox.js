@@ -13,8 +13,9 @@ const BlockLabel = styled.span`
     display: inline-block;
     width: 8em;
     padding: .5em;
-    background-color: lightsteelblue;
-    color: lightcoral;
+    background-color: ${props => props.theme.page.background.normal};
+    color: ${props => props.theme.app.background.back};
+
     font-weight: 700;
 `;
 
@@ -24,7 +25,7 @@ const BlockValue = styled.span`
     width: calc( 100% - 8em );
     min-height: 100%;
     padding: .5em;
-    background-color: lightsteelblue;
+    background-color: ${props => props.theme.page.background.normal};
 `;
 
 export default { BlockBox, BlockLabel, BlockValue };

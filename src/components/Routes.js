@@ -78,7 +78,8 @@ const AppHeader = styled.div`
 
     height: 8vh;
     line-height: 8vh;
-    background-color: lightsalmon;
+    background-color: ${props => props.theme.app.background.normal};
+    color: ${props => props.theme.app.font.emphasized};
 
     text-align: center;
 
@@ -92,12 +93,14 @@ const AppHeader = styled.div`
 
     .icon {
         font-size: 1.5em;
+        background-color: transparent;
     }
 `;
 
 const AppMain = styled.div`
     padding-top: 8vh;
     text-align: center;
+    background-color: ${props => props.theme.app.background.back};
     ${props => props.centeredness && centeredness}
 `;
 
