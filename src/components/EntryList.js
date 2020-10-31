@@ -36,16 +36,10 @@ function EntryList( { date, entries } ) {
     );
 }
 
-const RowBox = styled( StyledRow.RowBox )`
-    margin-top: .5em;
-    margin-bottom: .5em;
-    background-color: ${props => props.theme.page.background.front};
-`;
+const RowBox = StyledRow.RowBox;
 
 const RowValue = styled( StyledRow.RowValue )`
     width: calc( 100% - 2em );
-    color: ${props => props.theme.app.font.normal
-    };
 
     ${props => props.draggable && css`
         cursor: grab;

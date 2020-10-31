@@ -3,9 +3,10 @@ import styled from 'styled-components';
 const RowBox = styled.li`
     display: block;
     width: 100%;
-    .icon {
-        color: ${props => props.theme.app.background.normal};
-    }
+    margin-top: .5em;
+    margin-bottom: .5em;
+
+    ${props => props.theme.RowBox && props.theme.RowBox };
 `;
 
 const RowValue = styled.span`
@@ -14,6 +15,8 @@ const RowValue = styled.span`
     vertical-align: top;
     text-align: left;
     padding: .5em;
+
+    ${props => props.theme.RowValue && props.theme.RowValue };
 `;
 
 const RowMenu = styled.span`
@@ -26,6 +29,8 @@ const RowMenu = styled.span`
         height: 1.5em;
         padding: .25em;    
     }
+
+    ${props => props.theme.RowMenu && props.theme.RowMenu };
 `;
 
 export default { RowBox, RowValue, RowMenu };

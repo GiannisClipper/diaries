@@ -205,7 +205,7 @@ function Genre( { index, genres } ) {
     return (
         <RowBox key={index}>
             <RowValue title={`${genre.data.id}`}>
-                <span>{`${typeInfo}${genre.data.code}`}</span>
+                <span style={{ fontFamily: 'monospace' }} >{`${typeInfo} ${genre.data.code} `}</span>
                 <span>{genre.data.name}</span>
             </RowValue>
 

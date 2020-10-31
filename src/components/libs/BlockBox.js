@@ -6,6 +6,8 @@ const BlockBox = styled.div`
     width: 100%;
     margin-bottom: 1em;
     text-align: left;
+
+    ${props => props.theme.BlockBox && props.theme.BlockBox };
 `;
 
 const BlockLabel = styled.span`
@@ -13,10 +15,9 @@ const BlockLabel = styled.span`
     display: inline-block;
     width: 8em;
     padding: .5em;
-    background-color: ${props => props.theme.page.background.normal};
-    color: ${props => props.theme.app.background.back};
-
     font-weight: 700;
+
+    ${props => props.theme.BlockLabel && props.theme.BlockLabel };
 `;
 
 const BlockValue = styled.span`
@@ -25,7 +26,8 @@ const BlockValue = styled.span`
     width: calc( 100% - 8em );
     min-height: 100%;
     padding: .5em;
-    background-color: ${props => props.theme.page.background.normal};
+
+    ${props => props.theme.BlockValue && props.theme.BlockValue };
 `;
 
 export default { BlockBox, BlockLabel, BlockValue };

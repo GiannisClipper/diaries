@@ -31,11 +31,11 @@ const InitStyle = createGlobalStyle`
     }
 
     input:-moz-read-only { /* For Firefox */
-        color: ${props => props.theme.app.font.disabled};
+        color: ${props => props.theme.weakText};
     }
     
     input:read-only {
-        color: ${props => props.theme.app.font.disabled};
+        color: ${props => props.theme.weakText};
     }
 
     body {

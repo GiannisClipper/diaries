@@ -3,24 +3,25 @@ import styled from 'styled-components';
 import { ButtonBox, ButtonLabel, ButtonValue } from './ButtonBox';
 import { OkButton, CancelButton } from './Buttons';
 
-const StyledForm = styled.div`
+const Form = styled.div`
     width: 80%;
     padding-top: 1em;
     padding-bottom: 1em;
-    background-color: transparent;
+
+    ${props => props.theme.FormBox && props.theme.FormBox };
 `;
 
-function Form( { children } ) {
+function FormBox( { children } ) {
     return (
-        <StyledForm>
+        <Form>
             {children}
-        </StyledForm> 
+        </Form> 
     );
 }
 
 function OkForm( { okLabel, onClickOk, isOnRequest, isDelete, children } ) {
     return (
-        <Form>
+        <FormBox>
             {children}
 
             <ButtonBox>
@@ -30,13 +31,13 @@ function OkForm( { okLabel, onClickOk, isOnRequest, isDelete, children } ) {
                 </ButtonValue>
             </ButtonBox>
 
-        </Form>
+        </FormBox>
     );
 }
 
 function OkCancelForm( { okLabel, cancelLabel, onClickOk, onClickCancel, isOnRequest, isDelete, children } ) {
     return (
-        <Form>
+        <FormBox>
             {children}
 
             <ButtonBox>
@@ -47,7 +48,7 @@ function OkCancelForm( { okLabel, cancelLabel, onClickOk, onClickCancel, isOnReq
                 </ButtonValue>
             </ButtonBox>
 
-        </Form>
+        </FormBox>
     );
 }
 
@@ -82,4 +83,4 @@ function CRUDForm( { mode, onClickOk, onClickCancel, isOnRequest, children } ) {
     );
 }
 
-export { Form, OkForm, OkCancelForm, CRUDForm };
+export { FormBox, OkForm, OkCancelForm, CRUDForm };

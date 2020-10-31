@@ -1,7 +1,7 @@
 import React from 'react';
 import { dayNames } from '../helpers/dates';
 import { Modal } from './libs/Modal';
-import { CRUDForm } from './libs/Form';
+import { CRUDForm } from './libs/FormBox';
 import { InputBox, InputLabel, InputValue } from './libs/InputBox';
 
 function EntryForm( { 

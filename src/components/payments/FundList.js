@@ -195,8 +195,8 @@ function Fund( { index, funds } ) {
     return (
         <RowBox key={index}>
             <RowValue title={`${fund.data.id}`}>
-                <span className='code'>{fund.data.code}</span>
-                <span className='name'>{fund.data.name}</span>
+                <span style={{ fontFamily: 'monospace' }} >{`${fund.data.code} `}</span>
+                <span>{fund.data.name}</span>
             </RowValue>
 
             <RowMenu>

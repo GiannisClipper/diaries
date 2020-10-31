@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Modal } from '../libs/Modal';
-import { CRUDForm } from '../libs/Form';
+import { CRUDForm } from '../libs/FormBox';
 import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
 import { isBlank, isFound } from '../../helpers/validation';
 

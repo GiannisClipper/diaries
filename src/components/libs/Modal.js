@@ -17,7 +17,9 @@ const StyledModal = styled.div`
     width: 100%;
     height: 100%;
     background: rgba( 0, 0, 0, 0.5 );
+
     ${props => props.centeredness && centeredness}
+    ${props => props.theme.Modal && props.theme.Modal };
 `;
 
 function Modal( { centeredness, children } ) { 

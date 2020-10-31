@@ -1,8 +1,8 @@
 import React, { useContext, useRef } from 'react';
 import { REFContext } from './REFContext';
 import { Modal } from './libs/Modal';
+import { MenuBox } from './libs/MenuBox';
 import { MenuTool, EditTool, AddNoteTool, AddPaymentTool, DeleteTool, CutTool, CopyTool, PasteTool, CloseTool } from './libs/Tools';
-import styled from 'styled-components';
 
 function EntryMenuTool( { date, entry, inSequence, openMenu } ) {
 
@@ -21,13 +21,6 @@ function EntryMenuTool( { date, entry, inSequence, openMenu } ) {
     );
 }
 
-const StyledEntryMenu = styled.div`
-    position: fixed;
-    background: white;
-    padding-left: .5em;
-    padding-right: .5em;
-`;
-
 function EntryMenu( { date, entry, inSequence, children } ) {
 
     const REF = useContext( REFContext );
@@ -39,9 +32,9 @@ function EntryMenu( { date, entry, inSequence, children } ) {
 
     return (
         <Modal>
-            <StyledEntryMenu style={style}> 
+            <MenuBox style={style}> 
                 {children}
-            </StyledEntryMenu>
+            </MenuBox>
         </Modal>
     );
 }

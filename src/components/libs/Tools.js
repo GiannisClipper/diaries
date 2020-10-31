@@ -1,16 +1,7 @@
 import React from 'react';
-import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisH, faEdit, faFont, faEuroSign, faTrashAlt, faCut, faCamera, faClone, faTimes } from '@fortawesome/free-solid-svg-icons';
-
-const ToolBox = styled.span`
-    width: 2em;
-    display: inline-block;
-    vertical-align: top;
-    padding: .5em;
-    font-size: 1em;
-    cursor: pointer;
-`;
+import { ToolBox } from './ToolBox';
 
 function Tool( { icon, title, onClick, reference } ) {
     return (
