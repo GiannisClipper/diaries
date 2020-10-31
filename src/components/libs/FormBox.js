@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ButtonBox, ButtonLabel, ButtonValue } from './ButtonBox';
+import { ButtonBox, ButtonLabel, ButtonValue, ButtonValue1, ButtonValue2 } from './ButtonBox';
 import { OkButton, CancelButton } from './Buttons';
 
 const Form = styled.div`
@@ -43,8 +43,12 @@ function OkCancelForm( { okLabel, cancelLabel, onClickOk, onClickCancel, isOnReq
             <ButtonBox>
                 <ButtonLabel />
                 <ButtonValue>
-                    <OkButton label={okLabel} onClick={onClickOk} isOnRequest={isOnRequest} isDelete={isDelete} />
-                    <CancelButton label={cancelLabel} onClick={onClickCancel} />
+                    <ButtonValue1>
+                        <OkButton label={okLabel} onClick={onClickOk} isOnRequest={isOnRequest} isDelete={isDelete} />
+                    </ButtonValue1>
+                    <ButtonValue2>
+                        <CancelButton label={cancelLabel} onClick={onClickCancel} />
+                    </ButtonValue2>
                 </ButtonValue>
             </ButtonBox>
 

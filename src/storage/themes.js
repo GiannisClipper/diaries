@@ -96,12 +96,12 @@ const lightColors = {
 const light = createTheme( lightColors );
 
 const darkColors = {
-    appNormalBack: '#2E5872',
-    appStrongBack: '#4F758D',
+    appNormalBack: '#4F758D',
+    appStrongBack: '#2E5872',
 
-    weakBack: '#000000',
+    weakBack: '#111111',
     normalBack: '#1b1b1b', 
-    strongBack: '#2b2b2b',
+    strongBack: '#222222',
 
     weakText: '#555555',
     normalText: '#CFD6DB',

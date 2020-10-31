@@ -1,20 +1,19 @@
 import React, { useContext, useState, useEffect  } from 'react';
-import { Redirect } from 'react-router-dom';
 import { STATEContext } from './STATEContext';
 import { realFetch, mockFetch } from '../helpers/customFetch';
 import { parseSigninToDB, parseSigninFromDB } from '../storage/parsers';
 import { ListBox } from './libs/ListBox';
-import { BlockBox, BlockLabel, BlockValue } from './libs/BlockBox';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
-import { Loader } from './libs/Loader';
+import { InputBox, InputLabel, InputValue } from './libs/InputBox';
+import { ButtonBox, ButtonLabel, ButtonValue } from './libs/ButtonBox';
+import { OkButton } from './libs/Buttons';
 import { isBlank } from '../helpers/validation';
 import styled from 'styled-components';
 
 const AuthList = styled( ListBox )`
     width: 30em;
     height: 100%;
-    border: 1px dotted red;
+    padding: 1em;
+    ${props => props.theme.AppHeader && props.theme.AppHeader };
 `;
 
 const namespace = 'auth';
@@ -132,42 +131,41 @@ function Signin() {
 
     return ( 
         <AuthList>
-            <BlockBox>
-                <BlockLabel>
-                    Όνομα χρήστη
-                </BlockLabel>
-                <BlockValue>
+            <InputBox>
+                <InputLabel>
+                    Όνομα
+                </InputLabel>
+                <InputValue>
                     <input
                         value={data.username}
                         onChange={event => setData( { ...data, username: event.target.value } )}
                     />
-                </BlockValue>
-            </BlockBox>
+                </InputValue>
+            </InputBox>
 
-            <BlockBox>
-                <BlockLabel>
-                    Κωδικός εισόδου
-                </BlockLabel>
-                <BlockValue>
+            <InputBox>
+                <InputLabel>
+                    Κωδικός
+                </InputLabel>
+                <InputValue>
                     <input
                         type="password"
                         value={data.password}
                         onChange={event => setData( { ...data, password: event.target.value } )}
                     />
-                </BlockValue>
-            </BlockBox>
+                </InputValue>
+            </InputBox>
 
-            <BlockBox>
-                <BlockLabel />
-                <BlockValue>
-                    <button className="ok" onClick={onClickOk}>
-                        {signin.uiux.process.isOnRequest
-                            ? <Loader /> 
-                            : <FontAwesomeIcon className="icon" icon={ faCheck } />}
-                        <span>Είσοδος</span>
-                    </button>
-                </BlockValue>
-            </BlockBox>
+            <ButtonBox>
+                <ButtonLabel />
+                <ButtonValue>
+                    <OkButton 
+                        label='Είσοδος' 
+                        onClick={onClickOk} 
+                        isOnRequest={signin.uiux.process.isOnRequest}
+                    />
+                </ButtonValue>
+            </ButtonBox>
         </AuthList>
     );
 }

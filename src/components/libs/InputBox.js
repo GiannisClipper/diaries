@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 const InputBox = styled.div`
+    min-height: 2.5em;
     width: 80%;
     display: flex;
     margin: auto;
@@ -26,8 +27,13 @@ const InputValue = styled.span`
     width: calc( 100% - 6em );
     min-height: 100%;
     padding: .5em;
-    input, textarea {
-        width: inherit;
+    textarea, input {
+        width: 100%;
+        height: 100%;
+    }
+    input[type=checkbox] {
+        width: 0;
+        height: 0;
     }
 
     ${props => props.theme.InputValue && props.theme.InputValue };

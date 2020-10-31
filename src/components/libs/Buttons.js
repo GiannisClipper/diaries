@@ -6,15 +6,14 @@ import { Loader } from './Loader';
 
 const Button = styled.button`
     display: inline-block;
-    width: calc( 50% - .5em );
-    height: 2.5em;
+    height: 100%;
+    width: 100%;
     padding: .5em;
 
     .icon {
         padding: 0;
         width: 1em;
         height: 1em;
-        color: black;
     }
 
     span:last-child {
@@ -23,13 +22,11 @@ const Button = styled.button`
 `;
 
 const StyledOkButton = styled( Button )`
-    margin-right: .5em;
     ${props => props.theme.okButton && props.theme.okButton };
     ${props => props.isDelete && props.theme.cautionButton && props.theme.cautionButton };
 `;
 
 const StyledCancelButton = styled( Button )`
-    margin-left: .5em;
     ${props => props.theme.cancelButton && props.theme.cancelButton };
 `;
 
