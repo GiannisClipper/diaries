@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { STATEContext } from './STATEContext';
 import { REFContext } from './REFContext';
 import { realFetch, mockFetch } from '../helpers/customFetch';
 import { Link } from 'react-router-dom';
@@ -110,12 +111,13 @@ function Error404() {
     return <>Error 404. Page not found.</>
 }
 
-function AppBox( props ) {
+function AppBox( { page } ) {
 
-    const { page } = props;
+    const STATE = useContext( STATEContext );
+    const theme = STATE.state.data.settings.data.theme;
 
     return (
-        <ThemeProvider theme={dark}>
+        <ThemeProvider theme={theme === 'dark' ? dark : light}>
             <InitStyle />
 
             <AppHeader>

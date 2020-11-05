@@ -1,40 +1,32 @@
+import { ObjectId } from 'mongodb';
+import { verifyToken } from './common/token';
 import { connectDB } from './common/connectDB';
-import { createToken } from './common/token';
 import { responseOnSuccess, responseOnError } from './common/responses';
-const bcrypt = require( 'bcryptjs' );
 
 exports.handler = async function( event, context, callback ) {
     // Allows to freeze open connections to a database
     context.callbackWaitsForEmptyEventLoop = false;
 
     try {
+        let token = event.headers.authorization;
+        const payload = verifyToken( token );
+        if ( payload.error ) {
+            throw new Error( `No authorization (${payload.error}).` );
+        }
+        
         const [ client ] = await connectDB();
         const db = client.db( 'diaries' );
         const collection = db.collection( 'users' );
 
-        if ( event.httpMethod === 'POST' ) {
+        if ( event.httpMethod === 'PUT' ) {
+            const id = payload.user_id;
             const body = JSON.parse( event.body );
             const data = body.data;
  
-            let result = await collection.findOne( { username: data.username } );
-
-            if ( !result || !bcrypt.compareSync( data.password, result.password ) ) {
-                result = {};
-            } else {
-                const payload = {
-                    user_id: result._id,
-                }
-                result = { 
-                    token: createToken( payload ),
-                    username: result.username,
-                    theme: result.theme,
-                    centralDate: result.centralDate,
-                };
-            }
-
+            const result = await collection.updateOne( { _id: ObjectId( id ) }, { $set: data } );
             console.log( result );
             callback( null, responseOnSuccess( result ) );
-
+    
         } else {
             throw new Error( `${event.httpMethod} method not supported.` );
         }

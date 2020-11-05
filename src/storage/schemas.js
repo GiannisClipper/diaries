@@ -1,16 +1,26 @@
+import { parseSigninFromDB, parseSettingsFromDB } from './parsers';
+
 const initSignin = () => ( {
-    data: {
-        username: '',
-        token: localStorage.getItem( 'token' ),
-    },
+    data: parseSigninFromDB( JSON.parse( localStorage.getItem( 'signin' ) || '{}' ) ),
     uiux: {
         process: {},  // isOnRequest, isOnValidation, isOnValidationDone
     }
-})
+} )
+
+const initSettings = () => ( {
+    data: parseSettingsFromDB( JSON.parse( localStorage.getItem( 'settings' ) || '{}' ) ),
+    uiux: {
+        form: {},  // isOpen
+        mode: {},  // isUpdate
+        process: {},  // isOnRequest, isOnValidation, isOnValidationDone
+        status: {},  // isSuspended
+    }
+} );
 
 const initState = {
     data: {
         signin: initSignin(),
+        settings: initSettings(),
         users: [],
         dates: [],
         payments: {
@@ -130,4 +140,4 @@ const initPayments = {
     } )
 }
 
-export { initState, initSignin, initUser, initDate, initEntry, initNotes, initPayments };
+export { initState, initSignin, initSettings, initUser, initDate, initEntry, initNotes, initPayments };

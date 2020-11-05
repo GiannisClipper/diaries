@@ -1,3 +1,5 @@
+import { parseSigninFromDB, parseSettingsFromDB } from './parsers';
+
 const authReducer = ( state, action ) => {
 
     switch ( action.type ) {
@@ -23,25 +25,29 @@ const authReducer = ( state, action ) => {
             return { ...state, data: { ...state.data, signin } };
 
         } case 'SIGNIN_REQUEST_DONE': {
-            const signin = state.data.signin;
+            const { signin, settings } = state.data;
             signin.uiux.process = {};
-            signin.data = action.payload;
-            localStorage.setItem( 'token', signin.data.token );
-            return { ...state, data: { ...state.data, signin } };
+            signin.data = parseSigninFromDB( action.payload );
+            settings.data = parseSettingsFromDB( action.payload );
+            localStorage.setItem( 'signin', JSON.stringify( signin.data ) );
+            localStorage.setItem( 'settings', JSON.stringify( settings.data ) );
+            return { ...state, data: { ...state.data, signin, settings } };
 
         } case 'SIGNIN_REQUEST_ERROR': {
-            const signin = state.data.signin;
+            const { signin, settings } = state.data;
             signin.uiux.process = {};
             signin.data = {};
-            localStorage.removeItem( 'token' );
-            return { ...state, data: { ...state.data, signin } };
+            settings.data = {};
+            localStorage.removeItem( 'signin' );
+            return { ...state, data: { ...state.data, signin, settings } };
 
         } case 'DO_SIGNOUT': {
-            const signin = state.data.signin;
+            const { signin, settings } = state.data;
             signin.uiux.process = {};
-            signin.data = action.payload;
-            localStorage.removeItem( 'token' );
-            return { ...state, data: { ...state.data, signin } };
+            signin.data = {};
+            settings.data = {};
+            localStorage.removeItem( 'signin' );
+            return { ...state, data: { ...state.data, signin, settings } };
 
         } default: {
             throw new Error();

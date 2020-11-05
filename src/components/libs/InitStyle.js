@@ -15,9 +15,10 @@ const InitStyle = createGlobalStyle`
         padding: 0;
         margin: 0;
 
-        border: 0px dotted lightseagreen;
+        border: 0px;
 
         background-color: inherit;
+        color: inherit;
         font-family: inherit;
         font-size: inherit;
     }

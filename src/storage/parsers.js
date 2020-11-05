@@ -1,5 +1,3 @@
-import { isBlank } from "../helpers/validation";
-
 const parseUserFromDB = ( data ) => ( {
     id: data._id,
     username: data.username,
@@ -29,6 +27,7 @@ const parseUserToDB = ( data ) => {
 
 const parseSigninFromDB = ( data ) => ( {
     token: data.token,
+    username: data.username,
 } )
 
 const parseSigninToDB = ( data ) => ( {
@@ -36,4 +35,14 @@ const parseSigninToDB = ( data ) => ( {
     password: data.password,
 } )
 
-export { parseUserFromDB, parseUserToDB, parseSigninFromDB, parseSigninToDB };
+const parseSettingsFromDB = ( data ) => ( {
+    theme: data.theme,
+    centralDate: data.centralDate,
+} )
+
+const parseSettingsToDB = ( data ) => ( {
+    theme: data.theme,
+    centralDate: data.centralDate,
+} )
+
+export { parseUserFromDB, parseUserToDB, parseSigninFromDB, parseSigninToDB, parseSettingsFromDB, parseSettingsToDB };

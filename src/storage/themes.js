@@ -11,7 +11,7 @@ const createTheme = colors => ( {
     AppBox: null,
     AppHeader: css`
         background-color: ${colors.appStrongBack};
-        color: ${colors.strongText};
+        color: ${colors.appNormalText};
     `,
     AppMain: css`
         background-color: ${colors.appNormalBack};
@@ -65,20 +65,34 @@ const createTheme = colors => ( {
     ButtonValue: css`
         background-color: transparent;
     `,
-    okButton: css`
-        background-color: ${colors.okButton};
+    OkButton: css`
+        background-color: ${colors.OkButtonBack};
+        color: ${colors.OkButtonText};
+        .icon { 
+            color: ${colors.OkButtonText}; 
+        }
     `,
-    cancelButton: css`
-        background-color: ${colors.cancelButton};
+    CancelButton: css`
+        background-color: ${colors.CancelButtonBack};
+        color: ${colors.CancelButtonText};
+        .icon { 
+            color: ${colors.CancelButtonText}; 
+        }
     `,
-    cautionButton: css`
-        background-color: ${colors.cautionButton};
+    CautionButton: css`
+        background-color: ${colors.CautionButtonBack};
+        color: ${colors.CautionButtonText};
+        .icon { 
+            color: ${colors.CautionButtonText}; 
+        }
     `,
 } );
 
 const lightColors = {
     appNormalBack: '#bb96ff',
     appStrongBack: '#a778ff',
+
+    appNormalText: '#382853',
 
     weakBack: '#ffffff',
     normalBack: '#f0f0f0', 
@@ -88,9 +102,13 @@ const lightColors = {
     normalText: '#483863',
     strongText: '#382853',    
 
-    okButton: '#25be46',
-    cancelButton: '#f5bc36',
-    cautionButton: '#ff5921',
+    OkButtonBack: '#25be46',
+    CancelButtonBack: '#f5bc36',
+    CautionButtonBack: '#ff5921',
+
+    OkButtonText: '#382853',
+    CancelButtonText: '#382853',
+    CautionButtonText: '#382853',
 };
 
 const light = createTheme( lightColors );
@@ -98,6 +116,8 @@ const light = createTheme( lightColors );
 const darkColors = {
     appNormalBack: '#4F758D',
     appStrongBack: '#2E5872',
+
+    appNormalText: '#010E17',
 
     weakBack: '#111111',
     normalBack: '#1b1b1b', 
@@ -107,9 +127,13 @@ const darkColors = {
     normalText: '#CFD6DB',
     strongText: '#010E17',    
 
-    okButton: '#25be46',
-    cancelButton: '#f5bc36',
-    cautionButton: '#ff5921',
+    OkButtonBack: '#25be46',
+    CancelButtonBack: '#f5bc36',
+    CautionButtonBack: '#ff5921',
+
+    OkButtonText: '#bb96ff',
+    CancelButtonText: '#bb96ff',
+    CautionButtonText: '#bb96ff',
 };
 
 const dark = createTheme( darkColors );

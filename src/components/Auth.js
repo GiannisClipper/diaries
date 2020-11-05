@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect  } from 'react';
 import { STATEContext } from './STATEContext';
 import { realFetch, mockFetch } from '../helpers/customFetch';
-import { parseSigninToDB, parseSigninFromDB } from '../storage/parsers';
+import { parseSigninToDB, parseSigninFromDB, parseSettingsFromDB } from '../storage/parsers';
 import { ListBox } from './libs/ListBox';
 import { InputBox, InputLabel, InputValue } from './libs/InputBox';
 import { ButtonBox, ButtonLabel, ButtonValue } from './libs/ButtonBox';
@@ -123,7 +123,7 @@ function Signin() {
             const args = { method: 'POST', body };
             const onDone = signinRequestDone;
             const onError = signinRequestError;
-            const dataFromDB = parseSigninFromDB;
+            const dataFromDB = data => ( { ...parseSigninFromDB( data ), ...parseSettingsFromDB( data ) } );
             doFetch( url, args, onDone, onError, dataFromDB );
         }
 

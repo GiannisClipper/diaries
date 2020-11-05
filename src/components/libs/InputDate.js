@@ -43,7 +43,7 @@ function InputDate( { className, value, onChange, readOnly } ) {
       const digits ='0123456789';
 
       const parts = [ '' ];
-      for ( x of value ) {
+      for ( const x of value ) {
         if ( digits.includes( x ) ) {
           parts[ parts.length - 1 ] += x;
         } else {
@@ -69,11 +69,12 @@ function InputDate( { className, value, onChange, readOnly } ) {
 
     return (
         <input
-            className={`InputEmail ${className}`}
+            className={`InputDate ${className}`}
             value={value}
             onChange={onChange}
             onBlur={_onBlur}
             readOnly={readOnly}
+            placeholder="ΗΗ-ΜΜ-ΕΕΕΕ"
         />
     )
 }

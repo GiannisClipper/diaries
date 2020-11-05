@@ -3,7 +3,7 @@ import { EditTool, DeleteTool } from './libs/Tools';
 
 function UserMenu( { openForm, mode } ) {
     return (
-        <div className='UserMenu'>
+        <div>
             <EditTool onClick={event => openForm( mode )} />
             {mode.isCreate
                 ? null

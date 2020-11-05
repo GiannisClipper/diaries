@@ -22,12 +22,12 @@ const Button = styled.button`
 `;
 
 const StyledOkButton = styled( Button )`
-    ${props => props.theme.okButton && props.theme.okButton };
-    ${props => props.isDelete && props.theme.cautionButton && props.theme.cautionButton };
+    ${props => props.theme.OkButton && props.theme.OkButton };
+    ${props => props.isDelete && props.theme.CautionButton && props.theme.CautionButton };
 `;
 
 const StyledCancelButton = styled( Button )`
-    ${props => props.theme.cancelButton && props.theme.cancelButton };
+    ${props => props.theme.CancelButton && props.theme.CancelButton };
 `;
 
 function OkButton( { label, onClick, isOnRequest, isDelete } ) {

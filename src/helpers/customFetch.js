@@ -2,7 +2,8 @@ const fetch = require( 'node-fetch' );
 
 const realFetch = async ( url, args ) => {
 
-    const token = localStorage.getItem( 'token' );
+    const signin = JSON.parse( localStorage.getItem( 'signin' ) || '{}' );
+    const { token } = signin;
 
     args.headers = { 
         'Content-Type': 'application/json; charset=utf-8',
