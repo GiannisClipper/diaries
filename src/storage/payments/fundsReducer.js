@@ -34,7 +34,7 @@ const fundsReducer = ( state, action ) => {
                 funds.push( initPayments.fund() );
                 funds[ funds.length - 1 ].data = parseFundFromDB( x );
             } );
-            funds.sort( ( x, y ) => x.data.code > y.data.code );
+            funds.sort( ( x, y ) => x.data.code > y.data.code ? 1 : -1 );
             funds.push( initPayments.fund() );
 
             payments = { ...payments, funds };

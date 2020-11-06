@@ -34,7 +34,7 @@ const genresReducer = ( state, action ) => {
                 genres.push( initPayments.genre() );
                 genres[ genres.length - 1 ].data = parseGenreFromDB( x );
             } );
-            genres.sort( ( x, y ) => x.data.code > y.data.code );
+            genres.sort( ( x, y ) => x.data.code > y.data.code ? 1 : -1 );
             genres.push( initPayments.genre() );
 
             payments = { ...payments, genres };
