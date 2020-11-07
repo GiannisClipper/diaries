@@ -1,24 +1,40 @@
 import React, { useRef, useState, useEffect } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 const Box = styled.span`
     position: relative;
 `;
 
-const List = styled.ul`
+const InputList = styled.ul`
     position: absolute;
     left: ${props => props.listPos.left}px;
     top: ${props => props.listPos.top}px;
     width: ${props => props.listPos.width}px;
     height: ${props => props.listPos.height}px;
     z-index: 999;
+    /*overflow-y: scroll;*/
+
+    ${props => props.theme.InputList && props.theme.InputList };
 `;
 
-const Item = styled.li`
-    ${props => props.index && css`
-        background: lightgoldenrodyellow;
-    `}
+const InputItem = styled.li`
+    ${props => props.theme.InputItem && props.theme.InputItem };
 `;
+
+const simplify = value => value.toUpperCase();
+
+const simplifyList = values => {
+    for ( let i = 0; i< values.length; i++ ) {
+        if ( i === 0 && typeof values[ i ] === 'object' ) {
+            return values;
+        }
+        values[ i ] = { 
+            accurate: values[ i ],
+            simplified: simplify( values[ i ] ),
+        }
+    }
+    return values;
+}
 
 function InputFromList( { className, allValues, value, onChange } ) {
 
@@ -28,7 +44,7 @@ function InputFromList( { className, allValues, value, onChange } ) {
 
     const listStatus = useRef( {} );
 
-    const [ match, setMatch ] = useState( { value, values: allValues, index: -1 } );
+    const [ match, setMatch ] = useState( { value, values: simplifyList( allValues ), index: -1 } );
 
     const _onFocus = event => {
         listStatus.current = { isOpen: true };
@@ -39,7 +55,7 @@ function InputFromList( { className, allValues, value, onChange } ) {
         const prevValue = match.value;
         const prevValues = match.values;
         let values = prevValue !== '' && value.includes( prevValue ) ? prevValues : allValues;
-        values = values.filter( x => x.includes( value ) );
+        values = values.filter( x => x.simplified.includes( simplify( value ) ) );
         let index = values.length > 0 ? 0 : -1;
         setMatch( { value, values, index } );
     }
@@ -47,7 +63,7 @@ function InputFromList( { className, allValues, value, onChange } ) {
     const _onMouseDown = value => {
         listStatus.current = {};
         const index = 0;
-        setMatch( { value, values: [ value ], index } );
+        setMatch( { value, values: simplifyList( [ value ] ), index } );
     }
 
     const _onKeyDown = event => {
@@ -66,8 +82,8 @@ function InputFromList( { className, allValues, value, onChange } ) {
 
             } else if ( event.keyCode === 13 ) {
                 listStatus.current = {};
-                value = index >= 0 ? values[ index ] : null;
-                values = value ? [ value ] : [];
+                value = index >= 0 ? values[ index ].accurate : null;
+                values = value ? simplifyList( [ value ] ) : [];
                 index = value ? 0 : -1;
                 setMatch( { value, values, index } );
             }
@@ -77,14 +93,13 @@ function InputFromList( { className, allValues, value, onChange } ) {
     const _onBlur = event => {
         listStatus.current = {};
         let { value, values, index } = match;
-        value = index >= 0 && value ? values[ index ] : '';
+        value = index >= 0 && value ? values[ index ].accurate : '';
         setMatch( { value, values, index } );
         onChange( { target: { value } } );  // This is an `InputFromList` attribute
     }
 
     useEffect( () => {
         let { left, width, height } = inputRef.current.getBoundingClientRect();
-        console.log( left, width, height )
         setListPos( { left: 0, top: height, width, height } );
     }, [] );
 
@@ -93,6 +108,7 @@ function InputFromList( { className, allValues, value, onChange } ) {
     return (
         <Box>
             <input ref={inputRef}
+                className={`InputFromList ${className}`}
                 value={match.value || ''}
                 onFocus={_onFocus}
                 onChange={_onChange}
@@ -101,13 +117,13 @@ function InputFromList( { className, allValues, value, onChange } ) {
             />
 
             {listStatus.current.isOpen
-                ? <List listPos={listPos}>
+                ? <InputList listPos={listPos}>
                     {match.values.map( value =>
                         ++_key === match.index
-                            ? <Item index key={_key} onMouseDown={() => _onMouseDown( value )}> {value} </Item>
-                            : <Item key={_key} onMouseDown={() => _onMouseDown( value )}> {value} </Item>
+                            ? <InputItem index key={_key} onMouseDown={() => _onMouseDown( value )}> {value.accurate} </InputItem>
+                            : <InputItem key={_key} onMouseDown={() => _onMouseDown( value )}> {value.accurate} </InputItem>
                     )}
-                </List>
+                </InputList>
                 : null
             }
         </Box>

@@ -58,6 +58,14 @@ const createTheme = colors => ( {
             color: ${colors.normalText};
         }
     `,
+    InputList: css`
+        background-color: ${colors.normalBack};
+    `,
+    InputItem: css`
+        ${props => props.index && css`
+            background-color: ${colors.strongBack};
+        `}
+    `,
     ButtonBox: null,
     ButtonLabel: css`
         background-color: transparent;
