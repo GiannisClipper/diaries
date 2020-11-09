@@ -7,10 +7,10 @@ const Box = styled.span`
 
 const InputList = styled.ul`
     position: fixed;
-    left: ${props => props.inputSpecs.left}px;
-    top: ${props => props.inputSpecs.top + props.inputSpecs.height}px;
-    width: ${props => props.inputSpecs.width}px;
-    height: 6em;
+    left: ${props => props.listBounds.left}px;
+    top: ${props => props.listBounds.top}px;
+    width: ${props => props.listBounds.width}px;
+    height: ${props => props.listBounds.height}px;
     overflow-y: auto;
     z-index: 999;
 
@@ -40,11 +40,15 @@ function InputFromList( { className, allValues, value, onChange } ) {
 
     const inputRef = useRef( null );
 
-    const [ inputSpecs, setInputSpecs ] = useState( {} );
+    const listRef = useRef( null );
+
+    const [ listBounds, setListBounds ] = useState( {} );
 
     const listStatus = useRef( {} );
 
     const [ match, setMatch ] = useState( { value, values: simplifyList( allValues ), index: -1 } );
+
+    const indexRef = useRef( null );
 
     const _onFocus = event => {
         listStatus.current = { isOpen: true };
@@ -100,8 +104,21 @@ function InputFromList( { className, allValues, value, onChange } ) {
 
     useEffect( () => {
         let { left, top, width, height } = inputRef.current.getBoundingClientRect();
-        setInputSpecs( { left, top, width, height } );
+        top = top + height;
+        height = parseFloat( getComputedStyle( inputRef.current ).fontSize ) * 5;
+        setListBounds( { left, top, width, height } );
     }, [] );
+
+    useEffect( () => {
+        if ( indexRef.current ) {
+            let { top, height } = indexRef.current.getBoundingClientRect();
+            if ( top < listBounds.top ) {
+                listRef.current.scrollTop += top - listBounds.top;
+            } else if ( top + height > listBounds.top + listBounds.height ) {
+                listRef.current.scrollTop += ( top + height ) - ( listBounds.top + listBounds.height );
+            }
+        }
+    }, [ indexRef.current ] );
 
     let _key = -1;
 
@@ -117,10 +134,10 @@ function InputFromList( { className, allValues, value, onChange } ) {
             />
 
             {listStatus.current.isOpen
-                ? <InputList inputSpecs={inputSpecs}>
+                ? <InputList ref={listRef} listBounds={listBounds}>
                     {match.values.map( value =>
                         ++_key === match.index
-                            ? <InputItem index key={_key} onMouseDown={() => _onMouseDown( value )}> {value.accurate} </InputItem>
+                            ? <InputItem index ref={indexRef} key={_key} onMouseDown={() => _onMouseDown( value )}> {value.accurate} </InputItem>
                             : <InputItem key={_key} onMouseDown={() => _onMouseDown( value )}> {value.accurate} </InputItem>
                     )}
                 </InputList>
