@@ -31,11 +31,15 @@ const InitStyle = createGlobalStyle`
         cursor: pointer;
     }
 
-    input:-moz-read-only { /* For Firefox */
+    *:focus {
+        outline: 1px dotted;
+    }
+
+    input:-moz-read-only, textarea:-moz-read-only { /* For Firefox */
         color: ${props => props.theme.weakText};
     }
     
-    input:read-only {
+    input:read-only, textarea:read-only {
         color: ${props => props.theme.weakText};
     }
 

@@ -60,6 +60,7 @@ const createTheme = colors => ( {
     `,
     InputList: css`
         background-color: ${colors.normalBack};
+        outline: 1px dotted;    
     `,
     InputItem: css`
         ${props => props.index && css`

@@ -6,13 +6,13 @@ const Box = styled.span`
 `;
 
 const InputList = styled.ul`
-    position: absolute;
-    left: ${props => props.listPos.left}px;
-    top: ${props => props.listPos.top}px;
-    width: ${props => props.listPos.width}px;
-    height: ${props => props.listPos.height}px;
+    position: fixed;
+    left: ${props => props.inputSpecs.left}px;
+    top: ${props => props.inputSpecs.top + props.inputSpecs.height}px;
+    width: ${props => props.inputSpecs.width}px;
+    height: 6em;
+    overflow-y: auto;
     z-index: 999;
-    /*overflow-y: scroll;*/
 
     ${props => props.theme.InputList && props.theme.InputList };
 `;
@@ -38,9 +38,9 @@ const simplifyList = values => {
 
 function InputFromList( { className, allValues, value, onChange } ) {
 
-    const [ listPos, setListPos ] = useState( {} );
-
     const inputRef = useRef( null );
+
+    const [ inputSpecs, setInputSpecs ] = useState( {} );
 
     const listStatus = useRef( {} );
 
@@ -99,8 +99,8 @@ function InputFromList( { className, allValues, value, onChange } ) {
     }
 
     useEffect( () => {
-        let { left, width, height } = inputRef.current.getBoundingClientRect();
-        setListPos( { left: 0, top: height, width, height } );
+        let { left, top, width, height } = inputRef.current.getBoundingClientRect();
+        setInputSpecs( { left, top, width, height } );
     }, [] );
 
     let _key = -1;
@@ -117,7 +117,7 @@ function InputFromList( { className, allValues, value, onChange } ) {
             />
 
             {listStatus.current.isOpen
-                ? <InputList listPos={listPos}>
+                ? <InputList inputSpecs={inputSpecs}>
                     {match.values.map( value =>
                         ++_key === match.index
                             ? <InputItem index key={_key} onMouseDown={() => _onMouseDown( value )}> {value.accurate} </InputItem>
