@@ -14,6 +14,7 @@ import Settings from './Settings';
 import { ThemeProvider } from 'styled-components';
 import { InitStyle } from './libs/InitStyle';
 import { light, dark } from '../storage/themes';
+import { heads } from '../storage/texts';
 
 const AppHeader = styled.div`
     position: fixed;
@@ -123,7 +124,7 @@ function AppBox( { page } ) {
             { page === 'signin' ?
             null :
             <AppHeader>
-                <span>Diaries by GiannisClipper</span>
+                <span>{heads.app}</span>
                 {/* <Dev /> */}
 
                 { page === 'signin' ? 

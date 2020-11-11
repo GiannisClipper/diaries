@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Modal } from '../libs/Modal';
 import { CRUDForm } from '../libs/FormBox';
+import { heads } from '../../storage/texts';
 import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
 import { InputCheck } from '../libs/InputCheck';
 import { isBlank, isFound } from '../../helpers/validation';
@@ -46,6 +47,7 @@ function GenreForm( { genres, index, closeForm, doValidation, validationDone, va
     return (
         <Modal onClick={onClickCancel} centeredness>
             <CRUDForm
+                headLabel={heads.payment_genres}
                 mode={genre.uiux.mode}
                 onClickOk={onClickOk}
                 onClickCancel={onClickCancel}

@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect  } from 'react';
 import { STATEContext } from './STATEContext';
 import { realFetch, mockFetch } from '../helpers/customFetch';
 import { parseSigninToDB, parseSigninFromDB, parseSettingsFromDB } from '../storage/parsers';
+import { heads } from '../storage/texts';
 import { ListBox } from './libs/ListBox';
 import { HeadBox } from './libs/HeadBox';
 import { InputBox, InputLabel, InputValue } from './libs/InputBox';
@@ -134,7 +135,7 @@ function Signin() {
     return ( 
         <AuthList>
             <HeadBox>
-                <span>Diaries by GiannisClipper</span>
+                {heads.app}
             </HeadBox>
             <InputBox>
                 <InputLabel>

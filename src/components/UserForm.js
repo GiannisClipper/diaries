@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Modal } from './libs/Modal';
 import { CRUDForm } from './libs/FormBox';
+import { heads } from '../storage/texts';
 import { InputBox, InputLabel, InputValue } from './libs/InputBox';
 import { InputEmail } from './libs/InputEmail';
 import { InputCheck } from './libs/InputCheck';
@@ -49,6 +50,7 @@ function UserForm( { users, index, closeForm, doValidation, validationDone, vali
     return (
         <Modal onClick={onClickCancel} centeredness>
             <CRUDForm
+                headLabel={heads.users}
                 mode={user.uiux.mode}
                 onClickOk={onClickOk}
                 onClickCancel={onClickCancel}

@@ -6,6 +6,7 @@ import { InputNumber } from '../libs/InputNumber';
 import { InputFromList } from '../libs/InputFromList';
 import { isBlank } from '../../helpers/validation';
 import { getFromList } from '../../storage/payments/parsers';
+import { heads } from '../../storage/texts';
 
 function PaymentForm( { date, entry, inSequence, closeForm, doValidation, validationDone, validationError, doRequest } ) {
 
@@ -69,6 +70,7 @@ function PaymentForm( { date, entry, inSequence, closeForm, doValidation, valida
 
     return (
         <EntryForm
+            headLabel={heads.payments}
             date={date}
             entry={entry}
             inSequence={inSequence}

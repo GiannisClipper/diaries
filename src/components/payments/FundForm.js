@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Modal } from '../libs/Modal';
 import { CRUDForm } from '../libs/FormBox';
+import { heads } from '../../storage/texts';
 import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
 import { isBlank, isFound } from '../../helpers/validation';
 
@@ -45,6 +46,7 @@ function FundForm( { funds, index, closeForm, doValidation, validationDone, vali
     return (
         <Modal onClick={onClickCancel} centeredness>
             <CRUDForm
+                headLabel={heads.payment_funds}
                 mode={fund.uiux.mode}
                 onClickOk={onClickOk}
                 onClickCancel={onClickCancel}

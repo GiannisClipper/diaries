@@ -3,6 +3,7 @@ import { STATEContext } from './STATEContext';
 import { REFContext } from './REFContext';
 import { realFetch, mockFetch } from '../helpers/customFetch';
 import { parseSettingsToDB } from '../storage/parsers';
+import { heads } from '../storage/texts';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBan } from '@fortawesome/free-solid-svg-icons';
 import { Loader } from './libs/Loader';

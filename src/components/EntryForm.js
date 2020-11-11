@@ -5,6 +5,7 @@ import { CRUDForm } from './libs/FormBox';
 import { InputBox, InputLabel, InputValue } from './libs/InputBox';
 
 function EntryForm( { 
+        headLabel,
         date, 
         entry, 
         inSequence, 
@@ -35,6 +36,7 @@ function EntryForm( {
     return (
         <Modal onClick={onClickCancel} centeredness>
             <CRUDForm
+                headLabel={headLabel}
                 mode={entry.uiux.mode}
                 onClickOk={onClickOk}
                 onClickCancel={onClickCancel}

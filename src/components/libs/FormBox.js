@@ -1,28 +1,35 @@
 import React from 'react';
 import styled from 'styled-components';
+import { HeadBox } from './HeadBox';
 import { ButtonBox, ButtonLabel, ButtonValue, ButtonValue1, ButtonValue2 } from './ButtonBox';
 import { OkButton, CancelButton } from './Buttons';
 
 const Form = styled.div`
     width: 80%;
-    padding-top: 1em;
+    padding-top: 0em;
     padding-bottom: 1em;
     overflow: auto;
 
     ${props => props.theme.FormBox && props.theme.FormBox };
 `;
 
-function FormBox( { children } ) {
+function FormBox( { headLabel, children } ) {
+
+    headLabel = headLabel || '';
+
     return (
         <Form onClick={event => event.stopPropagation()}>
+            <HeadBox>
+                {headLabel}
+            </HeadBox>
             {children}
         </Form> 
     );
 }
 
-function OkForm( { okLabel, onClickOk, isOnRequest, isDelete, children } ) {
+function OkForm( { headLabel, okLabel, onClickOk, isOnRequest, isDelete, children } ) {
     return (
-        <FormBox>
+        <FormBox headLabel={headLabel}>
             {children}
 
             <ButtonBox>
@@ -36,9 +43,9 @@ function OkForm( { okLabel, onClickOk, isOnRequest, isDelete, children } ) {
     );
 }
 
-function OkCancelForm( { okLabel, cancelLabel, onClickOk, onClickCancel, isOnRequest, isDelete, children } ) {
+function OkCancelForm( { headLabel, okLabel, cancelLabel, onClickOk, onClickCancel, isOnRequest, isDelete, children } ) {
     return (
-        <FormBox>
+        <FormBox headLabel={headLabel}>
             {children}
 
             <ButtonBox>
@@ -57,7 +64,7 @@ function OkCancelForm( { okLabel, cancelLabel, onClickOk, onClickCancel, isOnReq
     );
 }
 
-function CRUDForm( { mode, onClickOk, onClickCancel, isOnRequest, children } ) {
+function CRUDForm( { headLabel, mode, onClickOk, onClickCancel, isOnRequest, children } ) {
 
     let okLabel, cancelLabel;
 
@@ -76,6 +83,7 @@ function CRUDForm( { mode, onClickOk, onClickCancel, isOnRequest, children } ) {
 
     return (
         <OkCancelForm
+            headLabel={headLabel}
             okLabel={okLabel}
             cancelLabel={cancelLabel}
             onClickOk={onClickOk}

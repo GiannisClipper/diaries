@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import EntryForm from '../EntryForm';
 import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
 import { isBlank } from '../../helpers/validation';
+import { heads } from '../../storage/texts';
 
 function NoteForm( { date, entry, inSequence, closeForm, doValidation, validationDone, validationError, doRequest } ) {
 
@@ -29,6 +30,7 @@ function NoteForm( { date, entry, inSequence, closeForm, doValidation, validatio
 
     return (
         <EntryForm
+            headLabel={heads.notes}
             date={date}
             entry={entry}
             inSequence={inSequence}

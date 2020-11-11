@@ -4,6 +4,7 @@ import { BlockBox, BlockLabel, BlockValue } from './libs/BlockBox';
 import SettingsList from "./SettingsList";
 import GenreList from "./payments/GenreList";
 import FundList from "./payments/FundList";
+import { heads } from '../storage/texts';
 
 function Settings() {
 
@@ -12,7 +13,7 @@ function Settings() {
 
             <BlockBox>
                 <BlockLabel>
-                    Ρυθμίσεις
+                    {heads.settings}
                 </BlockLabel>
                 <BlockValue>
                     <SettingsList />
@@ -21,7 +22,7 @@ function Settings() {
 
             <BlockBox>
                 <BlockLabel>
-                    Κατηγορίες οικονομικών κινήσεων
+                    {heads.payment_genres}
                 </BlockLabel>
                 <BlockValue>
                     <GenreList />
@@ -30,7 +31,7 @@ function Settings() {
 
             <BlockBox>
                 <BlockLabel>
-                    Μέσα οικονομικών κινήσεων
+                    {heads.payment_funds}
                 </BlockLabel>
                 <BlockValue>
                     <FundList />

@@ -4,6 +4,7 @@ import { CRUDForm } from './libs/FormBox';
 import { InputBox, InputLabel, InputValue } from './libs/InputBox';
 import { InputDate } from './libs/InputDate';
 import { isBlank } from '../helpers/validation';
+import { heads } from '../storage/texts';
 
 function SettingsForm( { settings, closeForm, doValidation, validationDone, validationError, doRequest } ) {
     
@@ -43,6 +44,7 @@ function SettingsForm( { settings, closeForm, doValidation, validationDone, vali
     return (
         <Modal onClick={onClickCancel} centeredness>
             <CRUDForm
+                headLabel={heads.settings}
                 mode={settings.uiux.mode}
                 onClickOk={onClickOk}
                 onClickCancel={onClickCancel}
