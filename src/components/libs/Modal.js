@@ -22,9 +22,12 @@ const StyledModal = styled.div`
     ${props => props.theme.Modal && props.theme.Modal };
 `;
 
-function Modal( { centeredness, children } ) { 
+function Modal( { onClick, centeredness, children } ) { 
+
+    onClick = onClick || null;
+
     return (
-        <StyledModal centeredness={centeredness}>
+        <StyledModal onClick={onClick} centeredness={centeredness}>
             {children}
         </StyledModal> 
     )

@@ -4,7 +4,7 @@ import { Modal } from './libs/Modal';
 import { MenuBox } from './libs/MenuBox';
 import { MenuTool, EditTool, AddNoteTool, AddPaymentTool, DeleteTool, CutTool, CopyTool, PasteTool, CloseTool } from './libs/Tools';
 
-function EntryMenuTool( { date, entry, inSequence, openMenu } ) {
+function EntryMenuTool( { date, inSequence, openMenu } ) {
 
     const REF = useContext( REFContext );
 
@@ -21,7 +21,9 @@ function EntryMenuTool( { date, entry, inSequence, openMenu } ) {
     );
 }
 
-function EntryMenu( { date, entry, inSequence, children } ) {
+function EntryMenu( { onCloseMenu, children } ) {
+
+    onCloseMenu = onCloseMenu || null;
 
     const REF = useContext( REFContext );
 
@@ -31,7 +33,7 @@ function EntryMenu( { date, entry, inSequence, children } ) {
     const style = { top, left };
 
     return (
-        <Modal>
+        <Modal onClick={onCloseMenu}>
             <MenuBox style={style}> 
                 {children}
             </MenuBox>
@@ -41,14 +43,12 @@ function EntryMenu( { date, entry, inSequence, children } ) {
 
 function BlankEntryMenu( { date, entry, inSequence, openForm, closeMenu, doPaste } ) {
 
+    const onCloseMenu = event => closeMenu( event, date, inSequence );
+
     const REF = useContext( REFContext );
 
     return (
-        <EntryMenu
-            date={date}
-            entry={entry}
-            inSequence={inSequence}
-        > 
+        <EntryMenu onCloseMenu={onCloseMenu}>
             <AddNoteTool onClick={event => {
                 openForm( event, date, entry, inSequence, { isNote: true }, { isCreate: true } );
                 closeMenu( event, date, inSequence );
@@ -66,14 +66,14 @@ function BlankEntryMenu( { date, entry, inSequence, openForm, closeMenu, doPaste
                 }
             }} />
 
-            <CloseTool onClick={event => {
-                closeMenu( event, date, inSequence )
-            }} />
+            <CloseTool onClick={onCloseMenu} />
         </EntryMenu>
     );
 }
 
 function ExistsEntryMenu( { date, entry, inSequence, openForm, closeMenu, doCut, doCopy, doPaste } ) {
+
+    const onCloseMenu = event => closeMenu( event, date, inSequence );
 
     const REF = useContext( REFContext );
 
@@ -82,11 +82,7 @@ function ExistsEntryMenu( { date, entry, inSequence, openForm, closeMenu, doCut,
         : { isNote: true };
 
     return (
-        <EntryMenu 
-            date={date}
-            entry={entry}
-            inSequence={inSequence}
-        >
+        <EntryMenu onCloseMenu={onCloseMenu}>
             <EditTool onClick={event => {
                 openForm( event, date, entry, inSequence, type, { isUpdate: true } );
                 closeMenu( event, date, inSequence );
@@ -114,9 +110,7 @@ function ExistsEntryMenu( { date, entry, inSequence, openForm, closeMenu, doCut,
                 }
             }} />
 
-            <CloseTool onClick={event => {
-                closeMenu( event, date, inSequence )
-            }} />
+            <CloseTool onClick={onCloseMenu} />
         </EntryMenu>
     );
 }

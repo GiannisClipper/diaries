@@ -44,7 +44,7 @@ function GenreForm( { genres, index, closeForm, doValidation, validationDone, va
     } );
 
     return (
-        <Modal centeredness>
+        <Modal onClick={onClickCancel} centeredness>
             <CRUDForm
                 mode={genre.uiux.mode}
                 onClickOk={onClickOk}

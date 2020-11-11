@@ -47,7 +47,7 @@ function UserForm( { users, index, closeForm, doValidation, validationDone, vali
     } );
 
     return (
-        <Modal centeredness>
+        <Modal onClick={onClickCancel} centeredness>
             <CRUDForm
                 mode={user.uiux.mode}
                 onClickOk={onClickOk}

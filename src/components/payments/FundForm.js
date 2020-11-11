@@ -43,7 +43,7 @@ function FundForm( { funds, index, closeForm, doValidation, validationDone, vali
     } );
 
     return (
-        <Modal centeredness>
+        <Modal onClick={onClickCancel} centeredness>
             <CRUDForm
                 mode={fund.uiux.mode}
                 onClickOk={onClickOk}

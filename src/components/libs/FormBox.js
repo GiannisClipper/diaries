@@ -7,13 +7,14 @@ const Form = styled.div`
     width: 80%;
     padding-top: 1em;
     padding-bottom: 1em;
+    overflow: auto;
 
     ${props => props.theme.FormBox && props.theme.FormBox };
 `;
 
 function FormBox( { children } ) {
     return (
-        <Form>
+        <Form onClick={event => event.stopPropagation()}>
             {children}
         </Form> 
     );

@@ -41,7 +41,7 @@ function SettingsForm( { settings, closeForm, doValidation, validationDone, vali
     } );
 
     return (
-        <Modal centeredness>
+        <Modal onClick={onClickCancel} centeredness>
             <CRUDForm
                 mode={settings.uiux.mode}
                 onClickOk={onClickOk}
