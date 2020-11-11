@@ -12,12 +12,12 @@ const Button = styled.button`
 
     .icon {
         padding: 0;
-        width: 1em;
-        height: 1em;
+        width: 1.2em;
+        height: 1.2em;
     }
 
     span:last-child {
-        margin-left: .25em;
+        margin-left: .5em;
     }
 `;
 
@@ -30,7 +30,9 @@ const StyledCancelButton = styled( Button )`
     ${props => props.theme.CancelButton && props.theme.CancelButton };
 `;
 
-function OkButton( { label, onClick, isOnRequest, isDelete } ) {
+function OkButton( { icon, label, onClick, isOnRequest, isDelete } ) {
+
+    icon = icon || faCheck;
 
     label = label || 'ΟΚ';
 
@@ -38,19 +40,21 @@ function OkButton( { label, onClick, isOnRequest, isDelete } ) {
         <StyledOkButton onClick={onClick} isDelete={isDelete}>
             {isOnRequest
                 ? <Loader /> 
-                : <FontAwesomeIcon className="icon" icon={ faCheck } />}
+                : <FontAwesomeIcon className="icon" icon={icon} />}
             <span>{label}</span>
         </StyledOkButton>
     );
 }
 
-function CancelButton( { label, onClick } ) {
+function CancelButton( { icon, label, onClick } ) {
+
+    icon = icon || faTimes;
 
     label = label || 'ΑΚΥΡΟ';
 
     return (
         <StyledCancelButton onClick={onClick}>
-            <FontAwesomeIcon className="icon" icon={ faTimes } />
+            <FontAwesomeIcon className="icon" icon={icon} />
             <span>{label}</span>
         </StyledCancelButton>
     );

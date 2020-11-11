@@ -120,6 +120,8 @@ function AppBox( { page } ) {
         <ThemeProvider theme={theme === 'dark' ? dark : light}>
             <InitStyle />
 
+            { page === 'signin' ?
+            null :
             <AppHeader>
                 <span>Diaries by GiannisClipper</span>
                 {/* <Dev /> */}
@@ -159,7 +161,7 @@ function AppBox( { page } ) {
                     </>
                 }
             </AppHeader>
-
+            }
             <AppMain centeredness>
                 { page === 'home' ? <></>
                 : page === 'signin' ? <Signin />
@@ -169,7 +171,7 @@ function AppBox( { page } ) {
                 : page === 'settings' ? <Settings />
                 : <Error404 /> }
             </AppMain>
-        </ThemeProvider>
+       </ThemeProvider>
     );
 }
 

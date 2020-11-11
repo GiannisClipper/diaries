@@ -3,9 +3,11 @@ import { STATEContext } from './STATEContext';
 import { realFetch, mockFetch } from '../helpers/customFetch';
 import { parseSigninToDB, parseSigninFromDB, parseSettingsFromDB } from '../storage/parsers';
 import { ListBox } from './libs/ListBox';
+import { HeadBox } from './libs/HeadBox';
 import { InputBox, InputLabel, InputValue } from './libs/InputBox';
 import { ButtonBox, ButtonLabel, ButtonValue } from './libs/ButtonBox';
 import { OkButton } from './libs/Buttons';
+import { faDoorOpen } from '@fortawesome/free-solid-svg-icons';
 import { isBlank } from '../helpers/validation';
 import styled from 'styled-components';
 
@@ -131,6 +133,9 @@ function Signin() {
 
     return ( 
         <AuthList>
+            <HeadBox>
+                <span>Diaries by GiannisClipper</span>
+            </HeadBox>
             <InputBox>
                 <InputLabel>
                     Όνομα
@@ -159,7 +164,8 @@ function Signin() {
             <ButtonBox>
                 <ButtonLabel />
                 <ButtonValue>
-                    <OkButton 
+                    <OkButton
+                        icon={faDoorOpen}
                         label='Είσοδος' 
                         onClick={onClickOk} 
                         isOnRequest={signin.uiux.process.isOnRequest}
