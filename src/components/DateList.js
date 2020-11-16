@@ -69,6 +69,7 @@ function DateList() {
     const listRef = useRef( null );
     const contentRef = useRef( null );
     const centralRef = useRef( null );
+    const initScrollToCentralRef = useRef( null );
     const nextRef = useRef( null );
     const scrollTop = useRef( 0 );
     const scrollDirection = useRef( {} );
@@ -124,9 +125,12 @@ function DateList() {
 
     useEffect( () => {
         if ( init.dates && init.dates.isAfterRequest ) {
-            console.log( 'scrollToCentralDate' )
-            REF.current.scrollToCentralDate();
-
+            // auto scroll to central date only 1st time
+            if ( !initScrollToCentralRef.current ) { 
+                console.log( 'scrollToCentralDate' )
+                REF.current.scrollToCentralDate();
+                initScrollToCentralRef.current = true;
+            }
         } else if ( init.dates && ( init.dates.isDone || init.dates.isError ) ) {
             const list = listRef.current;
             const content = contentRef.current;
