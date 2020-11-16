@@ -42,7 +42,7 @@ const STATEContext = createContext();
 
 const STATEContextProvider = props => {
 
-    const [ state, dispatch ] = useReducer( STATEReducer, initState );
+    const [ state, dispatch ] = useReducer( STATEReducer, initState() );
 
     useEffect( () => {
         console.log( 'Has rendered. ', 'STATEContext.Provider' );

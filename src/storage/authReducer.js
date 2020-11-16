@@ -1,3 +1,4 @@
+import { initState } from '../storage/schemas';
 import { parseSigninFromDB, parseSettingsFromDB } from './parsers';
 
 const authReducer = ( state, action ) => {
@@ -25,29 +26,22 @@ const authReducer = ( state, action ) => {
             return { ...state, data: { ...state.data, signin } };
 
         } case 'SIGNIN_REQUEST_DONE': {
-            const { signin, settings } = state.data;
+            const initialState = initState();
+            const { signin, settings } = initialState.data; //state.data;
             signin.uiux.process = {};
             signin.data = parseSigninFromDB( action.payload );
             settings.data = parseSettingsFromDB( action.payload );
             localStorage.setItem( 'signin', JSON.stringify( signin.data ) );
             localStorage.setItem( 'settings', JSON.stringify( settings.data ) );
-            return { ...state, data: { ...state.data, signin, settings } };
+            return { ...initialState, data: { ...initialState.data, signin, settings } };
 
         } case 'SIGNIN_REQUEST_ERROR': {
-            const { signin, settings } = state.data;
-            signin.uiux.process = {};
-            signin.data = {};
-            settings.data = {};
             localStorage.removeItem( 'signin' );
-            return { ...state, data: { ...state.data, signin, settings } };
+            return { ...initState() };
 
         } case 'DO_SIGNOUT': {
-            const { signin, settings } = state.data;
-            signin.uiux.process = {};
-            signin.data = {};
-            settings.data = {};
             localStorage.removeItem( 'signin' );
-            return { ...state, data: { ...state.data, signin, settings } };
+            return { ...initState() };
 
         } default: {
             throw new Error();

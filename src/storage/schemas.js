@@ -17,7 +17,7 @@ const initSettings = () => ( {
     }
 } );
 
-const initState = {
+const initState = () => ( {
     data: {
         signin: initSignin(),
         settings: initSettings(),
@@ -38,7 +38,7 @@ const initState = {
             },
         }
     }
-};
+} );
 
 const initUser = () => ( {
     data: {
