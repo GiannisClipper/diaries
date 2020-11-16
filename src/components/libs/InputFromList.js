@@ -1,8 +1,15 @@
 import React, { useRef, useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 
 const Box = styled.span`
     position: relative;
+`;
+
+const InputIcon = styled.span`
+    width: 1em;
+    margin-left: -1em;
 `;
 
 const InputList = styled.ul`
@@ -133,12 +140,16 @@ function InputFromList( { className, allValues, value, onChange } ) {
                 onBlur={_onBlur}
             />
 
+            <InputIcon onClick={() => listStatus.current.isOpen || _onKeyDown( { keyCode: 40 } ) }>
+                <FontAwesomeIcon icon={faCaretDown} />
+            </InputIcon>
+
             {listStatus.current.isOpen
                 ? <InputList ref={listRef} listBounds={listBounds}>
                     {match.values.map( value =>
                         ++_key === match.index
-                            ? <InputItem index ref={indexRef} key={_key} onMouseDown={() => _onMouseDown( value )}> {value.accurate} </InputItem>
-                            : <InputItem key={_key} onMouseDown={() => _onMouseDown( value )}> {value.accurate} </InputItem>
+                            ? <InputItem index ref={indexRef} key={_key} onMouseDown={() => _onMouseDown( value.accurate )}> {value.accurate} </InputItem>
+                            : <InputItem key={_key} onMouseDown={() => _onMouseDown( value.accurate )}> {value.accurate} </InputItem>
                     )}
                 </InputList>
                 : null
