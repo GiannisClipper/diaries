@@ -36,10 +36,12 @@ const authReducer = ( state, action ) => {
             return { ...initialState, data: { ...initialState.data, signin, settings } };
 
         } case 'SIGNIN_REQUEST_ERROR': {
+            localStorage.removeItem( 'settings' );
             localStorage.removeItem( 'signin' );
             return { ...initState() };
 
         } case 'DO_SIGNOUT': {
+            localStorage.removeItem( 'settings' );
             localStorage.removeItem( 'signin' );
             return { ...initState() };
 

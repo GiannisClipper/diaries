@@ -11,11 +11,16 @@ function DateInit() {
 
     const { init } = STATE.state.uiux;
 
+    const settings = STATE.state.data.settings;
+
     const initializeList = () => {
         STATE.dispatch( { 
             namespace, 
             type: 'INITIALIZE_LIST',
-            payload: { num: 7 }
+            payload: { 
+                centralDate: settings.data.centralDate, 
+                num: 7
+            }
         } );
     }
 

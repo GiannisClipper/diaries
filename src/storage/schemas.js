@@ -1,14 +1,12 @@
-import { parseSigninFromDB, parseSettingsFromDB } from './parsers';
-
 const initSignin = () => ( {
-    data: parseSigninFromDB( JSON.parse( localStorage.getItem( 'signin' ) || '{}' ) ),
+    data: JSON.parse( localStorage.getItem( 'signin' ) || '{}' ),
     uiux: {
         process: {},  // isOnRequest, isOnValidation, isOnValidationDone
     }
 } )
 
 const initSettings = () => ( {
-    data: parseSettingsFromDB( JSON.parse( localStorage.getItem( 'settings' ) || '{}' ) ),
+    data: JSON.parse( localStorage.getItem( 'settings' ) || '{}' ),
     uiux: {
         form: {},  // isOpen
         mode: {},  // isUpdate

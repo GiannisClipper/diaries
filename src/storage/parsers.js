@@ -1,3 +1,5 @@
+import { reprToYYYMMDD, YYYMMDDToRepr } from '../helpers/dates.js'
+
 const parseUserFromDB = ( data ) => ( {
     id: data._id,
     username: data.username,
@@ -37,12 +39,12 @@ const parseSigninToDB = ( data ) => ( {
 
 const parseSettingsFromDB = ( data ) => ( {
     theme: data.theme,
-    centralDate: data.centralDate,
+    centralDate: YYYMMDDToRepr( data.centralDate ),
 } )
 
 const parseSettingsToDB = ( data ) => ( {
     theme: data.theme,
-    centralDate: data.centralDate,
+    centralDate: reprToYYYMMDD( data.centralDate ),
 } )
 
 export { parseUserFromDB, parseUserToDB, parseSigninFromDB, parseSigninToDB, parseSettingsFromDB, parseSettingsToDB };

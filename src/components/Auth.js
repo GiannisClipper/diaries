@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect  } from 'react';
 import { STATEContext } from './STATEContext';
 import { realFetch, mockFetch } from '../helpers/customFetch';
-import { parseSigninToDB, parseSigninFromDB, parseSettingsFromDB } from '../storage/parsers';
+import { parseSigninToDB } from '../storage/parsers';
 import { heads } from '../storage/texts';
 import { ListBox } from './libs/ListBox';
 import { HeadBox } from './libs/HeadBox';
@@ -46,7 +46,7 @@ function Signin() {
     }
 
     const validationError = payload => {
-        STATE.dispatch( { 
+        STATE.dispatch( {
             namespace,
             type: 'VALIDATION_ERROR',
             payload: payload,
@@ -111,7 +111,7 @@ function Signin() {
                     if ( !res.token ) {
                         throw new Error( 'Τα στοιχεία εισόδου είναι λανθασμένα.' ); 
                     }
-                    onDone( dataFromDB( res ) );
+                    onDone( res );
                 } )
                 .catch( err => { 
                     alert( err );
@@ -126,8 +126,7 @@ function Signin() {
             const args = { method: 'POST', body };
             const onDone = signinRequestDone;
             const onError = signinRequestError;
-            const dataFromDB = data => ( { ...parseSigninFromDB( data ), ...parseSettingsFromDB( data ) } );
-            doFetch( url, args, onDone, onError, dataFromDB );
+            doFetch( url, args, onDone, onError );
         }
 
     } );

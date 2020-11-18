@@ -59,6 +59,7 @@ const settingsReducer = ( state, action ) => {
             settings.uiux.mode = {};
             settings.uiux.form = {};
 
+            localStorage.setItem( 'settings', JSON.stringify( settings.data ) );
             return { ...state, data: { ...state.data, settings } };
 
         } case 'UPDATE_REQUEST_ERROR': {

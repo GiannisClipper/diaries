@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Modal } from './libs/Modal';
 import { CRUDForm } from './libs/FormBox';
 import { InputBox, InputLabel, InputValue } from './libs/InputBox';
+import { InputFromList } from './libs/InputFromList';
 import { InputDate } from './libs/InputDate';
 import { isBlank } from '../helpers/validation';
 import { heads } from '../storage/texts';
@@ -68,8 +69,9 @@ function SettingsForm( { settings, closeForm, doValidation, validationDone, vali
                         Επιλογή Χρωματισμού
                     </InputLabel>
                     <InputValue>
-                        <input
+                        <InputFromList
                             value={data.theme}
+                            allValues={[ 'light', 'dark' ]}
                             onChange={event => setData( { ...data, theme: event.target.value } )}
                         />
                     </InputValue>

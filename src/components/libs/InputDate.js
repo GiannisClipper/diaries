@@ -70,7 +70,7 @@ function InputDate( { className, value, onChange, readOnly } ) {
     return (
         <input
             className={`InputDate ${className}`}
-            value={value}
+            value={value !== null ? value : ''}
             onChange={onChange}
             onBlur={_onBlur}
             readOnly={readOnly}

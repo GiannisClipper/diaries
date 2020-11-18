@@ -1,5 +1,5 @@
 import { initDate, initEntry } from './schemas';
-import { daysBetween, shiftDate, dateToYYYYMMDD } from '../helpers/dates';
+import { daysBetween, shiftDate, dateToYYYYMMDD, YYYMMDDToDate, reprToYYYMMDD } from '../helpers/dates';
 import { initNotes, initPayments } from './schemas';
 import { parseNoteFromDB } from './notes/parsers';
 import { parsePaymentFromDB } from './payments/parsers';
@@ -26,14 +26,15 @@ const constructDate = () => {
 
 const datesReducer = ( state, action ) => {
 
-    const centralDate = new Date();
-    centralDate.setHours( 12 );
-    centralDate.setMinutes( 0 );
-    centralDate.setSeconds( 0 );
-    centralDate.setMilliseconds( 0 );
+    const calcInitDates = ( centralDate, num ) => {
+        console.log( centralDate, YYYMMDDToDate( reprToYYYMMDD( centralDate ) ) )
+        centralDate = YYYMMDDToDate( reprToYYYMMDD( centralDate ) ) || new Date();
+        centralDate.setHours( 12 );
+        centralDate.setMinutes( 0 );
+        centralDate.setSeconds( 0 );
+        centralDate.setMilliseconds( 0 );
 
-    const calcInitDates = ( date, num ) => {
-        let startDate = shiftDate( date, -parseInt( num / 2 ) );
+        let startDate = shiftDate( centralDate, -parseInt( num / 2 ) );
         let newDates = new Array( num ).fill( undefined );
         newDates = newDates.map( ( x, index ) => {
             const _ = initDate();
@@ -83,7 +84,7 @@ const datesReducer = ( state, action ) => {
         case 'INITIALIZE_LIST': {
 
             dates = [ ...state.data.dates ];
-            dates = calcInitDates( centralDate, action.payload.num );
+            dates = calcInitDates( action.payload.centralDate, action.payload.num );
             const { init } = state.uiux;
             init.dates = { 
                 isBeforeRequest: true, 
