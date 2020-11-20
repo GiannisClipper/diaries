@@ -16,6 +16,7 @@ function Routes() {
                 <Switch>
                     <Route exact path='/' render={() => (<AppBox page="home" />)} />
                     <Route exact path='/dates' render={() => (<AppBox page="dates" />)} />
+                    <Route exact path='/reports' render={() => (<AppBox page="reports" />)} />
                     <Route exact path='/users' render={() => (<AppBox page="users" />)} />
                     <Route exact path='/settings' render={() => (<AppBox page="settings" />)} />
                     <Route exact path='/signout' render={() => (<AppBox page="signout" />)} />

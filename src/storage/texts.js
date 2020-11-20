@@ -6,6 +6,7 @@ const heads = {
     payments: 'Εγγραφές πληρωμών',
     payment_genres: 'Κατηγορίες πληρωμών',
     payment_funds: 'Μέσα πληρωμών',
+    reports: 'Καταστάσεις',
 }
 
 export default { heads };

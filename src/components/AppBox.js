@@ -6,10 +6,11 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { centeredness } from './libs/InitStyle';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faBookOpen, faCog, faCompass, faDoorOpen, faDoorClosed } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faBookOpen, faCog, faCompass, faMap, faDoorOpen, faDoorClosed } from '@fortawesome/free-solid-svg-icons';
 import { Signin, Signout } from './Auth';
-import UserList from './UserList';
 import DateList from './DateList';
+//import ReportList from './ReportList';
+import UserList from './UserList';
 import Settings from './Settings';
 import { ThemeProvider } from 'styled-components';
 import { InitStyle } from './libs/InitStyle';
@@ -67,6 +68,13 @@ const LinkDates = () => {
     return (
         <Link to="/dates"> 
             <FontAwesomeIcon icon={ faBookOpen } className="icon" title="Ημερολόγο" />
+        </Link>
+    )
+}
+const LinkReports = () => {
+    return (
+        <Link to="/reports"> 
+            <FontAwesomeIcon icon={ faMap } className="icon" title="Καταστάσεις" />
         </Link>
     )
 }
@@ -135,6 +143,7 @@ function AppBox( { page } ) {
                     <>
                     <ScrollToCentralDate />
                     <LinkDates />
+                    <LinkReports />
                     <LinkUsers />
                     <LinkSettings />
                     <LinkSignout />
@@ -142,6 +151,7 @@ function AppBox( { page } ) {
                 : page === 'users' ?
                     <>
                     <LinkDates />
+                    <LinkReports />
                     <LinkUsers />
                     <LinkSettings />
                     <LinkSignout />
@@ -149,6 +159,7 @@ function AppBox( { page } ) {
                 : page === 'settings' ?
                     <>
                     <LinkDates />
+                    <LinkReports />
                     <LinkUsers />
                     <LinkSettings />
                     <LinkSignout />
@@ -156,6 +167,7 @@ function AppBox( { page } ) {
                 :
                     <>
                     <LinkDates />
+                    <LinkReports />
                     <LinkUsers />
                     <LinkSettings />
                     <LinkSignout />
@@ -168,6 +180,7 @@ function AppBox( { page } ) {
                 : page === 'signin' ? <Signin />
                 : page === 'signout' ? <Signout />
                 : page === 'dates' ? <DateList />
+                : page === 'reports' ? <></>//<ReportList />
                 : page === 'users' ? <UserList />
                 : page === 'settings' ? <Settings />
                 : <Error404 /> }
