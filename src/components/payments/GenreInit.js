@@ -13,14 +13,14 @@ function GenreInit() {
     const initializeList = () => {
         STATE.dispatch( { 
             namespace, 
-            type: 'INITIALIZE_LIST' 
+            type: 'RETRIEVE_ALL_REQUEST' 
         } );
     }
 
     const initializeListAfterRequest = () => {
         STATE.dispatch( { 
             namespace, 
-            type: 'INITIALIZE_LIST_AFTER_REQUEST' 
+            type: 'RETRIEVE_ALL_REQUEST_WAITING' 
         } );
     }
     

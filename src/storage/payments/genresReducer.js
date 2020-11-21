@@ -5,59 +5,7 @@ const genresReducer = ( state, action ) => {
 
     switch ( action.type ) {
 
-        case 'INITIALIZE_LIST': {
-            let payments = { ...state.data.payments };
-            let genres = [ ...payments.genres ];
-
-            genres = [ initPayments.genre() ];
-            genres[ 0 ].uiux.mode = { isRetrieveAll: true };
-            genres[ 0 ].uiux.process = { isOnRequest: true };
-
-            payments = { ...payments, genres };
-            const { init } = state.uiux;
-            init.payments.genres = { isBeforeRequest: true };
-
-            return { uiux: { ...state.uiux, init }, data: { ...state.data, payments } };
-
-        } case 'INITIALIZE_LIST_AFTER_REQUEST': {
-            const { init } = state.uiux;
-            init.payments.genres = { isAfterRequest: true };
-
-            return { uiux: { ...state.uiux, init }, data: state.data };
-
-        } case 'RETRIEVE_ALL_REQUEST_DONE': {
-            let payments = { ...state.data.payments };
-            const { dataFromDB } = action.payload;
-
-            const genres = [];
-            dataFromDB.forEach( x=> {
-                genres.push( initPayments.genre() );
-                genres[ genres.length - 1 ].data = parseGenreFromDB( x );
-            } );
-            genres.sort( ( x, y ) => x.data.code > y.data.code ? 1 : -1 );
-            genres.push( initPayments.genre() );
-
-            payments = { ...payments, genres };
-            const { init } = state.uiux;
-            init.payments.genres = { isDone: true };
-
-            return { uiux: { ...state.uiux, init }, data: { ...state.data, payments } };
-
-        } case 'RETRIEVE_ALL_REQUEST_ERROR': {
-            let payments = { ...state.data.payments };
-
-            const genres = [];
-            const genre = initPayments.genre();
-            genre.uiux.status = { isSuspended: true }
-            genres.push( genre );
-
-            payments = { ...payments, genres };
-            const { init } = state.uiux;
-            init.payments.genres = { isError: true };
-
-            return { uiux: { ...state.uiux, init }, data: { ...state.data, payments } };
-
-        } case 'OPEN_FORM': {
+        case 'OPEN_FORM': {
             let payments = { ...state.data.payments };
             let genres = [ ...payments.genres ];
             const { index, mode } = action.payload;
@@ -196,6 +144,58 @@ const genresReducer = ( state, action ) => {
 
             payments = { ...payments, genres };
             return { ...state, data: { ...state.data, payments } };
+
+        } case 'RETRIEVE_ALL_REQUEST': {
+            let payments = { ...state.data.payments };
+            let genres = [ ...payments.genres ];
+
+            genres = [ initPayments.genre() ];
+            genres[ 0 ].uiux.mode = { isRetrieveAll: true };
+            genres[ 0 ].uiux.process = { isOnRequest: true };
+
+            payments = { ...payments, genres };
+            const { init } = state.uiux;
+            init.payments.genres = { isOnRequest: true };
+
+            return { uiux: { ...state.uiux, init }, data: { ...state.data, payments } };
+
+        } case 'RETRIEVE_ALL_REQUEST_WAITING': {
+            const { init } = state.uiux;
+            init.payments.genres = { isWaiting: true };
+
+            return { uiux: { ...state.uiux, init }, data: state.data };
+
+        } case 'RETRIEVE_ALL_REQUEST_DONE': {
+            let payments = { ...state.data.payments };
+            const { dataFromDB } = action.payload;
+
+            const genres = [];
+            dataFromDB.forEach( x=> {
+                genres.push( initPayments.genre() );
+                genres[ genres.length - 1 ].data = parseGenreFromDB( x );
+            } );
+            genres.sort( ( x, y ) => x.data.code > y.data.code ? 1 : -1 );
+            genres.push( initPayments.genre() );
+
+            payments = { ...payments, genres };
+            const { init } = state.uiux;
+            init.payments.genres = { isDone: true };
+
+            return { uiux: { ...state.uiux, init }, data: { ...state.data, payments } };
+
+        } case 'RETRIEVE_ALL_REQUEST_ERROR': {
+            let payments = { ...state.data.payments };
+
+            const genres = [];
+            const genre = initPayments.genre();
+            genre.uiux.status = { isSuspended: true }
+            genres.push( genre );
+
+            payments = { ...payments, genres };
+            const { init } = state.uiux;
+            init.payments.genres = { isError: true };
+
+            return { uiux: { ...state.uiux, init }, data: { ...state.data, payments } };
 
         } default: {
             throw new Error();

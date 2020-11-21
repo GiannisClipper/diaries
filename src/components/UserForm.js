@@ -1,59 +1,41 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { Modal } from './libs/Modal';
-import { CRUDForm } from './libs/FormBox';
 import { heads } from '../storage/texts';
+import { CRUDContext, CRUDForm, InputValidations } from "./libs/CRUD";
 import { InputBox, InputLabel, InputValue } from './libs/InputBox';
 import { InputEmail } from './libs/InputEmail';
 import { InputCheck } from './libs/InputCheck';
 import { isBlank, isFound } from '../helpers/validation';
 
-function UserForm( { users, index, closeForm, doValidation, validationDone, validationError, doRequest } ) {
-    
+function UserForm( { users, index } ) {
+
     const user = users[ index ];
 
     const [ data, setData ] = useState( { ...user.data } );
-    //const changes = Object.keys( data ).filter( x => data[ x ] !== user.data[ x ] );
 
-    const onClickOk = event => {
-        user.uiux.mode.isCreate || user.uiux.mode.isUpdate
-            ? doValidation( index )
-            : doRequest( index )
+    const { closeForm } = useContext( CRUDContext );
+
+    const doValidate = () => {
+        let errors = '';
+        errors += isBlank( data.username ) ? 'Το Όνομα χρήστη δεν μπορεί να είναι κενό.\n' : '';
+        errors += !isBlank( data.username ) && isFound( users.map( x=> x.data.username), data.username, index ) ? 'Το Όνομα xρήστη υπάρχει ήδη.\n' : '';
+        errors += isBlank( data.password ) && user.uiux.mode.isCreate ? 'Ο Κωδικός εισόδου δεν μπορεί να είναι κενός.\n' : '';
+        errors += !isBlank( data.password ) && data.password !== data.password2 ? 'Διαφορά στην πληκτρολόγηση του Κωδικού εισόδου.\n' : '';
+        user.data = { ...data };
+        return errors
     }
 
-    const onClickCancel = closeForm;
-
-    useEffect( () => {
-    
-        if ( user.uiux.process.isOnValidation ) {
-
-            let errors = '';
-            errors += isBlank( data.username ) ? 'Το Όνομα χρήστη δεν μπορεί να είναι κενό.\n' : '';
-            errors += !isBlank( data.username ) && isFound( users.map( x=> x.data.username), data.username, index ) ? 'Το Όνομα xρήστη υπάρχει ήδη.\n' : '';
-            errors += isBlank( data.password ) && user.uiux.mode.isCreate ? 'Ο Κωδικός εισόδου δεν μπορεί να είναι κενός.\n' : '';
-            errors += !isBlank( data.password ) && data.password !== data.password2 ? 'Διαφορά στην πληκτρολόγηση του Κωδικού εισόδου.\n' : '';
-
-            user.data = { ...data };
-
-            if ( errors === '' ) {
-                validationDone( index )
-
-            } else {
-                alert( errors );
-                validationError( index );
-            }
-
-        } else if ( user.uiux.process.isOnValidationDone ) {
-            doRequest( index );
-        }
-    } );
-
     return (
-        <Modal onClick={onClickCancel} centeredness>
+        <Modal onClick={closeForm} centeredness>
+
+            <InputValidations
+                process={user.uiux.process}
+                doValidate={doValidate}
+            />
+
             <CRUDForm
                 headLabel={heads.users}
                 mode={user.uiux.mode}
-                onClickOk={onClickOk}
-                onClickCancel={onClickCancel}
                 isOnRequest={user.uiux.process.isOnRequest}
             >
                 <InputBox>

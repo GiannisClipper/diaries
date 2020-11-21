@@ -1,22 +1,17 @@
 import React, { useContext, useEffect } from 'react';
 import { STATEContext } from '../STATEContext';
-import { REFContext } from '../REFContext';
-import { realFetch, mockFetch } from '../../helpers/customFetch';
-import { parseGenreToDB } from '../../storage/payments/parsers';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBan } from '@fortawesome/free-solid-svg-icons';
-import { Loader } from '../libs/Loader';
+
 import { RowBox, RowValue, RowMenu } from '../libs/RowBox';
-import GenreInit from './GenreInit';
-import GenreMenu from './GenreMenu';
+
+import { CRUDContextProvider, CRUDMenu, CreateRequest, UpdateRequest, DeleteRequest, RetrieveAllRequest } from '../libs/CRUD';
 import GenreForm from './GenreForm';
+import { parseGenreToDB } from '../../storage/payments/parsers';
 
 const namespace = 'payments.genres';
 
 function GenreList() {
 
     const STATE = useContext( STATEContext );
-
     const { genres } = STATE.state.data.payments;
 
     useEffect( () => {
@@ -35,164 +30,34 @@ function GenreList() {
     );
 }
 
-function Genre( { index, genres } ) {
+function GenreInit() {
 
-    const STATE = useContext( STATEContext );
-    const REF = useContext( REFContext );
+    const STATE = useContext( STATEContext )
+    const { dispatch } = STATE;
+    const { init } = STATE.state.uiux;
+
+    return (
+        <CRUDContextProvider 
+            dispatch={dispatch} 
+            namespace={namespace} 
+        >
+            <RetrieveAllRequest 
+                process={init.payments.genres}
+                url={`/.netlify/functions/payments-genre`}
+            />
+        </CRUDContextProvider>
+    );
+}
+
+function Genre( { index, genres } ) {
 
     const genre = genres[ index ];
 
-    const openForm = mode => {
-        REF.current.saved = { genre };
+    const STATE = useContext( STATEContext )
+    const { dispatch } = STATE;
+    const payload = { index };
 
-        STATE.dispatch( { 
-            namespace,
-            type: 'OPEN_FORM',
-            payload: { index, mode },
-        } );
-    }
-
-    const closeForm = () => {
-        STATE.dispatch( { 
-            namespace,
-            type: 'CLOSE_FORM',
-            payload: { index },
-        } );
-    }
-
-    const doValidation = index => {
-        STATE.dispatch( { 
-            namespace,
-            type: 'DO_VALIDATION',
-            payload: { index },
-        } );
-    }
-
-    const validationDone = index => {
-        STATE.dispatch( { 
-            namespace,
-            type: 'VALIDATION_DONE',
-            payload: { index },
-        } );
-    }
-
-    const validationError = index => {
-        STATE.dispatch( { 
-            namespace,
-            type: 'VALIDATION_ERROR',
-            payload: { index },
-        } );
-    }
-
-    const doRequest = index => {
-        STATE.dispatch( { 
-            namespace,
-            type: 'DO_REQUEST',
-            payload: { index },
-        } );
-    }
-
-    const createRequestDone = dataFromDB => {
-        STATE.dispatch( { 
-            namespace,
-            type: 'CREATE_REQUEST_DONE',
-            payload: { index, dataFromDB },
-        } );
-    }
-
-    const createRequestError = () => {
-        STATE.dispatch( { 
-            namespace,
-            type: 'CREATE_REQUEST_ERROR',
-            payload: { index },
-        } );
-    }
-
-    const updateRequestDone = dataFromDB => {
-        STATE.dispatch( {
-            namespace, 
-            type: 'UPDATE_REQUEST_DONE',
-            payload: { index, dataFromDB },
-        } );
-    }
-
-    const updateRequestError = () => {
-        STATE.dispatch( { 
-            namespace,
-            type: 'UPDATE_REQUEST_ERROR',
-            payload: { index, saved: REF.current.saved },
-        } );
-    }
-
-    const deleteRequestDone = dataFromDB => {
-        STATE.dispatch( { 
-            namespace,
-            type: 'DELETE_REQUEST_DONE',
-            payload: { index, dataFromDB },
-        } );
-    }
-
-    const deleteRequestError = () => {
-        STATE.dispatch( { 
-            namespace,
-            type: 'DELETE_REQUEST_ERROR',
-            payload: {},
-        } );
-    }
-
-    useEffect( () => {
-        if ( genre.uiux.process.isOnRequest ) {
-
-            const doFetch = ( url, args, onDone, onError, dataFromDB ) => {
-                console.log( 'Requesting... ', genre.uiux.mode, genre.data.id )
-
-                realFetch( url, args )
-                .then( res => {
-                    alert( JSON.stringify( res ) );
-                    onDone( dataFromDB( res ) );
-                } )
-                .catch( err => { 
-                    alert( err );
-                    onError();
-                } );
-            }
-
-            const dataToDB = parseGenreToDB( genre.data );
-            const body = JSON.stringify( { data: dataToDB } );
-        
-            if ( genre.uiux.mode.isCreate ) {
-                const url = `/.netlify/functions/payments-genre`;
-                const args = { method: 'POST', body };
-                const onDone = createRequestDone;
-                const onError = createRequestError;
-                const idInResponse = res => res.insertedId;
-                const dataFromDB = res => ( { ...dataToDB, _id: idInResponse( res ) } );
-                doFetch( url, args, onDone, onError, dataFromDB );
-
-            } else if ( genre.uiux.mode.isUpdate ) {
-                const url = `/.netlify/functions/payments-genre?id=${genre.data.id}`;
-                const args = { method: 'PUT', body };
-                const onDone = updateRequestDone;
-                const onError = updateRequestError;
-                const idInResponse = res => genre.data.id;
-                const dataFromDB = res => ( { ...dataToDB, _id: idInResponse( res ) } );
-                doFetch( url, args, onDone, onError, dataFromDB );
-
-            } else if ( genre.uiux.mode.isDelete ) {
-                const url = `/.netlify/functions/payments-genre?id=${genre.data.id}`;
-                const args = { method: 'DELETE', body };
-                const onDone = deleteRequestDone;
-                const onError = deleteRequestError;
-                const idInResponse = () => genre.data.id;
-                const dataFromDB = res => ( { ...dataToDB, _id: idInResponse( res ) } );
-                doFetch( url, args, onDone, onError, dataFromDB );
-            }
-        }
-    } );
-
-    const mode = !genre.data.id ? { isCreate: true } : { isUpdate: true };
-
-    const typeInfo = mode.isCreate
+    const typeInfo = genre.uiux.mode.isCreate
         ? ''
         : genre.data.isIncoming && genre.data.isOutgoing
         ? 'Μ'
@@ -203,38 +68,58 @@ function Genre( { index, genres } ) {
         : '-';
 
     return (
-        <RowBox key={index}>
-            <RowValue title={`${genre.data.id}`}>
-                <span style={{ fontFamily: 'monospace' }} >{`${typeInfo} ${genre.data.code} `}</span>
-                <span>{genre.data.name}</span>
-            </RowValue>
+        <CRUDContextProvider 
+            dispatch={dispatch} 
+            namespace={namespace} 
+            payload={payload}
+        >
+            { genre.uiux.mode.isCreate ?
+                <CreateRequest
+                    process={genre.uiux.process}
+                    url={ `/.netlify/functions/payments-genre`}
+                    data={genre.data}
+                    parseDataToDB={parseGenreToDB}
+                />
+            : genre.uiux.mode.isUpdate ?
+                <UpdateRequest 
+                    process={genre.uiux.process}
+                    url={`/.netlify/functions/payments-genre?id=${genre.data.id}`}
+                    data={genre.data}
+                    parseDataToDB={parseGenreToDB}
+                />
+            : genre.uiux.mode.isDelete ?
+                <DeleteRequest 
+                    process={genre.uiux.process}
+                    url={`/.netlify/functions/payments-genre?id=${genre.data.id}`}
+                    data={genre.data}
+                    parseDataToDB={parseGenreToDB}
+                />
+            : null }
 
-            <RowMenu>
-                {genre.uiux.process.isOnValidation || genre.uiux.process.isOnRequest
-                    ? <Loader />
-                    : genre.uiux.status.isSuspended
-                    ? <FontAwesomeIcon icon={ faBan } className="icon" />
-                    : <GenreMenu openForm={openForm} mode={mode} />
-                }
-            </RowMenu>
+            <RowBox key={index}>
+                <RowValue title={`${genre.data.id}`}>
+                    <span style={{ fontFamily: 'monospace' }} >{`${typeInfo} ${genre.data.code} `}</span>
+                    <span>{genre.data.name}</span>
+                </RowValue>
 
-            {genre.uiux.form.isOpen 
-                ? 
-                <GenreForm 
-                    genres={genres} 
-                    index={index} 
-                    closeForm={closeForm}
-                    doValidation={doValidation}
-                    validationDone={validationDone}
-                    validationError={validationError}
-                    doRequest={doRequest}
-                /> 
-                : 
-                null
-            }
+                <RowMenu>
+                    <CRUDMenu 
+                        process={genre.uiux.process}
+                        status={genre.uiux.status}
+                        id={genre.data.id}
+                    />
+                </RowMenu>
 
-        </RowBox> 
+                { genre.uiux.form.isOpen ? 
+                    <GenreForm 
+                        genres={genres} 
+                        index={index} 
+                    /> 
+                : null }
+            </RowBox> 
+        </CRUDContextProvider>
     );
 }
 
 export default GenreList;
+export { GenreInit, GenreList };

@@ -1,22 +1,17 @@
 import React, { useContext, useEffect } from 'react';
 import { STATEContext } from '../STATEContext';
-import { REFContext } from '../REFContext';
-import { realFetch, mockFetch } from '../../helpers/customFetch';
-import { parseFundToDB } from '../../storage/payments/parsers';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBan } from '@fortawesome/free-solid-svg-icons';
-import { Loader } from '../libs/Loader';
+
 import { RowBox, RowValue, RowMenu } from '../libs/RowBox';
-import FundInit from './FundInit';
-import GenreMenu from './GenreMenu';
+
+import { CRUDContextProvider, CRUDMenu, CreateRequest, UpdateRequest, DeleteRequest, RetrieveAllRequest } from '../libs/CRUD';
 import FundForm from './FundForm';
+import { parseFundToDB } from '../../storage/payments/parsers';
 
 const namespace = 'payments.funds';
 
 function FundList() {
 
     const STATE = useContext( STATEContext );
-
     const { funds } = STATE.state.data.payments;
 
     useEffect( () => {
@@ -35,195 +30,86 @@ function FundList() {
     );
 }
 
-function Fund( { index, funds } ) {
+function FundInit() {
 
-    const STATE = useContext( STATEContext );
-    const REF = useContext( REFContext );
+    const STATE = useContext( STATEContext )
+    const { dispatch } = STATE;
+    const { init } = STATE.state.uiux;
+
+    return (
+        <CRUDContextProvider 
+            dispatch={dispatch} 
+            namespace={namespace} 
+        >
+            <RetrieveAllRequest 
+                process={init.payments.funds}
+                url={`/.netlify/functions/payments-fund`}
+            />
+        </CRUDContextProvider>
+    );
+}
+
+function Fund( { index, funds } ) {
 
     const fund = funds[ index ];
 
-    const openForm = mode => {
-        REF.current.saved = { fund };
-
-        STATE.dispatch( { 
-            namespace,
-            type: 'OPEN_FORM',
-            payload: { index, mode },
-        } );
-    }
-
-    const closeForm = () => {
-        STATE.dispatch( { 
-            namespace,
-            type: 'CLOSE_FORM',
-            payload: { index },
-        } );
-    }
-
-    const doValidation = index => {
-        STATE.dispatch( { 
-            namespace,
-            type: 'DO_VALIDATION',
-            payload: { index },
-        } );
-    }
-
-    const validationDone = index => {
-        STATE.dispatch( { 
-            namespace,
-            type: 'VALIDATION_DONE',
-            payload: { index },
-        } );
-    }
-
-    const validationError = index => {
-        STATE.dispatch( { 
-            namespace,
-            type: 'VALIDATION_ERROR',
-            payload: { index },
-        } );
-    }
-
-    const doRequest = index => {
-        STATE.dispatch( { 
-            namespace,
-            type: 'DO_REQUEST',
-            payload: { index },
-        } );
-    }
-
-    const createRequestDone = dataFromDB => {
-        STATE.dispatch( { 
-            namespace,
-            type: 'CREATE_REQUEST_DONE',
-            payload: { index, dataFromDB },
-        } );
-    }
-
-    const createRequestError = () => {
-        STATE.dispatch( { 
-            namespace,
-            type: 'CREATE_REQUEST_ERROR',
-            payload: { index },
-        } );
-    }
-
-    const updateRequestDone = dataFromDB => {
-        STATE.dispatch( {
-            namespace, 
-            type: 'UPDATE_REQUEST_DONE',
-            payload: { index, dataFromDB },
-        } );
-    }
-
-    const updateRequestError = () => {
-        STATE.dispatch( { 
-            namespace,
-            type: 'UPDATE_REQUEST_ERROR',
-            payload: { index, saved: REF.current.saved },
-        } );
-    }
-
-    const deleteRequestDone = dataFromDB => {
-        STATE.dispatch( { 
-            namespace,
-            type: 'DELETE_REQUEST_DONE',
-            payload: { index, dataFromDB },
-        } );
-    }
-
-    const deleteRequestError = () => {
-        STATE.dispatch( { 
-            namespace,
-            type: 'DELETE_REQUEST_ERROR',
-            payload: {},
-        } );
-    }
-
-    useEffect( () => {
-        if ( fund.uiux.process.isOnRequest ) {
-
-            const doFetch = ( url, args, onDone, onError, dataFromDB ) => {
-                console.log( 'Requesting... ', fund.uiux.mode, fund.data.id )
-
-                realFetch( url, args )
-                .then( res => {
-                    alert( JSON.stringify( res ) );
-                    onDone( dataFromDB( res ) );
-                } )
-                .catch( err => { 
-                    alert( err );
-                    onError();
-                } );
-            }
-
-            const dataToDB = parseFundToDB( fund.data );
-            const body = JSON.stringify( { data: dataToDB } );
-
-            if ( fund.uiux.mode.isCreate ) {
-                const url = `/.netlify/functions/payments-fund`;
-                const args = { method: 'POST', body };
-                const onDone = createRequestDone;
-                const onError = createRequestError;
-                const idInResponse = res => res.insertedId;
-                const dataFromDB = res => ( { ...dataToDB, _id: idInResponse( res ) } );
-                doFetch( url, args, onDone, onError, dataFromDB );
-
-            } else if ( fund.uiux.mode.isUpdate ) {
-                const url = `/.netlify/functions/payments-fund?id=${fund.data.id}`;
-                const args = { method: 'PUT', body };
-                const onDone = updateRequestDone;
-                const onError = updateRequestError;
-                const idInResponse = res => fund.data.id;
-                const dataFromDB = res => ( { ...dataToDB, _id: idInResponse( res ) } );
-                doFetch( url, args, onDone, onError, dataFromDB );
-
-            } else if ( fund.uiux.mode.isDelete ) {
-                const url = `/.netlify/functions/payments-fund?id=${fund.data.id}`;
-                const args = { method: 'DELETE', body };
-                const onDone = deleteRequestDone;
-                const onError = deleteRequestError;
-                const idInResponse = () => fund.data.id;
-                const dataFromDB = res => ( { ...dataToDB, _id: idInResponse( res ) } );
-                doFetch( url, args, onDone, onError, dataFromDB );
-            }
-        }
-    } );
-
-    const mode = !fund.data.id ? { isCreate: true } : { isUpdate: true };
+    const STATE = useContext( STATEContext )
+    const { dispatch } = STATE;
+    const payload = { index };
 
     return (
-        <RowBox key={index}>
-            <RowValue title={`${fund.data.id}`}>
-                <span style={{ fontFamily: 'monospace' }} >{`${fund.data.code} `}</span>
-                <span>{fund.data.name}</span>
-            </RowValue>
+        <CRUDContextProvider 
+            dispatch={dispatch} 
+            namespace={namespace} 
+            payload={payload}
+        >
+            { fund.uiux.mode.isCreate ?
+                <CreateRequest
+                    process={fund.uiux.process}
+                    url={ `/.netlify/functions/payments-fund`}
+                    data={fund.data}
+                    parseDataToDB={parseFundToDB}
+                />
+            : fund.uiux.mode.isUpdate ?
+                <UpdateRequest 
+                    process={fund.uiux.process}
+                    url={`/.netlify/functions/payments-fund?id=${fund.data.id}`}
+                    data={fund.data}
+                    parseDataToDB={parseFundToDB}
+                />
+            : fund.uiux.mode.isDelete ?
+                <DeleteRequest 
+                    process={fund.uiux.process}
+                    url={`/.netlify/functions/payments-fund?id=${fund.data.id}`}
+                    data={fund.data}
+                    parseDataToDB={parseFundToDB}
+                />
+            : null }
+            
+            <RowBox key={index}>
+                <RowValue title={`${fund.data.id}`}>
+                    <span style={{ fontFamily: 'monospace' }} >{`${fund.data.code} `}</span>
+                    <span>{fund.data.name}</span>
+                </RowValue>
 
-            <RowMenu>
-                {fund.uiux.process.isOnValidation || fund.uiux.process.isOnRequest
-                    ? <Loader />
-                    : fund.uiux.status.isSuspended
-                    ? <FontAwesomeIcon icon={ faBan } className="icon" />
-                    : <GenreMenu openForm={openForm} mode={mode} />
-                }
-            </RowMenu>
+                <RowMenu>
+                    <CRUDMenu 
+                        process={fund.uiux.process}
+                        status={fund.uiux.status}
+                        id={fund.data.id}
+                    />
+                </RowMenu>
 
-            {fund.uiux.form.isOpen 
-                ? 
-                <FundForm 
-                    funds={funds} 
-                    index={index} 
-                    closeForm={closeForm}
-                    doValidation={doValidation}
-                    validationDone={validationDone}
-                    validationError={validationError}
-                    doRequest={doRequest}
-                /> 
-                : 
-                null
-            }
-        </RowBox>
+                { fund.uiux.form.isOpen ?
+                    <FundForm 
+                        funds={funds} 
+                        index={index} 
+                    /> 
+                : null }
+            </RowBox>
+        </CRUDContextProvider>
     );
 }
 
 export default FundList;
+export { FundInit, FundList };

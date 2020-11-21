@@ -28,11 +28,11 @@ const initState = () => ( {
     },
     uiux: {
         init: {
-            users: {},  // isBeforeRequest, isAfterRequest, isDone, isError
+            users: {},  // isOnRequest, isWaiting, isDone, isError
             dates: {},  // isBeforeRequest (dateFrom, dateTill), isAfterRequest, isDone, isError
             payments: {
-                genres: {},  // isBeforeRequest, isAfterRequest, isDone, isError
-                funds: {},  // isBeforeRequest, isAfterRequest, isDone, isError
+                genres: {},  // isOnRequest, isWaiting, isDone, isError
+                funds: {},  // isOnRequest, isWaiting, isDone, isError
             },
         }
     }

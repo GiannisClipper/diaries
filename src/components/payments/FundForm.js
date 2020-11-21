@@ -1,55 +1,38 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { Modal } from '../libs/Modal';
-import { CRUDForm } from '../libs/FormBox';
+import { CRUDContext, CRUDForm, InputValidations } from "../libs/CRUD";
 import { heads } from '../../storage/texts';
 import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
 import { isBlank, isFound } from '../../helpers/validation';
 
-function FundForm( { funds, index, closeForm, doValidation, validationDone, validationError, doRequest } ) {
+function FundForm( { funds, index } ) {
     
     const fund = funds[ index ];
 
     const [ data, setData ] = useState( { ...fund.data } );
-    //const changes = Object.keys( data ).filter( x => data[ x ] !== fund.data[ x ] );
 
-    const onClickOk = event => {
+    const { closeForm } = useContext( CRUDContext );
+
+    const doValidate = () => {
+        let errors = '';
+        errors += isBlank( data.name ) ? 'Η Ονομασία δεν μπορεί να είναι κενή.\n' : '';
+        errors += !isBlank( data.name ) && isFound( funds.map( x=> x.data.name), data.name, index ) ? 'Η Ονομασία υπάρχει ήδη.\n' : '';
+        errors += !isBlank( data.code ) && isFound( funds.map( x=> x.data.code), data.code, index ) ? 'Ο Λογιστικός Κωδικός υπάρχει ήδη.\n' : '';
         fund.data = { ...data };
-        fund.uiux.mode.isCreate || fund.uiux.mode.isUpdate
-            ? doValidation( index )
-            : doRequest( index )
+        return errors
     }
 
-    const onClickCancel = closeForm;
-
-    useEffect( () => {
-    
-        if ( fund.uiux.process.isOnValidation ) {
-
-            let errors = '';
-            errors += isBlank( data.name ) ? 'Η Ονομασία δεν μπορεί να είναι κενή.\n' : '';
-            errors += !isBlank( data.name ) && isFound( funds.map( x=> x.data.name), data.name, index ) ? 'Η Ονομασία υπάρχει ήδη.\n' : '';
-            errors += !isBlank( data.code ) && isFound( funds.map( x=> x.data.code), data.code, index ) ? 'Ο Λογιστικός Κωδικός υπάρχει ήδη.\n' : '';
-
-            if ( errors === '' ) {
-                validationDone( index )
-
-            } else {
-                alert( errors );
-                validationError( index );
-            }
-
-        } else if ( fund.uiux.process.isOnValidationDone ) {
-            doRequest( index );
-        }
-    } );
-
     return (
-        <Modal onClick={onClickCancel} centeredness>
+        <Modal onClick={closeForm} centeredness>
+
+            <InputValidations
+                process={fund.uiux.process}
+                doValidate={doValidate}
+            />
+
             <CRUDForm
                 headLabel={heads.payment_funds}
                 mode={fund.uiux.mode}
-                onClickOk={onClickOk}
-                onClickCancel={onClickCancel}
                 isOnRequest={fund.uiux.process.isOnRequest}
             >
                 <InputBox>

@@ -9,5 +9,13 @@ const heads = {
     reports: 'Καταστάσεις',
 }
 
-export default { heads };
-export { heads };
+const buttons = {
+    create: 'Αποθήκευση',
+    update: 'Αποθήκευση',
+    delete: 'Διαγραφή',
+    cancel: 'Άκυρο',
+    login: 'Είσοδος',
+}
+
+export default { heads, buttons };
+export { heads, buttons };

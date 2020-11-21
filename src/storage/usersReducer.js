@@ -5,50 +5,7 @@ const usersReducer = ( state, action ) => {
 
     switch ( action.type ) {
 
-        case 'INITIALIZE_LIST': {
-            const users = [ initUser() ];
-            users[ 0 ].uiux.mode = { isRetrieveAll: true };
-            users[ 0 ].uiux.process = { isOnRequest: true };
-
-            const { init } = state.uiux;
-            init.users = { isBeforeRequest: true };
-
-            return { uiux: { ...state.uiux, init }, data: { ...state.data, users } };
-
-        } case 'INITIALIZE_LIST_AFTER_REQUEST': {
-            const { init } = state.uiux;
-            init.users = { isAfterRequest: true };
-
-            return { uiux: { ...state.uiux, init }, data: state.data };
-
-        } case 'RETRIEVE_ALL_REQUEST_DONE': {
-            const users = [];
-            const { dataFromDB } = action.payload;
-
-            dataFromDB.forEach( x=> {
-                users.push( initUser() );
-                users[ users.length - 1 ].data = parseUserFromDB( x );
-            } );
-            users.sort( ( x, y ) => x.data.code > y.data.code );
-            users.push( initUser() );
-
-            const { init } = state.uiux;
-            init.users = { isDone: true };
-
-            return { uiux: { ...state.uiux, init }, data: { ...state.data, users } };
-
-        } case 'RETRIEVE_ALL_REQUEST_ERROR': {
-            const users = [];
-            const user = initUser();
-            user.uiux.status = { isSuspended: true }
-            users.push( user );
-
-            const { init } = state.uiux;
-            init.users = { isError: true };
-
-            return { uiux: { ...state.uiux, init }, data: { ...state.data, users } };
-
-        } case 'OPEN_FORM': {
+        case 'OPEN_FORM': {
             const users = [ ...state.data.users ];
             const { index, mode } = action.payload;
 
@@ -139,7 +96,7 @@ const usersReducer = ( state, action ) => {
             const users = [ ...state.data.users ];
             const { index, saved } = action.payload;
 
-            users[ index ].data = { ...saved.fund.data };
+            users[ index ].data = { ...saved.user.data };
             users[ index ].uiux.process = {};
             users[ index ].uiux.mode = {};
             users[ index ].uiux.form = {};
@@ -163,6 +120,49 @@ const usersReducer = ( state, action ) => {
             users[ index ].uiux.form = {};
 
             return { ...state, data: { ...state.data, users } };
+
+        } case 'RETRIEVE_ALL_REQUEST': {
+            const users = [ initUser() ];
+            users[ 0 ].uiux.mode = { isRetrieveAll: true };
+            users[ 0 ].uiux.process = { isOnRequest: true };
+
+            const { init } = state.uiux;
+            init.users = { isOnRequest: true };
+
+            return { uiux: { ...state.uiux, init }, data: { ...state.data, users } };
+
+        } case 'RETRIEVE_ALL_REQUEST_WAITING': {
+            const { init } = state.uiux;
+            init.users = { isWaiting: true };
+
+            return { uiux: { ...state.uiux, init }, data: state.data };
+
+        } case 'RETRIEVE_ALL_REQUEST_DONE': {
+            const users = [];
+            const { dataFromDB } = action.payload;
+
+            dataFromDB.forEach( x=> {
+                users.push( initUser() );
+                users[ users.length - 1 ].data = parseUserFromDB( x );
+            } );
+            users.sort( ( x, y ) => x.data.code > y.data.code );
+            users.push( initUser() );
+
+            const { init } = state.uiux;
+            init.users = { isDone: true };
+
+            return { uiux: { ...state.uiux, init }, data: { ...state.data, users } };
+
+        } case 'RETRIEVE_ALL_REQUEST_ERROR': {
+            const users = [];
+            const user = initUser();
+            user.uiux.status = { isSuspended: true }
+            users.push( user );
+
+            const { init } = state.uiux;
+            init.users = { isError: true };
+
+            return { uiux: { ...state.uiux, init }, data: { ...state.data, users } };
 
         } default: {
             throw new Error();

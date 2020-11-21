@@ -1,7 +1,7 @@
 import React from 'react';
 import { dayNames } from '../helpers/dates';
 import { Modal } from './libs/Modal';
-import { CRUDForm } from './libs/FormBox';
+import { CRUDForm } from './libs/CRUD';
 import { InputBox, InputLabel, InputValue } from './libs/InputBox';
 
 function EntryForm( { 
@@ -38,8 +38,6 @@ function EntryForm( {
             <CRUDForm
                 headLabel={headLabel}
                 mode={entry.uiux.mode}
-                onClickOk={onClickOk}
-                onClickCancel={onClickCancel}
                 isOnRequest={entry.uiux.process.isOnRequest}
             >
                 <InputBox>

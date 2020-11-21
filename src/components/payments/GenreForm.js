@@ -1,56 +1,39 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { Modal } from '../libs/Modal';
-import { CRUDForm } from '../libs/FormBox';
+import { CRUDContext, CRUDForm, InputValidations } from "../libs/CRUD";
 import { heads } from '../../storage/texts';
 import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
 import { InputCheck } from '../libs/InputCheck';
 import { isBlank, isFound } from '../../helpers/validation';
 
-function GenreForm( { genres, index, closeForm, doValidation, validationDone, validationError, doRequest } ) {
+function GenreForm( { genres, index } ) {
     
     const genre = genres[ index ];
 
     const [ data, setData ] = useState( { ...genre.data } );
-    //const changes = Object.keys( data ).filter( x => data[ x ] !== genre.data[ x ] );
 
-    const onClickOk = event => {
+    const { closeForm } = useContext( CRUDContext );
+
+    const doValidate = () => {
+        let errors = '';
+        errors += isBlank( data.name ) ? 'Η Ονομασία δεν μπορεί να είναι κενή.\n' : '';
+        errors += !isBlank( data.name ) && isFound( genres.map( x=> x.data.name), data.name, index ) ? 'Η Ονομασία υπάρχει ήδη.\n' : '';
+        errors += !isBlank( data.code ) && isFound( genres.map( x=> x.data.code), data.code, index ) ? 'Ο Λογιστικός Κωδικός υπάρχει ήδη.\n' : '';
         genre.data = { ...data };
-        genre.uiux.mode.isCreate || genre.uiux.mode.isUpdate
-            ? doValidation( index )
-            : doRequest( index )
+        return errors
     }
 
-    const onClickCancel = closeForm;
-
-    useEffect( () => {
-    
-        if ( genre.uiux.process.isOnValidation ) {
-
-            let errors = '';
-            errors += isBlank( data.name ) ? 'Η Ονομασία δεν μπορεί να είναι κενή.\n' : '';
-            errors += !isBlank( data.name ) && isFound( genres.map( x=> x.data.name), data.name, index ) ? 'Η Ονομασία υπάρχει ήδη.\n' : '';
-            errors += !isBlank( data.code ) && isFound( genres.map( x=> x.data.code), data.code, index ) ? 'Ο Λογιστικός Κωδικός υπάρχει ήδη.\n' : '';
-
-            if ( errors === '' ) {
-                validationDone( index )
-
-            } else {
-                alert( errors );
-                validationError( index );
-            }
-
-        } else if ( genre.uiux.process.isOnValidationDone ) {
-            doRequest( index );
-        }
-    } );
-
     return (
-        <Modal onClick={onClickCancel} centeredness>
+        <Modal onClick={closeForm} centeredness>
+
+            <InputValidations
+                process={genre.uiux.process}
+                doValidate={doValidate}
+            />
+
             <CRUDForm
                 headLabel={heads.payment_genres}
                 mode={genre.uiux.mode}
-                onClickOk={onClickOk}
-                onClickCancel={onClickCancel}
                 isOnRequest={genre.uiux.process.isOnRequest}
             >
                 <InputBox>

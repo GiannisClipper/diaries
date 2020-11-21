@@ -5,59 +5,7 @@ const fundsReducer = ( state, action ) => {
 
     switch ( action.type ) {
 
-        case 'INITIALIZE_LIST': {
-            let payments = { ...state.data.payments };
-            let funds = [ ...payments.funds ];
-
-            funds = [ initPayments.fund() ];
-            funds[ 0 ].uiux.mode = { isRetrieveAll: true };
-            funds[ 0 ].uiux.process = { isOnRequest: true };
-
-            payments = { ...payments, funds };
-            const { init } = state.uiux;
-            init.payments.funds = { isBeforeRequest: true };
-
-            return { uiux: { ...state.uiux, init }, data: { ...state.data, payments } };
-
-        } case 'INITIALIZE_LIST_AFTER_REQUEST': {
-            const { init } = state.uiux;
-            init.payments.funds = { isAfterRequest: true };
-
-            return { uiux: { ...state.uiux, init }, data: state.data };
-
-        } case 'RETRIEVE_ALL_REQUEST_DONE': {
-            let payments = { ...state.data.payments };
-            const { dataFromDB } = action.payload;
-
-            const funds = [];
-            dataFromDB.forEach( x=> {
-                funds.push( initPayments.fund() );
-                funds[ funds.length - 1 ].data = parseFundFromDB( x );
-            } );
-            funds.sort( ( x, y ) => x.data.code > y.data.code ? 1 : -1 );
-            funds.push( initPayments.fund() );
-
-            payments = { ...payments, funds };
-            const { init } = state.uiux;
-            init.payments.funds = { isDone: true };
-
-            return { uiux: { ...state.uiux, init }, data: { ...state.data, payments } };
-
-        } case 'RETRIEVE_ALL_REQUEST_ERROR': {
-            let payments = { ...state.data.payments };
-
-            const funds = [];
-            const fund = initPayments.fund();
-            fund.uiux.status = { isSuspended: true }
-            funds.push( fund );
-
-            payments = { ...payments, funds };
-            const { init } = state.uiux;
-            init.payments.funds = { isError: true };
-
-            return { uiux: { ...state.uiux, init }, data: { ...state.data, payments } };
-
-        } case 'OPEN_FORM': {
+        case 'OPEN_FORM': {
             let payments = { ...state.data.payments };
             let funds = [ ...payments.funds ];
             const { index, mode } = action.payload;
@@ -197,6 +145,58 @@ const fundsReducer = ( state, action ) => {
             payments = { ...payments, funds };
             return { ...state, data: { ...state.data, payments } };
 
+        } case 'RETRIEVE_ALL_REQUEST': {
+            let payments = { ...state.data.payments };
+            let funds = [ ...payments.funds ];
+
+            funds = [ initPayments.fund() ];
+            funds[ 0 ].uiux.mode = { isRetrieveAll: true };
+            funds[ 0 ].uiux.process = { isOnRequest: true };
+
+            payments = { ...payments, funds };
+            const { init } = state.uiux;
+            init.payments.funds = { isOnRequest: true };
+
+            return { uiux: { ...state.uiux, init }, data: { ...state.data, payments } };
+
+        } case 'RETRIEVE_ALL_REQUEST_WAITING': {
+            const { init } = state.uiux;
+            init.payments.funds = { isWaiting: true };
+
+            return { uiux: { ...state.uiux, init }, data: state.data };
+
+        } case 'RETRIEVE_ALL_REQUEST_DONE': {
+            let payments = { ...state.data.payments };
+            const { dataFromDB } = action.payload;
+
+            const funds = [];
+            dataFromDB.forEach( x=> {
+                funds.push( initPayments.fund() );
+                funds[ funds.length - 1 ].data = parseFundFromDB( x );
+            } );
+            funds.sort( ( x, y ) => x.data.code > y.data.code ? 1 : -1 );
+            funds.push( initPayments.fund() );
+
+            payments = { ...payments, funds };
+            const { init } = state.uiux;
+            init.payments.funds = { isDone: true };
+
+            return { uiux: { ...state.uiux, init }, data: { ...state.data, payments } };
+
+        } case 'RETRIEVE_ALL_REQUEST_ERROR': {
+            let payments = { ...state.data.payments };
+
+            const funds = [];
+            const fund = initPayments.fund();
+            fund.uiux.status = { isSuspended: true }
+            funds.push( fund );
+
+            payments = { ...payments, funds };
+            const { init } = state.uiux;
+            init.payments.funds = { isError: true };
+
+            return { uiux: { ...state.uiux, init }, data: { ...state.data, payments } };
+    
         } default: {
             throw new Error();
         }

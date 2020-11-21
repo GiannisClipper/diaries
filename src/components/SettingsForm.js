@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Modal } from './libs/Modal';
-import { CRUDForm } from './libs/FormBox';
+import { CRUDForm } from './libs/CRUD';
 import { InputBox, InputLabel, InputValue } from './libs/InputBox';
 import { InputFromList } from './libs/InputFromList';
 import { InputDate } from './libs/InputDate';
@@ -47,8 +47,6 @@ function SettingsForm( { settings, closeForm, doValidation, validationDone, vali
             <CRUDForm
                 headLabel={heads.settings}
                 mode={settings.uiux.mode}
-                onClickOk={onClickOk}
-                onClickCancel={onClickCancel}
                 isOnRequest={settings.uiux.process.isOnRequest}
             >
                 <InputBox>
