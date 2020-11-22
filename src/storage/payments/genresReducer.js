@@ -41,9 +41,10 @@ const genresReducer = ( state, action ) => {
         } case 'VALIDATION_DONE': {
             let payments = { ...state.data.payments };
             let genres = [ ...payments.genres ];
-            const { index } = action.payload;
+            const { index, data } = action.payload;
 
             genres[ index ].uiux.process = { isOnValidationDone: true };
+            genres[ index ].data = { ...data };
 
             payments = { ...payments, genres };
             return { ...state, data: { ...state.data, payments } };
@@ -113,9 +114,9 @@ const genresReducer = ( state, action ) => {
         } case 'UPDATE_REQUEST_ERROR': {
             let payments = { ...state.data.payments };
             let genres = [ ...payments.genres ];
-            const { index, saved } = action.payload;
+            const { index, _saved } = action.payload;
 
-            genres[ index ].data = { ...saved.genre.data };
+            genres[ index ].data = { ..._saved };
             genres[ index ].uiux.process = {};
             genres[ index ].uiux.mode = {};
             genres[ index ].uiux.form = {};

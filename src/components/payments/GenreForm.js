@@ -19,8 +19,7 @@ function GenreForm( { genres, index } ) {
         errors += isBlank( data.name ) ? 'Η Ονομασία δεν μπορεί να είναι κενή.\n' : '';
         errors += !isBlank( data.name ) && isFound( genres.map( x=> x.data.name), data.name, index ) ? 'Η Ονομασία υπάρχει ήδη.\n' : '';
         errors += !isBlank( data.code ) && isFound( genres.map( x=> x.data.code), data.code, index ) ? 'Ο Λογιστικός Κωδικός υπάρχει ήδη.\n' : '';
-        genre.data = { ...data };
-        return errors
+        return { data, errors };
     }
 
     return (

@@ -115,10 +115,10 @@ function InputValidations( { process, doValidate }) {
     
         if ( process.isOnValidation ) {
 
-            const errors = doValidate();
+            const { data, errors } = doValidate();
 
             if ( errors === '' ) {
-                validationDone()
+                validationDone( { data } )
 
             } else {
                 alert( errors );

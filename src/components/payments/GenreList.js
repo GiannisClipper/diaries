@@ -55,7 +55,7 @@ function Genre( { index, genres } ) {
 
     const STATE = useContext( STATEContext )
     const { dispatch } = STATE;
-    const payload = { index };
+    const payload = { index, _saved: genre.data };
 
     const typeInfo = genre.uiux.mode.isCreate
         ? ''

@@ -55,7 +55,7 @@ function Fund( { index, funds } ) {
 
     const STATE = useContext( STATEContext )
     const { dispatch } = STATE;
-    const payload = { index };
+    const payload = { index, _saved: fund.data };
 
     return (
         <CRUDContextProvider 

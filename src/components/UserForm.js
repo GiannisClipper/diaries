@@ -21,8 +21,7 @@ function UserForm( { users, index } ) {
         errors += !isBlank( data.username ) && isFound( users.map( x=> x.data.username), data.username, index ) ? 'Το Όνομα xρήστη υπάρχει ήδη.\n' : '';
         errors += isBlank( data.password ) && user.uiux.mode.isCreate ? 'Ο Κωδικός εισόδου δεν μπορεί να είναι κενός.\n' : '';
         errors += !isBlank( data.password ) && data.password !== data.password2 ? 'Διαφορά στην πληκτρολόγηση του Κωδικού εισόδου.\n' : '';
-        user.data = { ...data };
-        return errors
+        return { data, errors };
     }
 
     return (

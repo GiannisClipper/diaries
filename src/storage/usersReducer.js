@@ -34,9 +34,10 @@ const usersReducer = ( state, action ) => {
 
         } case 'VALIDATION_DONE': {
             const users = [ ...state.data.users ];
-            const { index } = action.payload;
+            const { index, data } = action.payload;
 
             users[ index ].uiux.process = { isOnValidationDone: true };
+            users[ index ].data = { ...data };
 
             return { ...state, data: { ...state.data, users } };
 
@@ -94,9 +95,9 @@ const usersReducer = ( state, action ) => {
 
         } case 'UPDATE_REQUEST_ERROR': {
             const users = [ ...state.data.users ];
-            const { index, saved } = action.payload;
+            const { index, _saved } = action.payload;
 
-            users[ index ].data = { ...saved.user.data };
+            users[ index ].data = { ..._saved };
             users[ index ].uiux.process = {};
             users[ index ].uiux.mode = {};
             users[ index ].uiux.form = {};

@@ -41,9 +41,10 @@ const fundsReducer = ( state, action ) => {
         } case 'VALIDATION_DONE': {
             let payments = { ...state.data.payments };
             let funds = [ ...payments.funds ];
-            const { index } = action.payload;
+            const { index, data } = action.payload;
 
             funds[ index ].uiux.process = { isOnValidationDone: true };
+            funds[ index ].data = { ...data };
 
             payments = { ...payments, funds };
             return { ...state, data: { ...state.data, payments } };
@@ -113,9 +114,9 @@ const fundsReducer = ( state, action ) => {
         } case 'UPDATE_REQUEST_ERROR': {
             let payments = { ...state.data.payments };
             let funds = [ ...payments.funds ];
-            const { index, saved } = action.payload;
+            const { index, _saved } = action.payload;
 
-            funds[ index ].data = { ...saved.fund.data };
+            funds[ index ].data = { ..._saved };
             funds[ index ].uiux.process = {};
             funds[ index ].uiux.mode = {};
             funds[ index ].uiux.form = {};
