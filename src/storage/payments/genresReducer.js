@@ -194,6 +194,7 @@ const genresReducer = ( state, action ) => {
             payments = { ...payments, genres };
             const { init } = state.uiux;
             init.payments.genres = { isError: true };
+            init.error = action.payload.error;
 
             return { uiux: { ...state.uiux, init }, data: { ...state.data, payments } };
 

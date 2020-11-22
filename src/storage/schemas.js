@@ -34,7 +34,8 @@ const initState = () => ( {
                 genres: {},  // isOnRequest, isWaiting, isDone, isError
                 funds: {},  // isOnRequest, isWaiting, isDone, isError
             },
-        }
+        },
+        error: {}
     }
 } );
 

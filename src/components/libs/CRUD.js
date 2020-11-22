@@ -143,7 +143,7 @@ const doFetch = ( url, args, onDone, onError, dataFromDB ) => {
     } )
     .catch( err => { 
         alert( err );
-        onError();
+        onError( { error: err } );
     } );
 }
 

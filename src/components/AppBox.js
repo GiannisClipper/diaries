@@ -124,57 +124,60 @@ function AppBox( { page } ) {
 
     const STATE = useContext( STATEContext );
     const theme = STATE.state.data.settings.data.theme;
+    const error = STATE.state.uiux.init.error;
+
+    page = !error ? page : 'signin';
 
     return (
         <ThemeProvider theme={theme === 'dark' ? dark : light}>
             <InitStyle />
 
-            { page === 'signin' ?
-            null :
-            <AppHeader>
-                <span>{heads.app}</span>
-                {/* <Dev /> */}
+            { page !== 'signin' ?
+                <AppHeader>
+                    <span>{heads.app}</span>
+                    {/* <Dev /> */}
 
-                { page === 'signin' ? 
-                    <LinkSignin />
-                : page === 'signout' ?
-                    <LinkSignin />
-                : page === 'dates' ?
-                    <>
-                    <ScrollToCentralDate />
-                    <LinkDates />
-                    <LinkReports />
-                    <LinkUsers />
-                    <LinkSettings />
-                    <LinkSignout />
-                    </>
-                : page === 'users' ?
-                    <>
-                    <LinkDates />
-                    <LinkReports />
-                    <LinkUsers />
-                    <LinkSettings />
-                    <LinkSignout />
-                    </>
-                : page === 'settings' ?
-                    <>
-                    <LinkDates />
-                    <LinkReports />
-                    <LinkUsers />
-                    <LinkSettings />
-                    <LinkSignout />
-                    </>
-                :
-                    <>
-                    <LinkDates />
-                    <LinkReports />
-                    <LinkUsers />
-                    <LinkSettings />
-                    <LinkSignout />
-                    </>
-                }
-            </AppHeader>
-            }
+                    { page === 'signin' ? 
+                        <LinkSignin />
+                    : page === 'signout' ?
+                        <LinkSignin />
+                    : page === 'dates' ?
+                        <>
+                        <ScrollToCentralDate />
+                        <LinkDates />
+                        <LinkReports />
+                        <LinkUsers />
+                        <LinkSettings />
+                        <LinkSignout />
+                        </>
+                    : page === 'users' ?
+                        <>
+                        <LinkDates />
+                        <LinkReports />
+                        <LinkUsers />
+                        <LinkSettings />
+                        <LinkSignout />
+                        </>
+                    : page === 'settings' ?
+                        <>
+                        <LinkDates />
+                        <LinkReports />
+                        <LinkUsers />
+                        <LinkSettings />
+                        <LinkSignout />
+                        </>
+                    :
+                        <>
+                        <LinkDates />
+                        <LinkReports />
+                        <LinkUsers />
+                        <LinkSettings />
+                        <LinkSignout />
+                        </>
+                    }
+                </AppHeader>
+            : null }
+
             <AppMain centeredness>
                 { page === 'home' ? <></>
                 : page === 'signin' ? <Signin />

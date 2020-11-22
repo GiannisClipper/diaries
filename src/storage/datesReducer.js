@@ -181,6 +181,8 @@ const datesReducer = ( state, action ) => {
 
             const { init } = state.uiux;
             init.dates = { isError: true };
+            init.error = action.payload.error;
+
             return { uiux: { ...state.uiux, init }, data: { ...state.data, dates } };
 
         } default: {

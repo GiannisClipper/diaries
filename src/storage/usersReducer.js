@@ -161,6 +161,7 @@ const usersReducer = ( state, action ) => {
 
             const { init } = state.uiux;
             init.users = { isError: true };
+            init.error = action.payload.error;
 
             return { uiux: { ...state.uiux, init }, data: { ...state.data, users } };
 
