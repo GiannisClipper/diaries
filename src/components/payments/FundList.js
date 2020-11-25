@@ -38,11 +38,11 @@ function FundInit() {
 
     return (
         <CRUDContextProvider 
-            dispatch={dispatch} 
-            namespace={namespace} 
+            dispatch={dispatch}
+            namespace={namespace}
         >
             <RetrieveAllRequest 
-                process={init.payments.funds}
+                process={init.payments.funds.process}
                 url={`/.netlify/functions/payments-fund`}
             />
         </CRUDContextProvider>
@@ -56,6 +56,7 @@ function Fund( { index, funds } ) {
     const STATE = useContext( STATEContext )
     const { dispatch } = STATE;
     const payload = { index, _saved: fund.data };
+    const dataToDB = parseFundToDB( fund.data );
 
     return (
         <CRUDContextProvider 
@@ -67,22 +68,22 @@ function Fund( { index, funds } ) {
                 <CreateRequest
                     process={fund.uiux.process}
                     url={ `/.netlify/functions/payments-fund`}
-                    data={fund.data}
-                    parseDataToDB={parseFundToDB}
+                    dataToDB={dataToDB}
+                    body={JSON.stringify( { data: dataToDB } )}
                 />
             : fund.uiux.mode.isUpdate ?
                 <UpdateRequest 
                     process={fund.uiux.process}
                     url={`/.netlify/functions/payments-fund?id=${fund.data.id}`}
-                    data={fund.data}
-                    parseDataToDB={parseFundToDB}
+                    dataToDB={dataToDB}
+                    body={JSON.stringify( { data: dataToDB } )}
                 />
             : fund.uiux.mode.isDelete ?
                 <DeleteRequest 
                     process={fund.uiux.process}
                     url={`/.netlify/functions/payments-fund?id=${fund.data.id}`}
-                    data={fund.data}
-                    parseDataToDB={parseFundToDB}
+                    dataToDB={dataToDB}
+                    body={JSON.stringify( { data: dataToDB } )}
                 />
             : null }
             

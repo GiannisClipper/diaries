@@ -1,40 +1,15 @@
-import React from 'react';
-import { dayNames } from '../helpers/dates';
+import React, { useContext } from 'react';
+import { CRUDContext, CRUDForm } from "./libs/CRUD";
 import { Modal } from './libs/Modal';
-import { CRUDForm } from './libs/CRUD';
 import { InputBox, InputLabel, InputValue } from './libs/InputBox';
+import { dayNames, YYYMMDDToRepr, dateToYYYYMMDD } from '../helpers/dates';
 
-function EntryForm( { 
-        headLabel,
-        date, 
-        entry, 
-        inSequence, 
-        formData, 
-        closeForm, 
-        doValidation, 
-        doRequest, 
-        children 
-    } ) {
+function EntryForm( { headLabel, date, entry, children } ) {
 
-    const dateInfo = (
-        dayNames[ date.getDay() ] + ' ' +
-        date.getDate().toString().padStart( 2, '0' ) + '-' +
-        ( date.getMonth() + 1 ).toString().padStart( 2, '0' ) + '-' +
-        date.getFullYear()
-    );
-
-    const onClickOk = event => {
-        entry.data = { ...formData };
-        doValidation( date, inSequence );
-        entry.uiux.mode.isCreate || entry.uiux.mode.isUpdate
-            ? doValidation( date, inSequence )
-            : doRequest( date, inSequence )
-    }
-
-    const onClickCancel = event => closeForm( event, date, inSequence );
+    const { closeForm } = useContext( CRUDContext );
 
     return (
-        <Modal onClick={onClickCancel} centeredness>
+        <Modal onClick={closeForm} centeredness>
             <CRUDForm
                 headLabel={headLabel}
                 mode={entry.uiux.mode}
@@ -46,7 +21,7 @@ function EntryForm( {
                     </InputLabel>
                     <InputValue>
                         <input 
-                            value={formData.id || ''}
+                            value={entry.id || ''}
                             tabIndex="-1"
                             readOnly
                         />
@@ -59,7 +34,7 @@ function EntryForm( {
                     </InputLabel>
                     <InputValue>
                         <input 
-                            value={dateInfo}
+                            value={`${dayNames[ date.getDay() ]} ${YYYMMDDToRepr( dateToYYYYMMDD( date ), 'D-M-Y' )}`}
                             tabIndex="-1"
                             readOnly
                         />

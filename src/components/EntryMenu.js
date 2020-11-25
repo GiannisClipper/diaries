@@ -1,10 +1,13 @@
 import React, { useContext, useRef } from 'react';
 import { REFContext } from './REFContext';
+import { CRUDContext } from "./libs/CRUD";
 import { Modal } from './libs/Modal';
 import { MenuBox } from './libs/MenuBox';
 import { MenuTool, EditTool, AddNoteTool, AddPaymentTool, DeleteTool, CutTool, CopyTool, PasteTool, CloseTool } from './libs/Tools';
 
-function EntryMenuTool( { date, inSequence, openMenu } ) {
+function EntryMenuTool() {
+
+    const { openMenu } = useContext( CRUDContext );
 
     const REF = useContext( REFContext );
 
@@ -14,16 +17,16 @@ function EntryMenuTool( { date, inSequence, openMenu } ) {
         <MenuTool
             onClick={event => {
                 REF.current.menuTool = menuToolRef.current;
-                openMenu( event, date, inSequence );
+                openMenu();
             }}
             reference={menuToolRef}
         />
     );
 }
 
-function EntryMenu( { onCloseMenu, children } ) {
+function EntryMenu( { children } ) {
 
-    onCloseMenu = onCloseMenu || null;
+    const { closeMenu } = useContext( CRUDContext );
 
     const REF = useContext( REFContext );
 
@@ -33,7 +36,7 @@ function EntryMenu( { onCloseMenu, children } ) {
     const style = { top, left };
 
     return (
-        <Modal onClick={onCloseMenu}>
+        <Modal onClick={closeMenu}>
             <MenuBox style={style}> 
                 {children}
             </MenuBox>
@@ -41,39 +44,39 @@ function EntryMenu( { onCloseMenu, children } ) {
     );
 }
 
-function BlankEntryMenu( { date, entry, inSequence, openForm, closeMenu, doPaste } ) {
+function BlankEntryMenu( { date, entry, inSequence, doPaste } ) {
 
-    const onCloseMenu = event => closeMenu( event, date, inSequence );
+    const { closeMenu, openForm } = useContext( CRUDContext );
 
     const REF = useContext( REFContext );
 
     return (
-        <EntryMenu onCloseMenu={onCloseMenu}>
+        <EntryMenu>
             <AddNoteTool onClick={event => {
-                openForm( event, date, entry, inSequence, { isNote: true }, { isCreate: true } );
-                closeMenu( event, date, inSequence );
+                openForm( { type: { isNote: true }, mode: { isCreate: true } } );
+                closeMenu();
             }} />
 
             <AddPaymentTool onClick={event => {
-                openForm( event, date, entry, inSequence, { isPayment: true }, { isCreate: true } );
-                closeMenu( event, date, inSequence );
+                openForm( { type: { isPayment: true }, mode: { isCreate: true } } );
+                closeMenu();
             }} />
 
             <PasteTool onClick={event => {
                 if ( REF.current.cut || REF.current.copy ) {
-                    closeMenu( event, date, inSequence );
+                    closeMenu();
                     doPaste( date, entry, inSequence );
                 }
             }} />
 
-            <CloseTool onClick={onCloseMenu} />
+            <CloseTool onClick={closeMenu} />
         </EntryMenu>
     );
 }
 
-function ExistsEntryMenu( { date, entry, inSequence, openForm, closeMenu, doCut, doCopy, doPaste } ) {
+function ExistsEntryMenu( { date, entry, inSequence, doCut, doCopy, doPaste } ) {
 
-    const onCloseMenu = event => closeMenu( event, date, inSequence );
+    const { closeMenu, openForm } = useContext( CRUDContext );
 
     const REF = useContext( REFContext );
 
@@ -82,35 +85,35 @@ function ExistsEntryMenu( { date, entry, inSequence, openForm, closeMenu, doCut,
         : { isNote: true };
 
     return (
-        <EntryMenu onCloseMenu={onCloseMenu}>
+        <EntryMenu>
             <EditTool onClick={event => {
-                openForm( event, date, entry, inSequence, type, { isUpdate: true } );
+                openForm( { type, mode: { isUpdate: true } } );
                 closeMenu( event, date, inSequence );
             }} />
 
             <DeleteTool onClick={event => {
-                openForm( event, date, entry, inSequence, type, { isDelete: true } );
-                closeMenu( event, date, inSequence );
+                openForm( { type, mode: { isDelete: true } } );
+                closeMenu();
             }} />
 
             <CutTool onClick={event => {
                 doCut( date, entry, inSequence );
-                closeMenu( event, date, inSequence );
+                closeMenu();
             }} />
 
             <CopyTool onClick={event => {
                 doCopy( date, entry, inSequence );
-                closeMenu( event, date, inSequence );
+                closeMenu();
             }} />
 
             <PasteTool onClick={event => {
                 if ( REF.current.cut || REF.current.copy ) {
-                    closeMenu( event, date, inSequence );
+                    closeMenu();
                     doPaste( date, entry, inSequence );
                 }
             }} />
 
-            <CloseTool onClick={onCloseMenu} />
+            <CloseTool onClick={closeMenu} />
         </EntryMenu>
     );
 }

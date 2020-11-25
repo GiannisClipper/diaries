@@ -1,46 +1,32 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import EntryForm from '../EntryForm';
-import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
-import { isBlank } from '../../helpers/validation';
 import { heads } from '../../storage/texts';
+import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
+import { InputValidations } from "../libs/CRUD";
+import { isBlank } from '../../helpers/validation';
 
-function NoteForm( { date, entry, inSequence, closeForm, doValidation, validationDone, validationError, doRequest } ) {
+function NoteForm( { date, entry } ) {
 
-    const [ formData, setData ] = useState( { ...entry.data } );
+    const [ data, setData ] = useState( { ...entry.data } );
 
-    useEffect( () => {
-    
-        if ( entry.uiux.process.isOnValidation ) {
-
-            let errors = '';
-            errors += isBlank( formData.note ) ? 'Το Σημείωμα δεν μπορεί να είναι κενό.\n' : '';
-
-            if ( errors === '' ) {
-                validationDone( date, inSequence )
-
-            } else {
-                alert( errors );
-                validationError( date, inSequence );
-            }
-
-        } else if ( entry.uiux.process.isOnValidationDone ) {
-            doRequest( date, inSequence );
-        }
-    } );
+    const doValidate = () => {
+        let errors = '';
+        errors += isBlank( data.note ) ? 'Το Σημείωμα δεν μπορεί να είναι κενό.\n' : '';
+        return { data, errors };
+    }
 
     return (
         <EntryForm
             headLabel={heads.notes}
+            id={data.id}
             date={date}
             entry={entry}
-            inSequence={inSequence}
-            formData={formData}
-            closeForm={closeForm}
-            doValidation={doValidation}
-            validationDone={validationDone}
-            validationError={validationError}
-            doRequest={doRequest}
         >
+
+            <InputValidations
+                process={entry.uiux.process}
+                doValidate={doValidate}
+            />
 
             <InputBox>
                 <InputLabel>
@@ -51,8 +37,8 @@ function NoteForm( { date, entry, inSequence, closeForm, doValidation, validatio
                         rows="10"
                         cols="50"
                         maxLength="1000"
-                        value={formData.note}
-                        onChange={event => setData( { ...formData, note: event.target.value } )}
+                        value={data.note}
+                        onChange={event => setData( { ...data, note: event.target.value } )}
                     />
                 </InputValue>
             </InputBox>

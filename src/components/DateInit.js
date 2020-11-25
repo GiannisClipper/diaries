@@ -1,93 +1,97 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { STATEContext } from './STATEContext';
-import { dateToYYYYMMDD } from '../helpers/dates';
-import { realFetch, mockFetch } from '../helpers/customFetch';
+import { shiftDate, YYYMMDDToDate, reprToYYYMMDD } from '../helpers/dates';
 
 const namespace = 'dates';
 
-function DateInit() {
+const calcCentralDate = centralDate => {
+    centralDate = YYYMMDDToDate( reprToYYYMMDD( centralDate ) ) || new Date();
+    centralDate.setHours( 12 );
+    centralDate.setMinutes( 0 );
+    centralDate.setSeconds( 0 );
+    centralDate.setMilliseconds( 0 );
+
+    return centralDate;
+}
+
+const calcDates = ( startDate, days ) => {
+    startDate = days < 0
+        ? shiftDate( startDate, days )
+        : shiftDate( startDate, 1 );
+
+    const dates = new Array( Math.abs( days ) )
+        .fill( undefined )
+        .map( ( x, index ) => shiftDate( startDate, index ) );
+
+    return dates;
+}
+
+const calcInitDates = ( centralDate, days ) => {
+    const prevDates = calcDates( centralDate, -Math.abs( days ) );
+    const nextDates = calcDates( centralDate, Math.abs( days ) );
+    const dateFrom = prevDates[ 0 ];
+    const dateTill = nextDates[ nextDates.length - 1 ];
+
+    return { prevDates, centralDate, nextDates, dateFrom, dateTill };
+}
+
+const calcPrevDates = ( startDate, days ) => {
+    const prevDates = calcDates( startDate, -days );
+    const dateFrom = prevDates[ 0 ];
+    const dateTill = prevDates[ prevDates.length - 1 ];
+    const nextDates = [];
+
+    return { prevDates, nextDates, dateFrom, dateTill };
+}
+
+const calcNextDates = ( startDate, days ) => {
+    const prevDates = [];
+    const nextDates = calcDates( startDate, days );
+    const dateFrom = nextDates[ 0 ];
+    const dateTill = nextDates[ nextDates.length - 1 ];
+
+    return { prevDates, nextDates, dateFrom, dateTill };
+}
+
+function DateInit( { mode, process, entriesMode } ) {
 
     const STATE = useContext( STATEContext );
-
-    const { init } = STATE.state.uiux;
-
-    const settings = STATE.state.data.settings;
-
-    const initializeList = () => {
-        STATE.dispatch( { 
-            namespace, 
-            type: 'INITIALIZE_LIST',
-            payload: { 
-                centralDate: settings.data.centralDate, 
-                num: 7
-            }
-        } );
-    }
-
-    const initializeListAfterRequest = () => {
-        STATE.dispatch( { 
-            namespace, 
-            type: 'INITIALIZE_LIST_AFTER_REQUEST' 
-        } );
-    }
-
-    const retrieveDatesRequestDone = ( dateFrom, dateTill, dataFromDB ) => {
-        STATE.dispatch( { 
-            namespace,
-            type: 'RETRIEVE_DATES_REQUEST_DONE',
-            payload: { dateFrom, dateTill, dataFromDB },
-
-        } );
-    }
-
-    const retrieveDatesRequestError = ( dateFrom, dateTill ) => {
-        STATE.dispatch( { 
-            namespace,
-            type: 'RETRIEVE_DATES_REQUEST_ERROR',
-            payload: { dateFrom, dateTill },
-
-        } );
-    }
+    const { dispatch } = STATE;
+    const { dates, settings } = STATE.state.data;
+    const centralDate = calcCentralDate( settings.data.centralDate );
+    const days = 7;
 
     useEffect( () => {
-            if ( Object.keys( init.dates ).length === 0 ) {
-                console.log( 'To_init_dates...' )
-                initializeList();
+        if ( Object.keys( process ).length === 0 ) {  // process === {}
+            const payload = { mode: { isInit: true } };
+            dispatch( { namespace, type: 'DO_INIT', payload } );
 
-            } else if ( init.dates.isBeforeRequest ) {
-                const { dateFrom, dateTill } = init.dates;
-                const strFrom = dateToYYYYMMDD( dateFrom );
-                const strTill = dateToYYYYMMDD( dateTill );
+        } else if ( process.isOnInit || ( process.isWaiting && entriesMode.isRetrieveAll ) ) {
+            if ( mode.isInit ) {
+                const payload = { 
+                    ...calcInitDates( centralDate, days ),
+                    entriesMode
+                };
+                dispatch( { namespace, type: 'INIT_DATES', payload } );
 
-                if ( init.payments.genres && init.payments.funds ) {
-    
-                    if ( init.payments.genres.isDone || init.payments.funds.isDone ) {
-                        console.log( 'Requesting... ', strFrom, strTill )
-                        const uri = `/.netlify/functions/entry?range=${strFrom}-${strTill}`;
-                        const method = 'GET';
+            } else if ( mode.isInitPrev ) {
+                const payload = {
+                    ...calcPrevDates( dates[ 0 ].data.date, days ),
+                    entriesMode
+                };
+                dispatch( { namespace, type: 'INIT_PREV_DATES', payload } );
 
-                        //mockFetch( uri, { method } )
-                        realFetch( uri, { method } )
-                            .then( res => {
-                                alert( JSON.stringify( res ) );
-                                retrieveDatesRequestDone( dateFrom, dateTill, res );
-                            } )
-                            .catch( err => {
-                                alert( `${err} (${method} ${uri}).` );
-                                console.log( `${err} (${method} ${uri}).` );
-                                retrieveDatesRequestError( dateFrom, dateTill );
-                            } );
-                        initializeListAfterRequest();
-
-                    } else if ( init.payments.genres.isError || init.payments.funds.isError ) {
-                        retrieveDatesRequestError( dateFrom, dateTill );
-                        initializeListAfterRequest();
-                    }
+            } else if ( mode.isInitNext ) {
+                const payload = {
+                    ...calcNextDates( dates[ dates.length - 1 ].data.date, days ),
+                    entriesMode
+                };
+                dispatch( { namespace, type: 'INIT_NEXT_DATES', payload } );
             }
         }
     } );
 
-    return ( <></> );
+    return <></>;
 }
 
 export default DateInit;

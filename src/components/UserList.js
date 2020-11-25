@@ -54,7 +54,7 @@ function UserInit() {
             namespace={namespace} 
         >
             <RetrieveAllRequest 
-                process={init.users}
+                process={init.users.process}
                 url={`/.netlify/functions/user`}
             />
         </CRUDContextProvider>
@@ -68,6 +68,7 @@ function User( { index, users } ) {
     const STATE = useContext( STATEContext )
     const { dispatch } = STATE;
     const payload = { index, _saved: user.data };
+    const dataToDB = parseUserToDB( user.data );
 
     return (
         <CRUDContextProvider 
@@ -79,22 +80,22 @@ function User( { index, users } ) {
                 <CreateRequest 
                     process={user.uiux.process}
                     url={`/.netlify/functions/user`}
-                    data={user.data}
-                    parseDataToDB={parseUserToDB}
+                    dataToDB={dataToDB}
+                    body={JSON.stringify( { data: dataToDB } )}
                 />
             : user.uiux.mode.isUpdate ?
                 <UpdateRequest 
                     process={user.uiux.process}
                     url={`/.netlify/functions/user?id=${user.data.id}`}
-                    data={user.data}
-                    parseDataToDB={parseUserToDB}
+                    dataToDB={dataToDB}
+                    body={JSON.stringify( { data: dataToDB } )}
                 />
             : user.uiux.mode.isDelete ?
                 <DeleteRequest 
                     process={user.uiux.process}
                     url={`/.netlify/functions/user?id=${user.data.id}`}
-                    data={user.data}
-                    parseDataToDB={parseUserToDB}
+                    dataToDB={dataToDB}
+                    body={JSON.stringify( { data: dataToDB } )}
                 />
             : null }
 

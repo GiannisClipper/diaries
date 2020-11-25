@@ -4,8 +4,8 @@ import { REFContext } from './REFContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBackward, faForward } from '@fortawesome/free-solid-svg-icons';
 import DateInit from './DateInit';
-import GenreInit from './payments/GenreInit';
-import FundInit from './payments/FundInit';
+import { GenreInit } from './payments/GenreList';
+import { FundInit } from './payments/FundList';
 import ADate from './ADate';
 import styled from 'styled-components';
 import StyledList from './libs/ListBox';
@@ -63,13 +63,12 @@ function DateList() {
     const REF = useContext( REFContext );
 
     const { init } = STATE.state.uiux;
-    const { data } = STATE.state;
+    const { dates } = STATE.state.data;
 
     const prevRef = useRef( null );
     const listRef = useRef( null );
     const contentRef = useRef( null );
     const centralRef = useRef( null );
-    const scrollToCentralRef = useRef( null );
     const nextRef = useRef( null );
     const scrollTop = useRef( 0 );
     const scrollDirection = useRef( {} );
@@ -95,10 +94,21 @@ function DateList() {
         const prev = prevRef.current;
         const listBounds = list.getBoundingClientRect();
         const { top, height } = prev.getBoundingClientRect();
-        if ( top + ( height * 0.1 ) > listBounds.top ) {
+        if ( top + ( height * 0.1 ) > listBounds.top || event.type === 'click' ) {
             console.log( 'add_prev_dates' )
-            STATE.dispatch( { namespace, type: 'ADD_PREV_DATES', payload: { num: 7 } } );
+            STATE.dispatch( { namespace, type: 'DO_INIT', payload: { mode: { isInitPrev: true } } } );
         }
+    }
+
+    const entriesMode = () => {
+        const process1 = init.payments.genres.process;
+        const process2 = init.payments.funds.process;
+
+        return process1.isDone && process2.isDone 
+            ? { isRetrieveAll: true }
+            : process1.isError || process2.isError 
+            ? { isOnRequestError: true }
+            : { isWaiting: true };
     }
 
     const handleScrollDown = event => {
@@ -111,9 +121,9 @@ function DateList() {
         const next = nextRef.current;
         const listBounds = list.getBoundingClientRect();
         const { top, height } = next.getBoundingClientRect();
-        if ( top + ( height * 0.9 ) < listBounds.bottom ) {
+        if ( top + ( height * 0.9 ) < listBounds.bottom || event.type === 'click' ) {
             console.log( 'add_next_dates' )
-            STATE.dispatch( { namespace, type: 'ADD_NEXT_DATES', payload: { num: 7 } } );
+            STATE.dispatch( { namespace, type: 'DO_INIT', payload: { mode: { isInitNext: true } } } );
         }
     }
 
@@ -124,14 +134,13 @@ function DateList() {
     }
 
     useEffect( () => {
-        if ( init.dates && init.dates.isAfterRequest ) {
-            // auto scroll to central date only 1st time
-            if ( !scrollToCentralRef.current ) { 
+
+        if ( init.dates.process.isDone ) {
+            if ( init.dates.mode.isInit ) {
                 console.log( 'scrollToCentralDate' )
                 REF.current.scrollToCentralDate();
-                scrollToCentralRef.current = true;
             }
-        } else if ( init.dates && ( init.dates.isDone || init.dates.isError ) ) {
+
             const list = listRef.current;
             const content = contentRef.current;
             const prev = prevRef.current;
@@ -165,12 +174,19 @@ function DateList() {
     return (
         <List reference={listRef}>
             <ContentBox ref={contentRef}>
+
                 <GenreInit />
                 <FundInit />
-                <DateInit />
+                <DateInit
+                    process={init.dates.process}
+                    mode={init.dates.mode}
+                    entriesMode={entriesMode()}
+                />
+
                 <PrevButton reference={prevRef} />
+
                 <ul>
-                    {data.dates.map( aDate => (
+                    {dates.map( aDate => (
                         <ADate
                             key={aDate.data.date}
                             aDate={aDate}
@@ -178,10 +194,11 @@ function DateList() {
                         /> 
                     ) )}
                 </ul>
+
                 <NextButton reference={nextRef} />
+
             </ContentBox>
         </List>
     );
 }
-
 export default DateList;

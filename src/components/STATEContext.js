@@ -3,7 +3,8 @@ import { initState } from '../storage/schemas';
 import authReducer from '../storage/authReducer';
 import settingsReducer from '../storage/settingsReducer';
 import usersReducer from '../storage/usersReducer';
-import { datesReducer, entriesReducer } from '../storage/datesReducer';
+import datesReducer from '../storage/datesReducer';
+import entriesReducer from '../storage/entriesReducer';
 import genresReducer from '../storage/payments/genresReducer';
 import fundsReducer from '../storage/payments/fundsReducer';
 
@@ -43,6 +44,8 @@ const STATEContext = createContext();
 const STATEContextProvider = props => {
 
     const [ state, dispatch ] = useReducer( STATEReducer, initState() );
+
+    window.state = state;
 
     useEffect( () => {
         console.log( 'Has rendered. ', 'STATEContext.Provider' );

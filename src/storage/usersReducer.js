@@ -122,19 +122,25 @@ const usersReducer = ( state, action ) => {
 
             return { ...state, data: { ...state.data, users } };
 
+        } case 'RETRIEVE_ALL_REQUEST_BEFORE': {
+            const { init } = state.uiux;
+            init.users.process = { isOnRequestBefore: true };
+
+            return { uiux: { ...state.uiux, init }, data: state.data };
+            
         } case 'RETRIEVE_ALL_REQUEST': {
             const users = [ initUser() ];
             users[ 0 ].uiux.mode = { isRetrieveAll: true };
             users[ 0 ].uiux.process = { isOnRequest: true };
 
             const { init } = state.uiux;
-            init.users = { isOnRequest: true };
+            init.users.process = { isOnRequest: true };
 
             return { uiux: { ...state.uiux, init }, data: { ...state.data, users } };
 
-        } case 'RETRIEVE_ALL_REQUEST_WAITING': {
+        } case 'RETRIEVE_ALL_REQUEST_AFTER': {
             const { init } = state.uiux;
-            init.users = { isWaiting: true };
+            init.users.process = { isOnRequestAfter: true };
 
             return { uiux: { ...state.uiux, init }, data: state.data };
 
@@ -150,7 +156,7 @@ const usersReducer = ( state, action ) => {
             users.push( initUser() );
 
             const { init } = state.uiux;
-            init.users = { isDone: true };
+            init.users.process = { isDone: true };
 
             return { uiux: { ...state.uiux, init }, data: { ...state.data, users } };
 
@@ -161,7 +167,7 @@ const usersReducer = ( state, action ) => {
             users.push( user );
 
             const { init } = state.uiux;
-            init.users = { isError: true };
+            init.users.process = { isError: true };
             init.error = action.payload.error;
 
             return { uiux: { ...state.uiux, init }, data: { ...state.data, users } };

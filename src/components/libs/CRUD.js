@@ -17,6 +17,9 @@ const CRUDContext = createContext();
 const CRUDContextProvider = ( { dispatch, namespace, payload, children } ) => {
 
     const actions = {
+        openMenu: action( { dispatch, namespace, type: 'OPEN_MENU', payload } ),
+        closeMenu: action( { dispatch, namespace, type: 'CLOSE_MENU', payload } ),
+
         openForm: action( { dispatch, namespace, type: 'OPEN_FORM', payload } ),
         closeForm: action( { dispatch, namespace, type: 'CLOSE_FORM', payload } ),
 
@@ -35,10 +38,13 @@ const CRUDContextProvider = ( { dispatch, namespace, payload, children } ) => {
         deleteRequestDone: action( { dispatch, namespace, type: 'DELETE_REQUEST_DONE', payload } ),
         deleteRequestError: action( { dispatch, namespace, type: 'DELETE_REQUEST_ERROR', payload } ),
 
+        retrieveAllRequestBefore: action( { dispatch, namespace, type: 'RETRIEVE_ALL_REQUEST_BEFORE', payload } ),
         retrieveAllRequest: action( { dispatch, namespace, type: 'RETRIEVE_ALL_REQUEST', payload } ),
-        retrieveAllRequestWaiting: action( { dispatch, namespace, type: 'RETRIEVE_ALL_REQUEST_WAITING', payload } ),
+        retrieveAllRequestAfter: action( { dispatch, namespace, type: 'RETRIEVE_ALL_REQUEST_AFTER', payload } ),
         retrieveAllRequestDone: action( { dispatch, namespace, type: 'RETRIEVE_ALL_REQUEST_DONE', payload } ),
         retrieveAllRequestError: action( { dispatch, namespace, type: 'RETRIEVE_ALL_REQUEST_ERROR', payload } ),
+
+        retrieveAllRequestBefore: action( { dispatch, namespace, type: 'RETRIEVE_ALL_REQUEST_BEFORE', payload } ),
     }
 
     useEffect( () => {
@@ -147,14 +153,12 @@ const doFetch = ( url, args, onDone, onError, dataFromDB ) => {
     } );
 }
 
-function CreateRequest( { process, url, data, parseDataToDB }) {
+function CreateRequest( { process, url, dataToDB, body }) {
 
     const { createRequestDone, createRequestError } = useContext( CRUDContext );
 
     useEffect( () => {
         if ( process.isOnRequest ) {
-            const dataToDB = parseDataToDB( data );
-            const body = JSON.stringify( { data: dataToDB } );    
             const args = { method: 'POST', body };
             const onDone = createRequestDone;
             const onError = createRequestError;
@@ -166,19 +170,17 @@ function CreateRequest( { process, url, data, parseDataToDB }) {
     return <></>;
 }
 
-function UpdateRequest( { process, url, data, parseDataToDB }) {
+function UpdateRequest( { process, url, dataToDB, body }) {
 
     const { updateRequestDone, updateRequestError } = useContext( CRUDContext );
 
     useEffect( () => {
         if ( process.isOnRequest ) {
-            const dataToDB = parseDataToDB( data );
-            const body = JSON.stringify( { data: dataToDB } );    
             const args = { method: 'PUT', body };
             const onDone = updateRequestDone;
             const onError = updateRequestError;
-            const getDataId = res => data.id;
-            const dataFromDB = res => ( { ...dataToDB, _id: getDataId( res ) } );
+            const getId = res => dataToDB.id;
+            const dataFromDB = res => ( { ...dataToDB, _id: getId( res ) } );
             doFetch( url, args, onDone, onError, dataFromDB );
         }
     } );
@@ -186,19 +188,17 @@ function UpdateRequest( { process, url, data, parseDataToDB }) {
     return <></>;
 }
 
-function DeleteRequest( { process, url, data, parseDataToDB }) {
+function DeleteRequest( { process, url, dataToDB, body }) {
 
     const { deleteRequestDone, deleteRequestError } = useContext( CRUDContext );
 
     useEffect( () => {
         if ( process.isOnRequest ) {
-            const dataToDB = parseDataToDB( data );
-            const body = JSON.stringify( { data: dataToDB } );    
             const args = { method: 'DELETE', body };
             const onDone = deleteRequestDone;
             const onError = deleteRequestError;
-            const getDataId = () => data.id;
-            const dataFromDB = res => ( { ...dataToDB, _id: getDataId( res ) } );
+            const getId = () => dataToDB.id;
+            const dataFromDB = res => ( { ...dataToDB, _id: getId( res ) } );
             doFetch( url, args, onDone, onError, dataFromDB );
         }
     } );
@@ -209,15 +209,19 @@ function DeleteRequest( { process, url, data, parseDataToDB }) {
 function RetrieveAllRequest( { process, url }) {
 
     const { 
+        retrieveAllRequestBefore,
         retrieveAllRequest,
-        retrieveAllRequestWaiting,
+        retrieveAllRequestAfter,
         retrieveAllRequestDone,
         retrieveAllRequestError 
     } = useContext( CRUDContext );
 
     useEffect( () => {
         if ( Object.keys( process ).length === 0 ) {  // process === {}
-            console.log( 'To_init_users...' )
+            console.log( 'RetrieveAllRequest starts...' )
+            retrieveAllRequestBefore();
+
+        } else if ( process.isOnRequestBefore ) {
             retrieveAllRequest();
 
         } else if ( process.isOnRequest ) {
@@ -226,7 +230,20 @@ function RetrieveAllRequest( { process, url }) {
             const onError = retrieveAllRequestError;
             const dataFromDB = res => Array.isArray( res ) ? res : [];
             doFetch( url, args, onDone, onError, dataFromDB );
-            retrieveAllRequestWaiting();
+            retrieveAllRequestAfter();
+
+        } else if ( process.isOnRequestAfter ) {
+            // nothing here
+
+        } else if ( process.isSuspended ) {
+            retrieveAllRequestError();
+
+        } else if ( process.isOnRequestDone ) {
+            // nothing here
+
+        } else if ( process.isOnRequestError ) {
+            // nothing here
+
         }
     } );
 

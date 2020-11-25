@@ -42,7 +42,7 @@ function GenreInit() {
             namespace={namespace} 
         >
             <RetrieveAllRequest 
-                process={init.payments.genres}
+                process={init.payments.genres.process}
                 url={`/.netlify/functions/payments-genre`}
             />
         </CRUDContextProvider>
@@ -56,6 +56,7 @@ function Genre( { index, genres } ) {
     const STATE = useContext( STATEContext )
     const { dispatch } = STATE;
     const payload = { index, _saved: genre.data };
+    const dataToDB = parseGenreToDB( genre.data );
 
     const typeInfo = genre.uiux.mode.isCreate
         ? ''
@@ -77,22 +78,22 @@ function Genre( { index, genres } ) {
                 <CreateRequest
                     process={genre.uiux.process}
                     url={ `/.netlify/functions/payments-genre`}
-                    data={genre.data}
-                    parseDataToDB={parseGenreToDB}
+                    dataToDB={dataToDB}
+                    body={JSON.stringify( { data: dataToDB } )}
                 />
             : genre.uiux.mode.isUpdate ?
                 <UpdateRequest 
                     process={genre.uiux.process}
                     url={`/.netlify/functions/payments-genre?id=${genre.data.id}`}
-                    data={genre.data}
-                    parseDataToDB={parseGenreToDB}
+                    dataToDB={dataToDB}
+                    body={JSON.stringify( { data: dataToDB } )}
                 />
             : genre.uiux.mode.isDelete ?
                 <DeleteRequest 
                     process={genre.uiux.process}
                     url={`/.netlify/functions/payments-genre?id=${genre.data.id}`}
-                    data={genre.data}
-                    parseDataToDB={parseGenreToDB}
+                    dataToDB={dataToDB}
+                    body={JSON.stringify( { data: dataToDB } )}
                 />
             : null }
 

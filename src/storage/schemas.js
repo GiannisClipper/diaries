@@ -28,11 +28,14 @@ const initState = () => ( {
     },
     uiux: {
         init: {
-            users: {},  // isOnRequest, isWaiting, isDone, isError
-            dates: {},  // isBeforeRequest (dateFrom, dateTill), isAfterRequest, isDone, isError
+            users: { process: {}, },  // process: isOnRequestBefore, isOnRequest, isOnRequestAfter, isDone, isError, isSuspended
+            dates: { 
+                process: {},  // isOnInit, isDone 
+                mode: {}, // isInit, isInitPrev, isInitNext
+            },
             payments: {
-                genres: {},  // isOnRequest, isWaiting, isDone, isError
-                funds: {},  // isOnRequest, isWaiting, isDone, isError
+                genres: { process: {}, },  // process: isOnRequestBefore, isOnRequest, isOnRequestAfter, isDone, isError, isSuspended
+                funds: { process: {}, },  // process: isOnRequestBefore, isOnRequest, isOnRequestAfter, isDone, isError, isSuspended
             },
         },
         error: {}
@@ -63,7 +66,7 @@ const initDate = () => ( {
         entries: [],
     },
     uiux: {
-        process: {},  // isOnRequest
+        //process: {},  // isOnRequest
         isTheCentral: null,
     }
 } );
@@ -79,9 +82,11 @@ const initEntry = () => ( {
         menu: {},  // isOpen
         form: {},  // isOpen
         type: {},  // isNote, isPayment
-        mode: {},  // isCreate, isUpdate, isDelete
+        mode: {},  // isCreate, isUpdate, isDelete, isRetieveAll
         process: {},  // isOnRequest
-        status: {},  // isSuspended
+        status: {},  // isWaiting, isSuspended
+        dateFrom: null,  // when mode = isRetieveAll
+        dateTill: null,  // when mode = isRetieveAll
     }
 } );
 

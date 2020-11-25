@@ -146,6 +146,12 @@ const genresReducer = ( state, action ) => {
             payments = { ...payments, genres };
             return { ...state, data: { ...state.data, payments } };
 
+        } case 'RETRIEVE_ALL_REQUEST_BEFORE': {
+            const { init } = state.uiux;
+            init.payments.genres.process = { isOnRequestBefore: true };
+
+            return { uiux: { ...state.uiux, init }, data: state.data };
+
         } case 'RETRIEVE_ALL_REQUEST': {
             let payments = { ...state.data.payments };
             let genres = [ ...payments.genres ];
@@ -156,13 +162,13 @@ const genresReducer = ( state, action ) => {
 
             payments = { ...payments, genres };
             const { init } = state.uiux;
-            init.payments.genres = { isOnRequest: true };
+            init.payments.genres.process = { isOnRequest: true };
 
             return { uiux: { ...state.uiux, init }, data: { ...state.data, payments } };
 
-        } case 'RETRIEVE_ALL_REQUEST_WAITING': {
+        } case 'RETRIEVE_ALL_REQUEST_AFTER': {
             const { init } = state.uiux;
-            init.payments.genres = { isWaiting: true };
+            init.payments.genres.process = { isOnRequestAfter: true };
 
             return { uiux: { ...state.uiux, init }, data: state.data };
 
@@ -180,7 +186,7 @@ const genresReducer = ( state, action ) => {
 
             payments = { ...payments, genres };
             const { init } = state.uiux;
-            init.payments.genres = { isDone: true };
+            init.payments.genres.process = { isDone: true };
 
             return { uiux: { ...state.uiux, init }, data: { ...state.data, payments } };
 
@@ -194,7 +200,7 @@ const genresReducer = ( state, action ) => {
 
             payments = { ...payments, genres };
             const { init } = state.uiux;
-            init.payments.genres = { isError: true };
+            init.payments.genres.process = { isError: true };
             init.error = action.payload.error;
 
             return { uiux: { ...state.uiux, init }, data: { ...state.data, payments } };

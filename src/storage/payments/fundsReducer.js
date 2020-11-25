@@ -146,6 +146,12 @@ const fundsReducer = ( state, action ) => {
             payments = { ...payments, funds };
             return { ...state, data: { ...state.data, payments } };
 
+        } case 'RETRIEVE_ALL_REQUEST_BEFORE': {
+            const { init } = state.uiux;
+            init.payments.funds.process = { isOnRequestBefore: true };
+
+            return { uiux: { ...state.uiux, init }, data: state.data };
+
         } case 'RETRIEVE_ALL_REQUEST': {
             let payments = { ...state.data.payments };
             let funds = [ ...payments.funds ];
@@ -156,13 +162,13 @@ const fundsReducer = ( state, action ) => {
 
             payments = { ...payments, funds };
             const { init } = state.uiux;
-            init.payments.funds = { isOnRequest: true };
+            init.payments.funds.process = { isOnRequest: true };
 
             return { uiux: { ...state.uiux, init }, data: { ...state.data, payments } };
 
-        } case 'RETRIEVE_ALL_REQUEST_WAITING': {
+        } case 'RETRIEVE_ALL_REQUEST_AFTER': {
             const { init } = state.uiux;
-            init.payments.funds = { isWaiting: true };
+            init.payments.funds.process = { isOnRequestAfter: true };
 
             return { uiux: { ...state.uiux, init }, data: state.data };
 
@@ -180,7 +186,7 @@ const fundsReducer = ( state, action ) => {
 
             payments = { ...payments, funds };
             const { init } = state.uiux;
-            init.payments.funds = { isDone: true };
+            init.payments.funds.process = { isDone: true };
 
             return { uiux: { ...state.uiux, init }, data: { ...state.data, payments } };
 
@@ -194,7 +200,7 @@ const fundsReducer = ( state, action ) => {
 
             payments = { ...payments, funds };
             const { init } = state.uiux;
-            init.payments.funds = { isError: true };
+            init.payments.funds.process = { isError: true };
             init.error = action.payload.error;
 
             return { uiux: { ...state.uiux, init }, data: { ...state.data, payments } };
