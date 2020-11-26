@@ -43,8 +43,6 @@ const CRUDContextProvider = ( { dispatch, namespace, payload, children } ) => {
         retrieveAllRequestAfter: action( { dispatch, namespace, type: 'RETRIEVE_ALL_REQUEST_AFTER', payload } ),
         retrieveAllRequestDone: action( { dispatch, namespace, type: 'RETRIEVE_ALL_REQUEST_DONE', payload } ),
         retrieveAllRequestError: action( { dispatch, namespace, type: 'RETRIEVE_ALL_REQUEST_ERROR', payload } ),
-
-        retrieveAllRequestBefore: action( { dispatch, namespace, type: 'RETRIEVE_ALL_REQUEST_BEFORE', payload } ),
     }
 
     useEffect( () => {
@@ -153,7 +151,7 @@ const doFetch = ( url, args, onDone, onError, dataFromDB ) => {
     } );
 }
 
-function CreateRequest( { process, url, dataToDB, body }) {
+function CreateRequest( { process, url, body, dataToDB }) {
 
     const { createRequestDone, createRequestError } = useContext( CRUDContext );
 
@@ -170,7 +168,7 @@ function CreateRequest( { process, url, dataToDB, body }) {
     return <></>;
 }
 
-function UpdateRequest( { process, url, dataToDB, body }) {
+function UpdateRequest( { process, url, body, dataToDB, id }) {
 
     const { updateRequestDone, updateRequestError } = useContext( CRUDContext );
 
@@ -179,8 +177,7 @@ function UpdateRequest( { process, url, dataToDB, body }) {
             const args = { method: 'PUT', body };
             const onDone = updateRequestDone;
             const onError = updateRequestError;
-            const getId = res => dataToDB.id;
-            const dataFromDB = res => ( { ...dataToDB, _id: getId( res ) } );
+            const dataFromDB = () => ( { ...dataToDB, _id: id } );
             doFetch( url, args, onDone, onError, dataFromDB );
         }
     } );
@@ -188,7 +185,7 @@ function UpdateRequest( { process, url, dataToDB, body }) {
     return <></>;
 }
 
-function DeleteRequest( { process, url, dataToDB, body }) {
+function DeleteRequest( { process, url, body, dataToDB, id }) {
 
     const { deleteRequestDone, deleteRequestError } = useContext( CRUDContext );
 
@@ -197,8 +194,7 @@ function DeleteRequest( { process, url, dataToDB, body }) {
             const args = { method: 'DELETE', body };
             const onDone = deleteRequestDone;
             const onError = deleteRequestError;
-            const getId = () => dataToDB.id;
-            const dataFromDB = res => ( { ...dataToDB, _id: getId( res ) } );
+            const dataFromDB = () => ( { ...dataToDB, _id: id } );
             doFetch( url, args, onDone, onError, dataFromDB );
         }
     } );

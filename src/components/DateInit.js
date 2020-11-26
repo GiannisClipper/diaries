@@ -66,7 +66,12 @@ function DateInit( { mode, process, entriesMode } ) {
             const payload = { mode: { isInit: true } };
             dispatch( { namespace, type: 'DO_INIT', payload } );
 
-        } else if ( process.isOnInit || ( process.isWaiting && entriesMode.isRetrieveAll ) ) {
+        } else if ( 
+                process.isOnInit || 
+                ( process.isWaiting && entriesMode.isRetrieveAll ) ||
+                ( process.isWaiting && entriesMode.isOnRequestError ) 
+            ) {
+
             if ( mode.isInit ) {
                 const payload = { 
                     ...calcInitDates( centralDate, days ),

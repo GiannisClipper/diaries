@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { STATEContext } from './STATEContext';
 import { REFContext } from './REFContext';
 
+import { ToolBox } from './libs/ToolBox';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBan } from '@fortawesome/free-solid-svg-icons';
 
@@ -83,7 +84,7 @@ function Entry( { date, entry, inSequence } ) {
         REF.current.copy = null;
         REF.current.paste = null;
 
-        REF.current.saved = { date, entry, inSequence };
+        REF.current._saved = { date, entry, inSequence };
     }
 
     const doCopy = ( date, entry, inSequence ) => {
@@ -91,7 +92,7 @@ function Entry( { date, entry, inSequence } ) {
         REF.current.copy = { date, inSequence };
         REF.current.paste = null;
 
-        REF.current.saved = { date, entry, inSequence };
+        REF.current._saved = { date, entry, inSequence };
     }
 
     const doPaste = ( date, entry, inSequence ) => {
@@ -127,14 +128,14 @@ function Entry( { date, entry, inSequence } ) {
 
     const { genres, funds } = STATE.state.data.payments;
 
-    REF.current.saved = { date, entry, inSequence };
+    REF.current._saved = { date, entry, inSequence };
 
     const parseDataToDB = entry.uiux.type.isPayment 
         ? () => parsePaymentToDB( { ...entry.data, date: dateToYYYYMMDD( date ), inSequence }, genres, funds )
         : () => parseNoteToDB( { ...entry.data, date: dateToYYYYMMDD( date ), inSequence } );
 
     const body = () => JSON.stringify( {
-        oldSaved: { date: dateToYYYYMMDD( REF.current.saved.date ), inSequence: REF.current.saved.inSequence },
+        oldSaved: { date: dateToYYYYMMDD( REF.current._saved.date ), inSequence: REF.current._saved.inSequence },
         newSaved: { date: dateToYYYYMMDD( date ), inSequence },
         data: parseDataToDB(),
     } );
@@ -152,22 +153,24 @@ function Entry( { date, entry, inSequence } ) {
                 <CreateRequest
                     process={entry.uiux.process}
                     url={ `/.netlify/functions/entry`}
-                    dataToDB={parseDataToDB()}
                     body={body()}
+                    dataToDB={parseDataToDB()}
                 />
             : entry.uiux.mode.isUpdate ?
                 <UpdateRequest 
                     process={entry.uiux.process}
                     url={`/.netlify/functions/entry?id=${entry.data.id}`}
-                    dataToDB={parseDataToDB()}
                     body={body()}
+                    dataToDB={parseDataToDB()}
+                    id={entry.data.id}
                 />
             : entry.uiux.mode.isDelete ?
                 <DeleteRequest 
                     process={entry.uiux.process}
                     url={`/.netlify/functions/entry?id=${entry.data.id}`}
-                    dataToDB={parseDataToDB()}
                     body={body()}
+                    dataToDB={parseDataToDB()}
+                    id={entry.data.id}
                 />
             : entry.uiux.mode.isRetrieveAll ?
                 <RetrieveAllRequest
@@ -192,9 +195,9 @@ function Entry( { date, entry, inSequence } ) {
 
                 <RowMenu>
                     {entry.uiux.status.isWaiting
-                        ? <Loader />
+                        ? <ToolBox><Loader /></ToolBox>
                         : entry.uiux.status.isSuspended
-                        ? <FontAwesomeIcon icon={ faBan } className="icon" />
+                        ? <ToolBox><FontAwesomeIcon icon={ faBan } className="icon" /></ToolBox>
                         : <EntryMenuTool date={date} entry={entry} inSequence={inSequence} />
                     }
                 </RowMenu>

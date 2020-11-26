@@ -100,17 +100,6 @@ function DateList() {
         }
     }
 
-    const entriesMode = () => {
-        const process1 = init.payments.genres.process;
-        const process2 = init.payments.funds.process;
-
-        return process1.isDone && process2.isDone 
-            ? { isRetrieveAll: true }
-            : process1.isError || process2.isError 
-            ? { isOnRequestError: true }
-            : { isWaiting: true };
-    }
-
     const handleScrollDown = event => {
         const list = listRef.current;
         scrollDirection.current = { isDown: true };
@@ -131,6 +120,17 @@ function DateList() {
         const list = listRef.current;
         const central = centralRef.current;
         list.scrollTop = central.offsetTop - ( list.clientHeight * 0.10 );
+    }
+
+    const entriesMode = () => {
+        const process1 = init.payments.genres.process;
+        const process2 = init.payments.funds.process;
+
+        return process1.isDone && process2.isDone 
+            ? { isRetrieveAll: true }
+            : process1.isError || process2.isError 
+            ? { isOnRequestError: true }
+            : { isWaiting: true };
     }
 
     useEffect( () => {

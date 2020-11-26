@@ -78,22 +78,24 @@ function Genre( { index, genres } ) {
                 <CreateRequest
                     process={genre.uiux.process}
                     url={ `/.netlify/functions/payments-genre`}
-                    dataToDB={dataToDB}
                     body={JSON.stringify( { data: dataToDB } )}
+                    dataToDB={dataToDB}
                 />
             : genre.uiux.mode.isUpdate ?
                 <UpdateRequest 
                     process={genre.uiux.process}
                     url={`/.netlify/functions/payments-genre?id=${genre.data.id}`}
-                    dataToDB={dataToDB}
                     body={JSON.stringify( { data: dataToDB } )}
+                    dataToDB={dataToDB}
+                    id={genre.data.id}
                 />
             : genre.uiux.mode.isDelete ?
                 <DeleteRequest 
                     process={genre.uiux.process}
                     url={`/.netlify/functions/payments-genre?id=${genre.data.id}`}
-                    dataToDB={dataToDB}
                     body={JSON.stringify( { data: dataToDB } )}
+                    dataToDB={dataToDB}
+                    id={genre.data.id}
                 />
             : null }
 

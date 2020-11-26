@@ -1,6 +1,6 @@
 const getFromList = ( list, field, value ) => {
     const result = list.filter( x => x.data[ field ] === value );
-    return result.length > 0 ? result[ 0 ].data : null;
+    return result.length > 0 ? result[ 0 ].data : {};
 }
 
 const parsePaymentFromDB = ( data, genres, funds ) => ( {

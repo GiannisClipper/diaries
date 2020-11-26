@@ -4,9 +4,7 @@ const REFContext = createContext();
 
 const REFContextProvider = props => {
 
-    const initRef = useRef( {
-        initialization: {}
-    } );
+    const initRef = useRef( {} );
 
     return (
         <REFContext.Provider value={ initRef }>

@@ -56,7 +56,7 @@ function Fund( { index, funds } ) {
     const STATE = useContext( STATEContext )
     const { dispatch } = STATE;
     const payload = { index, _saved: fund.data };
-    const dataToDB = parseFundToDB( fund.data );
+    const dataToDB =  parseFundToDB( fund.data );
 
     return (
         <CRUDContextProvider 
@@ -68,22 +68,24 @@ function Fund( { index, funds } ) {
                 <CreateRequest
                     process={fund.uiux.process}
                     url={ `/.netlify/functions/payments-fund`}
-                    dataToDB={dataToDB}
                     body={JSON.stringify( { data: dataToDB } )}
+                    dataToDB={dataToDB}
                 />
             : fund.uiux.mode.isUpdate ?
                 <UpdateRequest 
                     process={fund.uiux.process}
                     url={`/.netlify/functions/payments-fund?id=${fund.data.id}`}
-                    dataToDB={dataToDB}
                     body={JSON.stringify( { data: dataToDB } )}
+                    dataToDB={dataToDB}
+                    id={fund.data.id}
                 />
             : fund.uiux.mode.isDelete ?
                 <DeleteRequest 
                     process={fund.uiux.process}
                     url={`/.netlify/functions/payments-fund?id=${fund.data.id}`}
-                    dataToDB={dataToDB}
                     body={JSON.stringify( { data: dataToDB } )}
+                    dataToDB={dataToDB}
+                    id={fund.data.id}
                 />
             : null }
             

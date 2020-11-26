@@ -30,7 +30,7 @@ const initState = () => ( {
         init: {
             users: { process: {}, },  // process: isOnRequestBefore, isOnRequest, isOnRequestAfter, isDone, isError, isSuspended
             dates: { 
-                process: {},  // isOnInit, isDone 
+                process: {},  // isOnInit, isWaiting, isDone 
                 mode: {}, // isInit, isInitPrev, isInitNext
             },
             payments: {

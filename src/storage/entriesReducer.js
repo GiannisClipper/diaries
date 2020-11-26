@@ -66,7 +66,7 @@ const entriesReducer = ( state, action ) => {
                 deconstructEntry( paste.inSequence );
                 activeEntry = [ entryToMove, { ...activeEntry } ];
                 constructEntry();
-                activeDate.data.entries.forEach( x => x.uiux.status = { isSuspended: true } );
+                activeDate.data.entries.forEach( x => x.uiux.status = { isWaiting: true } );
                 constructDate();
             }
 
@@ -87,7 +87,7 @@ const entriesReducer = ( state, action ) => {
             deconstructEntry( paste.inSequence );
             activeEntry = [ entryToCopy, { ...activeEntry } ];
             constructEntry();
-            activeDate.data.entries.forEach( x => x.uiux.status = { isSuspended: true } );
+            activeDate.data.entries.forEach( x => x.uiux.status = { isWaiting: true } );
             constructDate();
 
             return { uiux: state.uiux, data: { ...state.data, dates } };
@@ -172,11 +172,12 @@ const entriesReducer = ( state, action ) => {
         } case 'VALIDATION_DONE': {
 
             dates = [ ...state.data.dates ];
-            const { date, inSequence } = action.payload;
+            const { date, inSequence, data } = action.payload;
 
             deconstructDate( getDateInSequence( date ) );
             deconstructEntry( inSequence );
             activeEntry.uiux.process = { isOnValidationDone: true };
+            activeEntry.data = data;
             constructEntry();
             constructDate();
 
@@ -270,7 +271,7 @@ const entriesReducer = ( state, action ) => {
         } case 'UPDATE_REQUEST_ERROR': {
 
             dates = [ ...state.data.dates ];
-            const { date, inSequence, saved } = action.payload;
+            const { date, inSequence, _saved } = action.payload;
 
             deconstructDate( getDateInSequence( date ) );
             deconstructEntry( inSequence );
@@ -280,9 +281,9 @@ const entriesReducer = ( state, action ) => {
             activeDate.data.entries.forEach( x => x.uiux.status = {} );
             constructDate();
 
-            deconstructDate( getDateInSequence( saved.date ) );
-            deconstructEntry( saved.inSequence );
-            entryToMoveBack.data = { ...saved.entry.data };
+            deconstructDate( getDateInSequence( _saved.date ) );
+            deconstructEntry( _saved.inSequence );
+            entryToMoveBack.data = { ..._saved.entry.data };
             entryToMoveBack.uiux.process = {};
             activeEntry.uiux.mode = {};
             entryToMoveBack.uiux.form = {};
