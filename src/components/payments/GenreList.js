@@ -36,6 +36,10 @@ function GenreInit() {
     const { dispatch } = STATE;
     const { init } = STATE.state.uiux;
 
+    useEffect( () => {
+        console.log( 'Has rendered. ', 'payments/GenreInit' );
+    } );
+
     return (
         <CRUDContextProvider 
             dispatch={dispatch} 

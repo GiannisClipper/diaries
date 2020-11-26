@@ -23,7 +23,7 @@ const BlockValue = styled( StyledBlock.BlockValue )`
     padding: 0;
 `;
 
-const ADate = React.memo( ( { aDate, reference } ) => {  // to differ from native function Date()
+const ADate = React.memo( ( { aDate, reference } ) => {  // Adate(), to differ from native function Date()
 
     const { date, entries } = aDate.data;
 

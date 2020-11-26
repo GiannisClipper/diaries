@@ -36,6 +36,10 @@ function FundInit() {
     const { dispatch } = STATE;
     const { init } = STATE.state.uiux;
 
+    useEffect( () => {
+        console.log( 'Has rendered. ', 'payments/FundInit' );
+    } );
+
     return (
         <CRUDContextProvider 
             dispatch={dispatch}

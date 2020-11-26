@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { STATEContext } from './STATEContext';
 import { REFContext } from './REFContext';
 
@@ -142,6 +142,10 @@ function Entry( { date, entry, inSequence } ) {
 
     const strFrom = !entry.uiux.dateFrom || dateToYYYYMMDD( entry.uiux.dateFrom );
     const strTill = !entry.uiux.dateFrom || dateToYYYYMMDD( entry.uiux.dateTill );
+
+    useEffect( () => {
+        console.log( 'Has rendered. ', 'Entry' );
+    } );
 
     return (
         <CRUDContextProvider 

@@ -15,6 +15,8 @@ const buttons = {
     delete: 'Διαγραφή',
     cancel: 'Άκυρο',
     login: 'Είσοδος',
+    prev: 'ΠΡΟΗΓΟΥΜΕΝΕΣ ΗΜ/ΝΙΕΣ',
+    next: 'ΕΠΟΜΕΝΕΣ ΗΜ/ΝΙΕΣ'
 }
 
 export default { heads, buttons };

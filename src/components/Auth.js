@@ -143,7 +143,7 @@ function Signin() {
                 <InputValue>
                     <input
                         value={data.username}
-                        onChange={event => setData( { ...data, username: event.target.value } )}
+                        onChange={event => setData( { ...data, username: event.target.value ? event.target.value : '' } )}
                     />
                 </InputValue>
             </InputBox>
@@ -156,7 +156,7 @@ function Signin() {
                     <input
                         type="password"
                         value={data.password}
-                        onChange={event => setData( { ...data, password: event.target.value } )}
+                        onChange={event => setData( { ...data, password: event.target.value ? event.target.value : '' } )}
                     />
                 </InputValue>
             </InputBox>
