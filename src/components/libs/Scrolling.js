@@ -1,19 +1,40 @@
-import React, { useEffect } from 'react';
+import React, { useRef, createContext, useContext, useEffect } from 'react';
 
-function Scrolling( { outer, inner, prev, next, doScrollUp, doScrollDown } ) {
+const ScrollContext = createContext();
+
+// const ScrollContextProvider = props => {
+
+//     const initRef = useRef( {
+//         direction: {},  // isUp, isDown
+//         scrollTop: null,  // pixels scrolled vertically of the content of `outer` element  
+//         offsetHeight: null,  // total height -including padding, border- of `inner` element
+//     } );
+
+//     return (
+//         <ScrollContext.Provider value={ initRef }>
+//             {props.children}
+//         </ScrollContext.Provider>    
+//     )
+// }
+
+function ScrollHandler( { outer, inner, prev, next, doScrollUp, doScrollDown, scrollRef } ) {
+
+//    const scrollRef = useContext( ScrollContext );
+    scrollRef.direction = scrollRef.direction || {};
+    scrollRef.scrollTop = scrollRef.scrollTop || 0;
+    scrollRef.offsetHeight = scrollRef.offsetHeight || 0;
 
     const scroll = event => {
         event.stopPropagation();
 
-        outer.scrollTop < outer.getAttribute( 'data-scrollTop' )
+        outer.scrollTop < scrollRef.scrollTop
             ? scrollUp( event )
             : scrollDown( event );
     }
 
     const scrollUp = event => {
-        outer.setAttribute( 'data-direction', 'up' );
-        outer.setAttribute( 'data-scrollTop', outer.scrollTop );
-        inner.setAttribute( 'data-offsetHeight', inner.offsetHeight );
+        scrollRef.direction = { isUp: true };
+        scrollRef.scrollTop = outer.scrollTop;
 
         const outerBounds = outer.getBoundingClientRect();
         const { top, height } = prev.getBoundingClientRect();
@@ -24,9 +45,8 @@ function Scrolling( { outer, inner, prev, next, doScrollUp, doScrollDown } ) {
     }
 
     const scrollDown = event => {
-        outer.setAttribute( 'data-direction', 'down' );
-        outer.setAttribute( 'data-scrollTop', outer.scrollTop );
-        inner.setAttribute( 'data-offsetHeight', inner.offsetHeight );
+        scrollRef.direction = { isDown: true };
+        scrollRef.scrollTop = outer.scrollTop;
 
         const outerBounds = outer.getBoundingClientRect();
         const { top, height } = next.getBoundingClientRect();
@@ -50,34 +70,46 @@ function Scrolling( { outer, inner, prev, next, doScrollUp, doScrollDown } ) {
 
     useEffect( () => {
         if ( outer ) {
-            const direction = outer.getAttribute( 'data-direction' );
+            const direction = scrollRef.direction;
 
-            if ( direction === 'up' ) {
-                const scrollTop = outer.getAttribute( 'data-scrollTop' );  
-                // pixels scrolled vertically of the content of `outer` element  
-                const offsetHeight = inner.getAttribute( 'data-offsetHeight' );  
-                // total height -including padding, border- of `inner` element
-
+            if ( direction.isUp ) {
+                const scrollTop = scrollRef.scrollTop;  
+                const offsetHeight = scrollRef.offsetHeight;
                 const offsetDiff = inner.offsetHeight - offsetHeight;
-                console.log( '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>outer.scrollTop = scrollTop + offsetDiff', outer.scrollTop, scrollTop, offsetDiff ); 
                 outer.scrollTop = scrollTop + offsetDiff;
             }
 
-            outer.setAttribute( 'data-direction', '' );
-            outer.setAttribute( 'data-scrollTop', outer.scrollTop );
-            inner.setAttribute( 'data-offsetHeight', inner.offsetHeight );
-
+            scrollRef.direction = {};
+            scrollRef.scrollTop = outer.scrollTop;
+            scrollRef.offsetHeight =inner.offsetHeight;
+    
             addEvents();
             return () => removeEvents();
         }
     } );
 
-    useEffect( () => {
-        console.log( 'Has rendered. ', 'Scroll' );
-    } );
+    // useEffect( () => {
+    //     console.log( 'Has rendered. ', 'Scrolling' );
+    // } );
 
     return <></>;
 }
 
-export { Scrolling };
+function Scrolling( { outer, inner, prev, next, doScrollUp, doScrollDown, scrollRef } ) {
+    return (
+        // <ScrollContextProvider>
+            <ScrollHandler
+                outer={outer}
+                inner={inner}
+                prev={prev}
+                next={next}
+                doScrollUp={doScrollUp}
+                doScrollDown={doScrollDown}
+                scrollRef={scrollRef}
+            />
+        // </ScrollContextProvider>
+    );
+}
+
 export default Scrolling;
+export { Scrolling };

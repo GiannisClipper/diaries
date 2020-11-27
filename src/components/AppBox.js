@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { STATEContext } from './STATEContext';
 import { REFContext } from './REFContext';
 import { realFetch, mockFetch } from '../helpers/customFetch';
@@ -120,13 +120,17 @@ function Error404() {
     return <>Error 404. Page not found.</>
 }
 
-function AppBox( { page } ) {
+const AppBox = React.memo( ( { page } ) => {
 
     const STATE = useContext( STATEContext );
     const theme = STATE.state.data.settings.data.theme;
     const error = STATE.state.uiux.init.error;
 
     page = !error ? page : 'signin';
+
+    useEffect( () => {
+        console.log( 'Has rendered. ', 'AppBox' );
+    } );
 
     return (
         <ThemeProvider theme={theme === 'dark' ? dark : light}>
@@ -190,7 +194,7 @@ function AppBox( { page } ) {
             </AppMain>
        </ThemeProvider>
     );
-}
+} );
 
 export default AppBox;
 export { AppBox };

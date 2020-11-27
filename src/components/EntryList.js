@@ -17,7 +17,7 @@ import { parsePaymentToDB } from '../storage/payments/parsers';
 
 import styled, { css } from 'styled-components';
 import StyledRow from './libs/RowBox';
-import { CRUDContextProvider, CRUDMenu, CreateRequest, UpdateRequest, DeleteRequest, RetrieveAllRequest } from './libs/CRUD';
+import { CRUDContextProvider, CreateRequest, UpdateRequest, DeleteRequest, RetrieveAllRequest } from './libs/CRUD';
 
 const namespace = 'entries';
 
@@ -33,11 +33,79 @@ function EntryList( { date, entries } ) {
 
     return (
         <List>
-            { entries.map( entry => (
-                <Entry key={++inSequence} inSequence={inSequence} date={date} entry={entry} />
-            ) ) }
+            { entries.map( entry =>
+                <EntryContext key={++inSequence} inSequence={inSequence} date={date} entry={entry} />
+            ) }
         </List>
     );
+}
+
+const EntryContext = ( { date, inSequence, entry } ) => {
+
+    const STATE = useContext( STATEContext )
+    const { state, dispatch } = STATE;
+
+    const REF = useContext( REFContext );
+
+    const { genres, funds } = state.data.payments;
+
+    REF.current._saved = { date, entry, inSequence };
+
+    const parseDataToDB = entry.uiux.type.isPayment 
+        ? () => parsePaymentToDB( { ...entry.data, date: dateToYYYYMMDD( date ), inSequence }, genres, funds )
+        : () => parseNoteToDB( { ...entry.data, date: dateToYYYYMMDD( date ), inSequence } );
+
+    const body = () => JSON.stringify( {
+        oldSaved: { date: dateToYYYYMMDD( REF.current._saved.date ), inSequence: REF.current._saved.inSequence },
+        newSaved: { date: dateToYYYYMMDD( date ), inSequence },
+        data: parseDataToDB(),
+    } );
+
+    const strFrom = !entry.uiux.dateFrom || dateToYYYYMMDD( entry.uiux.dateFrom );
+    const strTill = !entry.uiux.dateFrom || dateToYYYYMMDD( entry.uiux.dateTill );
+
+    const payload = { date, entry, inSequence };
+
+    return (
+        <CRUDContextProvider 
+            dispatch={dispatch} 
+            namespace={namespace} 
+            payload={payload}
+        >
+            { entry.uiux.mode.isCreate ?
+                <CreateRequest
+                    process={entry.uiux.process}
+                    url={ `/.netlify/functions/entry`}
+                    body={body()}
+                    dataToDB={parseDataToDB()}
+                />
+            : entry.uiux.mode.isUpdate ?
+                <UpdateRequest 
+                    process={entry.uiux.process}
+                    url={`/.netlify/functions/entry?id=${entry.data.id}`}
+                    body={body()}
+                    dataToDB={parseDataToDB()}
+                    id={entry.data.id}
+                />
+            : entry.uiux.mode.isDelete ?
+                <DeleteRequest 
+                    process={entry.uiux.process}
+                    url={`/.netlify/functions/entry?id=${entry.data.id}`}
+                    body={body()}
+                    dataToDB={parseDataToDB()}
+                    id={entry.data.id}
+                />
+            : entry.uiux.mode.isRetrieveAll ?
+                <RetrieveAllRequest
+                    process={entry.uiux.process}
+                    url={`/.netlify/functions/entry?range=${strFrom}-${strTill}`}
+                />
+            : null }
+
+            <Entry inSequence={inSequence} date={date} entry={entry} />
+
+        </CRUDContextProvider>
+    )
 }
 
 const RowBox = StyledRow.RowBox;
@@ -56,12 +124,10 @@ const RowMenu = styled( StyledRow.RowMenu )`
     width: 2em;
 `;
 
-function Entry( { date, entry, inSequence } ) {
+const Entry = React.memo( ( { date, inSequence, entry } ) => {
 
     const STATE = useContext( STATEContext )
     const { dispatch } = STATE;
-    const payload = { date, entry, inSequence };
-
 
     const REF = useContext( REFContext );
 
@@ -101,12 +167,12 @@ function Entry( { date, entry, inSequence } ) {
         const { cut, copy, paste } = REF.current;
 
         if ( cut ) {
-            STATE.dispatch( { namespace, type: 'MOVE_ENTRY', payload: { cut, paste } } );
+            dispatch( { namespace, type: 'MOVE_ENTRY', payload: { cut, paste } } );
             REF.current.copy = { ...cut };
             REF.current.cut = null;
 
         } else if ( copy ) {
-            STATE.dispatch( { namespace, type: 'COPY_ENTRY', payload: { copy, paste } } );
+            dispatch( { namespace, type: 'COPY_ENTRY', payload: { copy, paste } } );
         }
     }
 
@@ -126,125 +192,72 @@ function Entry( { date, entry, inSequence } ) {
         onDrop = null;
     }
 
-    const { genres, funds } = STATE.state.data.payments;
-
-    REF.current._saved = { date, entry, inSequence };
-
-    const parseDataToDB = entry.uiux.type.isPayment 
-        ? () => parsePaymentToDB( { ...entry.data, date: dateToYYYYMMDD( date ), inSequence }, genres, funds )
-        : () => parseNoteToDB( { ...entry.data, date: dateToYYYYMMDD( date ), inSequence } );
-
-    const body = () => JSON.stringify( {
-        oldSaved: { date: dateToYYYYMMDD( REF.current._saved.date ), inSequence: REF.current._saved.inSequence },
-        newSaved: { date: dateToYYYYMMDD( date ), inSequence },
-        data: parseDataToDB(),
-    } );
-
-    const strFrom = !entry.uiux.dateFrom || dateToYYYYMMDD( entry.uiux.dateFrom );
-    const strTill = !entry.uiux.dateFrom || dateToYYYYMMDD( entry.uiux.dateTill );
-
-    useEffect( () => {
-        console.log( 'Has rendered. ', 'Entry' );
-    } );
+    // useEffect( () => {
+    //     console.log( 'Has rendered. ', 'Entry' );
+    // } );
 
     return (
-        <CRUDContextProvider 
-            dispatch={dispatch} 
-            namespace={namespace} 
-            payload={payload}
+        <RowBox
+            key={inSequence}
+            draggable={draggable}
+            onDragStart={onDragStart}
+            onDragOver={onDragOver}
+            onDrop={onDrop}
         >
-            { entry.uiux.mode.isCreate ?
-                <CreateRequest
-                    process={entry.uiux.process}
-                    url={ `/.netlify/functions/entry`}
-                    body={body()}
-                    dataToDB={parseDataToDB()}
-                />
-            : entry.uiux.mode.isUpdate ?
-                <UpdateRequest 
-                    process={entry.uiux.process}
-                    url={`/.netlify/functions/entry?id=${entry.data.id}`}
-                    body={body()}
-                    dataToDB={parseDataToDB()}
-                    id={entry.data.id}
-                />
-            : entry.uiux.mode.isDelete ?
-                <DeleteRequest 
-                    process={entry.uiux.process}
-                    url={`/.netlify/functions/entry?id=${entry.data.id}`}
-                    body={body()}
-                    dataToDB={parseDataToDB()}
-                    id={entry.data.id}
-                />
-            : entry.uiux.mode.isRetrieveAll ?
-                <RetrieveAllRequest
-                    process={entry.uiux.process}
-                    url={`/.netlify/functions/entry?range=${strFrom}-${strTill}`}
-                />
-            : null }
-
-            <RowBox
-                key={inSequence}
+            <RowValue
                 draggable={draggable}
-                onDragStart={onDragStart}
-                onDragOver={onDragOver}
-                onDrop={onDrop}
+                title={`${entry.data.date}, ${inSequence}, ${entry.data.inSequence}, ${entry.data.id}`}
             >
-                <RowValue
-                    draggable={draggable}
-                    title={`${entry.data.date}, ${inSequence}, ${entry.data.inSequence}, ${entry.data.id}`}
-                >
-                    <EntryRepr entry={entry} />
-                </RowValue>
+                <EntryRepr entry={entry} />
+            </RowValue>
 
-                <RowMenu>
-                    {entry.uiux.status.isWaiting
-                        ? <ToolBox><Loader /></ToolBox>
-                        : entry.uiux.status.isSuspended
-                        ? <ToolBox><FontAwesomeIcon icon={ faBan } className="icon" /></ToolBox>
-                        : <EntryMenuTool date={date} entry={entry} inSequence={inSequence} />
-                    }
-                </RowMenu>
-
-                {!entry.uiux.menu.isOpen ?
-                    null
-                : !entry.data.id ? 
-                    <BlankEntryMenu 
-                        date={date} 
-                        entry={entry} 
-                        inSequence={inSequence}
-                        doPaste={doPaste}
-                    />
-                : 
-                    <ExistsEntryMenu 
-                        date={date} 
-                        entry={entry} 
-                        inSequence={inSequence}
-                        doCut={doCut}
-                        doCopy={doCopy}
-                        doPaste={doPaste}
-                    />
+            <RowMenu>
+                {entry.uiux.status.isWaiting
+                    ? <ToolBox><Loader /></ToolBox>
+                    : entry.uiux.status.isSuspended
+                    ? <ToolBox><FontAwesomeIcon icon={ faBan } className="icon" /></ToolBox>
+                    : <EntryMenuTool date={date} entry={entry} inSequence={inSequence} />
                 }
+            </RowMenu>
 
-                { !entry.uiux.form.isOpen ?
-                    null
-                : !entry.uiux.type.isPayment ?
-                    <NoteForm 
-                        date={date} 
-                        entry={entry} 
-                        inSequence={inSequence}
-                    /> 
-                :
-                    <PaymentForm 
-                        date={date} 
-                        entry={entry} 
-                        inSequence={inSequence} 
-                    /> 
-                }
-            </RowBox> 
-        </CRUDContextProvider>
+            {!entry.uiux.menu.isOpen ?
+                null
+            : !entry.data.id ? 
+                <BlankEntryMenu 
+                    date={date} 
+                    entry={entry} 
+                    inSequence={inSequence}
+                    doPaste={doPaste}
+                />
+            : 
+                <ExistsEntryMenu 
+                    date={date} 
+                    entry={entry} 
+                    inSequence={inSequence}
+                    doCut={doCut}
+                    doCopy={doCopy}
+                    doPaste={doPaste}
+                />
+            }
+
+            { !entry.uiux.form.isOpen ?
+                null
+            : !entry.uiux.type.isPayment ?
+                <NoteForm 
+                    date={date} 
+                    entry={entry} 
+                    inSequence={inSequence}
+                /> 
+            :
+                <PaymentForm 
+                    date={date} 
+                    entry={entry} 
+                    inSequence={inSequence} 
+                /> 
+            }
+        </RowBox> 
     );
-}
+} );
 
 const EntryRepr = ( { entry } ) => {
 

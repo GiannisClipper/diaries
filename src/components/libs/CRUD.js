@@ -8,41 +8,51 @@ import { faBan } from '@fortawesome/free-solid-svg-icons';
 import { EditTool, DeleteTool } from './Tools';
 import texts from '../../storage/texts';
 
-import { action } from '../../storage/actions';
-
 import { realFetch, mockFetch } from '../../helpers/customFetch';
 
 const CRUDContext = createContext();
 
-const CRUDContextProvider = ( { dispatch, namespace, payload, children } ) => {
+const CRUDContextProvider = React.memo( ( { dispatch, namespace, payload, children } ) => {
 
     const actions = {
-        openMenu: action( { dispatch, namespace, type: 'OPEN_MENU', payload } ),
-        closeMenu: action( { dispatch, namespace, type: 'CLOSE_MENU', payload } ),
-
-        openForm: action( { dispatch, namespace, type: 'OPEN_FORM', payload } ),
-        closeForm: action( { dispatch, namespace, type: 'CLOSE_FORM', payload } ),
-
-        doValidation: action( { dispatch, namespace, type: 'DO_VALIDATION', payload } ),
-        validationDone: action( { dispatch, namespace, type: 'VALIDATION_DONE', payload } ),
-        validationError: action( { dispatch, namespace, type: 'VALIDATION_ERROR', payload } ),
-
-        doRequest: action( { dispatch, namespace, type: 'DO_REQUEST', payload } ),
-
-        createRequestDone: action( { dispatch, namespace, type: 'CREATE_REQUEST_DONE', payload } ),
-        createRequestError: action( { dispatch, namespace, type: 'CREATE_REQUEST_ERROR', payload } ),
-
-        updateRequestDone: action( { dispatch, namespace, type: 'UPDATE_REQUEST_DONE', payload } ),
-        updateRequestError: action( { dispatch, namespace, type: 'UPDATE_REQUEST_ERROR', payload } ),
-
-        deleteRequestDone: action( { dispatch, namespace, type: 'DELETE_REQUEST_DONE', payload } ),
-        deleteRequestError: action( { dispatch, namespace, type: 'DELETE_REQUEST_ERROR', payload } ),
-
-        retrieveAllRequestBefore: action( { dispatch, namespace, type: 'RETRIEVE_ALL_REQUEST_BEFORE', payload } ),
-        retrieveAllRequest: action( { dispatch, namespace, type: 'RETRIEVE_ALL_REQUEST', payload } ),
-        retrieveAllRequestAfter: action( { dispatch, namespace, type: 'RETRIEVE_ALL_REQUEST_AFTER', payload } ),
-        retrieveAllRequestDone: action( { dispatch, namespace, type: 'RETRIEVE_ALL_REQUEST_DONE', payload } ),
-        retrieveAllRequestError: action( { dispatch, namespace, type: 'RETRIEVE_ALL_REQUEST_ERROR', payload } ),
+        openMenu: 
+            payload2 => dispatch( { namespace, type: 'OPEN_MENU', payload: { ...payload, ...payload2 } } ), 
+        closeMenu: 
+            payload2 => dispatch( { namespace, type: 'CLOSE_MENU', payload: { ...payload, ...payload2 } } ), 
+        openForm: 
+            payload2 => dispatch( { namespace, type: 'OPEN_FORM', payload: { ...payload, ...payload2 } } ), 
+        closeForm: 
+            payload2 => dispatch( { namespace, type: 'CLOSE_FORM', payload: { ...payload, ...payload2 } } ), 
+        doValidation: 
+            payload2 => dispatch( { namespace, type: 'DO_VALIDATION', payload: { ...payload, ...payload2 } } ), 
+        validationDone: 
+            payload2 => dispatch( { namespace, type: 'VALIDATION_DONE', payload: { ...payload, ...payload2 } } ), 
+        validationError: 
+            payload2 => dispatch( { namespace, type: 'VALIDATION_ERROR', payload: { ...payload, ...payload2 } } ), 
+        doRequest: 
+            payload2 => dispatch( { namespace, type: 'DO_REQUEST', payload: { ...payload, ...payload2 } } ), 
+        createRequestDone: 
+            payload2 => dispatch( { namespace, type: 'CREATE_REQUEST_DONE', payload: { ...payload, ...payload2 } } ), 
+        createRequestError: 
+            payload2 => dispatch( { namespace, type: 'CREATE_REQUEST_ERROR', payload: { ...payload, ...payload2 } } ), 
+        updateRequestDone: 
+            payload2 => dispatch( { namespace, type: 'UPDATE_REQUEST_DONE', payload: { ...payload, ...payload2 } } ), 
+        updateRequestError: 
+            payload2 => dispatch( { namespace, type: 'UPDATE_REQUEST_ERROR', payload: { ...payload, ...payload2 } } ), 
+        deleteRequestDone: 
+            payload2 => dispatch( { namespace, type: 'DELETE_REQUEST_DONE', payload: { ...payload, ...payload2 } } ), 
+        deleteRequestError: 
+            payload2 => dispatch( { namespace, type: 'DELETE_REQUEST_ERROR', payload: { ...payload, ...payload2 } } ), 
+        retrieveAllRequestBefore: 
+            payload2 => dispatch( { namespace, type: 'RETRIEVE_ALL_REQUEST_BEFORE', payload: { ...payload, ...payload2 } } ), 
+        retrieveAllRequest: 
+            payload2 => dispatch( { namespace, type: 'RETRIEVE_ALL_REQUEST', payload: { ...payload, ...payload2 } } ), 
+        retrieveAllRequestAfter: 
+            payload2 => dispatch( { namespace, type: 'RETRIEVE_ALL_REQUEST_AFTER', payload: { ...payload, ...payload2 } } ), 
+        retrieveAllRequestDone: 
+            payload2 => dispatch( { namespace, type: 'RETRIEVE_ALL_REQUEST_DONE', payload: { ...payload, ...payload2 } } ), 
+        retrieveAllRequestError: 
+            payload2 => dispatch( { namespace, type: 'RETRIEVE_ALL_REQUEST_ERROR', payload: { ...payload, ...payload2 } } ), 
     }
 
     useEffect( () => {
@@ -54,7 +64,7 @@ const CRUDContextProvider = ( { dispatch, namespace, payload, children } ) => {
             {children}
         </CRUDContext.Provider>
     )
-}
+} );
 
 function CRUDForm( { headLabel, mode, isOnRequest, children } ) {
 
@@ -138,7 +148,7 @@ function InputValidations( { process, doValidate }) {
 }
 
 const doFetch = ( url, args, onDone, onError, dataFromDB ) => {
-    console.log( 'Requesting... ', url, args.method )
+    //console.log( 'Requesting... ', url, args.method )
 
     realFetch( url, args )
     .then( res => {
@@ -214,7 +224,6 @@ function RetrieveAllRequest( { process, url }) {
 
     useEffect( () => {
         if ( Object.keys( process ).length === 0 ) {  // process === {}
-            console.log( 'RetrieveAllRequest starts...' )
             retrieveAllRequestBefore();
 
         } else if ( process.isOnRequestBefore ) {

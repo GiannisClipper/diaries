@@ -64,13 +64,13 @@ function NextButton( { reference } ) {
     );
 }
 
-function DateList() {
+const DateList = () => {
 
     const STATE = useContext( STATEContext );
     const REF = useContext( REFContext );
 
+    const { dispatch } = STATE;
     const { init } = STATE.state.uiux;
-    const { dates } = STATE.state.data;
 
     const outer = useRef( null );
     const inner = useRef( null );
@@ -78,8 +78,8 @@ function DateList() {
     const next = useRef( null );
     const central = useRef( null );
 
-    const doScrollUp = () => STATE.dispatch( { namespace, type: 'DO_INIT', payload: { mode: { isInitPrev: true } } } );
-    const doScrollDown = () => STATE.dispatch( { namespace, type: 'DO_INIT', payload: { mode: { isInitNext: true } } } );
+    const doScrollUp = () => dispatch( { namespace, type: 'DO_INIT', payload: { mode: { isInitPrev: true } } } );
+    const doScrollDown = () => dispatch( { namespace, type: 'DO_INIT', payload: { mode: { isInitNext: true } } } );
 
     REF.current.scrollToCentralDate = () => {
         outer.current.scrollTop = central.current.offsetTop - ( outer.current.clientHeight * 0.10 );
@@ -102,9 +102,9 @@ function DateList() {
         }
     } );
 
-    useEffect( () => {
-        console.log( 'Has rendered. ', 'DateList' );
-    } );
+    // useEffect( () => {
+    //     console.log( 'Has rendered. ', 'DateList' );
+    // } );
 
     return (
         <List reference={outer}>
@@ -117,6 +117,7 @@ function DateList() {
                     next={next.current}
                     doScrollUp={doScrollUp}
                     doScrollDown={doScrollDown}
+                    scrollRef={REF.current}
                 />
 
                 <GenreInit />
@@ -130,20 +131,37 @@ function DateList() {
 
                 <PrevButton reference={prev} />
 
-                <ul>
-                    {dates.map( aDate => (
-                        <ADate
-                            key={aDate.data.date}
-                            aDate={aDate}
-                            reference={aDate.uiux.isTheCentral ? central : null}
-                        /> 
-                    ) )}
-                </ul>
+                <DateItems 
+                    central={central} 
+                />
 
                 <NextButton reference={next} />
 
             </ContentBox>
         </List>
     );
+};
+
+const DateItems = ( { central } ) => {
+
+    const STATE = useContext( STATEContext );
+    const { dates } = STATE.state.data;
+
+    // useEffect( () => {
+    //     console.log( 'Has rendered. ', 'DateItems' );
+    // } );
+
+    return (
+        <ul>
+            {dates.map( aDate => (
+                <ADate
+                    key={aDate.data.date}
+                    aDate={aDate}
+                    reference={aDate.uiux.isTheCentral ? central : null}
+                /> 
+            ) )}
+        </ul>
+    );
 }
+
 export default DateList;
