@@ -375,8 +375,8 @@ const entriesReducer = ( state, action ) => {
 
             dataFromDB.sort( ( a, b ) => a.inSequence < b.inSequence ? -1 : a.inSequence > b.inSequence ? 1 : 0 );
             const { genres, funds } = state.data.payments;
-
             const days = daysBetween( dateFrom, dateTill ) + 1;
+
             for ( let i = 0; i < days; i++ ) { 
                 const date = shiftDate( dateFrom, i );
                 const dateStr = dateToYYYYMMDD( date );
@@ -407,8 +407,8 @@ const entriesReducer = ( state, action ) => {
             deconstructDate( getDateInSequence( date ) );
             deconstructEntry( inSequence );
             const { dateFrom, dateTill } = activeEntry.uiux;
-
             const days = daysBetween( dateFrom, dateTill ) + 1;
+
             for ( let i = 0; i < days; i++ ) { 
                 const date = shiftDate( dateFrom, i );
                 const entries = [];

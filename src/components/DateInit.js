@@ -1,11 +1,11 @@
 import React, { useEffect, useContext } from 'react';
 import { STATEContext } from './STATEContext';
-import { shiftDate, YYYMMDDToDate, reprToYYYMMDD } from '../helpers/dates';
+import { shiftDate, YYYYMMDDToDate, reprToYYYYMMDD } from '../helpers/dates';
 
 const namespace = 'dates';
 
 const calcCentralDate = centralDate => {
-    centralDate = YYYMMDDToDate( reprToYYYMMDD( centralDate ) ) || new Date();
+    centralDate = YYYYMMDDToDate( reprToYYYYMMDD( centralDate ) ) || new Date();
     centralDate.setHours( 12 );
     centralDate.setMinutes( 0 );
     centralDate.setSeconds( 0 );

@@ -2,27 +2,29 @@ import React, { useRef, createContext, useContext, useEffect } from 'react';
 
 const ScrollContext = createContext();
 
-// const ScrollContextProvider = props => {
+const ScrollContextProvider = props => {
 
-//     const initRef = useRef( {
-//         direction: {},  // isUp, isDown
-//         scrollTop: null,  // pixels scrolled vertically of the content of `outer` element  
-//         offsetHeight: null,  // total height -including padding, border- of `inner` element
-//     } );
+    const initRef = useRef( {
+        direction: {},  // isUp, isDown
+        scrollTop: 0,  // pixels scrolled vertically of the content of `outer` element  
+        offsetHeight: 0,  // total height -including padding, border- of `inner` element
+    } );
 
-//     return (
-//         <ScrollContext.Provider value={ initRef }>
-//             {props.children}
-//         </ScrollContext.Provider>    
-//     )
-// }
+    useEffect( () => {
+        console.log( 'Has rendered. ', 'ScrollContextProvider' );
+    } );
 
-function ScrollHandler( { outer, inner, prev, next, doScrollUp, doScrollDown, scrollRef } ) {
+    return (
+        <ScrollContext.Provider value={ initRef }>
+            {props.children}
+        </ScrollContext.Provider>    
+    )
+};
 
-//    const scrollRef = useContext( ScrollContext );
-    scrollRef.direction = scrollRef.direction || {};
-    scrollRef.scrollTop = scrollRef.scrollTop || 0;
-    scrollRef.offsetHeight = scrollRef.offsetHeight || 0;
+function ScrollHandler( { outer, inner, prev, next, doScrollUp, doScrollDown } ) {
+
+    const scrollContext = useContext( ScrollContext );
+    const scrollRef = scrollContext.current;
 
     const scroll = event => {
         event.stopPropagation();
@@ -73,6 +75,9 @@ function ScrollHandler( { outer, inner, prev, next, doScrollUp, doScrollDown, sc
             const direction = scrollRef.direction;
 
             if ( direction.isUp ) {
+                console.log( 'scrollRef.offsetHeight', scrollRef.offsetHeight )
+                console.log( 'inner.offsetHeight', inner.offsetHeight )
+
                 const scrollTop = scrollRef.scrollTop;  
                 const offsetHeight = scrollRef.offsetHeight;
                 const offsetDiff = inner.offsetHeight - offsetHeight;
@@ -88,16 +93,16 @@ function ScrollHandler( { outer, inner, prev, next, doScrollUp, doScrollDown, sc
         }
     } );
 
-    // useEffect( () => {
-    //     console.log( 'Has rendered. ', 'Scrolling' );
-    // } );
+    useEffect( () => {
+        console.log( 'Has rendered. ', 'ScrollHandler' );
+    } );
 
     return <></>;
 }
 
-function Scrolling( { outer, inner, prev, next, doScrollUp, doScrollDown, scrollRef } ) {
+function Scroll( { outer, inner, prev, next, doScrollUp, doScrollDown, scrollRef } ) {
     return (
-        // <ScrollContextProvider>
+        <ScrollContextProvider>
             <ScrollHandler
                 outer={outer}
                 inner={inner}
@@ -107,9 +112,9 @@ function Scrolling( { outer, inner, prev, next, doScrollUp, doScrollDown, scroll
                 doScrollDown={doScrollDown}
                 scrollRef={scrollRef}
             />
-        // </ScrollContextProvider>
+        </ScrollContextProvider>
     );
 }
 
-export default Scrolling;
-export { Scrolling };
+export default Scroll;
+export { Scroll };

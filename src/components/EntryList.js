@@ -62,7 +62,7 @@ const EntryContext = ( { date, inSequence, entry } ) => {
     } );
 
     const strFrom = !entry.uiux.dateFrom || dateToYYYYMMDD( entry.uiux.dateFrom );
-    const strTill = !entry.uiux.dateFrom || dateToYYYYMMDD( entry.uiux.dateTill );
+    const strTill = !entry.uiux.dateTill || dateToYYYYMMDD( entry.uiux.dateTill );
 
     const payload = { date, entry, inSequence };
 

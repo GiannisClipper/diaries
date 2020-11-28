@@ -73,7 +73,7 @@ const dateToYYYYMMDD = date => {
     return year + month + dateNum;
 }
 
-const YYYMMDDToDate = value => {
+const YYYYMMDDToDate = value => {
     let retval = null;
     if ( isYYYYMMDD( value ) ) {
         const { year, month, dateNum } = splitYYYYMMDD( value );
@@ -82,7 +82,7 @@ const YYYMMDDToDate = value => {
     return retval;
 }
 
-const reprToYYYMMDD = ( value, pattern ) => {
+const reprToYYYYMMDD = ( value, pattern ) => {
     value = value || '';
     pattern = ( pattern || 'DD/MM/YYYY' ).toUpperCase();
     const YMD = { Y: '', M: '', D: '' };
@@ -91,7 +91,7 @@ const reprToYYYMMDD = ( value, pattern ) => {
     return isYYYYMMDD( retval ) ? retval : '';
 }
 
-const YYYMMDDToRepr = ( value, pattern ) => {
+const YYYYMMDDToRepr = ( value, pattern ) => {
     let retval = '';
     if ( isYYYYMMDD( value ) ) {
         pattern = ( pattern || 'D/M/Y' ).toUpperCase();
@@ -131,9 +131,9 @@ export {
     isMonth,
     isDateNum,
     dateToYYYYMMDD,
-    YYYMMDDToDate,
-    reprToYYYMMDD,
-    YYYMMDDToRepr,
+    YYYYMMDDToDate,
+    reprToYYYYMMDD,
+    YYYYMMDDToRepr,
     daysBetween,
     shiftDate
 };

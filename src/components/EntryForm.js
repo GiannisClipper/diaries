@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { CRUDContext, CRUDForm } from "./libs/CRUD";
 import { Modal } from './libs/Modal';
 import { InputBox, InputLabel, InputValue } from './libs/InputBox';
-import { dayNames, YYYMMDDToRepr, dateToYYYYMMDD } from '../helpers/dates';
+import { dayNames, YYYYMMDDToRepr, dateToYYYYMMDD } from '../helpers/dates';
 
 function EntryForm( { headLabel, date, entry, children } ) {
 
@@ -34,7 +34,7 @@ function EntryForm( { headLabel, date, entry, children } ) {
                     </InputLabel>
                     <InputValue>
                         <input 
-                            value={`${dayNames[ date.getDay() ]} ${YYYMMDDToRepr( dateToYYYYMMDD( date ), 'D-M-Y' )}`}
+                            value={`${dayNames[ date.getDay() ]} ${YYYYMMDDToRepr( dateToYYYYMMDD( date ), 'D-M-Y' )}`}
                             tabIndex="-1"
                             readOnly
                         />

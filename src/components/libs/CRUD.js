@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect } from 'react';
+import React, { createContext, useCallback, useContext, useEffect } from 'react';
 
 import { OkCancelForm } from './Forms';
 
@@ -14,49 +14,89 @@ const CRUDContext = createContext();
 
 const CRUDContextProvider = React.memo( ( { dispatch, namespace, payload, children } ) => {
 
+    payload = payload || '{}';
+
     const actions = {
-        openMenu: 
+        openMenu: useCallback(
             payload2 => dispatch( { namespace, type: 'OPEN_MENU', payload: { ...payload, ...payload2 } } ), 
-        closeMenu: 
+            [ dispatch, namespace, payload ]
+        ), 
+        closeMenu: useCallback(
             payload2 => dispatch( { namespace, type: 'CLOSE_MENU', payload: { ...payload, ...payload2 } } ), 
-        openForm: 
+            [ dispatch, namespace, payload ]
+        ), 
+        openForm: useCallback(
             payload2 => dispatch( { namespace, type: 'OPEN_FORM', payload: { ...payload, ...payload2 } } ), 
-        closeForm: 
+            [ dispatch, namespace, payload ]
+        ), 
+        closeForm: useCallback(
             payload2 => dispatch( { namespace, type: 'CLOSE_FORM', payload: { ...payload, ...payload2 } } ), 
-        doValidation: 
+            [ dispatch, namespace, payload ]
+        ), 
+        doValidation: useCallback(
             payload2 => dispatch( { namespace, type: 'DO_VALIDATION', payload: { ...payload, ...payload2 } } ), 
-        validationDone: 
+            [ dispatch, namespace, payload ]
+        ), 
+        validationDone: useCallback(
             payload2 => dispatch( { namespace, type: 'VALIDATION_DONE', payload: { ...payload, ...payload2 } } ), 
-        validationError: 
+            [ dispatch, namespace, payload ]
+        ), 
+        validationError: useCallback(
             payload2 => dispatch( { namespace, type: 'VALIDATION_ERROR', payload: { ...payload, ...payload2 } } ), 
-        doRequest: 
+            [ dispatch, namespace, payload ]
+        ), 
+        doRequest: useCallback(
             payload2 => dispatch( { namespace, type: 'DO_REQUEST', payload: { ...payload, ...payload2 } } ), 
-        createRequestDone: 
+            [ dispatch, namespace, payload ]
+        ), 
+        createRequestDone: useCallback(
             payload2 => dispatch( { namespace, type: 'CREATE_REQUEST_DONE', payload: { ...payload, ...payload2 } } ), 
-        createRequestError: 
+            [ dispatch, namespace, payload ]
+        ), 
+        createRequestError: useCallback(
             payload2 => dispatch( { namespace, type: 'CREATE_REQUEST_ERROR', payload: { ...payload, ...payload2 } } ), 
-        updateRequestDone: 
+            [ dispatch, namespace, payload ]
+        ), 
+        updateRequestDone: useCallback(
             payload2 => dispatch( { namespace, type: 'UPDATE_REQUEST_DONE', payload: { ...payload, ...payload2 } } ), 
-        updateRequestError: 
+            [ dispatch, namespace, payload ]
+        ), 
+        updateRequestError: useCallback(
             payload2 => dispatch( { namespace, type: 'UPDATE_REQUEST_ERROR', payload: { ...payload, ...payload2 } } ), 
-        deleteRequestDone: 
+            [ dispatch, namespace, payload ]
+        ), 
+        deleteRequestDone: useCallback(
             payload2 => dispatch( { namespace, type: 'DELETE_REQUEST_DONE', payload: { ...payload, ...payload2 } } ), 
-        deleteRequestError: 
+            [ dispatch, namespace, payload ]
+        ), 
+        deleteRequestError: useCallback(
             payload2 => dispatch( { namespace, type: 'DELETE_REQUEST_ERROR', payload: { ...payload, ...payload2 } } ), 
-        retrieveAllRequestBefore: 
+            [ dispatch, namespace, payload ]
+        ), 
+        retrieveAllRequestBefore: useCallback(
             payload2 => dispatch( { namespace, type: 'RETRIEVE_ALL_REQUEST_BEFORE', payload: { ...payload, ...payload2 } } ), 
-        retrieveAllRequest: 
+            [ dispatch, namespace, payload ]
+        ), 
+        retrieveAllRequest: useCallback(
             payload2 => dispatch( { namespace, type: 'RETRIEVE_ALL_REQUEST', payload: { ...payload, ...payload2 } } ), 
-        retrieveAllRequestAfter: 
+            [ dispatch, namespace, payload ]
+        ), 
+        retrieveAllRequestAfter: useCallback(
             payload2 => dispatch( { namespace, type: 'RETRIEVE_ALL_REQUEST_AFTER', payload: { ...payload, ...payload2 } } ), 
-        retrieveAllRequestDone: 
+            [ dispatch, namespace, payload ]
+        ), 
+        retrieveAllRequestDone: useCallback(
             payload2 => dispatch( { namespace, type: 'RETRIEVE_ALL_REQUEST_DONE', payload: { ...payload, ...payload2 } } ), 
-        retrieveAllRequestError: 
+            [ dispatch, namespace, payload ]
+        ), 
+        retrieveAllRequestError: useCallback(
             payload2 => dispatch( { namespace, type: 'RETRIEVE_ALL_REQUEST_ERROR', payload: { ...payload, ...payload2 } } ), 
+            [ dispatch, namespace, payload ]
+        ), 
     }
 
     useEffect( () => {
-        console.log( 'Has rendered. ', 'CRUDContext.Provider' );
+        console.log( 'Has rendered. ', 'CRUDContextProvider' );
     } );
 
     return (

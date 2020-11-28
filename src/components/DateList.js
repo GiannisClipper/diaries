@@ -6,7 +6,7 @@ import { buttons } from '../storage/texts';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBackward, faForward } from '@fortawesome/free-solid-svg-icons';
 
-import { Scrolling } from './libs/Scrolling';
+import { Scroll } from './libs/Scroll';
 import { GenreInit } from './payments/GenreList';
 import { FundInit } from './payments/FundList';
 import DateInit from './DateInit';
@@ -110,14 +110,13 @@ const DateList = () => {
         <List reference={outer}>
             <ContentBox ref={inner}>
 
-                <Scrolling
+                <Scroll
                     outer={outer.current}
                     inner={inner.current}
                     prev={prev.current}
                     next={next.current}
                     doScrollUp={doScrollUp}
                     doScrollDown={doScrollDown}
-                    scrollRef={REF.current}
                 />
 
                 <GenreInit />
