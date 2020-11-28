@@ -6,6 +6,7 @@ import { buttons } from '../storage/texts';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBackward, faForward } from '@fortawesome/free-solid-svg-icons';
 
+import { CopyPasteContextProvider } from './libs/CopyPaste';
 import { Scroll } from './libs/Scroll';
 import { GenreInit } from './payments/GenreList';
 import { FundInit } from './payments/FundList';
@@ -109,6 +110,10 @@ const DateList = () => {
     return (
         <List reference={outer}>
             <ContentBox ref={inner}>
+            <CopyPasteContextProvider
+                doCutPaste={payload => dispatch( { namespace: 'entries', type: 'MOVE_ENTRY', payload } ) }
+                doCopyPaste={payload => dispatch( { namespace: 'entries', type: 'COPY_ENTRY', payload } ) }
+            >
 
                 <Scroll
                     outer={outer.current}
@@ -136,6 +141,7 @@ const DateList = () => {
 
                 <NextButton reference={next} />
 
+            </CopyPasteContextProvider>
             </ContentBox>
         </List>
     );

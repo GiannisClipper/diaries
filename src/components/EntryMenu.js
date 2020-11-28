@@ -1,5 +1,6 @@
 import React, { useContext, useRef } from 'react';
 import { REFContext } from './REFContext';
+import { CopyPasteContext } from './libs/CopyPaste';
 import { CRUDContext } from "./libs/CRUD";
 import { Modal } from './libs/Modal';
 import { MenuBox } from './libs/MenuBox';
@@ -44,11 +45,11 @@ function EntryMenu( { children } ) {
     );
 }
 
-function BlankEntryMenu( { date, entry, inSequence, doPaste } ) {
+function BlankEntryMenu( { date, entry, inSequence } ) {
+
+    const { doPaste, isAbleToPaste } = useContext( CopyPasteContext );
 
     const { closeMenu, openForm } = useContext( CRUDContext );
-
-    const REF = useContext( REFContext );
 
     return (
         <EntryMenu>
@@ -63,9 +64,9 @@ function BlankEntryMenu( { date, entry, inSequence, doPaste } ) {
             }} />
 
             <PasteTool onClick={event => {
-                if ( REF.current.cut || REF.current.copy ) {
+                if ( isAbleToPaste() ) {
                     closeMenu();
-                    doPaste( date, entry, inSequence );
+                    doPaste( { date, entry, inSequence } );
                 }
             }} />
 
@@ -74,11 +75,11 @@ function BlankEntryMenu( { date, entry, inSequence, doPaste } ) {
     );
 }
 
-function ExistsEntryMenu( { date, entry, inSequence, doCut, doCopy, doPaste } ) {
+function ExistsEntryMenu( { date, entry, inSequence } ) {
+
+    const { doCut, doCopy, doPaste, isAbleToPaste } = useContext( CopyPasteContext );
 
     const { closeMenu, openForm } = useContext( CRUDContext );
-
-    const REF = useContext( REFContext );
 
     const type = entry.data.type === 'payment'
         ? { isPayment: true }
@@ -97,19 +98,19 @@ function ExistsEntryMenu( { date, entry, inSequence, doCut, doCopy, doPaste } ) 
             }} />
 
             <CutTool onClick={event => {
-                doCut( date, entry, inSequence );
+                doCut( { date, entry, inSequence } );
                 closeMenu();
             }} />
 
             <CopyTool onClick={event => {
-                doCopy( date, entry, inSequence );
+                doCopy( { date, entry, inSequence } );
                 closeMenu();
             }} />
 
             <PasteTool onClick={event => {
-                if ( REF.current.cut || REF.current.copy ) {
+                if ( isAbleToPaste() ) {
                     closeMenu();
-                    doPaste( date, entry, inSequence );
+                    doPaste( { date, entry, inSequence } );
                 }
             }} />
 

@@ -17,6 +17,7 @@ import { parsePaymentToDB } from '../storage/payments/parsers';
 
 import styled, { css } from 'styled-components';
 import StyledRow from './libs/RowBox';
+import { CopyPasteContext } from './libs/CopyPaste';
 import { CRUDContextProvider, CreateRequest, UpdateRequest, DeleteRequest, RetrieveAllRequest } from './libs/CRUD';
 
 const namespace = 'entries';
@@ -126,13 +127,15 @@ const RowMenu = styled( StyledRow.RowMenu )`
 
 const Entry = React.memo( ( { date, inSequence, entry } ) => {
 
-    const STATE = useContext( STATEContext )
-    const { dispatch } = STATE;
+    const { doCut, doPaste } = useContext( CopyPasteContext );
 
-    const REF = useContext( REFContext );
+    //const STATE = useContext( STATEContext )
+    //const { dispatch } = STATE;
+
+    //const REF = useContext( REFContext );
 
     const dragStart = ( event, date, entry, inSequence ) => {
-        doCut( date, entry, inSequence );
+        doCut( { date, entry, inSequence } );
         event.dataTransfer.effectAllowed = 'move';
     }
 
@@ -142,39 +145,39 @@ const Entry = React.memo( ( { date, inSequence, entry } ) => {
 
     const doDrop = ( event, date, inSequence ) => {
         event.preventDefault();
-        doPaste( date, entry, inSequence );
+        doPaste( { date, entry, inSequence } );
     }
 
-    const doCut = ( date, entry, inSequence ) => {
-        REF.current.cut = { date, inSequence };
-        REF.current.copy = null;
-        REF.current.paste = null;
+    // const doCut = ( date, entry, inSequence ) => {
+    //     REF.current.cut = { date, inSequence };
+    //     REF.current.copy = null;
+    //     REF.current.paste = null;
 
-        REF.current._saved = { date, entry, inSequence };
-    }
+    //     REF.current._saved = { date, entry, inSequence };
+    // }
 
-    const doCopy = ( date, entry, inSequence ) => {
-        REF.current.cut = null;
-        REF.current.copy = { date, inSequence };
-        REF.current.paste = null;
+    // const doCopy = ( date, entry, inSequence ) => {
+    //     REF.current.cut = null;
+    //     REF.current.copy = { date, inSequence };
+    //     REF.current.paste = null;
 
-        REF.current._saved = { date, entry, inSequence };
-    }
+    //     REF.current._saved = { date, entry, inSequence };
+    // }
 
-    const doPaste = ( date, entry, inSequence ) => {
-        REF.current.paste = { date, inSequence };
+    // const doPaste = ( date, entry, inSequence ) => {
+    //     REF.current.paste = { date, inSequence };
 
-        const { cut, copy, paste } = REF.current;
+    //     const { cut, copy, paste } = REF.current;
 
-        if ( cut ) {
-            dispatch( { namespace, type: 'MOVE_ENTRY', payload: { cut, paste } } );
-            REF.current.copy = { ...cut };
-            REF.current.cut = null;
+    //     if ( cut ) {
+    //         dispatch( { namespace, type: 'MOVE_ENTRY', payload: { cut, paste } } );
+    //         REF.current.copy = { ...cut };
+    //         REF.current.cut = null;
 
-        } else if ( copy ) {
-            dispatch( { namespace, type: 'COPY_ENTRY', payload: { copy, paste } } );
-        }
-    }
+    //     } else if ( copy ) {
+    //         dispatch( { namespace, type: 'COPY_ENTRY', payload: { copy, paste } } );
+    //     }
+    // }
 
     let draggable = entry.data.id ? 'true' : null;
     let onDragStart = entry.data.id ? event => dragStart( event, date, entry, inSequence ) : null;
@@ -227,16 +230,12 @@ const Entry = React.memo( ( { date, inSequence, entry } ) => {
                     date={date} 
                     entry={entry} 
                     inSequence={inSequence}
-                    doPaste={doPaste}
                 />
             : 
                 <ExistsEntryMenu 
                     date={date} 
                     entry={entry} 
                     inSequence={inSequence}
-                    doCut={doCut}
-                    doCopy={doCopy}
-                    doPaste={doPaste}
                 />
             }
 
