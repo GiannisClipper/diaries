@@ -44,7 +44,7 @@ const datesReducer = ( state, action ) => {
             ];
 
             const { init } = state.uiux;
-            init.dates.process = entriesMode.isRetrieveAll 
+            init.dates.process = entriesMode.isRetrieveMany 
                 ? { isDone: true }
                 : { isWaiting: true };
 

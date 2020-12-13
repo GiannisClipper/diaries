@@ -71,4 +71,18 @@ const mockResult = ( url, args ) => {
     }
 }
 
-export { realFetch, mockFetch };
+const doFetch = ( url, args, onDone, onError, dataFromDB ) => {
+    //console.log( 'Requesting... ', url, args.method )
+
+    realFetch( url, args )
+    .then( res => {
+        alert( JSON.stringify( res ) );
+        onDone( { dataFromDB: dataFromDB( res ) } );
+    } )
+    .catch( err => { 
+        alert( err );
+        onError( { error: err } );
+    } );
+}
+
+export { realFetch, mockFetch, doFetch };

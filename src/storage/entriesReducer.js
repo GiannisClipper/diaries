@@ -324,7 +324,7 @@ const entriesReducer = ( state, action ) => {
 
             return { uiux: state.uiux, data: { ...state.data, dates } };
 
-        } case 'RETRIEVE_ALL_REQUEST_BEFORE': {
+        } case 'RETRIEVE_MANY_REQUEST_BEFORE': {
 
             dates = [ ...state.data.dates ];
             const { date, inSequence } = action.payload;
@@ -338,7 +338,7 @@ const entriesReducer = ( state, action ) => {
 
             return { ...state, data: { ...state.data, dates } };
 
-        } case 'RETRIEVE_ALL_REQUEST': {
+        } case 'RETRIEVE_MANY_REQUEST': {
 
             dates = [ ...state.data.dates ];
             const { date, inSequence } = action.payload;
@@ -351,7 +351,7 @@ const entriesReducer = ( state, action ) => {
 
             return { ...state, data: { ...state.data, dates } };
 
-        } case 'RETRIEVE_ALL_REQUEST_AFTER': {
+        } case 'RETRIEVE_MANY_REQUEST_AFTER': {
 
             dates = [ ...state.data.dates ];
             const { date, inSequence } = action.payload;
@@ -364,7 +364,7 @@ const entriesReducer = ( state, action ) => {
 
             return { ...state, data: { ...state.data, dates } };
 
-        } case 'RETRIEVE_ALL_REQUEST_DONE': {
+        } case 'RETRIEVE_MANY_REQUEST_DONE': {
 
             dates = [ ...state.data.dates ];
             const { date, inSequence, dataFromDB } = action.payload;
@@ -399,7 +399,7 @@ const entriesReducer = ( state, action ) => {
 
             return { ...state, data: { ...state.data, dates } };
 
-        } case 'RETRIEVE_ALL_REQUEST_ERROR': {
+        } case 'RETRIEVE_MANY_REQUEST_ERROR': {
 
             dates = [ ...state.data.dates ];
             const { date, inSequence } = action.payload;

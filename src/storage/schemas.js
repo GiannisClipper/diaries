@@ -30,8 +30,8 @@ const initState = () => ( {
         init: {
             users: { process: {}, },  // process: isOnRequestBefore, isOnRequest, isOnRequestAfter, isDone, isError, isSuspended
             dates: { 
-                process: {},  // isOnInit, isWaiting, isDone 
-                mode: {}, // isInit, isInitPrev, isInitNext
+                process: {},  // isOnInit, isWaiting, isDone
+                mode: {},  // isInit, isInitPrev, isInitNext
             },
             payments: {
                 genres: { process: {}, },  // process: isOnRequestBefore, isOnRequest, isOnRequestAfter, isDone, isError, isSuspended
@@ -75,18 +75,18 @@ const initEntry = () => ( {
     data: {
         id: null,
         date: '',
-        type: '', // 'note', 'payment'
+        type: '',  // 'note', 'payment'
         inSequence: 0,
     },
     uiux: {
         menu: {},  // isOpen
         form: {},  // isOpen
         type: {},  // isNote, isPayment
-        mode: {},  // isCreate, isUpdate, isDelete, isRetieveAll
+        mode: {},  // isCreate, isUpdate, isDelete, isRetrieveMany
         process: {},  // isOnRequest
         status: {},  // isWaiting, isSuspended
-        dateFrom: null,  // when mode = isRetieveAll
-        dateTill: null,  // when mode = isRetieveAll
+        dateFrom: null,  // when mode = isRetrieveMany
+        dateTill: null,  // when mode = isRetrieveMany
     }
 } );
 

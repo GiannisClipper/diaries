@@ -122,15 +122,15 @@ const usersReducer = ( state, action ) => {
 
             return { ...state, data: { ...state.data, users } };
 
-        } case 'RETRIEVE_ALL_REQUEST_BEFORE': {
+        } case 'RETRIEVE_MANY_REQUEST_BEFORE': {
             const { init } = state.uiux;
             init.users.process = { isOnRequestBefore: true };
 
             return { uiux: { ...state.uiux, init }, data: state.data };
             
-        } case 'RETRIEVE_ALL_REQUEST': {
+        } case 'RETRIEVE_MANY_REQUEST': {
             const users = [ initUser() ];
-            users[ 0 ].uiux.mode = { isRetrieveAll: true };
+            users[ 0 ].uiux.mode = { isRetrieveMany: true };
             users[ 0 ].uiux.process = { isOnRequest: true };
 
             const { init } = state.uiux;
@@ -138,13 +138,13 @@ const usersReducer = ( state, action ) => {
 
             return { uiux: { ...state.uiux, init }, data: { ...state.data, users } };
 
-        } case 'RETRIEVE_ALL_REQUEST_AFTER': {
+        } case 'RETRIEVE_MANY_REQUEST_AFTER': {
             const { init } = state.uiux;
             init.users.process = { isOnRequestAfter: true };
 
             return { uiux: { ...state.uiux, init }, data: state.data };
 
-        } case 'RETRIEVE_ALL_REQUEST_DONE': {
+        } case 'RETRIEVE_MANY_REQUEST_DONE': {
             const users = [];
             const { dataFromDB } = action.payload;
 
@@ -160,7 +160,7 @@ const usersReducer = ( state, action ) => {
 
             return { uiux: { ...state.uiux, init }, data: { ...state.data, users } };
 
-        } case 'RETRIEVE_ALL_REQUEST_ERROR': {
+        } case 'RETRIEVE_MANY_REQUEST_ERROR': {
             const users = [];
             const user = initUser();
             user.uiux.status = { isSuspended: true }

@@ -68,7 +68,7 @@ function DateInit( { mode, process, entriesMode } ) {
 
         } else if ( 
                 process.isOnInit || 
-                ( process.isWaiting && entriesMode.isRetrieveAll ) ||
+                ( process.isWaiting && entriesMode.isRetrieveMany ) ||
                 ( process.isWaiting && entriesMode.isOnRequestError ) 
             ) {
 

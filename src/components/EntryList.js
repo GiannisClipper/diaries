@@ -18,7 +18,8 @@ import { parsePaymentToDB } from '../storage/payments/parsers';
 import styled, { css } from 'styled-components';
 import StyledRow from './libs/RowBox';
 import { CopyPasteContext } from './libs/CopyPaste';
-import { CRUDContextProvider, CreateRequest, UpdateRequest, DeleteRequest, RetrieveAllRequest } from './libs/CRUD';
+import { RetrieveManyContextProvider, RetrieveManyRequest } from './libs/RetrieveMany';
+import { CRUDContextProvider, CreateRequest, UpdateRequest, DeleteRequest } from './libs/CRUD';
 
 const namespace = 'entries';
 
@@ -68,6 +69,11 @@ const EntryContext = ( { date, inSequence, entry } ) => {
     const payload = { date, entry, inSequence };
 
     return (
+        <RetrieveManyContextProvider 
+            dispatch={dispatch} 
+            namespace={namespace} 
+            payload={payload}
+        >
         <CRUDContextProvider 
             dispatch={dispatch} 
             namespace={namespace} 
@@ -96,8 +102,8 @@ const EntryContext = ( { date, inSequence, entry } ) => {
                     dataToDB={parseDataToDB()}
                     id={entry.data.id}
                 />
-            : entry.uiux.mode.isRetrieveAll ?
-                <RetrieveAllRequest
+            : entry.uiux.mode.isRetrieveMany ?
+                <RetrieveManyRequest
                     process={entry.uiux.process}
                     url={`/.netlify/functions/entry?range=${strFrom}-${strTill}`}
                 />
@@ -106,6 +112,7 @@ const EntryContext = ( { date, inSequence, entry } ) => {
             <Entry inSequence={inSequence} date={date} entry={entry} />
 
         </CRUDContextProvider>
+        </RetrieveManyContextProvider>
     )
 }
 

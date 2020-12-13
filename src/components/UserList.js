@@ -6,7 +6,8 @@ import { ListBox } from './libs/ListBox';
 import { BlockBox, BlockLabel, BlockValue } from './libs/BlockBox';
 import { RowBox, RowValue, RowMenu } from './libs/RowBox';
 
-import { CRUDContextProvider, CRUDMenu, CreateRequest, UpdateRequest, DeleteRequest, RetrieveAllRequest } from './libs/CRUD';
+import { RetrieveManyContextProvider, RetrieveManyRequest } from './libs/RetrieveMany';
+import { CRUDContextProvider, CRUDMenu, CreateRequest, UpdateRequest, DeleteRequest } from './libs/CRUD';
 import UserForm from './UserForm';
 import { parseUserToDB } from '../storage/parsers';
 
@@ -49,15 +50,15 @@ function UserInit() {
     const { init } = STATE.state.uiux;
 
     return (
-        <CRUDContextProvider 
+        <RetrieveManyContextProvider 
             dispatch={dispatch} 
             namespace={namespace} 
         >
-            <RetrieveAllRequest 
+            <RetrieveManyRequest 
                 process={init.users.process}
                 url={`/.netlify/functions/user`}
             />
-        </CRUDContextProvider>
+        </RetrieveManyContextProvider>
     );
 }
 

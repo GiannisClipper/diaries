@@ -8,7 +8,7 @@ import { faBan } from '@fortawesome/free-solid-svg-icons';
 import { EditTool, DeleteTool } from './Tools';
 import texts from '../../storage/texts';
 
-import { realFetch, mockFetch } from '../../helpers/customFetch';
+import { doFetch } from '../../helpers/customFetch';
 
 const CRUDContext = createContext();
 
@@ -73,26 +73,6 @@ const CRUDContextProvider = React.memo( ( { dispatch, namespace, payload, childr
             payload2 => dispatch( { namespace, type: 'DELETE_REQUEST_ERROR', payload: { ...payload, ...payload2 } } ), 
             [ dispatch, namespace, payload ]
         ), 
-        retrieveAllRequestBefore: useCallback(
-            payload2 => dispatch( { namespace, type: 'RETRIEVE_ALL_REQUEST_BEFORE', payload: { ...payload, ...payload2 } } ), 
-            [ dispatch, namespace, payload ]
-        ), 
-        retrieveAllRequest: useCallback(
-            payload2 => dispatch( { namespace, type: 'RETRIEVE_ALL_REQUEST', payload: { ...payload, ...payload2 } } ), 
-            [ dispatch, namespace, payload ]
-        ), 
-        retrieveAllRequestAfter: useCallback(
-            payload2 => dispatch( { namespace, type: 'RETRIEVE_ALL_REQUEST_AFTER', payload: { ...payload, ...payload2 } } ), 
-            [ dispatch, namespace, payload ]
-        ), 
-        retrieveAllRequestDone: useCallback(
-            payload2 => dispatch( { namespace, type: 'RETRIEVE_ALL_REQUEST_DONE', payload: { ...payload, ...payload2 } } ), 
-            [ dispatch, namespace, payload ]
-        ), 
-        retrieveAllRequestError: useCallback(
-            payload2 => dispatch( { namespace, type: 'RETRIEVE_ALL_REQUEST_ERROR', payload: { ...payload, ...payload2 } } ), 
-            [ dispatch, namespace, payload ]
-        ), 
     }
 
     useEffect( () => {
@@ -105,6 +85,26 @@ const CRUDContextProvider = React.memo( ( { dispatch, namespace, payload, childr
         </CRUDContext.Provider>
     )
 } );
+
+function CRUDMenu( { process, status, id } ) {
+
+    const { openForm } = useContext( CRUDContext );
+
+    return ( 
+        process.isOnValidation || process.isOnRequest
+            ? <Loader />
+            : status.isSuspended
+            ? <FontAwesomeIcon icon={faBan} className="icon" />
+            : !id
+            ? 
+            <EditTool onClick={event => openForm( { mode: { isCreate: true } } )} />
+            : 
+            <>
+            <EditTool onClick={event => openForm( { mode: { isUpdate: true } } )} />
+            <DeleteTool onClick={event => openForm( { mode: { isDelete: true } } )} />
+            </>
+    );
+}
 
 function CRUDForm( { headLabel, mode, isOnRequest, children } ) {
 
@@ -137,26 +137,6 @@ function CRUDForm( { headLabel, mode, isOnRequest, children } ) {
     );
 }
 
-function CRUDMenu( { process, status, id } ) {
-
-    const { openForm } = useContext( CRUDContext );
-
-    return ( 
-        process.isOnValidation || process.isOnRequest
-            ? <Loader />
-            : status.isSuspended
-            ? <FontAwesomeIcon icon={faBan} className="icon" />
-            : !id
-            ? 
-            <EditTool onClick={event => openForm( { mode: { isCreate: true } } )} />
-            : 
-            <>
-            <EditTool onClick={event => openForm( { mode: { isUpdate: true } } )} />
-            <DeleteTool onClick={event => openForm( { mode: { isDelete: true } } )} />
-            </>
-    );
-}
-
 function InputValidations( { process, doValidate }) {
     const { 
         validationDone,
@@ -185,20 +165,6 @@ function InputValidations( { process, doValidate }) {
     } );
 
     return <></>;
-}
-
-const doFetch = ( url, args, onDone, onError, dataFromDB ) => {
-    //console.log( 'Requesting... ', url, args.method )
-
-    realFetch( url, args )
-    .then( res => {
-        alert( JSON.stringify( res ) );
-        onDone( { dataFromDB: dataFromDB( res ) } );
-    } )
-    .catch( err => { 
-        alert( err );
-        onError( { error: err } );
-    } );
 }
 
 function CreateRequest( { process, url, body, dataToDB }) {
@@ -252,49 +218,6 @@ function DeleteRequest( { process, url, body, dataToDB, id }) {
     return <></>;
 }
 
-function RetrieveAllRequest( { process, url }) {
-
-    const { 
-        retrieveAllRequestBefore,
-        retrieveAllRequest,
-        retrieveAllRequestAfter,
-        retrieveAllRequestDone,
-        retrieveAllRequestError 
-    } = useContext( CRUDContext );
-
-    useEffect( () => {
-        if ( Object.keys( process ).length === 0 ) {  // process === {}
-            retrieveAllRequestBefore();
-
-        } else if ( process.isOnRequestBefore ) {
-            retrieveAllRequest();
-
-        } else if ( process.isOnRequest ) {
-            const args = { method: 'GET' };
-            const onDone = retrieveAllRequestDone;
-            const onError = retrieveAllRequestError;
-            const dataFromDB = res => Array.isArray( res ) ? res : [];
-            doFetch( url, args, onDone, onError, dataFromDB );
-            retrieveAllRequestAfter();
-
-        } else if ( process.isOnRequestAfter ) {
-            // nothing here
-
-        } else if ( process.isSuspended ) {
-            retrieveAllRequestError();
-
-        } else if ( process.isOnRequestDone ) {
-            // nothing here
-
-        } else if ( process.isOnRequestError ) {
-            // nothing here
-
-        }
-    } );
-
-    return <></>;
-}
-
 export { 
     CRUDContext,
     CRUDContextProvider,
@@ -304,5 +227,4 @@ export {
     CreateRequest,
     UpdateRequest,
     DeleteRequest,
-    RetrieveAllRequest,
 };

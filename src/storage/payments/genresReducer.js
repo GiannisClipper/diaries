@@ -146,18 +146,18 @@ const genresReducer = ( state, action ) => {
             payments = { ...payments, genres };
             return { ...state, data: { ...state.data, payments } };
 
-        } case 'RETRIEVE_ALL_REQUEST_BEFORE': {
+        } case 'RETRIEVE_MANY_REQUEST_BEFORE': {
             const { init } = state.uiux;
             init.payments.genres.process = { isOnRequestBefore: true };
 
             return { uiux: { ...state.uiux, init }, data: state.data };
 
-        } case 'RETRIEVE_ALL_REQUEST': {
+        } case 'RETRIEVE_MANY_REQUEST': {
             let payments = { ...state.data.payments };
             let genres = [ ...payments.genres ];
 
             genres = [ initPayments.genre() ];
-            genres[ 0 ].uiux.mode = { isRetrieveAll: true };
+            genres[ 0 ].uiux.mode = { isRetrieveMany: true };
             genres[ 0 ].uiux.process = { isOnRequest: true };
 
             payments = { ...payments, genres };
@@ -166,13 +166,13 @@ const genresReducer = ( state, action ) => {
 
             return { uiux: { ...state.uiux, init }, data: { ...state.data, payments } };
 
-        } case 'RETRIEVE_ALL_REQUEST_AFTER': {
+        } case 'RETRIEVE_MANY_REQUEST_AFTER': {
             const { init } = state.uiux;
             init.payments.genres.process = { isOnRequestAfter: true };
 
             return { uiux: { ...state.uiux, init }, data: state.data };
 
-        } case 'RETRIEVE_ALL_REQUEST_DONE': {
+        } case 'RETRIEVE_MANY_REQUEST_DONE': {
             let payments = { ...state.data.payments };
             const { dataFromDB } = action.payload;
 
@@ -190,7 +190,7 @@ const genresReducer = ( state, action ) => {
 
             return { uiux: { ...state.uiux, init }, data: { ...state.data, payments } };
 
-        } case 'RETRIEVE_ALL_REQUEST_ERROR': {
+        } case 'RETRIEVE_MANY_REQUEST_ERROR': {
             let payments = { ...state.data.payments };
 
             const genres = [];
