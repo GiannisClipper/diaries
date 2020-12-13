@@ -79,9 +79,6 @@ const DateList = () => {
     const next = useRef( null );
     const central = useRef( null );
 
-    const doScrollUp = () => dispatch( { namespace, type: 'DO_INIT', payload: { mode: { isInitPrev: true } } } );
-    const doScrollDown = () => dispatch( { namespace, type: 'DO_INIT', payload: { mode: { isInitNext: true } } } );
-
     REF.current.scrollToCentralDate = () => {
         outer.current.scrollTop = central.current.offsetTop - ( outer.current.clientHeight * 0.10 );
     }
@@ -109,21 +106,8 @@ const DateList = () => {
 
     return (
         <List reference={outer}>
+
             <ContentBox ref={inner}>
-            <CopyPasteContextProvider
-                doCutPaste={payload => dispatch( { namespace: 'entries', type: 'MOVE_ENTRY', payload } ) }
-                doCopyPaste={payload => dispatch( { namespace: 'entries', type: 'COPY_ENTRY', payload } ) }
-            >
-
-                <Scroll
-                    outer={outer.current}
-                    inner={inner.current}
-                    prev={prev.current}
-                    next={next.current}
-                    doScrollUp={doScrollUp}
-                    doScrollDown={doScrollDown}
-                />
-
                 <GenreInit />
                 <FundInit />
 
@@ -135,14 +119,29 @@ const DateList = () => {
 
                 <PrevButton reference={prev} />
 
-                <DateItems 
-                    central={central} 
-                />
+                    <CopyPasteContextProvider
+                        doCutPaste={payload => dispatch( { namespace: 'entries', type: 'MOVE_ENTRY', payload } )}
+                        doCopyPaste={payload => dispatch( { namespace: 'entries', type: 'COPY_ENTRY', payload } )}
+                    >
+
+                        <DateItems 
+                            central={central} 
+                        />
+
+                    </CopyPasteContextProvider>
 
                 <NextButton reference={next} />
-
-            </CopyPasteContextProvider>
             </ContentBox>
+
+            <Scroll
+                outer={outer.current}
+                inner={inner.current}
+                prev={prev.current}
+                next={next.current}
+                doScrollUp={() => dispatch( { namespace, type: 'DO_INIT', payload: { mode: { isInitPrev: true } } } )}
+                doScrollDown={() => dispatch( { namespace, type: 'DO_INIT', payload: { mode: { isInitNext: true } } } )}
+            />
+
         </List>
     );
 };
