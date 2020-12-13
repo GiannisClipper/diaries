@@ -7,11 +7,12 @@ import datesReducer from '../storage/datesReducer';
 import entriesReducer from '../storage/entriesReducer';
 import genresReducer from '../storage/payments/genresReducer';
 import fundsReducer from '../storage/payments/fundsReducer';
+import reportsReducer from '../storage/reportsReducer';
 
 const STATEReducer = ( state, action ) => {
 
     switch ( action.namespace ) {
-    
+
         case 'auth': {
             return authReducer( state, action );
 
@@ -32,6 +33,9 @@ const STATEReducer = ( state, action ) => {
 
         } case 'payments.funds': {
             return fundsReducer( state, action );
+
+        } case 'reports': {
+            return reportsReducer( state, action );
 
         } default: {
             throw new Error();

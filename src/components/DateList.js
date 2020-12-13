@@ -90,7 +90,7 @@ const DateList = () => {
         return process1.isDone && process2.isDone 
             ? { isRetrieveMany: true }
             : process1.isError || process2.isError 
-            ? { isOnRequestError: true }
+            ? { isError: true }
             : { isWaiting: true };
     }
 

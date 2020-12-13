@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faBookOpen, faCog, faCompass, faMap, faDoorOpen, faDoorClosed } from '@fortawesome/free-solid-svg-icons';
 import { Signin, Signout } from './Auth';
 import DateList from './DateList';
-//import ReportList from './ReportList';
+import ReportList from './ReportList';
 import UserList from './UserList';
 import Settings from './Settings';
 import { ThemeProvider } from 'styled-components';
@@ -187,7 +187,7 @@ const AppBox = React.memo( ( { page } ) => {
                 : page === 'signin' ? <Signin />
                 : page === 'signout' ? <Signout />
                 : page === 'dates' ? <DateList />
-                : page === 'reports' ? <></>//<ReportList />
+                : page === 'reports' ? <ReportList />
                 : page === 'users' ? <UserList />
                 : page === 'settings' ? <Settings />
                 : <Error404 /> }

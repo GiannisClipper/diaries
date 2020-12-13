@@ -25,6 +25,10 @@ const initState = () => ( {
             genres: [],
             funds: [],
         },
+        reports: [
+            initReport( { descr: 'Κατάσταση σημειωμάτων', type: 'note' } ),
+            initReport( { descr: 'Κατάσταση οικονομικών κινήσεων', type: 'payment' } ),
+        ],
     },
     uiux: {
         init: {
@@ -144,4 +148,12 @@ const initPayments = {
     } )
 }
 
-export { initState, initSignin, initSettings, initUser, initDate, initEntry, initNotes, initPayments };
+const initReport = data => ( {
+    data: data,
+    uiux: {
+        form: {},  // isOpen
+        process: { isDone: true },  // process: isOnRequestBefore, isOnRequest, isOnRequestAfter, isDone, isError, isSuspended
+    }
+} );
+
+export { initState, initSignin, initSettings, initUser, initDate, initEntry, initNotes, initPayments, initReport };

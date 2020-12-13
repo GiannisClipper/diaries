@@ -63,8 +63,8 @@ const EntryContext = ( { date, inSequence, entry } ) => {
         data: parseDataToDB(),
     } );
 
-    const strFrom = !entry.uiux.dateFrom || dateToYYYYMMDD( entry.uiux.dateFrom );
-    const strTill = !entry.uiux.dateTill || dateToYYYYMMDD( entry.uiux.dateTill );
+    const strDateFrom = !entry.uiux.dateFrom || dateToYYYYMMDD( entry.uiux.dateFrom );
+    const strDateTill = !entry.uiux.dateTill || dateToYYYYMMDD( entry.uiux.dateTill );
 
     const payload = { date, entry, inSequence };
 
@@ -79,7 +79,12 @@ const EntryContext = ( { date, inSequence, entry } ) => {
             namespace={namespace} 
             payload={payload}
         >
-            { entry.uiux.mode.isCreate ?
+            { entry.uiux.mode.isRetrieveMany ?
+                <RetrieveManyRequest
+                    process={entry.uiux.process}
+                    url={`/.netlify/functions/entry?range=${strDateFrom}-${strDateTill}`}
+                />
+            : entry.uiux.mode.isCreate ?
                 <CreateRequest
                     process={entry.uiux.process}
                     url={ `/.netlify/functions/entry`}
@@ -101,11 +106,6 @@ const EntryContext = ( { date, inSequence, entry } ) => {
                     body={body()}
                     dataToDB={parseDataToDB()}
                     id={entry.data.id}
-                />
-            : entry.uiux.mode.isRetrieveMany ?
-                <RetrieveManyRequest
-                    process={entry.uiux.process}
-                    url={`/.netlify/functions/entry?range=${strFrom}-${strTill}`}
                 />
             : null }
 

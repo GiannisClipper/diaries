@@ -69,7 +69,7 @@ function DateInit( { mode, process, entriesMode } ) {
         } else if ( 
                 process.isOnInit || 
                 ( process.isWaiting && entriesMode.isRetrieveMany ) ||
-                ( process.isWaiting && entriesMode.isOnRequestError ) 
+                ( process.isWaiting && entriesMode.isError ) 
             ) {
 
             if ( mode.isInit ) {

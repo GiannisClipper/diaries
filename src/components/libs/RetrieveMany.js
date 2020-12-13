@@ -30,11 +30,7 @@ const RetrieveManyContextProvider = React.memo( ( { dispatch, namespace, payload
         closeForm: useCallback(
             payload2 => dispatch( { namespace, type: 'CLOSE_FORM', payload: { ...payload, ...payload2 } } ), 
             [ dispatch, namespace, payload ]
-        ), 
-        doRequest: useCallback(
-            payload2 => dispatch( { namespace, type: 'DO_REQUEST', payload: { ...payload, ...payload2 } } ), 
-            [ dispatch, namespace, payload ]
-        ), 
+        ),
         retrieveManyRequestBefore: useCallback(
             payload2 => dispatch( { namespace, type: 'RETRIEVE_MANY_REQUEST_BEFORE', payload: { ...payload, ...payload2 } } ), 
             [ dispatch, namespace, payload ]
@@ -81,7 +77,7 @@ function RetrieveManyMenu( { process } ) {
 
 function RetrieveManyForm( { headLabel, isOnRequest, children } ) {
 
-    const { closeForm, doRequest } = useContext( RetrieveManyContext );
+    const { closeForm, retrieveManyRequestBefore } = useContext( RetrieveManyContext );
 
     const okLabel = texts.buttons.retrieveMany;
     const cancelLabel = texts.buttons.cancel;
@@ -91,7 +87,7 @@ function RetrieveManyForm( { headLabel, isOnRequest, children } ) {
             headLabel={headLabel}
             okLabel={okLabel}
             cancelLabel={cancelLabel}
-            onClickOk={doRequest}
+            onClickOk={retrieveManyRequestBefore}
             onClickCancel={closeForm}
             isOnRequest={isOnRequest}
         >
@@ -131,10 +127,10 @@ function RetrieveManyRequest( { process, url }) {
         } else if ( process.isSuspended ) {
             retrieveManyRequestError();
 
-        } else if ( process.isOnRequestDone ) {
+        } else if ( process.isDone ) {
             // nothing here
 
-        } else if ( process.isOnRequestError ) {
+        } else if ( process.isError ) {
             // nothing here
 
         }
