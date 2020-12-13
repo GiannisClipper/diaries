@@ -129,70 +129,28 @@ const Entry = React.memo( ( { date, inSequence, entry } ) => {
 
     const { doCut, doPaste } = useContext( CopyPasteContext );
 
-    //const STATE = useContext( STATEContext )
-    //const { dispatch } = STATE;
+    let draggable, onDragStart, onDragOver, onDrop;
 
-    //const REF = useContext( REFContext );
+    if ( !entry.uiux.form.isOpen && !entry.uiux.status.isSuspended ) {
 
-    const dragStart = ( event, date, entry, inSequence ) => {
-        doCut( { date, entry, inSequence } );
-        event.dataTransfer.effectAllowed = 'move';
-    }
+        if ( entry.data.id ) {  // no drag empty rows
 
-    const allowDrop = event => {
-        event.preventDefault();
-    }
+            draggable = 'true';
 
-    const doDrop = ( event, date, inSequence ) => {
-        event.preventDefault();
-        doPaste( { date, entry, inSequence } );
-    }
+            onDragStart = event => {
+                event.dataTransfer.effectAllowed = 'move';
+                doCut( { date, entry, inSequence } );
+            }
+        }
 
-    // const doCut = ( date, entry, inSequence ) => {
-    //     REF.current.cut = { date, inSequence };
-    //     REF.current.copy = null;
-    //     REF.current.paste = null;
+        onDragOver = event => {  // allowDrop
+            event.preventDefault();
+        }
 
-    //     REF.current._saved = { date, entry, inSequence };
-    // }
-
-    // const doCopy = ( date, entry, inSequence ) => {
-    //     REF.current.cut = null;
-    //     REF.current.copy = { date, inSequence };
-    //     REF.current.paste = null;
-
-    //     REF.current._saved = { date, entry, inSequence };
-    // }
-
-    // const doPaste = ( date, entry, inSequence ) => {
-    //     REF.current.paste = { date, inSequence };
-
-    //     const { cut, copy, paste } = REF.current;
-
-    //     if ( cut ) {
-    //         dispatch( { namespace, type: 'MOVE_ENTRY', payload: { cut, paste } } );
-    //         REF.current.copy = { ...cut };
-    //         REF.current.cut = null;
-
-    //     } else if ( copy ) {
-    //         dispatch( { namespace, type: 'COPY_ENTRY', payload: { copy, paste } } );
-    //     }
-    // }
-
-    let draggable = entry.data.id ? 'true' : null;
-    let onDragStart = entry.data.id ? event => dragStart( event, date, entry, inSequence ) : null;
-    let onDragOver = event => allowDrop( event );
-    let onDrop = event => doDrop( event, date, inSequence );
-
-    if ( entry.uiux.form.isOpen ) {
-        draggable = null;
-    }
-
-    if ( entry.uiux.status.isSuspended ) {
-        draggable = null;
-        onDragStart = null;
-        onDragOver = null;
-        onDrop = null;
+        onDrop = event => {
+            event.preventDefault();
+            doPaste( { date, entry, inSequence } );
+        }
     }
 
     // useEffect( () => {
