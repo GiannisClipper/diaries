@@ -32,14 +32,14 @@ const initState = () => ( {
     },
     uiux: {
         init: {
-            users: { process: {}, },  // process: isOnRequestBefore, isOnRequest, isOnRequestAfter, isDone, isError, isSuspended
+            users: { process: { isTriggered: true }, },  // process: isTriggered, isOnRequestBefore, isOnRequest, isOnRequestAfter, isDone, isError, isSuspended
             dates: { 
                 process: {},  // isOnInit, isWaiting, isDone
                 mode: {},  // isInit, isInitPrev, isInitNext
             },
             payments: {
-                genres: { process: {}, },  // process: isOnRequestBefore, isOnRequest, isOnRequestAfter, isDone, isError, isSuspended
-                funds: { process: {}, },  // process: isOnRequestBefore, isOnRequest, isOnRequestAfter, isDone, isError, isSuspended
+                genres: { process: { isTriggered: true }, },  // process: isTriggered, isOnRequestBefore, isOnRequest, isOnRequestAfter, isDone, isError, isSuspended
+                funds: { process: { isTriggered: true }, },  // process: isTriggered, isOnRequestBefore, isOnRequest, isOnRequestAfter, isDone, isError, isSuspended
             },
         },
         error: {}
@@ -70,7 +70,6 @@ const initDate = () => ( {
         entries: [],
     },
     uiux: {
-        //process: {},  // isOnRequest
         isTheCentral: null,
     }
 } );
@@ -87,7 +86,7 @@ const initEntry = () => ( {
         form: {},  // isOpen
         type: {},  // isNote, isPayment
         mode: {},  // isCreate, isUpdate, isDelete, isRetrieveMany
-        process: {},  // isOnRequest
+        process: {},  // isTriggered, isOnRequest
         status: {},  // isWaiting, isSuspended
         dateFrom: null,  // when mode = isRetrieveMany
         dateTill: null,  // when mode = isRetrieveMany
@@ -152,7 +151,7 @@ const initReport = data => ( {
     data: data,
     uiux: {
         form: {},  // isOpen
-        process: { isDone: true },  // process: isOnRequestBefore, isOnRequest, isOnRequestAfter, isDone, isError, isSuspended
+        process: {},  // process: isTriggered, isOnRequestBefore, isOnRequest, isOnRequestAfter, isDone, isError, isSuspended
     }
 } );
 

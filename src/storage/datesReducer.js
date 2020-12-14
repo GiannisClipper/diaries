@@ -13,6 +13,7 @@ const initDates = ( dates, dateFrom, dateTill, entriesMode ) => {
 
         if ( x === dateFrom ) {
             date.data.entries[ 0 ].uiux.mode = entriesMode;
+            date.data.entries[ 0 ].uiux.process = { isTriggered: true };
             date.data.entries[ 0 ].uiux.dateFrom = dateFrom;
             date.data.entries[ 0 ].uiux.dateTill = dateTill;
         }

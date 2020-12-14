@@ -19,6 +19,14 @@ const reportsReducer = ( state, action ) => {
 
             return { ...state, data: { ...state.data, reports } };
 
+        } case 'RETRIEVE_MANY_TRIGGER': {
+            const reports = [ ...state.data.reports ];
+            const { index } = action.payload;
+
+            reports[ index ].uiux.process = { isTriggered: true };
+
+            return { ...state, data: { ...state.data, reports } };
+
         } case 'RETRIEVE_MANY_REQUEST_BEFORE': {
             const reports = [ ...state.data.reports ];
             const { index } = action.payload;

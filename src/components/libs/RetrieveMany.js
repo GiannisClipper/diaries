@@ -31,6 +31,10 @@ const RetrieveManyContextProvider = React.memo( ( { dispatch, namespace, payload
             payload2 => dispatch( { namespace, type: 'CLOSE_FORM', payload: { ...payload, ...payload2 } } ), 
             [ dispatch, namespace, payload ]
         ),
+        retrieveManyTrigger: useCallback(
+            payload2 => dispatch( { namespace, type: 'RETRIEVE_MANY_TRIGGER', payload: { ...payload, ...payload2 } } ), 
+            [ dispatch, namespace, payload ]
+        ), 
         retrieveManyRequestBefore: useCallback(
             payload2 => dispatch( { namespace, type: 'RETRIEVE_MANY_REQUEST_BEFORE', payload: { ...payload, ...payload2 } } ), 
             [ dispatch, namespace, payload ]
@@ -77,7 +81,7 @@ function RetrieveManyMenu( { process } ) {
 
 function RetrieveManyForm( { headLabel, isOnRequest, children } ) {
 
-    const { closeForm, retrieveManyRequestBefore } = useContext( RetrieveManyContext );
+    const { closeForm, retrieveManyTrigger } = useContext( RetrieveManyContext );
 
     const okLabel = texts.buttons.retrieveMany;
     const cancelLabel = texts.buttons.cancel;
@@ -87,7 +91,7 @@ function RetrieveManyForm( { headLabel, isOnRequest, children } ) {
             headLabel={headLabel}
             okLabel={okLabel}
             cancelLabel={cancelLabel}
-            onClickOk={retrieveManyRequestBefore}
+            onClickOk={retrieveManyTrigger}
             onClickCancel={closeForm}
             isOnRequest={isOnRequest}
         >
@@ -107,7 +111,8 @@ function RetrieveManyRequest( { process, url }) {
     } = useContext( RetrieveManyContext );
 
     useEffect( () => {
-        if ( Object.keys( process ).length === 0 ) {  // process === {}
+        //if ( Object.keys( process ).length === 0 ) {  // process === {}
+        if ( process.isTriggered ) {
             retrieveManyRequestBefore();
 
         } else if ( process.isOnRequestBefore ) {
