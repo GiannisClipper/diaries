@@ -47,4 +47,18 @@ const parseSettingsToDB = ( data ) => ( {
     centralDate: reprToYYYYMMDD( data.centralDate ),
 } )
 
-export { parseUserFromDB, parseUserToDB, parseSigninFromDB, parseSigninToDB, parseSettingsFromDB, parseSettingsToDB };
+const parseReportToDB = ( data ) => ( {
+    type: data.type,
+    dateFrom: reprToYYYYMMDD( data.dateFrom ),
+    dateTill: reprToYYYYMMDD( data.dateTill ),
+} )
+
+export { 
+    parseUserFromDB,
+    parseUserToDB,
+    parseSigninFromDB,
+    parseSigninToDB,
+    parseSettingsFromDB,
+    parseSettingsToDB,
+    parseReportToDB
+};

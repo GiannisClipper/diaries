@@ -5,7 +5,6 @@ import { heads } from '../../storage/texts';
 import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
 import { InputNumber } from '../libs/InputNumber';
 import { InputFromList } from '../libs/InputFromList';
-import { InputValidations } from "../libs/CRUD";
 import { isBlank } from '../../helpers/validation';
 import { getFromList } from '../../storage/payments/parsers';
 
@@ -39,7 +38,7 @@ function PaymentForm( { date, entry, inSequence, closeForm, doValidation, valida
         return { isIncoming, isOutgoing, incoming, outgoing };
     }
 
-    const doValidate = () => {
+    const validation = () => {
         let errors = '';
         errors += isBlank( data.genre_name ) ? 'Η κατηγορία οικονομικής κίνησης δεν μπορεί να είναι κενή.\n' : '';
         errors += isBlank( data.fund_name ) ? 'Το μέσο οικονομικής κίνησης δεν μπορεί να είναι κενό.\n' : '';
@@ -51,15 +50,10 @@ function PaymentForm( { date, entry, inSequence, closeForm, doValidation, valida
     return (
         <EntryForm
             headLabel={heads.payments}
+            validation={validation}
             date={date}
             entry={entry}
         >
-    
-            <InputValidations
-                process={entry.uiux.process}
-                doValidate={doValidate}
-            />
-
             <InputBox>
                 <InputLabel>
                     Κατηγορία

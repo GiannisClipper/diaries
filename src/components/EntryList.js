@@ -18,8 +18,7 @@ import { parsePaymentToDB } from '../storage/payments/parsers';
 import styled, { css } from 'styled-components';
 import StyledRow from './libs/RowBox';
 import { CopyPasteContext } from './libs/CopyPaste';
-import { RetrieveManyContextProvider, RetrieveManyRequest } from './libs/RetrieveMany';
-import { CRUDContextProvider, CreateRequest, UpdateRequest, DeleteRequest } from './libs/CRUD';
+import { CRUDContextProvider, RetrieveManyRequest, CreateRequest, UpdateRequest, DeleteRequest } from './libs/CRUD';
 
 const namespace = 'entries';
 
@@ -69,11 +68,6 @@ const EntryContext = ( { date, inSequence, entry } ) => {
     const payload = { date, entry, inSequence };
 
     return (
-        <RetrieveManyContextProvider 
-            dispatch={dispatch} 
-            namespace={namespace} 
-            payload={payload}
-        >
         <CRUDContextProvider 
             dispatch={dispatch} 
             namespace={namespace} 
@@ -112,7 +106,6 @@ const EntryContext = ( { date, inSequence, entry } ) => {
             <Entry inSequence={inSequence} date={date} entry={entry} />
 
         </CRUDContextProvider>
-        </RetrieveManyContextProvider>
     )
 }
 

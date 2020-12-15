@@ -4,7 +4,7 @@ import { Modal } from './libs/Modal';
 import { InputBox, InputLabel, InputValue } from './libs/InputBox';
 import { dayNames, YYYYMMDDToRepr, dateToYYYYMMDD } from '../helpers/dates';
 
-function EntryForm( { headLabel, date, entry, children } ) {
+function EntryForm( { headLabel, process, validation, date, entry, children } ) {
 
     const { closeForm } = useContext( CRUDContext );
 
@@ -13,7 +13,8 @@ function EntryForm( { headLabel, date, entry, children } ) {
             <CRUDForm
                 headLabel={headLabel}
                 mode={entry.uiux.mode}
-                isOnRequest={entry.uiux.process.isOnRequest}
+                process={entry.uiux.process}
+                validation={validation}
             >
                 <InputBox>
                     <InputLabel>

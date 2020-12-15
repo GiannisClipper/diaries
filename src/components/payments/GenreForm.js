@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { Modal } from '../libs/Modal';
-import { CRUDContext, CRUDForm, InputValidations } from "../libs/CRUD";
+import { CRUDContext, CRUDForm } from "../libs/CRUD";
 import { heads } from '../../storage/texts';
 import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
 import { InputCheck } from '../libs/InputCheck';
@@ -14,7 +14,7 @@ function GenreForm( { genres, index } ) {
 
     const { closeForm } = useContext( CRUDContext );
 
-    const doValidate = () => {
+    const validation = () => {
         let errors = '';
         errors += isBlank( data.name ) ? 'Η Ονομασία δεν μπορεί να είναι κενή.\n' : '';
         errors += !isBlank( data.name ) && isFound( genres.map( x=> x.data.name), data.name, index ) ? 'Η Ονομασία υπάρχει ήδη.\n' : '';
@@ -24,16 +24,11 @@ function GenreForm( { genres, index } ) {
 
     return (
         <Modal onClick={closeForm} centeredness>
-
-            <InputValidations
-                process={genre.uiux.process}
-                doValidate={doValidate}
-            />
-
             <CRUDForm
                 headLabel={heads.payment_genres}
                 mode={genre.uiux.mode}
-                isOnRequest={genre.uiux.process.isOnRequest}
+                process={genre.uiux.process}
+                validation={validation}
             >
                 <InputBox>
                     <InputLabel>

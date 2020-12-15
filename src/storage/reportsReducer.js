@@ -1,8 +1,21 @@
+import { initReport } from './schemas';
+
 const reportsReducer = ( state, action ) => {
 
     switch ( action.type ) {
+        case 'DO_INIT': {
+            let reports = [
+                { descr: 'Κατάσταση σημειωμάτων', type: 'note' },
+                { descr: 'Κατάσταση οικονομικών κινήσεων', type: 'payment' },
+            ];
+            reports = reports.map( x => ( { ...initReport(), data: { ...initReport().data, ...x } } ) );
+    
+            const { init } = state.uiux;
+            init.reports.process = { isDone: true };
 
-        case 'OPEN_FORM': {
+            return { data: { ...state.data, reports }, uiux: { ...state.uiux, init } };
+        
+        } case 'OPEN_FORM': {
             const reports = [ ...state.data.reports ];
             const { index } = action.payload;
 
@@ -19,11 +32,36 @@ const reportsReducer = ( state, action ) => {
 
             return { ...state, data: { ...state.data, reports } };
 
-        } case 'RETRIEVE_MANY_TRIGGER': {
+        } case 'DO_VALIDATION': {
             const reports = [ ...state.data.reports ];
             const { index } = action.payload;
 
-            reports[ index ].uiux.process = { isTriggered: true };
+            reports[ index ].uiux.process = { isOnValidation: true };
+
+            return { ...state, data: { ...state.data, reports } };
+
+        } case 'VALIDATION_DONE': {
+            const reports = [ ...state.data.reports ];
+            const { index, data } = action.payload;
+
+            reports[ index ].uiux.process = { isOnValidationDone: true };
+            reports[ index ].data = { ...data };
+
+            return { ...state, data: { ...state.data, reports } };
+
+        } case 'VALIDATION_ERROR': {
+            const reports = [ ...state.data.reports ];
+            const { index } = action.payload;
+
+            reports[ index ].uiux.process = {};
+
+            return { ...state, data: { ...state.data, reports } };
+
+        } case 'DO_REQUEST': {
+            const reports = [ ...state.data.reports ];
+            const { index } = action.payload;
+
+            reports[ index ].uiux.process = { isOnRequestTriggered: true };
 
             return { ...state, data: { ...state.data, reports } };
 

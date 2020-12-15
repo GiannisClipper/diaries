@@ -6,8 +6,7 @@ import { ListBox } from './libs/ListBox';
 import { BlockBox, BlockLabel, BlockValue } from './libs/BlockBox';
 import { RowBox, RowValue, RowMenu } from './libs/RowBox';
 
-import { RetrieveManyContextProvider, RetrieveManyRequest } from './libs/RetrieveMany';
-import { CRUDContextProvider, CRUDMenu, CreateRequest, UpdateRequest, DeleteRequest } from './libs/CRUD';
+import { CRUDContextProvider, CRUDMenu, RetrieveManyRequest, CreateRequest, UpdateRequest, DeleteRequest } from './libs/CRUD';
 import UserForm from './UserForm';
 import { parseUserToDB } from '../storage/parsers';
 
@@ -50,7 +49,7 @@ function UserInit() {
     const { init } = STATE.state.uiux;
 
     return (
-        <RetrieveManyContextProvider 
+        <CRUDContextProvider 
             dispatch={dispatch} 
             namespace={namespace} 
         >
@@ -58,7 +57,7 @@ function UserInit() {
                 process={init.users.process}
                 url={`/.netlify/functions/user`}
             />
-        </RetrieveManyContextProvider>
+        </CRUDContextProvider>
     );
 }
 
@@ -108,10 +107,10 @@ function User( { index, users } ) {
                 </RowValue>
 
                 <RowMenu>
-                    <CRUDMenu 
+                    <CRUDMenu
+                        options={!user.data.id ? [ 'C' ] : [ 'U', 'D' ]}
                         process={user.uiux.process}
                         status={user.uiux.status}
-                        id={user.data.id}
                     />
                 </RowMenu>
 

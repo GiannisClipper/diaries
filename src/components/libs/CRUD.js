@@ -72,6 +72,26 @@ const CRUDContextProvider = React.memo( ( { dispatch, namespace, payload, childr
         deleteRequestError: useCallback(
             payload2 => dispatch( { namespace, type: 'DELETE_REQUEST_ERROR', payload: { ...payload, ...payload2 } } ), 
             [ dispatch, namespace, payload ]
+        ),
+        retrieveManyRequestBefore: useCallback(
+            payload2 => dispatch( { namespace, type: 'RETRIEVE_MANY_REQUEST_BEFORE', payload: { ...payload, ...payload2 } } ), 
+            [ dispatch, namespace, payload ]
+        ), 
+        retrieveManyRequest: useCallback(
+            payload2 => dispatch( { namespace, type: 'RETRIEVE_MANY_REQUEST', payload: { ...payload, ...payload2 } } ), 
+            [ dispatch, namespace, payload ]
+        ), 
+        retrieveManyRequestAfter: useCallback(
+            payload2 => dispatch( { namespace, type: 'RETRIEVE_MANY_REQUEST_AFTER', payload: { ...payload, ...payload2 } } ), 
+            [ dispatch, namespace, payload ]
+        ), 
+        retrieveManyRequestDone: useCallback(
+            payload2 => dispatch( { namespace, type: 'RETRIEVE_MANY_REQUEST_DONE', payload: { ...payload, ...payload2 } } ), 
+            [ dispatch, namespace, payload ]
+        ), 
+        retrieveManyRequestError: useCallback(
+            payload2 => dispatch( { namespace, type: 'RETRIEVE_MANY_REQUEST_ERROR', payload: { ...payload, ...payload2 } } ), 
+            [ dispatch, namespace, payload ]
         ), 
     }
 
@@ -86,27 +106,32 @@ const CRUDContextProvider = React.memo( ( { dispatch, namespace, payload, childr
     )
 } );
 
-function CRUDMenu( { process, status, id } ) {
+function CRUDMenu( { options, process, status } ) {
 
     const { openForm } = useContext( CRUDContext );
 
     return ( 
-        process.isOnValidation || process.isOnRequest
-            ? <Loader />
-            : status.isSuspended
-            ? <FontAwesomeIcon icon={faBan} className="icon" />
-            : !id
-            ? 
-            <EditTool onClick={event => openForm( { mode: { isCreate: true } } )} />
-            : 
-            <>
-            <EditTool onClick={event => openForm( { mode: { isUpdate: true } } )} />
-            <DeleteTool onClick={event => openForm( { mode: { isDelete: true } } )} />
-            </>
+        process.isOnValidation || 
+        process.isOnRequestTrigger ||
+        process.isOnRequestBefore ||
+        process.isOnRequest ||
+        process.isOnRequestAfter ?
+            <Loader />
+
+        : status && status.isSuspended ?
+            <FontAwesomeIcon icon={faBan} className="icon" />
+
+        : 
+        <>
+            {options.includes( 'C' ) ? <EditTool onClick={event => openForm( { mode: { isCreate: true } } )} /> : null}
+            {options.includes( 'RM' ) ? <EditTool onClick={event => openForm( { mode: { isRetrieveMany: true } } )} /> : null}
+            {options.includes( 'U' ) ? <EditTool onClick={event => openForm( { mode: { isUpdate: true } } )} /> : null}
+            {options.includes( 'D' ) ? <DeleteTool onClick={event => openForm( { mode: { isDelete: true } } )} /> : null}
+        </>
     );
 }
 
-function CRUDForm( { headLabel, mode, isOnRequest, children } ) {
+function CRUDForm( { headLabel, mode, process, validation, children } ) {
 
     const { closeForm, doValidation, doRequest } = useContext( CRUDContext );
 
@@ -117,7 +142,9 @@ function CRUDForm( { headLabel, mode, isOnRequest, children } ) {
             texts.buttons.update :
         mode.isDelete ?
             texts.buttons.delete :
-        null 
+        mode.isRetrieveMany ?
+            texts.buttons.retrieveMany :
+        null
     );
 
     const cancelLabel = texts.buttons.cancel;
@@ -127,29 +154,29 @@ function CRUDForm( { headLabel, mode, isOnRequest, children } ) {
             headLabel={headLabel}
             okLabel={okLabel}
             cancelLabel={cancelLabel}
-            onClickOk={mode.isCreate || mode.isUpdate ? doValidation : doRequest}
+            onClickOk={!validation || mode.isDelete ? doRequest : doValidation}
             onClickCancel={closeForm}
-            isOnRequest={isOnRequest}
+            isOnRequest={process.isOnRequest}
             isDelete={mode.isDelete}
         >
+            <InputValidation
+                process={process}
+                validation={validation}
+            />
+
             {children}
         </OkCancelForm>
     );
 }
 
-function InputValidations( { process, doValidate }) {
-    const { 
-        validationDone,
-        validationError,
-        doRequest,
-    } = useContext( CRUDContext );
+function InputValidation( { process, validation }) {
 
+    const { validationDone, validationError, doRequest } = useContext( CRUDContext );
 
     useEffect( () => {
     
         if ( process.isOnValidation ) {
-
-            const { data, errors } = doValidate();
+            const { data, errors } = validation();
 
             if ( errors === '' ) {
                 validationDone( { data } )
@@ -218,13 +245,57 @@ function DeleteRequest( { process, url, body, dataToDB, id }) {
     return <></>;
 }
 
+function RetrieveManyRequest( { process, url }) {
+
+    const { 
+        retrieveManyRequestBefore,
+        retrieveManyRequest,
+        retrieveManyRequestAfter,
+        retrieveManyRequestDone,
+        retrieveManyRequestError 
+    } = useContext( CRUDContext );
+
+    useEffect( () => {
+        //if ( Object.keys( process ).length === 0 ) {  // process === {}
+        if ( process.isOnRequestTriggered ) {
+            retrieveManyRequestBefore();
+
+        } else if ( process.isOnRequestBefore ) {
+            retrieveManyRequest();
+
+        } else if ( process.isOnRequest ) {
+            const args = { method: 'GET' };
+            const onDone = retrieveManyRequestDone;
+            const onError = retrieveManyRequestError;
+            const dataFromDB = res => Array.isArray( res ) ? res : [];
+            doFetch( url, args, onDone, onError, dataFromDB );
+            retrieveManyRequestAfter();
+
+        } else if ( process.isOnRequestAfter ) {
+            // nothing here
+
+        } else if ( process.isSuspended ) {
+            retrieveManyRequestError();
+
+        } else if ( process.isDone ) {
+            // nothing here
+
+        } else if ( process.isError ) {
+            // nothing here
+
+        }
+    } );
+
+    return <></>;
+}
+
 export { 
     CRUDContext,
     CRUDContextProvider,
     CRUDForm,
     CRUDMenu,
-    InputValidations,
     CreateRequest,
     UpdateRequest,
     DeleteRequest,
+    RetrieveManyRequest
 };

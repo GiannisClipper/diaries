@@ -3,8 +3,7 @@ import { STATEContext } from '../STATEContext';
 
 import { RowBox, RowValue, RowMenu } from '../libs/RowBox';
 
-import { RetrieveManyContextProvider, RetrieveManyRequest } from '../libs/RetrieveMany';
-import { CRUDContextProvider, CRUDMenu, CreateRequest, UpdateRequest, DeleteRequest } from '../libs/CRUD';
+import { CRUDContextProvider, CRUDMenu, RetrieveManyRequest, CreateRequest, UpdateRequest, DeleteRequest } from '../libs/CRUD';
 import GenreForm from './GenreForm';
 import { parseGenreToDB } from '../../storage/payments/parsers';
 
@@ -42,7 +41,7 @@ function GenreInit() {
     } );
 
     return (
-        <RetrieveManyContextProvider 
+        <CRUDContextProvider 
             dispatch={dispatch} 
             namespace={namespace} 
         >
@@ -50,7 +49,7 @@ function GenreInit() {
                 process={init.payments.genres.process}
                 url={`/.netlify/functions/payments-genre`}
             />
-        </RetrieveManyContextProvider>
+        </CRUDContextProvider>
     );
 }
 
@@ -112,9 +111,9 @@ function Genre( { index, genres } ) {
 
                 <RowMenu>
                     <CRUDMenu 
+                        options={!genre.data.id ? [ 'C' ] : [ 'U', 'D' ]}
                         process={genre.uiux.process}
                         status={genre.uiux.status}
-                        id={genre.data.id}
                     />
                 </RowMenu>
 

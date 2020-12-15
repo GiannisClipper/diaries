@@ -12,11 +12,11 @@ function SettingsForm( { settings, closeForm, doValidation, validationDone, vali
     const [ data, setData ] = useState( { ...settings.data } );
     //const changes = Object.keys( data ).filter( x => data[ x ] !== user.data[ x ] );
 
-    const onClickOk = event => {
-        settings.uiux.mode.isUpdate
-            ? doValidation()
-            : doRequest()
-    }
+    // const onClickOk = event => {
+    //     settings.uiux.mode.isUpdate
+    //         ? doValidation()
+    //         : doRequest()
+    // }
 
     const onClickCancel = closeForm;
 

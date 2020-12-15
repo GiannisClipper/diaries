@@ -60,10 +60,8 @@ function InputDate( { className, value, onChange, readOnly } ) {
 
     const _onBlur = event => {
         let value = event.target.value;
-        console.log( _analyzed( value ) );
         const analyzed = _analyzed( value );
         value = _isValid( analyzed ) ? _formatted( analyzed ) : '';
-        console.log( 'date', value )
         onChange( { target: { value } } );
     }
 
@@ -74,7 +72,7 @@ function InputDate( { className, value, onChange, readOnly } ) {
             onChange={onChange}
             onBlur={_onBlur}
             readOnly={readOnly}
-            placeholder="ΗΗ-ΜΜ-ΕΕΕΕ"
+            placeholder={`ΗΗ${separator}ΜΜ${separator}ΕΕΕΕ`}
         />
     )
 }

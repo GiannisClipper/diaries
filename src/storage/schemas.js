@@ -25,21 +25,21 @@ const initState = () => ( {
             genres: [],
             funds: [],
         },
-        reports: [
-            initReport( { descr: 'Κατάσταση σημειωμάτων', type: 'note' } ),
-            initReport( { descr: 'Κατάσταση οικονομικών κινήσεων', type: 'payment' } ),
-        ],
+        reports: [],
     },
     uiux: {
         init: {
-            users: { process: { isTriggered: true }, },  // process: isTriggered, isOnRequestBefore, isOnRequest, isOnRequestAfter, isDone, isError, isSuspended
+            users: { process: { isOnRequestTriggered: true }, },  // process: isOnRequestTriggered, isOnRequestBefore, isOnRequest, isOnRequestAfter, isDone, isError, isSuspended
             dates: { 
                 process: {},  // isOnInit, isWaiting, isDone
                 mode: {},  // isInit, isInitPrev, isInitNext
             },
             payments: {
-                genres: { process: { isTriggered: true }, },  // process: isTriggered, isOnRequestBefore, isOnRequest, isOnRequestAfter, isDone, isError, isSuspended
-                funds: { process: { isTriggered: true }, },  // process: isTriggered, isOnRequestBefore, isOnRequest, isOnRequestAfter, isDone, isError, isSuspended
+                genres: { process: { isOnRequestTriggered: true }, },  // process: isOnRequestTriggered, isOnRequestBefore, isOnRequest, isOnRequestAfter, isDone, isError, isSuspended
+                funds: { process: { isOnRequestTriggered: true }, },  // process: isOnRequestTriggered, isOnRequestBefore, isOnRequest, isOnRequestAfter, isDone, isError, isSuspended
+            },
+            reports: { 
+                process: {},  // isDone
             },
         },
         error: {}
@@ -86,7 +86,7 @@ const initEntry = () => ( {
         form: {},  // isOpen
         type: {},  // isNote, isPayment
         mode: {},  // isCreate, isUpdate, isDelete, isRetrieveMany
-        process: {},  // isTriggered, isOnRequest
+        process: {},  // isOnRequestTriggered, isOnRequest
         status: {},  // isWaiting, isSuspended
         dateFrom: null,  // when mode = isRetrieveMany
         dateTill: null,  // when mode = isRetrieveMany
@@ -147,11 +147,16 @@ const initPayments = {
     } )
 }
 
-const initReport = data => ( {
-    data: data,
+const initReport = () => ( {
+    data: {
+        descr: '',
+        type: '',
+        dateFrom: '',
+        dateTill: '',
+    },
     uiux: {
         form: {},  // isOpen
-        process: {},  // process: isTriggered, isOnRequestBefore, isOnRequest, isOnRequestAfter, isDone, isError, isSuspended
+        process: {},  // process: isOnRequestTriggered, isOnRequestBefore, isOnRequest, isOnRequestAfter, isDone, isError, isSuspended
     }
 } );
 

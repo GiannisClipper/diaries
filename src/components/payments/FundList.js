@@ -3,8 +3,7 @@ import { STATEContext } from '../STATEContext';
 
 import { RowBox, RowValue, RowMenu } from '../libs/RowBox';
 
-import { RetrieveManyContextProvider, RetrieveManyRequest } from '../libs/RetrieveMany';
-import { CRUDContextProvider, CRUDMenu, CreateRequest, UpdateRequest, DeleteRequest } from '../libs/CRUD';
+import { CRUDContextProvider, CRUDMenu, RetrieveManyRequest, CreateRequest, UpdateRequest, DeleteRequest } from '../libs/CRUD';
 import FundForm from './FundForm';
 import { parseFundToDB } from '../../storage/payments/parsers';
 
@@ -42,7 +41,7 @@ function FundInit() {
     } );
 
     return (
-        <RetrieveManyContextProvider 
+        <CRUDContextProvider 
             dispatch={dispatch}
             namespace={namespace}
         >
@@ -50,7 +49,7 @@ function FundInit() {
                 process={init.payments.funds.process}
                 url={`/.netlify/functions/payments-fund`}
             />
-        </RetrieveManyContextProvider>
+        </CRUDContextProvider>
     );
 }
 
@@ -102,9 +101,9 @@ function Fund( { index, funds } ) {
 
                 <RowMenu>
                     <CRUDMenu 
+                        options={!fund.data.id ? [ 'C' ] : [ 'U', 'D' ]}
                         process={fund.uiux.process}
                         status={fund.uiux.status}
-                        id={fund.data.id}
                     />
                 </RowMenu>
 

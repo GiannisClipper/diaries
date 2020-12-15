@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { Modal } from '../libs/Modal';
-import { CRUDContext, CRUDForm, InputValidations } from "../libs/CRUD";
+import { CRUDContext, CRUDForm } from "../libs/CRUD";
 import { heads } from '../../storage/texts';
 import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
 import { isBlank, isFound } from '../../helpers/validation';
@@ -13,7 +13,7 @@ function FundForm( { funds, index } ) {
 
     const { closeForm } = useContext( CRUDContext );
 
-    const doValidate = () => {
+    const validation = () => {
         let errors = '';
         errors += isBlank( data.name ) ? 'Η Ονομασία δεν μπορεί να είναι κενή.\n' : '';
         errors += !isBlank( data.name ) && isFound( funds.map( x=> x.data.name), data.name, index ) ? 'Η Ονομασία υπάρχει ήδη.\n' : '';
@@ -23,16 +23,11 @@ function FundForm( { funds, index } ) {
 
     return (
         <Modal onClick={closeForm} centeredness>
-
-            <InputValidations
-                process={fund.uiux.process}
-                doValidate={doValidate}
-            />
-
             <CRUDForm
                 headLabel={heads.payment_funds}
                 mode={fund.uiux.mode}
-                isOnRequest={fund.uiux.process.isOnRequest}
+                process={fund.uiux.process}
+                validation={validation}
             >
                 <InputBox>
                     <InputLabel>

@@ -6,15 +6,18 @@ import { ListBox } from './libs/ListBox';
 import { BlockBox, BlockLabel, BlockValue } from './libs/BlockBox';
 import { RowBox, RowValue, RowMenu } from './libs/RowBox';
 
-import { RetrieveManyContextProvider, RetrieveManyRequest, RetrieveManyMenu } from './libs/RetrieveMany';
+import { CRUDContextProvider, RetrieveManyRequest, CRUDMenu } from './libs/CRUD';
 
+import ReportInit from './ReportInit';
 import ReportForm from './ReportForm';
+import { parseReportToDB } from '../storage/parsers';
 
 const namespace = 'reports';
 
 function ReportList() {
 
     const STATE = useContext( STATEContext );
+    const { init } = STATE.state.uiux;
     const { reports } = STATE.state.data;
 
     useEffect( () => {
@@ -29,6 +32,9 @@ function ReportList() {
                 <BlockLabel>
                     {heads.reports}
                 </BlockLabel>
+
+                <ReportInit process={init.reports.process} />
+
                 <BlockValue>
                     <ul>
                         { reports.map( report => (
@@ -48,16 +54,22 @@ function Report( { index, reports } ) {
     const STATE = useContext( STATEContext )
     const { dispatch } = STATE;
     const payload = { index };
+    const dataToDB = parseReportToDB( report.data );
 
     return (
-        <RetrieveManyContextProvider 
+        <CRUDContextProvider 
             dispatch={dispatch}
             namespace={namespace}
             payload={payload}
         >
+
             <RetrieveManyRequest 
                 process={report.uiux.process}
-                url={`/.netlify/functions/report?type=${report.data.type}`}
+                url={`/.netlify/functions/report` +
+                    `?type=${dataToDB.type}` +
+                    `&dateFrom=${dataToDB.dateFrom}` +
+                    `&dateTill=${dataToDB.dateTill}`
+                }
             />
 
             <RowBox key={index}>
@@ -66,7 +78,8 @@ function Report( { index, reports } ) {
                 </RowValue>
 
                 <RowMenu>
-                    <RetrieveManyMenu
+                    <CRUDMenu
+                        options={[ 'RM' ]}
                         process={report.uiux.process}
                     />
                 </RowMenu>
@@ -78,7 +91,7 @@ function Report( { index, reports } ) {
                     /> 
                 : null }
             </RowBox>
-        </RetrieveManyContextProvider>
+        </CRUDContextProvider>
     );
 }
 

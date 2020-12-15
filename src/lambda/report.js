@@ -20,9 +20,12 @@ exports.handler = async function( event, context, callback ) {
         if ( event.httpMethod === 'GET' ) {
             //console.log('event.queryStringParameters', event.queryStringParameters)
             //const [ dateFrom, dateTill ] = event.queryStringParameters[ 'range' ].split( '-' );
-            const { type } = event.queryStringParameters;
-            const filters = { type: { $eq: type } };
-            console.log( 'type', type, 'filters', filters )
+            const { type, dateFrom, dateTill } = event.queryStringParameters;
+            const filters = { 
+                type: { $eq: type },
+                date: { $gte: dateFrom, $lte: dateTill },
+            };
+            console.log( 'filters', filters )
             const result = await collection.find( filters ).toArray();
             console.log( result );
             callback( null, responseOnSuccess( result ) );

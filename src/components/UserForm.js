@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Modal } from './libs/Modal';
 import { heads } from '../storage/texts';
-import { CRUDContext, CRUDForm, InputValidations } from "./libs/CRUD";
+import { CRUDContext, CRUDForm } from "./libs/CRUD";
 import { InputBox, InputLabel, InputValue } from './libs/InputBox';
 import { InputEmail } from './libs/InputEmail';
 import { InputCheck } from './libs/InputCheck';
@@ -15,7 +15,7 @@ function UserForm( { users, index } ) {
 
     const { closeForm } = useContext( CRUDContext );
 
-    const doValidate = () => {
+    const validation = () => {
         let errors = '';
         errors += isBlank( data.username ) ? 'Το Όνομα χρήστη δεν μπορεί να είναι κενό.\n' : '';
         errors += !isBlank( data.username ) && isFound( users.map( x=> x.data.username), data.username, index ) ? 'Το Όνομα xρήστη υπάρχει ήδη.\n' : '';
@@ -27,15 +27,11 @@ function UserForm( { users, index } ) {
     return (
         <Modal onClick={closeForm} centeredness>
 
-            <InputValidations
-                process={user.uiux.process}
-                doValidate={doValidate}
-            />
-
             <CRUDForm
                 headLabel={heads.users}
                 mode={user.uiux.mode}
-                isOnRequest={user.uiux.process.isOnRequest}
+                process={user.uiux.process}
+                validation={validation}
             >
                 <InputBox>
                     <InputLabel>
