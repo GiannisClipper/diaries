@@ -93,7 +93,6 @@ const reportsReducer = ( state, action ) => {
             const reports = [ ...state.data.reports ];
             const { index, dataFromDB } = action.payload;
 
-            //alert( dataFromDB )
             reports[ index ].uiux.process = { isDone: true };
 
             return { ...state, data: { ...state.data, reports } };

@@ -268,7 +268,7 @@ function RetrieveManyRequest( { process, url }) {
             const onDone = retrieveManyRequestDone;
             const onError = retrieveManyRequestError;
             const dataFromDB = res => Array.isArray( res ) ? res : [];
-            doFetch( url, args, onDone, onError, dataFromDB );
+            //doFetch( url, args, onDone, onError, dataFromDB );
             retrieveManyRequestAfter();
 
         } else if ( process.isOnRequestAfter ) {

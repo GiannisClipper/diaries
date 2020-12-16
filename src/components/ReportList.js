@@ -12,6 +12,8 @@ import ReportInit from './ReportInit';
 import ReportForm from './ReportForm';
 import { parseReportToDB } from '../storage/parsers';
 
+import { paymentsPDF } from '../storage/reportPDF';
+
 const namespace = 'reports';
 
 function ReportList() {
@@ -55,6 +57,13 @@ function Report( { index, reports } ) {
     const { dispatch } = STATE;
     const payload = { index };
     const dataToDB = parseReportToDB( report.data );
+
+    useEffect( () => {
+        if ( report.uiux.process.isOnRequestAfter ) {
+            paymentsPDF( [] );
+            report.uiux.process = {};
+        }
+    } );
 
     return (
         <CRUDContextProvider 
