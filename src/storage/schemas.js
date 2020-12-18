@@ -1,7 +1,7 @@
 const initSignin = () => ( {
     data: JSON.parse( localStorage.getItem( 'signin' ) || '{}' ),
     uiux: {
-        process: {},  // isOnRequest, isOnValidation, isOnValidationDone
+        process: {},  // isRequest, isValidation, isValidationOk
     }
 } )
 
@@ -10,7 +10,7 @@ const initSettings = () => ( {
     uiux: {
         form: {},  // isOpen
         mode: {},  // isUpdate
-        process: {},  // isOnRequest, isOnValidation, isOnValidationDone
+        process: {},  // isRequest, isValidation, isValidationOk
         status: {},  // isSuspended
     }
 } );
@@ -29,17 +29,17 @@ const initState = () => ( {
     },
     uiux: {
         init: {
-            users: { process: { isOnRequestTriggered: true }, },  // process: isOnRequestTriggered, isOnRequestBefore, isOnRequest, isOnRequestAfter, isDone, isError, isSuspended
+            users: { process: { isRequestBefore: true }, },  // process: isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
             dates: { 
-                process: {},  // isOnInit, isWaiting, isDone
+                process: {},  // isOnInit, isWaiting, isResponseOk
                 mode: {},  // isInit, isInitPrev, isInitNext
             },
             payments: {
-                genres: { process: { isOnRequestTriggered: true }, },  // process: isOnRequestTriggered, isOnRequestBefore, isOnRequest, isOnRequestAfter, isDone, isError, isSuspended
-                funds: { process: { isOnRequestTriggered: true }, },  // process: isOnRequestTriggered, isOnRequestBefore, isOnRequest, isOnRequestAfter, isDone, isError, isSuspended
+                genres: { process: { isRequestBefore: true }, },  // process: isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
+                funds: { process: { isRequestBefore: true }, },  // process: isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
             },
             reports: { 
-                process: {},  // isDone
+                process: {},  // isResponseOk
             },
         },
         error: {}
@@ -59,7 +59,7 @@ const initUser = () => ( {
     uiux: {
         form: {},  // isOpen
         mode: {},  // isCreate, isUpdate, isDelete
-        process: {},  // isOnRequest, isOnValidation, isOnValidationDone
+        process: {},  // isRequest, isValidation, isValidationOk
         status: {},  // isSuspended
     }
 } );
@@ -86,7 +86,7 @@ const initEntry = () => ( {
         form: {},  // isOpen
         type: {},  // isNote, isPayment
         mode: {},  // isCreate, isUpdate, isDelete, isRetrieveMany
-        process: {},  // isOnRequestTriggered, isOnRequest
+        process: {},  // isRequestBefore, isRequest
         status: {},  // isWaiting, isSuspended
         dateFrom: null,  // when mode = isRetrieveMany
         dateTill: null,  // when mode = isRetrieveMany
@@ -127,7 +127,7 @@ const initPayments = {
         uiux: {
             form: {},  // isOpen
             mode: {},  // isCreate, isUpdate, isDelete
-            process: {},  // isOnRequest, isOnValidation, isOnValidationDone
+            process: {},  // isRequest, isValidation, isValidationOk
             status: {},  // isSuspended
         }
     } ),
@@ -141,7 +141,7 @@ const initPayments = {
         uiux: {
             form: {},  // isOpen
             mode: {},  // isCreate, isUpdate, isDelete
-            process: {},  // isOnRequest, isOnValidation, isOnValidationDone
+            process: {},  // isRequest, isValidation, isValidationOk
             status: {},  // isSuspended
         }
     } )
@@ -156,7 +156,7 @@ const initReport = () => ( {
     },
     uiux: {
         form: {},  // isOpen
-        process: {},  // process: isOnRequestTriggered, isOnRequestBefore, isOnRequest, isOnRequestAfter, isDone, isError, isSuspended
+        process: {},  // process: isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
     }
 } );
 

@@ -43,50 +43,35 @@ const paymentsPDF = data => {
     });
 
     pdf.setFont( 'courierNewNormal', 'normal' );
-    pdf.setFontSize( 16 );
-    pdf.setTextColor( 100, 100, 100 );
+    pdf.setFontSize( 11 );
+    //pdf.setTextColor( 100, 100, 100 );
     pdf.text( 20, 10, 'Κατάσταση οικονομικών, title somewhere here?!' );
 
     pdf.setFont( 'trebuchetMSNormal', 'normal' );
-    pdf.setFontSize( 16 );
-    pdf.setTextColor( 100, 100, 100 );
     pdf.text( 20, 20, 'Κατάσταση οικονομικών, title somewhere here?!' );
 
     pdf.setFont( 'courier', 'normal' );
-    pdf.setFontSize( 12 );
-    pdf.setTextColor( 0, 0, 0 );
+    pdf.setFontSize( 21 );
     pdf.text( 20, 30, 'Data rows starts somewhere here?!' );
     pdf.text( 20, 40, '---------------------------------' );
 
     pdf.setFont( 'courierNewBold', 'bold' );
-    pdf.setFontSize( 16 );
-    pdf.setTextColor( 100, 100, 100 );
     pdf.text( 20, 50, 'Κατάσταση οικονομικών, title somewhere here?!' );
 
     pdf.setFont( 'courierNewItalic', 'italic' );
-    pdf.setFontSize( 16 );
-    pdf.setTextColor( 100, 100, 100 );
     pdf.text( 20, 60, 'Κατάσταση οικονομικών, title somewhere here?!' );
 
     pdf.setFont( 'courierNewBoldItalic', 'bolditalic' );
-    pdf.setFontSize( 16 );
-    pdf.setTextColor( 100, 100, 100 );
     pdf.text( 20, 70, 'Κατάσταση οικονομικών, title somewhere here?!' );
 
 
     pdf.setFont( 'trebuchetMSBold', 'bold' );
-    pdf.setFontSize( 16 );
-    pdf.setTextColor( 100, 100, 100 );
     pdf.text( 20, 80, 'Κατάσταση οικονομικών, title somewhere here?!' );
 
     pdf.setFont( 'trebuchetMSItalic', 'italic' );
-    pdf.setFontSize( 16 );
-    pdf.setTextColor( 100, 100, 100 );
     pdf.text( 20, 90, 'Κατάσταση οικονομικών, title somewhere here?!' );
 
     pdf.setFont( 'trebuchetMSBoldItalic', 'bolditalic' );
-    pdf.setFontSize( 16 );
-    pdf.setTextColor( 100, 100, 100 );
     pdf.text( 20, 100, 'Κατάσταση οικονομικών, title somewhere here?!' );
 
     // https://micropyramid.com/blog/export-html-web-page-to-pdf-using-jspdf/

@@ -8,7 +8,7 @@ import { InputFromList } from '../libs/InputFromList';
 import { isBlank } from '../../helpers/validation';
 import { getFromList } from '../../storage/payments/parsers';
 
-function PaymentForm( { date, entry, inSequence, closeForm, doValidation, validationDone, validationError, doRequest } ) {
+function PaymentForm( { date, entry } ) {
 
     const  { state } = useContext( STATEContext );
 

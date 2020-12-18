@@ -33,17 +33,17 @@ const fundsReducer = ( state, action ) => {
             let funds = [ ...payments.funds ];
             const { index } = action.payload;
 
-            funds[ index ].uiux.process = { isOnValidation: true };
+            funds[ index ].uiux.process = { isValidation: true };
 
             payments = { ...payments, funds };
             return { ...state, data: { ...state.data, payments } };
 
-        } case 'VALIDATION_DONE': {
+        } case 'VALIDATION_OK': {
             let payments = { ...state.data.payments };
             let funds = [ ...payments.funds ];
             const { index, data } = action.payload;
 
-            funds[ index ].uiux.process = { isOnValidationDone: true };
+            funds[ index ].uiux.process = { isValidationOk: true };
             funds[ index ].data = { ...data };
 
             payments = { ...payments, funds };
@@ -64,12 +64,12 @@ const fundsReducer = ( state, action ) => {
             let funds = [ ...payments.funds ];
             const { index } = action.payload;
 
-            funds[ index ].uiux.process = { isOnRequest: true };
+            funds[ index ].uiux.process = { isRequest: true };
 
             payments = { ...payments, funds };
             return { ...state, data: { ...state.data, payments } };
 
-        } case 'CREATE_REQUEST_DONE': {
+        } case 'CREATE_RESPONSE_OK': {
             let payments = { ...state.data.payments };
             let funds = [ ...payments.funds ];
             const { index, dataFromDB } = action.payload;
@@ -84,7 +84,7 @@ const fundsReducer = ( state, action ) => {
             payments = { ...payments, funds };
             return { ...state, data: { ...state.data, payments } };
 
-        } case 'CREATE_REQUEST_ERROR': {
+        } case 'CREATE_RESPONSE_ERROR': {
             let payments = { ...state.data.payments };
             let funds = [ ...payments.funds ];
             const { index } = action.payload;
@@ -94,7 +94,7 @@ const fundsReducer = ( state, action ) => {
             payments = { ...payments, funds };
             return { ...state, data: { ...state.data, payments } };
 
-        } case 'UPDATE_REQUEST_DONE': {
+        } case 'UPDATE_RESPONSE_OK': {
             let payments = { ...state.data.payments };
             let funds = [ ...payments.funds ];
             const { index, dataFromDB } = action.payload;
@@ -111,7 +111,7 @@ const fundsReducer = ( state, action ) => {
             payments = { ...payments, funds };
             return { ...state, data: { ...state.data, payments } };
 
-        } case 'UPDATE_REQUEST_ERROR': {
+        } case 'UPDATE_RESPONSE_ERROR': {
             let payments = { ...state.data.payments };
             let funds = [ ...payments.funds ];
             const { index, _saved } = action.payload;
@@ -124,7 +124,7 @@ const fundsReducer = ( state, action ) => {
             payments = { ...payments, funds };
             return { ...state, data: { ...state.data, payments } };
 
-        } case 'DELETE_REQUEST_DONE': {
+        } case 'DELETE_RESPONSE_OK': {
             let payments = { ...state.data.payments };
             let funds = [ ...payments.funds ];
             const { index } = action.payload;
@@ -134,7 +134,7 @@ const fundsReducer = ( state, action ) => {
             payments = { ...payments, funds };
             return { ...state, data: { ...state.data, payments } };
 
-        } case 'DELETE_REQUEST_ERROR': {
+        } case 'DELETE_RESPONSE_ERROR': {
             let payments = { ...state.data.payments };
             let funds = [ ...payments.funds ];
             const { index } = action.payload;
@@ -148,7 +148,8 @@ const fundsReducer = ( state, action ) => {
 
         } case 'RETRIEVE_MANY_REQUEST_BEFORE': {
             const { init } = state.uiux;
-            init.payments.funds.process = { isOnRequestBefore: true };
+
+            init.payments.funds.process = { isRequestBefore: true };
 
             return { uiux: { ...state.uiux, init }, data: state.data };
 
@@ -158,21 +159,21 @@ const fundsReducer = ( state, action ) => {
 
             funds = [ initPayments.fund() ];
             funds[ 0 ].uiux.mode = { isRetrieveMany: true };
-            funds[ 0 ].uiux.process = { isOnRequest: true };
+            funds[ 0 ].uiux.process = { isRequest: true };
 
             payments = { ...payments, funds };
             const { init } = state.uiux;
-            init.payments.funds.process = { isOnRequest: true };
+            init.payments.funds.process = { isRequest: true };
 
             return { uiux: { ...state.uiux, init }, data: { ...state.data, payments } };
 
-        } case 'RETRIEVE_MANY_REQUEST_AFTER': {
+        } case 'RETRIEVE_MANY_RESPONSE_WAITING': {
             const { init } = state.uiux;
-            init.payments.funds.process = { isOnRequestAfter: true };
+            init.payments.funds.process = { isResponseWaiting: true };
 
             return { uiux: { ...state.uiux, init }, data: state.data };
 
-        } case 'RETRIEVE_MANY_REQUEST_DONE': {
+        } case 'RETRIEVE_MANY_RESPONSE_OK': {
             let payments = { ...state.data.payments };
             const { dataFromDB } = action.payload;
 
@@ -186,11 +187,11 @@ const fundsReducer = ( state, action ) => {
 
             payments = { ...payments, funds };
             const { init } = state.uiux;
-            init.payments.funds.process = { isDone: true };
+            init.payments.funds.process = { isResponseOk: true };
 
             return { uiux: { ...state.uiux, init }, data: { ...state.data, payments } };
 
-        } case 'RETRIEVE_MANY_REQUEST_ERROR': {
+        } case 'RETRIEVE_MANY_RESPONSE_ERROR': {
             let payments = { ...state.data.payments };
 
             const funds = [];
@@ -200,7 +201,7 @@ const fundsReducer = ( state, action ) => {
 
             payments = { ...payments, funds };
             const { init } = state.uiux;
-            init.payments.funds.process = { isError: true };
+            init.payments.funds.process = { isResponseError: true };
             init.error = action.payload.error;
 
             return { uiux: { ...state.uiux, init }, data: { ...state.data, payments } };

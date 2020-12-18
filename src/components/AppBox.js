@@ -126,7 +126,7 @@ const AppBox = React.memo( ( { page } ) => {
     const theme = STATE.state.data.settings.data.theme;
     const error = STATE.state.uiux.init.error;
 
-    page = !error ? page : 'signin';
+    page = error && error.message && error.message.includes( 'No Auth' ) ? 'signin' : page;
 
     useEffect( () => {
         console.log( 'Has rendered. ', 'AppBox' );

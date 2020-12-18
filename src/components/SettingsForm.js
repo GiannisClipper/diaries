@@ -7,7 +7,7 @@ import { InputDate } from './libs/InputDate';
 import { isBlank } from '../helpers/validation';
 import { heads } from '../storage/texts';
 
-function SettingsForm( { settings, closeForm, doValidation, validationDone, validationError, doRequest } ) {
+function SettingsForm( { settings, closeForm, doValidation, validationOk, validationError, doRequest } ) {
     
     const [ data, setData ] = useState( { ...settings.data } );
     //const changes = Object.keys( data ).filter( x => data[ x ] !== user.data[ x ] );
@@ -22,7 +22,7 @@ function SettingsForm( { settings, closeForm, doValidation, validationDone, vali
 
     useEffect( () => {
     
-        if ( settings.uiux.process.isOnValidation ) {
+        if ( settings.uiux.process.isValidation ) {
 
             let errors = '';
             errors += isBlank( data.theme ) ? 'Η Επιλογή Χρωματισμού δεν μπορεί να είναι κενή.\n' : '';
@@ -30,14 +30,14 @@ function SettingsForm( { settings, closeForm, doValidation, validationDone, vali
             settings.data = { ...data };
 
             if ( errors === '' ) {
-                validationDone()
+                validationOk()
 
             } else {
                 alert( errors );
                 validationError();
             }
 
-        } else if ( settings.uiux.process.isOnValidationDone ) {
+        } else if ( settings.uiux.process.isValidationOk ) {
             doRequest();
         }
     } );
@@ -47,7 +47,7 @@ function SettingsForm( { settings, closeForm, doValidation, validationDone, vali
             <CRUDForm
                 headLabel={heads.settings}
                 mode={settings.uiux.mode}
-                isOnRequest={settings.uiux.process.isOnRequest}
+                isRequest={settings.uiux.process.isRequest}
             >
                 <InputBox>
                     <InputLabel>

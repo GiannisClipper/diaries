@@ -37,8 +37,8 @@ const CRUDContextProvider = React.memo( ( { dispatch, namespace, payload, childr
             payload2 => dispatch( { namespace, type: 'DO_VALIDATION', payload: { ...payload, ...payload2 } } ), 
             [ dispatch, namespace, payload ]
         ), 
-        validationDone: useCallback(
-            payload2 => dispatch( { namespace, type: 'VALIDATION_DONE', payload: { ...payload, ...payload2 } } ), 
+        validationOk: useCallback(
+            payload2 => dispatch( { namespace, type: 'VALIDATION_OK', payload: { ...payload, ...payload2 } } ), 
             [ dispatch, namespace, payload ]
         ), 
         validationError: useCallback(
@@ -49,48 +49,44 @@ const CRUDContextProvider = React.memo( ( { dispatch, namespace, payload, childr
             payload2 => dispatch( { namespace, type: 'DO_REQUEST', payload: { ...payload, ...payload2 } } ), 
             [ dispatch, namespace, payload ]
         ), 
-        createRequestDone: useCallback(
-            payload2 => dispatch( { namespace, type: 'CREATE_REQUEST_DONE', payload: { ...payload, ...payload2 } } ), 
+        createResponseOk: useCallback(
+            payload2 => dispatch( { namespace, type: 'CREATE_RESPONSE_OK', payload: { ...payload, ...payload2 } } ), 
             [ dispatch, namespace, payload ]
         ), 
-        createRequestError: useCallback(
-            payload2 => dispatch( { namespace, type: 'CREATE_REQUEST_ERROR', payload: { ...payload, ...payload2 } } ), 
+        createResponseError: useCallback(
+            payload2 => dispatch( { namespace, type: 'CREATE_RESPONSE_ERROR', payload: { ...payload, ...payload2 } } ), 
             [ dispatch, namespace, payload ]
         ), 
-        updateRequestDone: useCallback(
-            payload2 => dispatch( { namespace, type: 'UPDATE_REQUEST_DONE', payload: { ...payload, ...payload2 } } ), 
+        updateResponseOk: useCallback(
+            payload2 => dispatch( { namespace, type: 'UPDATE_RESPONSE_OK', payload: { ...payload, ...payload2 } } ), 
             [ dispatch, namespace, payload ]
         ), 
-        updateRequestError: useCallback(
-            payload2 => dispatch( { namespace, type: 'UPDATE_REQUEST_ERROR', payload: { ...payload, ...payload2 } } ), 
+        updateResponseError: useCallback(
+            payload2 => dispatch( { namespace, type: 'UPDATE_RESPONSE_ERROR', payload: { ...payload, ...payload2 } } ), 
             [ dispatch, namespace, payload ]
         ), 
-        deleteRequestDone: useCallback(
-            payload2 => dispatch( { namespace, type: 'DELETE_REQUEST_DONE', payload: { ...payload, ...payload2 } } ), 
+        deleteResponseOk: useCallback(
+            payload2 => dispatch( { namespace, type: 'DELETE_RESPONSE_OK', payload: { ...payload, ...payload2 } } ), 
             [ dispatch, namespace, payload ]
         ), 
-        deleteRequestError: useCallback(
-            payload2 => dispatch( { namespace, type: 'DELETE_REQUEST_ERROR', payload: { ...payload, ...payload2 } } ), 
+        deleteResponseError: useCallback(
+            payload2 => dispatch( { namespace, type: 'DELETE_RESPONSE_ERROR', payload: { ...payload, ...payload2 } } ), 
             [ dispatch, namespace, payload ]
         ),
-        retrieveManyRequestBefore: useCallback(
-            payload2 => dispatch( { namespace, type: 'RETRIEVE_MANY_REQUEST_BEFORE', payload: { ...payload, ...payload2 } } ), 
-            [ dispatch, namespace, payload ]
-        ), 
         retrieveManyRequest: useCallback(
             payload2 => dispatch( { namespace, type: 'RETRIEVE_MANY_REQUEST', payload: { ...payload, ...payload2 } } ), 
             [ dispatch, namespace, payload ]
         ), 
-        retrieveManyRequestAfter: useCallback(
-            payload2 => dispatch( { namespace, type: 'RETRIEVE_MANY_REQUEST_AFTER', payload: { ...payload, ...payload2 } } ), 
+        retrieveManyResponseWaiting: useCallback(
+            payload2 => dispatch( { namespace, type: 'RETRIEVE_MANY_RESPONSE_WAITING', payload: { ...payload, ...payload2 } } ), 
             [ dispatch, namespace, payload ]
         ), 
-        retrieveManyRequestDone: useCallback(
-            payload2 => dispatch( { namespace, type: 'RETRIEVE_MANY_REQUEST_DONE', payload: { ...payload, ...payload2 } } ), 
+        retrieveManyResponseOk: useCallback(
+            payload2 => dispatch( { namespace, type: 'RETRIEVE_MANY_RESPONSE_OK', payload: { ...payload, ...payload2 } } ), 
             [ dispatch, namespace, payload ]
         ), 
-        retrieveManyRequestError: useCallback(
-            payload2 => dispatch( { namespace, type: 'RETRIEVE_MANY_REQUEST_ERROR', payload: { ...payload, ...payload2 } } ), 
+        retrieveManyResponseError: useCallback(
+            payload2 => dispatch( { namespace, type: 'RETRIEVE_MANY_RESPONSE_ERROR', payload: { ...payload, ...payload2 } } ), 
             [ dispatch, namespace, payload ]
         ), 
     }
@@ -111,11 +107,10 @@ function CRUDMenu( { options, process, status } ) {
     const { openForm } = useContext( CRUDContext );
 
     return ( 
-        process.isOnValidation || 
-        process.isOnRequestTrigger ||
-        process.isOnRequestBefore ||
-        process.isOnRequest ||
-        process.isOnRequestAfter ?
+        process.isValidation || 
+        process.isRequestBefore ||
+        process.isRequest ||
+        process.isResponseWaiting ?
             <Loader />
 
         : status && status.isSuspended ?
@@ -156,7 +151,7 @@ function CRUDForm( { headLabel, mode, process, validation, children } ) {
             cancelLabel={cancelLabel}
             onClickOk={!validation || mode.isDelete ? doRequest : doValidation}
             onClickCancel={closeForm}
-            isOnRequest={process.isOnRequest}
+            isRequest={process.isRequest}
             isDelete={mode.isDelete}
         >
             <InputValidation
@@ -171,22 +166,22 @@ function CRUDForm( { headLabel, mode, process, validation, children } ) {
 
 function InputValidation( { process, validation }) {
 
-    const { validationDone, validationError, doRequest } = useContext( CRUDContext );
+    const { validationOk, validationError, doRequest } = useContext( CRUDContext );
 
     useEffect( () => {
     
-        if ( process.isOnValidation ) {
+        if ( process.isValidation ) {
             const { data, errors } = validation();
 
             if ( errors === '' ) {
-                validationDone( { data } )
+                validationOk( { data } )
 
             } else {
                 alert( errors );
                 validationError();
             }
 
-        } else if ( process.isOnValidationDone ) {
+        } else if ( process.isValidationOk ) {
             doRequest();
         }
     } );
@@ -196,13 +191,13 @@ function InputValidation( { process, validation }) {
 
 function CreateRequest( { process, url, body, dataToDB }) {
 
-    const { createRequestDone, createRequestError } = useContext( CRUDContext );
+    const { createResponseOk, createResponseError } = useContext( CRUDContext );
 
     useEffect( () => {
-        if ( process.isOnRequest ) {
+        if ( process.isRequest ) {
             const args = { method: 'POST', body };
-            const onDone = createRequestDone;
-            const onError = createRequestError;
+            const onDone = createResponseOk;
+            const onError = createResponseError;
             const dataFromDB = res => ( { ...dataToDB, _id: res.insertedId } );
             doFetch( url, args, onDone, onError, dataFromDB );
         }
@@ -213,13 +208,13 @@ function CreateRequest( { process, url, body, dataToDB }) {
 
 function UpdateRequest( { process, url, body, dataToDB, id }) {
 
-    const { updateRequestDone, updateRequestError } = useContext( CRUDContext );
+    const { updateResponseOk, updateResponseError } = useContext( CRUDContext );
 
     useEffect( () => {
-        if ( process.isOnRequest ) {
+        if ( process.isRequest ) {
             const args = { method: 'PUT', body };
-            const onDone = updateRequestDone;
-            const onError = updateRequestError;
+            const onDone = updateResponseOk;
+            const onError = updateResponseError;
             const dataFromDB = () => ( { ...dataToDB, _id: id } );
             doFetch( url, args, onDone, onError, dataFromDB );
         }
@@ -230,13 +225,13 @@ function UpdateRequest( { process, url, body, dataToDB, id }) {
 
 function DeleteRequest( { process, url, body, dataToDB, id }) {
 
-    const { deleteRequestDone, deleteRequestError } = useContext( CRUDContext );
+    const { deleteResponseOk, deleteResponseError } = useContext( CRUDContext );
 
     useEffect( () => {
-        if ( process.isOnRequest ) {
+        if ( process.isRequest ) {
             const args = { method: 'DELETE', body };
-            const onDone = deleteRequestDone;
-            const onError = deleteRequestError;
+            const onDone = deleteResponseOk;
+            const onError = deleteResponseError;
             const dataFromDB = () => ( { ...dataToDB, _id: id } );
             doFetch( url, args, onDone, onError, dataFromDB );
         }
@@ -245,43 +240,38 @@ function DeleteRequest( { process, url, body, dataToDB, id }) {
     return <></>;
 }
 
-function RetrieveManyRequest( { process, url }) {
+function RetrieveManyRequest( { process, url } ) {
 
     const { 
-        retrieveManyRequestBefore,
         retrieveManyRequest,
-        retrieveManyRequestAfter,
-        retrieveManyRequestDone,
-        retrieveManyRequestError 
+        retrieveManyResponseWaiting,
+        retrieveManyResponseOk,
+        retrieveManyResponseError 
     } = useContext( CRUDContext );
 
     useEffect( () => {
-        //if ( Object.keys( process ).length === 0 ) {  // process === {}
-        if ( process.isOnRequestTriggered ) {
-            retrieveManyRequestBefore();
-
-        } else if ( process.isOnRequestBefore ) {
+        if ( process.isRequestBefore ) {
             retrieveManyRequest();
 
-        } else if ( process.isOnRequest ) {
+        } else if ( process.isRequest ) {
             const args = { method: 'GET' };
-            const onDone = retrieveManyRequestDone;
-            const onError = retrieveManyRequestError;
+            const onDone = retrieveManyResponseOk;
+            const onError = retrieveManyResponseError;
             const dataFromDB = res => Array.isArray( res ) ? res : [];
-            //doFetch( url, args, onDone, onError, dataFromDB );
-            retrieveManyRequestAfter();
+            doFetch( url, args, onDone, onError, dataFromDB );
+            retrieveManyResponseWaiting();
 
-        } else if ( process.isOnRequestAfter ) {
-            // nothing here
+        } else if ( process.isResponseWaiting ) {
+            // do nothing here
+
+        } else if ( process.isResponseOk ) {
+            // do nothing here
 
         } else if ( process.isSuspended ) {
-            retrieveManyRequestError();
+            retrieveManyResponseError();
 
-        } else if ( process.isDone ) {
-            // nothing here
-
-        } else if ( process.isError ) {
-            // nothing here
+        } else if ( process.isResponseError ) {
+            // do nothing here
 
         }
     } );

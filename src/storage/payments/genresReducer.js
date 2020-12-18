@@ -33,17 +33,17 @@ const genresReducer = ( state, action ) => {
             let genres = [ ...payments.genres ];
             const { index } = action.payload;
 
-            genres[ index ].uiux.process = { isOnValidation: true };
+            genres[ index ].uiux.process = { isValidation: true };
 
             payments = { ...payments, genres };
             return { ...state, data: { ...state.data, payments } };
 
-        } case 'VALIDATION_DONE': {
+        } case 'VALIDATION_OK': {
             let payments = { ...state.data.payments };
             let genres = [ ...payments.genres ];
             const { index, data } = action.payload;
 
-            genres[ index ].uiux.process = { isOnValidationDone: true };
+            genres[ index ].uiux.process = { isValidationOk: true };
             genres[ index ].data = { ...data };
 
             payments = { ...payments, genres };
@@ -64,12 +64,12 @@ const genresReducer = ( state, action ) => {
             let genres = [ ...payments.genres ];
             const { index } = action.payload;
 
-            genres[ index ].uiux.process = { isOnRequest: true };
+            genres[ index ].uiux.process = { isRequest: true };
 
             payments = { ...payments, genres };
             return { ...state, data: { ...state.data, payments } };
 
-        } case 'CREATE_REQUEST_DONE': {
+        } case 'CREATE_RESPONSE_OK': {
             let payments = { ...state.data.payments };
             let genres = [ ...payments.genres ];
             const { index, dataFromDB } = action.payload;
@@ -84,7 +84,7 @@ const genresReducer = ( state, action ) => {
             payments = { ...payments, genres };
             return { ...state, data: { ...state.data, payments } };
 
-        } case 'CREATE_REQUEST_ERROR': {
+        } case 'CREATE_RESPONSE_ERROR': {
             let payments = { ...state.data.payments };
             let genres = [ ...payments.genres ];
             const { index } = action.payload;
@@ -94,7 +94,7 @@ const genresReducer = ( state, action ) => {
             payments = { ...payments, genres };
             return { ...state, data: { ...state.data, payments } };
 
-        } case 'UPDATE_REQUEST_DONE': {
+        } case 'UPDATE_RESPONSE_OK': {
             let payments = { ...state.data.payments };
             let genres = [ ...payments.genres ];
             const { index, dataFromDB } = action.payload;
@@ -111,7 +111,7 @@ const genresReducer = ( state, action ) => {
             payments = { ...payments, genres };
             return { ...state, data: { ...state.data, payments } };
 
-        } case 'UPDATE_REQUEST_ERROR': {
+        } case 'UPDATE_RESPONSE_ERROR': {
             let payments = { ...state.data.payments };
             let genres = [ ...payments.genres ];
             const { index, _saved } = action.payload;
@@ -124,7 +124,7 @@ const genresReducer = ( state, action ) => {
             payments = { ...payments, genres };
             return { ...state, data: { ...state.data, payments } };
 
-        } case 'DELETE_REQUEST_DONE': {
+        } case 'DELETE_RESPONSE_OK': {
             let payments = { ...state.data.payments };
             let genres = [ ...payments.genres ];
             const { index } = action.payload;
@@ -134,7 +134,7 @@ const genresReducer = ( state, action ) => {
             payments = { ...payments, genres };
             return { ...state, data: { ...state.data, payments } };
 
-        } case 'DELETE_REQUEST_ERROR': {
+        } case 'DELETE_RESPONSE_ERROR': {
             let payments = { ...state.data.payments };
             let genres = [ ...payments.genres ];
             const { index } = action.payload;
@@ -148,7 +148,7 @@ const genresReducer = ( state, action ) => {
 
         } case 'RETRIEVE_MANY_REQUEST_BEFORE': {
             const { init } = state.uiux;
-            init.payments.genres.process = { isOnRequestBefore: true };
+            init.payments.genres.process = { isRequestBefore: true };
 
             return { uiux: { ...state.uiux, init }, data: state.data };
 
@@ -158,21 +158,21 @@ const genresReducer = ( state, action ) => {
 
             genres = [ initPayments.genre() ];
             genres[ 0 ].uiux.mode = { isRetrieveMany: true };
-            genres[ 0 ].uiux.process = { isOnRequest: true };
+            genres[ 0 ].uiux.process = { isRequest: true };
 
             payments = { ...payments, genres };
             const { init } = state.uiux;
-            init.payments.genres.process = { isOnRequest: true };
+            init.payments.genres.process = { isRequest: true };
 
             return { uiux: { ...state.uiux, init }, data: { ...state.data, payments } };
 
-        } case 'RETRIEVE_MANY_REQUEST_AFTER': {
+        } case 'RETRIEVE_MANY_RESPONSE_WAITING': {
             const { init } = state.uiux;
-            init.payments.genres.process = { isOnRequestAfter: true };
+            init.payments.genres.process = { isResponseWaiting: true };
 
             return { uiux: { ...state.uiux, init }, data: state.data };
 
-        } case 'RETRIEVE_MANY_REQUEST_DONE': {
+        } case 'RETRIEVE_MANY_RESPONSE_OK': {
             let payments = { ...state.data.payments };
             const { dataFromDB } = action.payload;
 
@@ -186,11 +186,11 @@ const genresReducer = ( state, action ) => {
 
             payments = { ...payments, genres };
             const { init } = state.uiux;
-            init.payments.genres.process = { isDone: true };
+            init.payments.genres.process = { isResponseOk: true };
 
             return { uiux: { ...state.uiux, init }, data: { ...state.data, payments } };
 
-        } case 'RETRIEVE_MANY_REQUEST_ERROR': {
+        } case 'RETRIEVE_MANY_RESPONSE_ERROR': {
             let payments = { ...state.data.payments };
 
             const genres = [];
@@ -200,7 +200,7 @@ const genresReducer = ( state, action ) => {
 
             payments = { ...payments, genres };
             const { init } = state.uiux;
-            init.payments.genres.process = { isError: true };
+            init.payments.genres.process = { isResponseError: true };
             init.error = action.payload.error;
 
             return { uiux: { ...state.uiux, init }, data: { ...state.data, payments } };

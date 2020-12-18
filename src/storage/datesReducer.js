@@ -6,14 +6,14 @@ const initDates = ( dates, dateFrom, dateTill, entriesMode ) => {
         const centralDate = dates.length === 1 ? dates[ 0 ] : null;
         const date = initDate();
         date.data.date = x;
-        date.uiux.process = { isOnRequest: true };
+        date.uiux.process = { isRequest: true };
         date.uiux.isTheCentral = centralDate && date.data.date.getTime() === centralDate.getTime() ? true : false;
         date.data.entries.push( initEntry() );
         date.data.entries[ 0 ].uiux.status = { isWaiting: true };
 
         if ( x === dateFrom ) {
             date.data.entries[ 0 ].uiux.mode = entriesMode;
-            date.data.entries[ 0 ].uiux.process = { isOnRequestTriggered: true };
+            date.data.entries[ 0 ].uiux.process = { isRequestBefore: true };
             date.data.entries[ 0 ].uiux.dateFrom = dateFrom;
             date.data.entries[ 0 ].uiux.dateTill = dateTill;
         }
@@ -46,7 +46,7 @@ const datesReducer = ( state, action ) => {
 
             const { init } = state.uiux;
             init.dates.process = entriesMode.isRetrieveMany 
-                ? { isDone: true }
+                ? { isResponseOk: true }
                 : { isWaiting: true };
 
             return { uiux: { ...state.uiux, init }, data: { ...state.data, dates } };
@@ -60,7 +60,7 @@ const datesReducer = ( state, action ) => {
             ];
 
             const { init } = state.uiux;
-            init.dates.process = { isDone: true };
+            init.dates.process = { isResponseOk: true };
 
             return { uiux: { ...state.uiux, init }, data: { ...state.data, dates } };
 
@@ -73,7 +73,7 @@ const datesReducer = ( state, action ) => {
             ];
 
             const { init } = state.uiux;
-            init.dates.process = { isDone: true };
+            init.dates.process = { isResponseOk: true };
 
             return { uiux: { ...state.uiux, init }, data: { ...state.data, dates } };
 

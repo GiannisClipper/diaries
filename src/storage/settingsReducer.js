@@ -25,14 +25,14 @@ const settingsReducer = ( state, action ) => {
         } case 'DO_VALIDATION': {
             let settings = { ...state.data.settings };
 
-            settings.uiux.process = { isOnValidation: true };
+            settings.uiux.process = { isValidation: true };
 
             return { ...state, data: { ...state.data, settings } };
 
-        } case 'VALIDATION_DONE': {
+        } case 'VALIDATION_OK': {
             let settings = { ...state.data.settings };
 
-            settings.uiux.process = { isOnValidationDone: true };
+            settings.uiux.process = { isValidationOk: true };
 
             return { ...state, data: { ...state.data, settings } };
 
@@ -46,11 +46,11 @@ const settingsReducer = ( state, action ) => {
         } case 'DO_REQUEST': {
             let settings = { ...state.data.settings };
 
-            settings.uiux.process = { isOnRequest: true };
+            settings.uiux.process = { isRequest: true };
 
             return { ...state, data: { ...state.data, settings } };
 
-        } case 'UPDATE_REQUEST_DONE': {
+        } case 'UPDATE_RESPONSE_OK': {
             let settings = { ...state.data.settings };
             const { dataFromDB } = action.payload;
 
@@ -62,7 +62,7 @@ const settingsReducer = ( state, action ) => {
             localStorage.setItem( 'settings', JSON.stringify( settings.data ) );
             return { ...state, data: { ...state.data, settings } };
 
-        } case 'UPDATE_REQUEST_ERROR': {
+        } case 'UPDATE_RESPONSE_ERROR': {
             let settings = { ...state.data.settings };
             const { saved } = action.payload;
 

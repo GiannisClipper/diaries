@@ -87,9 +87,9 @@ const DateList = () => {
         const process1 = init.payments.genres.process;
         const process2 = init.payments.funds.process;
 
-        return process1.isDone && process2.isDone 
+        return process1.isResponseOk && process2.isResponseOk 
             ? { isRetrieveMany: true }
-            : process1.isError || process2.isError 
+            : process1.isResponseError || process2.isResponseError 
             ? { isError: true }
             : { isWaiting: true };
     }

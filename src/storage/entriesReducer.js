@@ -55,7 +55,7 @@ const entriesReducer = ( state, action ) => {
                 deconstructDate( getDateInSequence( cut.date ) );
                 deconstructEntry( cut.inSequence );
                 const entryToMove = { ...activeEntry };
-                entryToMove.uiux.process = { isOnRequest: true };
+                entryToMove.uiux.process = { isRequest: true };
                 entryToMove.uiux.mode = { isUpdate: true };
 
                 activeEntry = [];
@@ -80,7 +80,7 @@ const entriesReducer = ( state, action ) => {
             deconstructDate( getDateInSequence( copy.date ) );
             deconstructEntry( copy.inSequence );
             const entryToCopy = { ...activeEntry };
-            entryToCopy.uiux.process = { isOnRequest: true };
+            entryToCopy.uiux.process = { isRequest: true };
             entryToCopy.uiux.mode = { isCreate: true };
 
             deconstructDate( getDateInSequence( paste.date ) );
@@ -163,20 +163,20 @@ const entriesReducer = ( state, action ) => {
 
             deconstructDate( getDateInSequence( date ) );
             deconstructEntry( inSequence );
-            activeEntry.uiux.process = { isOnValidation: true };
+            activeEntry.uiux.process = { isValidation: true };
             constructEntry();
             constructDate();
 
             return { uiux: state.uiux, data: { ...state.data, dates } };
 
-        } case 'VALIDATION_DONE': {
+        } case 'VALIDATION_OK': {
 
             dates = [ ...state.data.dates ];
             const { date, inSequence, data } = action.payload;
 
             deconstructDate( getDateInSequence( date ) );
             deconstructEntry( inSequence );
-            activeEntry.uiux.process = { isOnValidationDone: true };
+            activeEntry.uiux.process = { isValidationOk: true };
             activeEntry.data = data;
             constructEntry();
             constructDate();
@@ -203,13 +203,13 @@ const entriesReducer = ( state, action ) => {
 
             deconstructDate( getDateInSequence( date ) );
             deconstructEntry( inSequence );
-            activeEntry.uiux.process = { isOnRequest: true };
+            activeEntry.uiux.process = { isRequest: true };
             constructEntry();
             constructDate();
 
             return { uiux: state.uiux, data: { ...state.data, dates } };
 
-        } case 'CREATE_REQUEST_DONE': {
+        } case 'CREATE_RESPONSE_OK': {
 
             dates = [ ...state.data.dates ];
             const { date, inSequence, dataFromDB } = action.payload;
@@ -233,7 +233,7 @@ const entriesReducer = ( state, action ) => {
 
             return { uiux: state.uiux, data: { ...state.data, dates } };
 
-        } case 'CREATE_REQUEST_ERROR': {
+        } case 'CREATE_RESPONSE_ERROR': {
 
             dates = [ ...state.data.dates ];
             const { date, inSequence } = action.payload;
@@ -247,7 +247,7 @@ const entriesReducer = ( state, action ) => {
 
             return { uiux: state.uiux, data: { ...state.data, dates } };
 
-        } case 'UPDATE_REQUEST_DONE': {
+        } case 'UPDATE_RESPONSE_OK': {
 
             dates = [ ...state.data.dates ];
             const { date, inSequence, dataFromDB } = action.payload;
@@ -268,7 +268,7 @@ const entriesReducer = ( state, action ) => {
 
             return { uiux: state.uiux, data: { ...state.data, dates } };
 
-        } case 'UPDATE_REQUEST_ERROR': {
+        } case 'UPDATE_RESPONSE_ERROR': {
 
             dates = [ ...state.data.dates ];
             const { date, inSequence, _saved } = action.payload;
@@ -294,7 +294,7 @@ const entriesReducer = ( state, action ) => {
 
             return { uiux: state.uiux, data: { ...state.data, dates } };
 
-        } case 'DELETE_REQUEST_DONE': {
+        } case 'DELETE_RESPONSE_OK': {
 
             dates = [ ...state.data.dates ];
             const { date, inSequence } = action.payload;
@@ -308,7 +308,7 @@ const entriesReducer = ( state, action ) => {
 
             return { uiux: state.uiux, data: { ...state.data, dates } };
 
-        } case 'DELETE_REQUEST_ERROR': {
+        } case 'DELETE_RESPONSE_ERROR': {
 
             dates = [ ...state.data.dates ];
             const { date, inSequence } = action.payload;
@@ -332,7 +332,7 @@ const entriesReducer = ( state, action ) => {
             deconstructDate( getDateInSequence( date ) );
             deconstructEntry( inSequence );
 
-            activeEntry.uiux.process = { isOnRequestBefore: true };
+            activeEntry.uiux.process = { isRequestBefore: true };
             constructEntry();
             constructDate();
 
@@ -345,26 +345,26 @@ const entriesReducer = ( state, action ) => {
 
             deconstructDate( getDateInSequence( date ) );
             deconstructEntry( inSequence );
-            activeEntry.uiux.process = { isOnRequest: true };
+            activeEntry.uiux.process = { isRequest: true };
             constructEntry();
             constructDate();
 
             return { ...state, data: { ...state.data, dates } };
 
-        } case 'RETRIEVE_MANY_REQUEST_AFTER': {
+        } case 'RETRIEVE_MANY_RESPONSE_WAITING': {
 
             dates = [ ...state.data.dates ];
             const { date, inSequence } = action.payload;
 
             deconstructDate( getDateInSequence( date ) );
             deconstructEntry( inSequence );
-            activeEntry.uiux.process = { isOnRequestAfter: true };
+            activeEntry.uiux.process = { isResponseWaiting: true };
             constructEntry();
             constructDate();
 
             return { ...state, data: { ...state.data, dates } };
 
-        } case 'RETRIEVE_MANY_REQUEST_DONE': {
+        } case 'RETRIEVE_MANY_RESPONSE_OK': {
 
             dates = [ ...state.data.dates ];
             const { date, inSequence, dataFromDB } = action.payload;
@@ -399,7 +399,7 @@ const entriesReducer = ( state, action ) => {
 
             return { ...state, data: { ...state.data, dates } };
 
-        } case 'RETRIEVE_MANY_REQUEST_ERROR': {
+        } case 'RETRIEVE_MANY_RESPONSE_ERROR': {
 
             dates = [ ...state.data.dates ];
             const { date, inSequence } = action.payload;

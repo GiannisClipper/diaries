@@ -37,10 +37,10 @@ function Signin() {
         } );
     }
 
-    const validationDone = payload => {
+    const validationOk = payload => {
         STATE.dispatch( { 
             namespace,
-            type: 'VALIDATION_DONE',
+            type: 'VALIDATION_OK',
             payload: payload,
         } );
     }
@@ -61,18 +61,18 @@ function Signin() {
         } );
     }
 
-    const signinRequestDone = dataFromDB => {
+    const signinResponseOk = dataFromDB => {
         STATE.dispatch( { 
             namespace,
-            type: 'SIGNIN_REQUEST_DONE',
+            type: 'SIGNIN_RESPONSE_OK',
             payload: { ...dataFromDB },
         } );
     }
 
-    const signinRequestError = () => {
+    const signinResponseError = () => {
         STATE.dispatch( { 
             namespace,
-            type: 'SIGNIN_REQUEST_ERROR',
+            type: 'SIGNIN_RESPONSE_ERROR',
             payload: {},
         } );
     }
@@ -83,24 +83,24 @@ function Signin() {
 
     useEffect( () => {
 
-        if ( signin.uiux.process.isOnValidation ) {
+        if ( signin.uiux.process.isValidation ) {
 
             let errors = '';
             errors += isBlank( data.username ) ? 'Το Όνομα χρήστη δεν μπορεί να είναι κενό.\n' : '';
             errors += isBlank( data.password ) ? 'Ο Κωδικός εισόδου δεν μπορεί να είναι κενός.\n' : '';
 
             if ( errors === '' ) {
-                validationDone( data )
+                validationOk( data )
 
             } else {
                 alert( errors );
                 validationError( data );
             }
 
-        } else if ( signin.uiux.process.isOnValidationDone ) {
+        } else if ( signin.uiux.process.isValidationOk ) {
             doRequest( data );
 
-        } else if ( signin.uiux.process.isOnRequest ) {
+        } else if ( signin.uiux.process.isRequest ) {
 
             const doFetch = ( url, args, onDone, onError, dataFromDB ) => {
                 console.log( 'Requesting... ', 'signin', data.username )
@@ -124,8 +124,8 @@ function Signin() {
 
             const url = `/.netlify/functions/signin`;
             const args = { method: 'POST', body };
-            const onDone = signinRequestDone;
-            const onError = signinRequestError;
+            const onDone = signinResponseOk;
+            const onError = signinResponseError;
             doFetch( url, args, onDone, onError );
         }
 
@@ -168,7 +168,7 @@ function Signin() {
                         icon={faDoorOpen}
                         label='Είσοδος' 
                         onClick={onClickOk} 
-                        isOnRequest={signin.uiux.process.isOnRequest}
+                        isRequest={signin.uiux.process.isRequest}
                     />
                 </ButtonValue>
             </ButtonBox>

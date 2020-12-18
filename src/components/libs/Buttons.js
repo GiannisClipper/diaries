@@ -30,7 +30,7 @@ const StyledCancelButton = styled( Button )`
     ${props => props.theme.CancelButton && props.theme.CancelButton };
 `;
 
-function OkButton( { icon, label, onClick, isOnRequest, isDelete } ) {
+function OkButton( { icon, label, onClick, isRequest, isDelete } ) {
 
     icon = icon || faCheck;
 
@@ -38,7 +38,7 @@ function OkButton( { icon, label, onClick, isOnRequest, isDelete } ) {
 
     return (
         <StyledOkButton onClick={onClick} isDelete={isDelete}>
-            {isOnRequest
+            {isRequest
                 ? <Loader /> 
                 : <FontAwesomeIcon className="icon" icon={icon} />}
             <span>{label}</span>

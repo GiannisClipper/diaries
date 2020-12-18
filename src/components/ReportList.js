@@ -59,7 +59,7 @@ function Report( { index, reports } ) {
     const dataToDB = parseReportToDB( report.data );
 
     useEffect( () => {
-        if ( report.uiux.process.isOnRequestAfter ) {
+        if ( report.uiux.process.isResponseWaiting ) {
             paymentsPDF( [] );
             report.uiux.process = {};
         }

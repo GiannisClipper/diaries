@@ -7,12 +7,12 @@ const authReducer = ( state, action ) => {
 
         case 'DO_VALIDATION': {
             const signin = state.data.signin;
-            signin.uiux.process = { isOnValidation: true };
+            signin.uiux.process = { isValidation: true };
             return { ...state, data: { ...state.data, signin } };
 
-        } case 'VALIDATION_DONE': {
+        } case 'VALIDATION_OK': {
             const signin = state.data.signin;
-            signin.uiux.process = { isOnValidationDone: true };
+            signin.uiux.process = { isValidationOk: true };
             return { ...state, data: { ...state.data, signin } };
 
         } case 'VALIDATION_ERROR': {
@@ -22,10 +22,10 @@ const authReducer = ( state, action ) => {
 
         } case 'DO_REQUEST': {
             const signin = state.data.signin;
-            signin.uiux.process = { isOnRequest: true };
+            signin.uiux.process = { isRequest: true };
             return { ...state, data: { ...state.data, signin } };
 
-        } case 'SIGNIN_REQUEST_DONE': {
+        } case 'SIGNIN_RESPONSE_OK': {
             const initialState = initState();
             const { signin, settings } = initialState.data; //state.data;
             signin.uiux.process = {};
@@ -35,7 +35,7 @@ const authReducer = ( state, action ) => {
             localStorage.setItem( 'settings', JSON.stringify( settings.data ) );
             return { ...initialState, data: { ...initialState.data, signin, settings } };
 
-        } case 'SIGNIN_REQUEST_ERROR': {
+        } case 'SIGNIN_RESPONSE_ERROR': {
             localStorage.removeItem( 'settings' );
             localStorage.removeItem( 'signin' );
             return { ...initState() };

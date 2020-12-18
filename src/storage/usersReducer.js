@@ -28,15 +28,15 @@ const usersReducer = ( state, action ) => {
             const users = [ ...state.data.users ];
             const { index } = action.payload;
 
-            users[ index ].uiux.process = { isOnValidation: true };
+            users[ index ].uiux.process = { isValidation: true };
 
             return { ...state, data: { ...state.data, users } };
 
-        } case 'VALIDATION_DONE': {
+        } case 'VALIDATION_OK': {
             const users = [ ...state.data.users ];
             const { index, data } = action.payload;
 
-            users[ index ].uiux.process = { isOnValidationDone: true };
+            users[ index ].uiux.process = { isValidationOk: true };
             users[ index ].data = { ...data };
 
             return { ...state, data: { ...state.data, users } };
@@ -53,11 +53,11 @@ const usersReducer = ( state, action ) => {
             const users = [ ...state.data.users ];
             const { index } = action.payload;
 
-            users[ index ].uiux.process = { isOnRequest: true };
+            users[ index ].uiux.process = { isRequest: true };
 
             return { ...state, data: { ...state.data, users } };
 
-        } case 'CREATE_REQUEST_DONE': {
+        } case 'CREATE_RESPONSE_OK': {
             const users = [ ...state.data.users ];
             const { index, dataFromDB } = action.payload;
 
@@ -70,7 +70,7 @@ const usersReducer = ( state, action ) => {
 
             return { ...state, data: { ...state.data, users } };
 
-        } case 'CREATE_REQUEST_ERROR': {
+        } case 'CREATE_RESPONSE_ERROR': {
             const users = [ ...state.data.users ];
             const { index } = action.payload;
 
@@ -78,7 +78,7 @@ const usersReducer = ( state, action ) => {
 
             return { ...state, data: { ...state.data, users } };
 
-        } case 'UPDATE_REQUEST_DONE': {
+        } case 'UPDATE_RESPONSE_OK': {
             const users = [ ...state.data.users ];
             const { index, dataFromDB } = action.payload;
 
@@ -93,7 +93,7 @@ const usersReducer = ( state, action ) => {
 
             return { ...state, data: { ...state.data, users } };
 
-        } case 'UPDATE_REQUEST_ERROR': {
+        } case 'UPDATE_RESPONSE_ERROR': {
             const users = [ ...state.data.users ];
             const { index, _saved } = action.payload;
 
@@ -104,7 +104,7 @@ const usersReducer = ( state, action ) => {
 
             return { ...state, data: { ...state.data, users } };
 
-        } case 'DELETE_REQUEST_DONE': {
+        } case 'DELETE_RESPONSE_OK': {
             const users = [ ...state.data.users ];
             const { index } = action.payload;
 
@@ -112,7 +112,7 @@ const usersReducer = ( state, action ) => {
 
             return { ...state, data: { ...state.data, users } };
 
-        } case 'DELETE_REQUEST_ERROR': {
+        } case 'DELETE_RESPONSE_ERROR': {
             const users = [ ...state.data.users ];
             const { index } = action.payload;
 
@@ -124,27 +124,27 @@ const usersReducer = ( state, action ) => {
 
         } case 'RETRIEVE_MANY_REQUEST_BEFORE': {
             const { init } = state.uiux;
-            init.users.process = { isOnRequestBefore: true };
+            init.users.process = { isRequestBefore: true };
 
             return { uiux: { ...state.uiux, init }, data: state.data };
             
         } case 'RETRIEVE_MANY_REQUEST': {
             const users = [ initUser() ];
             users[ 0 ].uiux.mode = { isRetrieveMany: true };
-            users[ 0 ].uiux.process = { isOnRequest: true };
+            users[ 0 ].uiux.process = { isRequest: true };
 
             const { init } = state.uiux;
-            init.users.process = { isOnRequest: true };
+            init.users.process = { isRequest: true };
 
             return { uiux: { ...state.uiux, init }, data: { ...state.data, users } };
 
-        } case 'RETRIEVE_MANY_REQUEST_AFTER': {
+        } case 'RETRIEVE_MANY_RESPONSE_WAITING': {
             const { init } = state.uiux;
-            init.users.process = { isOnRequestAfter: true };
+            init.users.process = { isResponseWaiting: true };
 
             return { uiux: { ...state.uiux, init }, data: state.data };
 
-        } case 'RETRIEVE_MANY_REQUEST_DONE': {
+        } case 'RETRIEVE_MANY_RESPONSE_OK': {
             const users = [];
             const { dataFromDB } = action.payload;
 
@@ -156,18 +156,18 @@ const usersReducer = ( state, action ) => {
             users.push( initUser() );
 
             const { init } = state.uiux;
-            init.users.process = { isDone: true };
+            init.users.process = { isResponseOk: true };
 
             return { uiux: { ...state.uiux, init }, data: { ...state.data, users } };
-
-        } case 'RETRIEVE_MANY_REQUEST_ERROR': {
+ 
+        } case 'RETRIEVE_MANY_RESPONSE_ERROR': {
             const users = [];
             const user = initUser();
             user.uiux.status = { isSuspended: true }
             users.push( user );
 
             const { init } = state.uiux;
-            init.users.process = { isError: true };
+            init.users.process = { isResponseError: true };
             init.error = action.payload.error;
 
             return { uiux: { ...state.uiux, init }, data: { ...state.data, users } };

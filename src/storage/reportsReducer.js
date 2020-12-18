@@ -11,7 +11,7 @@ const reportsReducer = ( state, action ) => {
             reports = reports.map( x => ( { ...initReport(), data: { ...initReport().data, ...x } } ) );
     
             const { init } = state.uiux;
-            init.reports.process = { isDone: true };
+            init.reports.process = { isResponseOk: true };
 
             return { data: { ...state.data, reports }, uiux: { ...state.uiux, init } };
         
@@ -36,15 +36,15 @@ const reportsReducer = ( state, action ) => {
             const reports = [ ...state.data.reports ];
             const { index } = action.payload;
 
-            reports[ index ].uiux.process = { isOnValidation: true };
+            reports[ index ].uiux.process = { isValidation: true };
 
             return { ...state, data: { ...state.data, reports } };
 
-        } case 'VALIDATION_DONE': {
+        } case 'VALIDATION_OK': {
             const reports = [ ...state.data.reports ];
             const { index, data } = action.payload;
 
-            reports[ index ].uiux.process = { isOnValidationDone: true };
+            reports[ index ].uiux.process = { isValidationOk: true };
             reports[ index ].data = { ...data };
 
             return { ...state, data: { ...state.data, reports } };
@@ -61,7 +61,7 @@ const reportsReducer = ( state, action ) => {
             const reports = [ ...state.data.reports ];
             const { index } = action.payload;
 
-            reports[ index ].uiux.process = { isOnRequestTriggered: true };
+            reports[ index ].uiux.process = { isRequestBefore: true };
 
             return { ...state, data: { ...state.data, reports } };
 
@@ -69,7 +69,7 @@ const reportsReducer = ( state, action ) => {
             const reports = [ ...state.data.reports ];
             const { index } = action.payload;
 
-            reports[ index ].uiux.process = { isOnRequestBefore: true };
+            reports[ index ].uiux.process = { isRequestBefore: true };
 
             return { ...state, data: { ...state.data, reports } };
 
@@ -77,32 +77,32 @@ const reportsReducer = ( state, action ) => {
             const reports = [ ...state.data.reports ];
             const { index } = action.payload;
 
-            reports[ index ].uiux.process = { isOnRequest: true };
+            reports[ index ].uiux.process = { isRequest: true };
 
             return { ...state, data: { ...state.data, reports } };
 
-        } case 'RETRIEVE_MANY_REQUEST_AFTER': {
+        } case 'RETRIEVE_MANY_RESPONSE_WAITING': {
             const reports = [ ...state.data.reports ];
             const { index } = action.payload;
 
-            reports[ index ].uiux.process = { isOnRequestAfter: true };
+            reports[ index ].uiux.process = { isResponseWaiting: true };
 
             return { ...state, data: { ...state.data, reports } };
 
-        } case 'RETRIEVE_MANY_REQUEST_DONE': {
+        } case 'RETRIEVE_MANY_RESPONSE_OK': {
             const reports = [ ...state.data.reports ];
             const { index, dataFromDB } = action.payload;
 
-            reports[ index ].uiux.process = { isDone: true };
+            reports[ index ].uiux.process = { isResponseOk: true };
 
             return { ...state, data: { ...state.data, reports } };
 
-        } case 'RETRIEVE_MANY_REQUEST_ERROR': {
+        } case 'RETRIEVE_MANY_RESPONSE_ERROR': {
             const reports = [ ...state.data.reports ];
             const { index, error } = action.payload;
 
             //alert( error )
-            reports[ index ].uiux.process = { isError: true };
+            reports[ index ].uiux.process = { isResponseError: true };
 
             return { ...state, data: { ...state.data, reports } };
 

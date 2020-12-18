@@ -45,10 +45,10 @@ function SettingsList() {
         } );
     }
 
-    const validationDone = () => {
+    const validationOk = () => {
         STATE.dispatch( { 
             namespace,
-            type: 'VALIDATION_DONE',
+            type: 'VALIDATION_OK',
             payload: {},
         } );
     }
@@ -69,24 +69,24 @@ function SettingsList() {
         } );
     }
 
-    const updateRequestDone = dataFromDB => {
+    const updateResponseOk = dataFromDB => {
         STATE.dispatch( {
             namespace, 
-            type: 'UPDATE_REQUEST_DONE',
+            type: 'UPDATE_RESPONSE_OK',
             payload: { dataFromDB },
         } );
     }
 
-    const updateRequestError = () => {
+    const updateResponseError = () => {
         STATE.dispatch( { 
             namespace,
-            type: 'UPDATE_REQUEST_ERROR',
+            type: 'UPDATE_RESPONSE_ERROR',
             payload: { saved: REF.current.saved },
         } );
     }
 
     useEffect( () => {
-        if ( settings.uiux.process.isOnRequest ) {
+        if ( settings.uiux.process.isRequest ) {
 
             const doFetch = ( url, args, onDone, onError, dataFromDB ) => {
                 console.log( 'Requesting... ', settings.uiux.mode, settings.data.id )
@@ -108,8 +108,8 @@ function SettingsList() {
             if ( settings.uiux.mode.isUpdate ) {
                 const url = `/.netlify/functions/settings`;
                 const args = { method: 'PUT', body };
-                const onDone = updateRequestDone;
-                const onError = updateRequestError;
+                const onDone = updateResponseOk;
+                const onError = updateResponseError;
                 const dataFromDB = res => ( { ...dataToDB } );
                 doFetch( url, args, onDone, onError, dataFromDB );
             }
@@ -128,7 +128,7 @@ function SettingsList() {
             </RowValue>
 
             <RowMenu>
-                {settings.uiux.process.isOnValidation || settings.uiux.process.isOnRequest
+                {settings.uiux.process.isValidation || settings.uiux.process.isRequest
                     ? <Loader />
                     : settings.uiux.status.isSuspended
                     ? <FontAwesomeIcon icon={ faBan } className="icon" />
@@ -142,7 +142,7 @@ function SettingsList() {
                     settings={settings} 
                     closeForm={closeForm}
                     doValidation={doValidation}
-                    validationDone={validationDone}
+                    validationOk={validationOk}
                     validationError={validationError}
                     doRequest={doRequest}
                 /> 

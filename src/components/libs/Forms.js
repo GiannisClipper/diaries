@@ -3,7 +3,7 @@ import { FormBox } from './FormBox';
 import { ButtonBox, ButtonLabel, ButtonValue, ButtonValue1, ButtonValue2 } from './ButtonBox';
 import { OkButton, CancelButton } from './Buttons';
 
-function OkForm( { headLabel, okLabel, onClickOk, isOnRequest, isDelete, children } ) {
+function OkForm( { headLabel, okLabel, onClickOk, isRequest, isDelete, children } ) {
     return (
         <FormBox headLabel={headLabel}>
             {children}
@@ -11,7 +11,7 @@ function OkForm( { headLabel, okLabel, onClickOk, isOnRequest, isDelete, childre
             <ButtonBox>
                 <ButtonLabel />
                 <ButtonValue>
-                    <OkButton label={okLabel} onClick={onClickOk} isOnRequest={isOnRequest} isDelete={isDelete} />
+                    <OkButton label={okLabel} onClick={onClickOk} isRequest={isRequest} isDelete={isDelete} />
                 </ButtonValue>
             </ButtonBox>
 
@@ -19,7 +19,7 @@ function OkForm( { headLabel, okLabel, onClickOk, isOnRequest, isDelete, childre
     );
 }
 
-function OkCancelForm( { headLabel, okLabel, cancelLabel, onClickOk, onClickCancel, isOnRequest, isDelete, children } ) {
+function OkCancelForm( { headLabel, okLabel, cancelLabel, onClickOk, onClickCancel, isRequest, isDelete, children } ) {
     return (
         <FormBox headLabel={headLabel}>
             {children}
@@ -28,7 +28,7 @@ function OkCancelForm( { headLabel, okLabel, cancelLabel, onClickOk, onClickCanc
                 <ButtonLabel />
                 <ButtonValue>
                     <ButtonValue1>
-                        <OkButton label={okLabel} onClick={onClickOk} isOnRequest={isOnRequest} isDelete={isDelete} />
+                        <OkButton label={okLabel} onClick={onClickOk} isRequest={isRequest} isDelete={isDelete} />
                     </ButtonValue1>
                     <ButtonValue2>
                         <CancelButton label={cancelLabel} onClick={onClickCancel} />
