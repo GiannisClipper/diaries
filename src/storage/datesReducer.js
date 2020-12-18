@@ -9,7 +9,7 @@ const initDates = ( dates, dateFrom, dateTill, entriesMode ) => {
         date.uiux.process = { isRequest: true };
         date.uiux.isTheCentral = centralDate && date.data.date.getTime() === centralDate.getTime() ? true : false;
         date.data.entries.push( initEntry() );
-        date.data.entries[ 0 ].uiux.status = { isWaiting: true };
+        date.data.entries[ 0 ].uiux.process = { isResponseWaiting: true };
 
         if ( x === dateFrom ) {
             date.data.entries[ 0 ].uiux.mode = entriesMode;

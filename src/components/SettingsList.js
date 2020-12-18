@@ -128,11 +128,12 @@ function SettingsList() {
             </RowValue>
 
             <RowMenu>
-                {settings.uiux.process.isValidation || settings.uiux.process.isRequest
-                    ? <Loader />
-                    : settings.uiux.status.isSuspended
-                    ? <FontAwesomeIcon icon={ faBan } className="icon" />
-                    : <SettingsMenu openForm={openForm} mode={mode} />
+                {settings.uiux.process.isValidation || settings.uiux.process.isRequest ?
+                    <Loader />
+                : settings.uiux.process.isResponseError ?
+                    <FontAwesomeIcon icon={ faBan } className="icon" />
+                : 
+                    <SettingsMenu openForm={openForm} mode={mode} />
                 }
             </RowMenu>
 

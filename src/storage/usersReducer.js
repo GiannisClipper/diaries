@@ -163,7 +163,7 @@ const usersReducer = ( state, action ) => {
         } case 'RETRIEVE_MANY_RESPONSE_ERROR': {
             const users = [];
             const user = initUser();
-            user.uiux.status = { isSuspended: true }
+            user.uiux.process = { isResponseError: true }
             users.push( user );
 
             const { init } = state.uiux;

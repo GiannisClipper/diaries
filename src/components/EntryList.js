@@ -131,7 +131,7 @@ const Entry = React.memo( ( { date, inSequence, entry } ) => {
 
     let draggable, onDragStart, onDragOver, onDrop;
 
-    if ( !entry.uiux.form.isOpen && !entry.uiux.status.isSuspended ) {
+    if ( !entry.uiux.form.isOpen && !entry.uiux.process.isResponseError ) {
 
         if ( entry.data.id ) {  // no drag empty rows
 
@@ -173,11 +173,12 @@ const Entry = React.memo( ( { date, inSequence, entry } ) => {
             </RowValue>
 
             <RowMenu>
-                {entry.uiux.status.isWaiting
-                    ? <ToolBox><Loader /></ToolBox>
-                    : entry.uiux.status.isSuspended
-                    ? <ToolBox><FontAwesomeIcon icon={ faBan } className="icon" /></ToolBox>
-                    : <EntryMenuTool date={date} entry={entry} inSequence={inSequence} />
+                {entry.uiux.process.isResponseWaiting ?
+                    <ToolBox><Loader /></ToolBox>
+                : entry.uiux.process.isResponseError ?
+                    <ToolBox><FontAwesomeIcon icon={ faBan } className="icon" /></ToolBox>
+                : 
+                    <EntryMenuTool date={date} entry={entry} inSequence={inSequence} />
                 }
             </RowMenu>
 

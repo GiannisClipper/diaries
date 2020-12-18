@@ -103,7 +103,6 @@ function Fund( { index, funds } ) {
                     <CRUDMenu 
                         options={!fund.data.id ? [ 'C' ] : [ 'U', 'D' ]}
                         process={fund.uiux.process}
-                        status={fund.uiux.status}
                     />
                 </RowMenu>
 

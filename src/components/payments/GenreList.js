@@ -113,7 +113,6 @@ function Genre( { index, genres } ) {
                     <CRUDMenu 
                         options={!genre.data.id ? [ 'C' ] : [ 'U', 'D' ]}
                         process={genre.uiux.process}
-                        status={genre.uiux.status}
                     />
                 </RowMenu>
 

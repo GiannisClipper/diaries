@@ -196,7 +196,7 @@ const fundsReducer = ( state, action ) => {
 
             const funds = [];
             const fund = initPayments.fund();
-            fund.uiux.status = { isSuspended: true }
+            fund.uiux.process = { isResponseError: true }
             funds.push( fund );
 
             payments = { ...payments, funds };

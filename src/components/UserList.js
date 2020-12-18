@@ -110,7 +110,6 @@ function User( { index, users } ) {
                     <CRUDMenu
                         options={!user.data.id ? [ 'C' ] : [ 'U', 'D' ]}
                         process={user.uiux.process}
-                        status={user.uiux.status}
                     />
                 </RowMenu>
 

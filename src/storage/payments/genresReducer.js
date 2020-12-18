@@ -195,7 +195,7 @@ const genresReducer = ( state, action ) => {
 
             const genres = [];
             const genre = initPayments.genre();
-            genre.uiux.status = { isSuspended: true }
+            genre.uiux.process = { isResponseError: true }
             genres.push( genre );
 
             payments = { ...payments, genres };

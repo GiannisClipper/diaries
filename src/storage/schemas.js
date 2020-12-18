@@ -11,7 +11,6 @@ const initSettings = () => ( {
         form: {},  // isOpen
         mode: {},  // isUpdate
         process: {},  // isRequest, isValidation, isValidationOk
-        status: {},  // isSuspended
     }
 } );
 
@@ -59,8 +58,7 @@ const initUser = () => ( {
     uiux: {
         form: {},  // isOpen
         mode: {},  // isCreate, isUpdate, isDelete
-        process: {},  // isRequest, isValidation, isValidationOk
-        status: {},  // isSuspended
+        process: {},  // isRequest, isResponseWaiting, isResponseError, isValidation, isValidationOk
     }
 } );
 
@@ -87,7 +85,6 @@ const initEntry = () => ( {
         type: {},  // isNote, isPayment
         mode: {},  // isCreate, isUpdate, isDelete, isRetrieveMany
         process: {},  // isRequestBefore, isRequest
-        status: {},  // isWaiting, isSuspended
         dateFrom: null,  // when mode = isRetrieveMany
         dateTill: null,  // when mode = isRetrieveMany
     }
@@ -127,8 +124,7 @@ const initPayments = {
         uiux: {
             form: {},  // isOpen
             mode: {},  // isCreate, isUpdate, isDelete
-            process: {},  // isRequest, isValidation, isValidationOk
-            status: {},  // isSuspended
+            process: {},  // isRequest, isResponseWaiting, isResponseError, isValidation, isValidationOk
         }
     } ),
 
@@ -141,8 +137,7 @@ const initPayments = {
         uiux: {
             form: {},  // isOpen
             mode: {},  // isCreate, isUpdate, isDelete
-            process: {},  // isRequest, isValidation, isValidationOk
-            status: {},  // isSuspended
+            process: {},  // isRequest, isResponseWaiting, isResponseError, isValidation, isValidationOk
         }
     } )
 }

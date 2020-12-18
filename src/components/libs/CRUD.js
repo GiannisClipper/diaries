@@ -102,7 +102,7 @@ const CRUDContextProvider = React.memo( ( { dispatch, namespace, payload, childr
     )
 } );
 
-function CRUDMenu( { options, process, status } ) {
+function CRUDMenu( { options, process } ) {
 
     const { openForm } = useContext( CRUDContext );
 
@@ -113,7 +113,7 @@ function CRUDMenu( { options, process, status } ) {
         process.isResponseWaiting ?
             <Loader />
 
-        : status && status.isSuspended ?
+        : process.isResponseError ?
             <FontAwesomeIcon icon={faBan} className="icon" />
 
         : 
