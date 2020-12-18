@@ -184,8 +184,8 @@ const fundsReducer = ( state, action ) => {
             } );
             funds.sort( ( x, y ) => x.data.code > y.data.code ? 1 : -1 );
             funds.push( initPayments.fund() );
-
             payments = { ...payments, funds };
+
             const { init } = state.uiux;
             init.payments.funds.process = { isResponseOk: true };
 
@@ -198,8 +198,8 @@ const fundsReducer = ( state, action ) => {
             const fund = initPayments.fund();
             fund.uiux.process = { isResponseError: true }
             funds.push( fund );
-
             payments = { ...payments, funds };
+
             const { init } = state.uiux;
             init.payments.funds.process = { isResponseError: true };
             init.error = action.payload.error;

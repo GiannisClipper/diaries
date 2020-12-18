@@ -85,6 +85,10 @@ const CRUDContextProvider = React.memo( ( { dispatch, namespace, payload, childr
             payload2 => dispatch( { namespace, type: 'RETRIEVE_MANY_RESPONSE_OK', payload: { ...payload, ...payload2 } } ), 
             [ dispatch, namespace, payload ]
         ), 
+        retrieveManyResponseSetup: useCallback(
+            payload2 => dispatch( { namespace, type: 'RETRIEVE_MANY_RESPONSE_SETUP', payload: { ...payload, ...payload2 } } ), 
+            [ dispatch, namespace, payload ]
+        ), 
         retrieveManyResponseError: useCallback(
             payload2 => dispatch( { namespace, type: 'RETRIEVE_MANY_RESPONSE_ERROR', payload: { ...payload, ...payload2 } } ), 
             [ dispatch, namespace, payload ]
@@ -186,7 +190,7 @@ function InputValidation( { process, validation }) {
         }
     } );
 
-    return <></>;
+    return null;
 }
 
 function CreateRequest( { process, url, body, dataToDB }) {
@@ -203,7 +207,7 @@ function CreateRequest( { process, url, body, dataToDB }) {
         }
     } );
 
-    return <></>;
+    return null;
 }
 
 function UpdateRequest( { process, url, body, dataToDB, id }) {
@@ -220,7 +224,7 @@ function UpdateRequest( { process, url, body, dataToDB, id }) {
         }
     } );
 
-    return <></>;
+    return null;
 }
 
 function DeleteRequest( { process, url, body, dataToDB, id }) {
@@ -237,7 +241,7 @@ function DeleteRequest( { process, url, body, dataToDB, id }) {
         }
     } );
 
-    return <></>;
+    return null;
 }
 
 function RetrieveManyRequest( { process, url } ) {
@@ -273,7 +277,7 @@ function RetrieveManyRequest( { process, url } ) {
         }
     } );
 
-    return <></>;
+    return null;
 }
 
 export { 

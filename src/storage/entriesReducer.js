@@ -379,7 +379,23 @@ const entriesReducer = ( state, action ) => {
 
             deconstructDate( getDateInSequence( date ) );
             deconstructEntry( inSequence );
+
+            activeEntry.uiux.process = { isResponseOk: true };
+            activeEntry.data.dataFromDB = dataFromDB;
+            constructEntry();
+            constructDate();
+
+            return { ...state, data: { ...state.data, dates } };
+
+        } case 'RETRIEVE_MANY_RESPONSE_SETUP': {
+
+            dates = [ ...state.data.dates ];
+            const { date, inSequence } = action.payload;
+
+            deconstructDate( getDateInSequence( date ) );
+            deconstructEntry( inSequence );
             const { dateFrom, dateTill } = activeEntry.uiux;
+            const { dataFromDB } = activeEntry.data;
 
             dataFromDB.sort( ( a, b ) => a.inSequence < b.inSequence ? -1 : a.inSequence > b.inSequence ? 1 : 0 );
             const { genres, funds } = state.data.payments;

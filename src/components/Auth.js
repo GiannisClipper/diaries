@@ -192,7 +192,7 @@ function Signout() {
         doSignout();
     } );
 
-    return <></>
+    return null
 }
 
 export { Signin, Signout };

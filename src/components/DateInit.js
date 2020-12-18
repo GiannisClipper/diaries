@@ -53,50 +53,38 @@ const calcNextDates = ( startDate, days ) => {
     return { prevDates, nextDates, dateFrom, dateTill };
 }
 
-function DateInit( { mode, process, entriesMode } ) {
+function DateInit( { mode, process } ) {
 
     const STATE = useContext( STATEContext );
     const { dispatch } = STATE;
     const { dates, settings } = STATE.state.data;
+
     const centralDate = calcCentralDate( settings.data.centralDate );
     const days = 7;
 
     useEffect( () => {
-        if ( Object.keys( process ).length === 0 ) {  // process === {}
+        if ( process.isInitBefore ) {
             const payload = { mode: { isInitStart: true } };
             dispatch( { namespace, type: 'DO_INIT', payload } );
 
-        } else if ( 
-                process.isInit || 
-                ( process.isResponseWaiting && entriesMode.isRetrieveMany ) ||
-                ( process.isResponseWaiting && entriesMode.isRelatedError )
-            ) {
+        } else if ( process.isInit ) {
 
             if ( mode.isInitStart ) {
-                const payload = { 
-                    ...calcStartDates( centralDate, days ),
-                    entriesMode
-                };
+                const payload = { ...calcStartDates( centralDate, days ) };
                 dispatch( { namespace, type: 'INIT_START_DATES', payload } );
 
             } else if ( mode.isInitPrev ) {
-                const payload = {
-                    ...calcPrevDates( dates[ 0 ].data.date, days ),
-                    entriesMode
-                };
+                const payload = { ...calcPrevDates( dates[ 0 ].data.date, days ) };
                 dispatch( { namespace, type: 'INIT_PREV_DATES', payload } );
 
             } else if ( mode.isInitNext ) {
-                const payload = {
-                    ...calcNextDates( dates[ dates.length - 1 ].data.date, days ),
-                    entriesMode
-                };
+                const payload = { ...calcNextDates( dates[ dates.length - 1 ].data.date, days ) };
                 dispatch( { namespace, type: 'INIT_NEXT_DATES', payload } );
             }
         }
     } );
 
-    return <></>;
+    return null;
 }
 
 export default DateInit;

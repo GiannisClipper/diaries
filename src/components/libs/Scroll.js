@@ -97,7 +97,7 @@ function ScrollHandler( { outer, inner, prev, next, doScrollUp, doScrollDown } )
         console.log( 'Has rendered. ', 'ScrollHandler' );
     } );
 
-    return <></>;
+    return null;
 }
 
 function Scroll( { outer, inner, prev, next, doScrollUp, doScrollDown, scrollRef } ) {

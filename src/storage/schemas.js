@@ -30,7 +30,7 @@ const initState = () => ( {
         init: {
             users: { process: { isRequestBefore: true }, },  // process: isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
             dates: { 
-                process: {},  // isInit, isResponseWaiting, isResponseOk
+                process: { isInitBefore: true },  // isInitBefore, isInit
                 mode: {},  // isInitStart, isInitPrev, isInitNext
             },
             payments: {
@@ -83,8 +83,8 @@ const initEntry = () => ( {
         menu: {},  // isOpen
         form: {},  // isOpen
         type: {},  // isNote, isPayment
-        mode: {},  // isCreate, isUpdate, isDelete, isRetrieveMany, isRelatedError
-        process: {},  // isRequestBefore, isRequest
+        mode: {},  // isCreate, isUpdate, isDelete, isRetrieveMany
+        process: {},  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError
         dateFrom: null,  // when mode = isRetrieveMany
         dateTill: null,  // when mode = isRetrieveMany
     }

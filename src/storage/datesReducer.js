@@ -1,6 +1,6 @@
 import { initDate, initEntry } from './schemas';
 
-const initDates = ( dates, dateFrom, dateTill, entriesMode ) => {
+const initDates = ( dates, dateFrom, dateTill ) => {
     
     return dates.map( x => {
         const centralDate = dates.length === 1 ? dates[ 0 ] : null;
@@ -11,8 +11,8 @@ const initDates = ( dates, dateFrom, dateTill, entriesMode ) => {
         date.data.entries[ 0 ].uiux.process = { isResponseWaiting: true };
 
         if ( x === dateFrom ) {
-            date.data.entries[ 0 ].uiux.mode = entriesMode;
-            date.data.entries[ 0 ].uiux.process = { isRequestBefore: true };
+            date.data.entries[ 0 ].uiux.mode = { isRetrieveMany: true };
+            date.data.entries[ 0 ].uiux.process = { isRequestBefore: true }
             date.data.entries[ 0 ].uiux.dateFrom = dateFrom;
             date.data.entries[ 0 ].uiux.dateTill = dateTill;
         }
@@ -36,43 +36,41 @@ const datesReducer = ( state, action ) => {
 
         } case 'INIT_START_DATES': {
 
-            const { prevDates, centralDate, nextDates, dateFrom, dateTill, entriesMode } = action.payload;
+            const { prevDates, centralDate, nextDates, dateFrom, dateTill } = action.payload;
             const dates = [ 
-                ...initDates( prevDates, dateFrom, dateTill, entriesMode ), 
-                ...initDates( [ centralDate ], dateFrom, dateTill, entriesMode ),
-                ...initDates( nextDates, dateFrom, dateTill, entriesMode )
+                ...initDates( prevDates, dateFrom, dateTill ), 
+                ...initDates( [ centralDate ], dateFrom, dateTill ),
+                ...initDates( nextDates, dateFrom, dateTill )
             ];
 
             const { init } = state.uiux;
-            init.dates.process = entriesMode.isRetrieveMany 
-                ? { isResponseOk: true }
-                : { isResponseWaiting: true };
+            init.dates.process = {};
 
             return { uiux: { ...state.uiux, init }, data: { ...state.data, dates } };
 
         } case 'INIT_PREV_DATES': {
 
-            const { prevDates, dateFrom, dateTill, entriesMode } = action.payload;
+            const { prevDates, dateFrom, dateTill } = action.payload;
             const dates = [
-                ...initDates( prevDates, dateFrom, dateTill, entriesMode ),
+                ...initDates( prevDates, dateFrom, dateTill ),
                 ...state.data.dates
             ];
 
             const { init } = state.uiux;
-            init.dates.process = { isResponseOk: true };
+            init.dates.process = {};
 
             return { uiux: { ...state.uiux, init }, data: { ...state.data, dates } };
 
         } case 'INIT_NEXT_DATES': {
 
-            const { nextDates, dateFrom, dateTill, entriesMode } = action.payload;
+            const { nextDates, dateFrom, dateTill } = action.payload;
             const dates = [
                 ...state.data.dates,
-                ...initDates( nextDates, dateFrom, dateTill, entriesMode )
+                ...initDates( nextDates, dateFrom, dateTill )
             ];
 
             const { init } = state.uiux;
-            init.dates.process = { isResponseOk: true };
+            init.dates.process = {};
 
             return { uiux: { ...state.uiux, init }, data: { ...state.data, dates } };
 

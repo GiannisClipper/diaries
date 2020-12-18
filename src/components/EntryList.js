@@ -18,7 +18,7 @@ import { parsePaymentToDB } from '../storage/payments/parsers';
 import styled, { css } from 'styled-components';
 import StyledRow from './libs/RowBox';
 import { CopyPasteContext } from './libs/CopyPaste';
-import { CRUDContextProvider, RetrieveManyRequest, CreateRequest, UpdateRequest, DeleteRequest } from './libs/CRUD';
+import { CRUDContext, CRUDContextProvider, RetrieveManyRequest, CreateRequest, UpdateRequest, DeleteRequest } from './libs/CRUD';
 
 const namespace = 'entries';
 
@@ -73,7 +73,10 @@ const EntryContext = ( { date, inSequence, entry } ) => {
             namespace={namespace} 
             payload={payload}
         >
-            { entry.uiux.mode.isRetrieveMany ?
+            { entry.uiux.mode.isRetrieveMany && entry.uiux.process.isResponseOk ?
+                <RetrieveManyResponseSetup />
+
+            : entry.uiux.mode.isRetrieveMany ?
                 <RetrieveManyRequest
                     process={entry.uiux.process}
                     url={`/.netlify/functions/entry?range=${strDateFrom}-${strDateTill}`}
@@ -108,6 +111,28 @@ const EntryContext = ( { date, inSequence, entry } ) => {
         </CRUDContextProvider>
     )
 }
+
+function RetrieveManyResponseSetup() {
+
+    const { retrieveManyResponseSetup, retrieveManyResponseError } = useContext( CRUDContext );
+    const STATE = useContext( STATEContext )
+
+    useEffect( () => {
+        const { init } = STATE.state.uiux;
+
+        const process1 = init.payments.genres.process;
+        const process2 = init.payments.funds.process;
+
+        if ( process1.isResponseOk && process2.isResponseOk ) {
+            retrieveManyResponseSetup()
+
+        } else if ( process1.isResponseError || process2.isResponseError ) {
+            retrieveManyResponseError()
+        }
+    } );
+
+    return null;
+};
 
 const RowBox = StyledRow.RowBox;
 
@@ -173,7 +198,11 @@ const Entry = React.memo( ( { date, inSequence, entry } ) => {
             </RowValue>
 
             <RowMenu>
-                {entry.uiux.process.isResponseWaiting ?
+                {entry.uiux.process.isValidation || 
+                entry.uiux.process.isRequestBefore ||
+                entry.uiux.process.isRequest ||
+                entry.uiux.process.isResponseWaiting ||
+                entry.uiux.process.isResponseOk ?
                     <ToolBox><Loader /></ToolBox>
                 : entry.uiux.process.isResponseError ?
                     <ToolBox><FontAwesomeIcon icon={ faBan } className="icon" /></ToolBox>

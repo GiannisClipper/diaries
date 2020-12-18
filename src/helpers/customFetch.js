@@ -76,7 +76,7 @@ const doFetch = ( url, args, onDone, onError, dataFromDB ) => {
 
     realFetch( url, args )
     .then( res => {
-        alert( JSON.stringify( res ) );
+        //alert( JSON.stringify( res ) );
         onDone( { dataFromDB: dataFromDB( res ) } );
     } )
     .catch( err => { 

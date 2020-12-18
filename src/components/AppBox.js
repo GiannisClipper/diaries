@@ -183,7 +183,7 @@ const AppBox = React.memo( ( { page } ) => {
             : null }
 
             <AppMain centeredness>
-                { page === 'home' ? <></>
+                { page === 'home' ? null
                 : page === 'signin' ? <Signin />
                 : page === 'signout' ? <Signout />
                 : page === 'dates' ? <DateList />

@@ -83,21 +83,8 @@ const DateList = () => {
         outer.current.scrollTop = central.current.offsetTop - ( outer.current.clientHeight * 0.10 );
     }
 
-    const entriesMode = () => {
-        const process1 = init.payments.genres.process;
-        const process2 = init.payments.funds.process;
-
-        const mode = process1.isResponseOk && process2.isResponseOk 
-            ? { isRetrieveMany: true }
-            : process1.isResponseError || process2.isResponseError 
-            ? { isRelatedError: true }
-            : {};
-
-        return mode;
-    }
-
     useEffect( () => {
-        if ( init.dates.mode.isInitStart && init.dates.process.isResponseWaiting ) {
+        if ( init.dates.mode.isInitStart && Object.keys( init.dates.process ).length === 0 ) {
             REF.current.scrollToCentralDate();
         }
     } );
@@ -116,7 +103,6 @@ const DateList = () => {
                 <DateInit
                     process={init.dates.process}
                     mode={init.dates.mode}
-                    entriesMode={entriesMode()}
                 />
 
                 <PrevButton reference={prev} />

@@ -14,7 +14,7 @@ function ReportInit( { process } ) {
         }
     } );
 
-    return <></>;
+    return null;
 }
 
 export default ReportInit;
