@@ -267,9 +267,6 @@ function RetrieveManyRequest( { process, url } ) {
         } else if ( process.isResponseOk ) {
             // do nothing here
 
-        } else if ( process.isSuspended ) {
-            retrieveManyResponseError();
-
         } else if ( process.isResponseError ) {
             // do nothing here
 

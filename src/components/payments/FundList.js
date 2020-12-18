@@ -47,7 +47,7 @@ function FundInit() {
         >
             <RetrieveManyRequest 
                 process={init.payments.funds.process}
-                url={`/.netlify/functions/payments-fund2`}
+                url={`/.netlify/functions/payments-fund`}
             />
         </CRUDContextProvider>
     );

@@ -156,7 +156,7 @@ const initReport = () => ( {
     },
     uiux: {
         form: {},  // isOpen
-        process: {},  // process: isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
+        process: {},  // process: isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError
     }
 } );
 
