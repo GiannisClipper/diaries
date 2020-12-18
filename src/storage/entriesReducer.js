@@ -426,7 +426,6 @@ const entriesReducer = ( state, action ) => {
 
                 deconstructDate( getDateInSequence( date ) );
                 activeDate.data.entries = entries;
-                activeDate.uiux.process = {};
                 activeDate.uiux.mode = {};
                 constructDate();
             }

@@ -26,7 +26,7 @@ const calcDates = ( startDate, days ) => {
     return dates;
 }
 
-const calcInitDates = ( centralDate, days ) => {
+const calcStartDates = ( centralDate, days ) => {
     const prevDates = calcDates( centralDate, -Math.abs( days ) );
     const nextDates = calcDates( centralDate, Math.abs( days ) );
     const dateFrom = prevDates[ 0 ];
@@ -63,21 +63,21 @@ function DateInit( { mode, process, entriesMode } ) {
 
     useEffect( () => {
         if ( Object.keys( process ).length === 0 ) {  // process === {}
-            const payload = { mode: { isInit: true } };
+            const payload = { mode: { isInitStart: true } };
             dispatch( { namespace, type: 'DO_INIT', payload } );
 
         } else if ( 
-                process.isOnInit || 
-                ( process.isWaiting && entriesMode.isRetrieveMany ) ||
-                ( process.isWaiting && entriesMode.isError )
+                process.isInit || 
+                ( process.isResponseWaiting && entriesMode.isRetrieveMany ) ||
+                ( process.isResponseWaiting && entriesMode.isRelatedError )
             ) {
 
-            if ( mode.isInit ) {
+            if ( mode.isInitStart ) {
                 const payload = { 
-                    ...calcInitDates( centralDate, days ),
+                    ...calcStartDates( centralDate, days ),
                     entriesMode
                 };
-                dispatch( { namespace, type: 'INIT_DATES', payload } );
+                dispatch( { namespace, type: 'INIT_START_DATES', payload } );
 
             } else if ( mode.isInitPrev ) {
                 const payload = {

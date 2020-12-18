@@ -87,15 +87,17 @@ const DateList = () => {
         const process1 = init.payments.genres.process;
         const process2 = init.payments.funds.process;
 
-        return process1.isResponseOk && process2.isResponseOk 
+        const mode = process1.isResponseOk && process2.isResponseOk 
             ? { isRetrieveMany: true }
             : process1.isResponseError || process2.isResponseError 
-            ? { isError: true }
-            : { isWaiting: true };
+            ? { isRelatedError: true }
+            : {};
+
+        return mode;
     }
 
     useEffect( () => {
-        if ( init.dates.mode.isInit && init.dates.process.isWaiting ) {
+        if ( init.dates.mode.isInitStart && init.dates.process.isResponseWaiting ) {
             REF.current.scrollToCentralDate();
         }
     } );
