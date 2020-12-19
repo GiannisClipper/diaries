@@ -51,9 +51,7 @@ const STATEContextProvider = props => {
 
     window.state = state;
 
-    useEffect( () => {
-        console.log( 'Has rendered. ', 'STATEContextProvider' );
-    } );
+    useEffect( () => console.log( 'Has rendered. ', 'STATEContextProvider' ) );
 
     return (
         <STATEContext.Provider value={{ state, dispatch }}>

@@ -27,9 +27,7 @@ const ADate = React.memo( ( { aDate, reference } ) => {  // Adate(), to differ f
 
     const { date, entries } = aDate.data;
 
-    // useEffect( () => {
-    //     console.log( 'Has rendered. ', date );
-    // } );
+    // useEffect( () => console.log( 'Has rendered. ', date ) );
 
     return (
         <BlockBox ref={reference} isTheCentral={reference}>

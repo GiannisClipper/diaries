@@ -33,7 +33,7 @@ exports.handler = async function( event, context, callback ) {
             console.log( result );
 
             const id = result.insertedId;
-            const { date, inSequence } = body.newSaved;
+            const { date, inSequence } = body.new;
             await updateSequence( collection, id, date, inSequence, 1 );
     
             callback( null, responseOnSuccess( result ) );
@@ -44,10 +44,10 @@ exports.handler = async function( event, context, callback ) {
             const data = body.data;
             const result = await collection.updateOne( { _id: ObjectId( id ) }, { $set: data } );
 
-            const oldDate = body.oldSaved.date;
-            const oldInSequence = body.oldSaved.inSequence;
-            const newDate = body.newSaved.date;
-            const newInSequence = body.newSaved.inSequence;
+            const oldDate = body.old.date;
+            const oldInSequence = body.old.inSequence;
+            const newDate = body.new.date;
+            const newInSequence = body.new.inSequence;
     
             if ( oldDate + oldInSequence !== newDate + newInSequence ) {
                 await updateSequence( collection, id, oldDate, oldInSequence, -1 );
@@ -63,7 +63,7 @@ exports.handler = async function( event, context, callback ) {
             console.log( result );
 
             const body = JSON.parse( event.body );
-            const { date, inSequence } = body.oldSaved;
+            const { date, inSequence } = body.old;
             await updateSequence( collection, id, date, inSequence, -1 );
     
             callback( null, responseOnSuccess( result ) );

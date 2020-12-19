@@ -65,7 +65,7 @@ function NextButton( { reference } ) {
     );
 }
 
-const DateList = () => {
+const DateList = ( { scrollToCentralDate } ) => {
 
     const STATE = useContext( STATEContext );
     const REF = useContext( REFContext );
@@ -73,25 +73,31 @@ const DateList = () => {
     const { dispatch } = STATE;
     const { init } = STATE.state.uiux;
 
+    // to pass component references to `Scroll` component
     const outer = useRef( null );
     const inner = useRef( null );
     const prev = useRef( null );
     const next = useRef( null );
     const central = useRef( null );
 
-    const [ scrollEnabled, setScrollEnabled ] = useState( false );
+    // to update `Scroll` component with other component references
+    const [ scrollUpdated, setScrollUpdated ] = useState( false );
+
+    useEffect( () => setScrollUpdated( true ), [] );
+
+    // to control that auto scrolling to central date happens once
+    const hasScrolledToCentralDate = useRef( false );
+
+    useEffect( () => {
+        if ( !hasScrolledToCentralDate.current && central.current ) {   
+            REF.current.scrollToCentralDate();
+            hasScrolledToCentralDate.current = true;
+        }
+    } );
 
     REF.current.scrollToCentralDate = () => {
         outer.current.scrollTop = central.current.offsetTop - ( outer.current.clientHeight * 0.10 );
     }
-
-    useEffect( () => setScrollEnabled( true ), [] );
-
-    useEffect( () => {
-        if ( init.dates.mode.isInitStart && Object.keys( init.dates.process ).length === 0 ) {
-            REF.current.scrollToCentralDate();
-        }
-    } );
 
     useEffect( () => console.log( 'Has rendered. ', 'DateList' ) );
 
@@ -124,7 +130,7 @@ const DateList = () => {
             </ContentBox>
 
             <Scroll
-                enabled={scrollEnabled}
+                updated={scrollUpdated}
                 outer={outer.current}
                 inner={inner.current}
                 prev={prev.current}
@@ -142,9 +148,7 @@ const DateItems = ( { central } ) => {
     const STATE = useContext( STATEContext );
     const { dates } = STATE.state.data;
 
-    // useEffect( () => {
-    //     console.log( 'Has rendered. ', 'DateItems' );
-    // } );
+    // useEffect( () => console.log( 'Has rendered. ', 'DateItems' ) );
 
     return (
         <ul>

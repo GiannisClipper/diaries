@@ -67,9 +67,9 @@ const isYYYYMMDD = value => {
 }
 
 const dateToYYYYMMDD = date => {
-    const year = date.getFullYear();
-    const month = ( date.getMonth() + 1 ).toString().padStart( 2, '0' );
-    const dateNum = date.getDate().toString().padStart( 2, '0' );
+    const year = date ? date.getFullYear() : '';
+    const month = date ? ( date.getMonth() + 1 ).toString().padStart( 2, '0' ) : '';
+    const dateNum = date ? date.getDate().toString().padStart( 2, '0' ) : '';
     return year + month + dateNum;
 }
 

@@ -14,9 +14,7 @@ function FundList() {
     const STATE = useContext( STATEContext );
     const { funds } = STATE.state.data.payments;
 
-    useEffect( () => {
-        console.log( 'Has rendered. ', 'payments/FundList' );
-    } );
+    useEffect( () => console.log( 'Has rendered. ', 'payments/FundList' ) );
 
     let index = -1;
 
@@ -36,9 +34,7 @@ function FundInit() {
     const { dispatch } = STATE;
     const { init } = STATE.state.uiux;
 
-    useEffect( () => {
-        console.log( 'Has rendered. ', 'payments/FundInit' );
-    } );
+    useEffect( () => console.log( 'Has rendered. ', 'payments/FundInit' ) );
 
     return (
         <CRUDContextProvider 

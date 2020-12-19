@@ -22,9 +22,7 @@ function ReportList() {
     const { init } = STATE.state.uiux;
     const { reports } = STATE.state.data;
 
-    useEffect( () => {
-        console.log( 'Has rendered. ', 'ReportList' );
-    } );
+    useEffect( () => console.log( 'Has rendered. ', 'ReportList' ) );
 
     let index = -1;
 

@@ -43,9 +43,7 @@ const CopyPasteContextProvider = ( { doCutPaste, doCopyPaste, children } ) => {
         return copyPasteRef.current.cut || copyPasteRef.current.copy;
     }
 
-    useEffect( () => {
-        console.log( 'Has rendered. ', 'CopyPasteContextProvider' );
-    } );
+    useEffect( () => console.log( 'Has rendered. ', 'CopyPasteContextProvider' ) );
 
     return (
         <CopyPasteContext.Provider value={{ doCut, doCopy, doPaste, isAbleToPaste }}>

@@ -14,9 +14,7 @@ function GenreList() {
     const STATE = useContext( STATEContext );
     const { genres } = STATE.state.data.payments;
 
-    useEffect( () => {
-        console.log( 'Has rendered. ', 'payments/GenreList' );
-    } );
+    useEffect( () => console.log( 'Has rendered. ', 'payments/GenreList' ) );
 
     let index = -1;
 
@@ -36,9 +34,7 @@ function GenreInit() {
     const { dispatch } = STATE;
     const { init } = STATE.state.uiux;
 
-    useEffect( () => {
-        console.log( 'Has rendered. ', 'payments/GenreInit' );
-    } );
+    useEffect( () => console.log( 'Has rendered. ', 'payments/GenreInit' ) );
 
     return (
         <CRUDContextProvider 

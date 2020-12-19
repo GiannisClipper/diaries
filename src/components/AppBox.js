@@ -126,11 +126,9 @@ const AppBox = React.memo( ( { page } ) => {
     const theme = STATE.state.data.settings.data.theme;
     const error = STATE.state.uiux.init.error;
 
-    page = error && error.message && error.message.includes( 'No Auth' ) ? 'signin' : page;
+    page = error && error.message && error.message.includes( 'No auth' ) ? 'signin' : page;
 
-    useEffect( () => {
-        console.log( 'Has rendered. ', 'AppBox' );
-    } );
+    useEffect( () => console.log( 'Has rendered. ', 'AppBox' ) );
 
     return (
         <ThemeProvider theme={theme === 'dark' ? dark : light}>

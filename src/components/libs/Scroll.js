@@ -10,9 +10,7 @@ const ScrollContextProvider = props => {
         offsetHeight: 0,  // total height -including padding, border- of `inner` element
     } );
 
-    useEffect( () => {
-        console.log( 'Has rendered. ', 'ScrollContextProvider' );
-    } );
+    useEffect( () => console.log( 'Has rendered. ', 'ScrollContextProvider' ) );
 
     return (
         <ScrollContext.Provider value={ initRef }>
@@ -93,9 +91,7 @@ function ScrollHandler( { outer, inner, prev, next, doScrollUp, doScrollDown } )
         }
     } );
 
-    useEffect( () => {
-        console.log( 'Has rendered. ', 'ScrollHandler' );
-    } );
+    useEffect( () => console.log( 'Has rendered. ', 'ScrollHandler' ) );
 
     return null;
 }

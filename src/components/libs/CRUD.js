@@ -95,9 +95,7 @@ const CRUDContextProvider = React.memo( ( { dispatch, namespace, payload, childr
         ), 
     }
 
-    useEffect( () => {
-        console.log( 'Has rendered. ', 'CRUDContextProvider' );
-    } );
+    //useEffect( () => console.log( 'Has rendered. ', 'CRUDContextProvider' ) );
 
     return (
         <CRUDContext.Provider value={{ ...actions }}>

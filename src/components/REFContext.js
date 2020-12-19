@@ -6,9 +6,7 @@ const REFContextProvider = props => {
 
     const initRef = useRef( {} );
 
-    useEffect( () => {
-        console.log( 'Has rendered. ', 'REFContextProvider' );
-    } );
+    useEffect( () => console.log( 'Has rendered. ', 'REFContextProvider' ) );
 
     return (
         <REFContext.Provider value={ initRef }>

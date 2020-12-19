@@ -5,16 +5,21 @@ const initDates = ( dates, dateFrom, dateTill ) => {
     return dates.map( x => {
         const centralDate = dates.length === 1 ? dates[ 0 ] : null;
         const date = initDate();
+
         date.data.date = x;
         date.uiux.isTheCentral = centralDate && date.data.date.getTime() === centralDate.getTime() ? true : false;
+
         date.data.entries.push( initEntry() );
-        date.data.entries[ 0 ].uiux.process = { isResponseWaiting: true };
 
         if ( x === dateFrom ) {
-            date.data.entries[ 0 ].uiux.mode = { isRetrieveMany: true };
-            date.data.entries[ 0 ].uiux.process = { isRequestBefore: true }
+            // this entry will make a db request for all the corresponded dates
             date.data.entries[ 0 ].uiux.dateFrom = dateFrom;
             date.data.entries[ 0 ].uiux.dateTill = dateTill;
+            date.data.entries[ 0 ].uiux.mode = { isRetrieveMany: true };
+            date.data.entries[ 0 ].uiux.process = { isRequestBefore: true }
+
+        } else {
+            date.data.entries[ 0 ].uiux.process = { isResponseWaiting: true };
         }
 
         return date;

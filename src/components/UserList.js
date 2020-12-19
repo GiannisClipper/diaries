@@ -17,9 +17,7 @@ function UserList() {
     const STATE = useContext( STATEContext );
     const { users } = STATE.state.data;
 
-    useEffect( () => {
-        console.log( 'Has rendered. ', 'UserList' );
-    } );
+    useEffect( () => console.log( 'Has rendered. ', 'UserList' ) );
 
     let index = -1;
 

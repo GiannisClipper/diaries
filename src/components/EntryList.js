@@ -1,6 +1,5 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useRef, useEffect } from 'react';
 import { STATEContext } from './STATEContext';
-import { REFContext } from './REFContext';
 
 import { ToolBox } from './libs/ToolBox';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -45,27 +44,34 @@ const EntryContext = ( { date, inSequence, entry } ) => {
 
     const STATE = useContext( STATEContext )
     const { state, dispatch } = STATE;
-
-    const REF = useContext( REFContext );
-
     const { genres, funds } = state.data.payments;
 
-    REF.current._saved = { date, entry, inSequence };
+    const saved = useRef( { date, inSequence, entry } );
 
     const parseDataToDB = entry.uiux.type.isPayment 
-        ? () => parsePaymentToDB( { ...entry.data, date: dateToYYYYMMDD( date ), inSequence }, genres, funds )
-        : () => parseNoteToDB( { ...entry.data, date: dateToYYYYMMDD( date ), inSequence } );
+        ? 
+        () => parsePaymentToDB(
+                { ...entry.data, date: dateToYYYYMMDD( date ), inSequence }, 
+                genres, 
+                funds 
+            )
+        : 
+        () => parseNoteToDB( 
+                { ...entry.data, date: dateToYYYYMMDD( date ), inSequence },
+            );
 
     const body = () => JSON.stringify( {
-        oldSaved: { date: dateToYYYYMMDD( REF.current._saved.date ), inSequence: REF.current._saved.inSequence },
-        newSaved: { date: dateToYYYYMMDD( date ), inSequence },
+        old: { date: dateToYYYYMMDD( saved.date ), inSequence: saved.inSequence },
+        new: { date: dateToYYYYMMDD( date ), inSequence },
         data: parseDataToDB(),
     } );
 
-    const strDateFrom = !entry.uiux.dateFrom || dateToYYYYMMDD( entry.uiux.dateFrom );
-    const strDateTill = !entry.uiux.dateTill || dateToYYYYMMDD( entry.uiux.dateTill );
+    const strDateFrom = dateToYYYYMMDD( entry.uiux.dateFrom );
+    const strDateTill = dateToYYYYMMDD( entry.uiux.dateTill );
 
-    const payload = { date, entry, inSequence };
+    const payload = { date, inSequence, entry };
+
+    //useEffect( () =>  console.log( 'Has rendered. ', 'EntryContext' ) );
 
     return (
         <CRUDContextProvider 
@@ -178,9 +184,7 @@ const Entry = React.memo( ( { date, inSequence, entry } ) => {
         }
     }
 
-    // useEffect( () => {
-    //     console.log( 'Has rendered. ', 'Entry' );
-    // } );
+    useEffect( () =>  console.log( 'Has rendered. ', 'Entry' ) );
 
     return (
         <RowBox
