@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useContext } from 'react';
+import React, { useEffect, useRef, useContext, useState } from 'react';
 import { STATEContext } from './STATEContext';
 import { REFContext } from './REFContext';
 
@@ -79,9 +79,13 @@ const DateList = () => {
     const next = useRef( null );
     const central = useRef( null );
 
+    const [ scrollEnabled, setScrollEnabled ] = useState( false );
+
     REF.current.scrollToCentralDate = () => {
         outer.current.scrollTop = central.current.offsetTop - ( outer.current.clientHeight * 0.10 );
     }
+
+    useEffect( () => setScrollEnabled( true ), [] );
 
     useEffect( () => {
         if ( init.dates.mode.isInitStart && Object.keys( init.dates.process ).length === 0 ) {
@@ -89,9 +93,7 @@ const DateList = () => {
         }
     } );
 
-    // useEffect( () => {
-    //     console.log( 'Has rendered. ', 'DateList' );
-    // } );
+    useEffect( () => console.log( 'Has rendered. ', 'DateList' ) );
 
     return (
         <List reference={outer}>
@@ -122,6 +124,7 @@ const DateList = () => {
             </ContentBox>
 
             <Scroll
+                enabled={scrollEnabled}
                 outer={outer.current}
                 inner={inner.current}
                 prev={prev.current}

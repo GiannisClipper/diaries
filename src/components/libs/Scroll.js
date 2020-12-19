@@ -6,7 +6,7 @@ const ScrollContextProvider = props => {
 
     const initRef = useRef( {
         direction: {},  // isUp, isDown
-        scrollTop: 0,  // pixels scrolled vertically of the content of `outer` element  
+        scrollTop: 0,  // pixels scrolled vertically of the content of `outer` element
         offsetHeight: 0,  // total height -including padding, border- of `inner` element
     } );
 
@@ -75,8 +75,8 @@ function ScrollHandler( { outer, inner, prev, next, doScrollUp, doScrollDown } )
             const direction = scrollRef.direction;
 
             if ( direction.isUp ) {
-                console.log( 'scrollRef.offsetHeight', scrollRef.offsetHeight )
-                console.log( 'inner.offsetHeight', inner.offsetHeight )
+                // console.log( 'scrollRef.offsetHeight', scrollRef.offsetHeight )
+                // console.log( 'inner.offsetHeight', inner.offsetHeight )
 
                 const scrollTop = scrollRef.scrollTop;  
                 const offsetHeight = scrollRef.offsetHeight;
