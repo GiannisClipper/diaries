@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
-import { CRUDContext, CRUDForm } from "./libs/CRUD";
-import { Modal } from './libs/Modal';
-import { InputBox, InputLabel, InputValue } from './libs/InputBox';
-import { dayNames, YYYYMMDDToRepr, dateToYYYYMMDD } from '../helpers/dates';
+import { CRUDContext, CRUDForm } from "../libs/CRUD";
+import { Modal } from '../libs/Modal';
+import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
+import { dayNames, YYYYMMDDToRepr, dateToYYYYMMDD } from '../../helpers/dates';
 
 function EntryForm( { headLabel, process, validation, date, entry, children } ) {
 

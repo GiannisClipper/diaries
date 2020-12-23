@@ -1,8 +1,8 @@
 import React from 'react';
-import { dayNames, monthNames } from '../helpers/dates';
+import { dayNames, monthNames } from '../../helpers/dates';
 import styled from 'styled-components';
 
-const StyledDateInfo = styled.div`
+const StyledDateRepr = styled.div`
     width: 10em;
     display: inline-block;
     vertical-align: top;
@@ -34,14 +34,16 @@ const DayName = styled.span`
     vertical-align: top;
 `;
     
-function DateInfo( { date } ) {
+function DateRepr( { date } ) {
+
     const dayName = dayNames[ date.getDay() ];
     const dateNum = date.getDate().toString().padStart( 2, '0' );
     const monthName = monthNames[ date.getMonth() ];
     const yearNum = date.getFullYear();
 
     return (
-        <StyledDateInfo>
+        <StyledDateRepr>
+
             <MonthAndYear>
                 { `${yearNum} ${monthName}` }
             </MonthAndYear>
@@ -53,8 +55,10 @@ function DateInfo( { date } ) {
             <DayName>
                 { `${dayName}` }
             </DayName>
-        </StyledDateInfo>
+
+        </StyledDateRepr>
     );
 }
 
-export default DateInfo;
+export default DateRepr;
+export { DateRepr };

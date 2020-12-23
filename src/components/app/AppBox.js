@@ -1,21 +1,25 @@
 import React, { useContext, useEffect } from 'react';
-import { STATEContext } from './STATEContext';
-import { REFContext } from './REFContext';
-import { realFetch, mockFetch } from '../helpers/customFetch';
+import { AppContext } from '../app/AppContext';
+import { STATEContext } from '../STATEContext';
+import { REFContext } from '../REFContext';
+//import { realFetch, mockFetch } from '../../helpers/customFetch';
+
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { centeredness } from './libs/InitStyle';
+import { centeredness } from '../libs/InitStyle';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faBookOpen, faCog, faCompass, faMap, faDoorOpen, faDoorClosed } from '@fortawesome/free-solid-svg-icons';
-import { Signin, Signout } from './Auth';
-import DateList from './DateList';
-import ReportList from './ReportList';
-import UserList from './UserList';
-import Settings from './Settings';
+
+import { Signin, Signout } from '../Auth';
+import { Users } from '../user/User';
+import { Diaries } from '../diary/Diary';
+import ReportList from '../ReportList';
+import Settings from '../Settings';
+
 import { ThemeProvider } from 'styled-components';
-import { InitStyle } from './libs/InitStyle';
-import { light, dark } from '../storage/themes';
-import { heads } from '../storage/texts';
+import { InitStyle } from '../libs/InitStyle';
+import { light, dark } from '../../storage/themes';
+import { heads } from '../../storage/texts';
 
 const AppHeader = styled.div`
     position: fixed;
@@ -64,9 +68,9 @@ const LinkUsers = () => {
         </Link>
     )
 }
-const LinkDates = () => {
+const LinkDiaries = () => {
     return (
-        <Link to="/dates"> 
+        <Link to="/diaries"> 
             <FontAwesomeIcon icon={ faBookOpen } className="icon" title="Ημερολόγο" />
         </Link>
     )
@@ -93,21 +97,21 @@ const ScrollToCentralDate = () => {
         </button>
     )
 }
-const Dev = () => {
-    return (
-        <button onClick={ event => {
-            realFetch( `/.netlify/functions/dev`, { method: 'GET' } )
-            .then( res => {
-                alert( JSON.stringify( res ) );
-            } )
-            .catch( err => { 
-                alert( err );
-            } );
-        } }>
-            Dev
-        </button>
-    )
-}
+// const Dev = () => {
+//     return (
+//         <button onClick={ event => {
+//             realFetch( `/.netlify/functions/dev`, { method: 'GET' } )
+//             .then( res => {
+//                 alert( JSON.stringify( res ) );
+//             } )
+//             .catch( err => { 
+//                 alert( err );
+//             } );
+//         } }>
+//             Dev
+//         </button>
+//     )
+// }
 
 const AppMain = styled.div`
     padding-top: 8vh;
@@ -122,31 +126,34 @@ function Error404() {
 
 const AppBox = React.memo( ( { page } ) => {
 
+    const { state } = useContext( AppContext );
+    const { _uiux } = state;
+    const { _error } = _uiux;
+
     const STATE = useContext( STATEContext );
     const theme = STATE.state.data.settings.data.theme;
-    const error = STATE.state.uiux.init.error;
 
-    page = error && error.message && error.message.includes( 'No auth' ) ? 'signin' : page;
+    page = _error && _error.message && _error.message.includes( 'No auth' ) ? 'signin' : page;
 
     useEffect( () => console.log( 'Has rendered. ', 'AppBox' ) );
 
     return (
-        <ThemeProvider theme={theme === 'dark' ? dark : light}>
+        <ThemeProvider theme={ theme === 'dark' ? dark : light }>
             <InitStyle />
 
             { page !== 'signin' ?
                 <AppHeader>
-                    <span>{heads.app}</span>
+                    <span>{ heads.app }</span>
                     {/* <Dev /> */}
 
                     { page === 'signin' ? 
                         <LinkSignin />
                     : page === 'signout' ?
                         <LinkSignin />
-                    : page === 'dates' ?
+                    : page === 'diaries' ?
                         <>
                         <ScrollToCentralDate />
-                        <LinkDates />
+                        <LinkDiaries />
                         <LinkReports />
                         <LinkUsers />
                         <LinkSettings />
@@ -154,7 +161,7 @@ const AppBox = React.memo( ( { page } ) => {
                         </>
                     : page === 'users' ?
                         <>
-                        <LinkDates />
+                        <LinkDiaries />
                         <LinkReports />
                         <LinkUsers />
                         <LinkSettings />
@@ -162,7 +169,7 @@ const AppBox = React.memo( ( { page } ) => {
                         </>
                     : page === 'settings' ?
                         <>
-                        <LinkDates />
+                        <LinkDiaries />
                         <LinkReports />
                         <LinkUsers />
                         <LinkSettings />
@@ -170,7 +177,7 @@ const AppBox = React.memo( ( { page } ) => {
                         </>
                     :
                         <>
-                        <LinkDates />
+                        <LinkDiaries />
                         <LinkReports />
                         <LinkUsers />
                         <LinkSettings />
@@ -184,10 +191,10 @@ const AppBox = React.memo( ( { page } ) => {
                 { page === 'home' ? null
                 : page === 'signin' ? <Signin />
                 : page === 'signout' ? <Signout />
-                : page === 'dates' ? <DateList />
-                : page === 'reports' ? <ReportList />
-                : page === 'users' ? <UserList />
-                : page === 'settings' ? <Settings />
+                : page === 'users' ? <Users />
+                : page === 'diaries' ? <Diaries />
+                // : page === 'reports' ? <ReportList />
+                // : page === 'settings' ? <Settings />
                 : <Error404 /> }
             </AppMain>
        </ThemeProvider>

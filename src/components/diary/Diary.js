@@ -1,22 +1,23 @@
 import React, { useEffect, useRef, useContext, useState } from 'react';
-import { STATEContext } from './STATEContext';
-import { REFContext } from './REFContext';
 
-import { buttons } from '../storage/texts';
+import { AppContext } from '../app/AppContext';
+// import { DiariesContextProvider } from './DiariesContext';
+import { DiaryContextProvider, DiaryContext } from './DiaryContext';
+import { DiaryInit } from './DiaryInit';
+import { Periods } from '../period/Period';
+import { REFContext } from '../REFContext';
+
+import { buttons } from '../../storage/texts';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBackward, faForward } from '@fortawesome/free-solid-svg-icons';
 
-import { CopyPasteContextProvider } from './libs/CopyPaste';
-import { Scroll } from './libs/Scroll';
-import { GenreInit } from './payments/GenreList';
-import { FundInit } from './payments/FundList';
-import DateInit from './DateInit';
+import { CopyPasteContextProvider } from '../libs/CopyPaste';
+import { Scroll } from '../libs/Scroll';
+import { GenreInit } from '../entry/payment/GenreList';
+import { FundInit } from '../entry/payment/FundList';
 
-import ADate from './ADate';
 import styled from 'styled-components';
-import StyledList from './libs/ListBox';
-
-const namespace = 'dates';
+import StyledList from '../libs/ListBox';
 
 const ListBox = styled( StyledList.ListBox )`
     display: block;
@@ -65,20 +66,19 @@ function NextButton( { reference } ) {
     );
 }
 
-const DateList = ( { scrollToCentralDate } ) => {
+const Diary = () => {
 
-    const STATE = useContext( STATEContext );
+    const { state, dispatch } = useContext( DiaryContext );
+    const { periods, _uiux } = state;
+
     const REF = useContext( REFContext );
-
-    const { dispatch } = STATE;
-    const { init } = STATE.state.uiux;
 
     // to pass component references to `Scroll` component
     const outer = useRef( null );
     const inner = useRef( null );
     const prev = useRef( null );
     const next = useRef( null );
-    const central = useRef( null );
+    const centralItem = useRef( null );
 
     // to update `Scroll` component with other component references
     const [ scrollUpdated, setScrollUpdated ] = useState( false );
@@ -89,41 +89,40 @@ const DateList = ( { scrollToCentralDate } ) => {
     const hasScrolledToCentralDate = useRef( false );
 
     useEffect( () => {
-        if ( !hasScrolledToCentralDate.current && central.current ) {   
+        if ( !hasScrolledToCentralDate.current && centralItem.current ) {   
             REF.current.scrollToCentralDate();
             hasScrolledToCentralDate.current = true;
         }
     } );
 
     REF.current.scrollToCentralDate = () => {
-        outer.current.scrollTop = central.current.offsetTop - ( outer.current.clientHeight * 0.10 );
+        outer.current.scrollTop = centralItem.current.offsetTop - ( outer.current.clientHeight * 0.10 );
     }
 
-    useEffect( () => console.log( 'Has rendered. ', 'DateList' ) );
+    useEffect( () => console.log( 'Has rendered. ', 'Diary' ) );
 
     return (
         <List reference={outer}>
 
             <ContentBox ref={inner}>
-                <GenreInit />
-                <FundInit />
+                {/* <GenreInit />
+                <FundInit /> */}
 
-                <DateInit
-                    process={init.dates.process}
-                    mode={init.dates.mode}
+                <DiaryInit
+                    process={ _uiux.process }
+                    mode={ _uiux.mode }
                 />
 
                 <PrevButton reference={prev} />
 
                     <CopyPasteContextProvider
-                        doCutPaste={payload => dispatch( { namespace: 'entries', type: 'MOVE_ENTRY', payload } )}
-                        doCopyPaste={payload => dispatch( { namespace: 'entries', type: 'COPY_ENTRY', payload } )}
+                        // doCutPaste={payload => dispatch( { namespace: 'entries', type: 'MOVE_ENTRY', payload } )}
+                        // doCopyPaste={payload => dispatch( { namespace: 'entries', type: 'COPY_ENTRY', payload } )}
                     >
-
-                        <DateItems 
-                            central={central} 
+                        <Periods
+                            periods={ periods }
+                            centralItem={ centralItem } 
                         />
-
                     </CopyPasteContextProvider>
 
                 <NextButton reference={next} />
@@ -135,32 +134,32 @@ const DateList = ( { scrollToCentralDate } ) => {
                 inner={inner.current}
                 prev={prev.current}
                 next={next.current}
-                doScrollUp={() => dispatch( { namespace, type: 'DO_INIT', payload: { mode: { isInitPrev: true } } } )}
-                doScrollDown={() => dispatch( { namespace, type: 'DO_INIT', payload: { mode: { isInitNext: true } } } )}
+                doScrollUp={() => dispatch( { type: 'DO_INIT', payload: { mode: { isInitPrev: true } } } )}
+                doScrollDown={() => dispatch( { type: 'DO_INIT', payload: { mode: { isInitNext: true } } } )}
             />
 
         </List>
     );
-};
+}
 
-const DateItems = ( { central } ) => {
+const Diaries = () => {
 
-    const STATE = useContext( STATEContext );
-    const { dates } = STATE.state.data;
+    const { state } = useContext( AppContext );
+    const { diaries } = state;
 
-    // useEffect( () => console.log( 'Has rendered. ', 'DateItems' ) );
+    let key = 0;
 
     return (
-        <ul>
-            {dates.map( aDate => (
-                <ADate
-                    key={aDate.data.date}
-                    aDate={aDate}
-                    reference={aDate.uiux.isTheCentral ? central : null}
-                /> 
-            ) )}
-        </ul>
+        // <DiariesContextProvider state={ diaries }>
+            <>
+                { diaries.map( diary => (
+                    <DiaryContextProvider key={ key++ } state={ diary } >
+                        <Diary />
+                    </DiaryContextProvider> 
+                ) ) }
+            </>
+        // </DiariesContextProvider>
     );
 }
 
-export default DateList;
+export { Diary, Diaries };

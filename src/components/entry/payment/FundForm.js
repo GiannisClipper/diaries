@@ -1,33 +1,32 @@
 import React, { useState, useContext } from 'react';
-import { Modal } from '../libs/Modal';
-import { CRUDContext, CRUDForm } from "../libs/CRUD";
-import { heads } from '../../storage/texts';
-import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
-import { InputCheck } from '../libs/InputCheck';
-import { isBlank, isFound } from '../../helpers/validation';
+import { Modal } from '../../libs/Modal';
+import { CRUDContext, CRUDForm } from "../../libs/CRUD";
+import { heads } from '../../../storage/texts';
+import { InputBox, InputLabel, InputValue } from '../../libs/InputBox';
+import { isBlank, isFound } from '../../../helpers/validation';
 
-function GenreForm( { genres, index } ) {
+function FundForm( { funds, index } ) {
     
-    const genre = genres[ index ];
+    const fund = funds[ index ];
 
-    const [ data, setData ] = useState( { ...genre.data } );
+    const [ data, setData ] = useState( { ...fund.data } );
 
     const { closeForm } = useContext( CRUDContext );
 
     const validation = () => {
         let errors = '';
         errors += isBlank( data.name ) ? 'Η Ονομασία δεν μπορεί να είναι κενή.\n' : '';
-        errors += !isBlank( data.name ) && isFound( genres.map( x=> x.data.name), data.name, index ) ? 'Η Ονομασία υπάρχει ήδη.\n' : '';
-        errors += !isBlank( data.code ) && isFound( genres.map( x=> x.data.code), data.code, index ) ? 'Ο Λογιστικός Κωδικός υπάρχει ήδη.\n' : '';
+        errors += !isBlank( data.name ) && isFound( funds.map( x=> x.data.name), data.name, index ) ? 'Η Ονομασία υπάρχει ήδη.\n' : '';
+        errors += !isBlank( data.code ) && isFound( funds.map( x=> x.data.code), data.code, index ) ? 'Ο Λογιστικός Κωδικός υπάρχει ήδη.\n' : '';
         return { data, errors };
     }
 
     return (
         <Modal onClick={closeForm} centeredness>
             <CRUDForm
-                headLabel={heads.payment_genres}
-                mode={genre.uiux.mode}
-                process={genre.uiux.process}
+                headLabel={heads.payment_funds}
+                mode={fund.uiux.mode}
+                process={fund.uiux.process}
                 validation={validation}
             >
                 <InputBox>
@@ -57,24 +56,6 @@ function GenreForm( { genres, index } ) {
 
                 <InputBox>
                     <InputLabel>
-                        Εγγραφές
-                    </InputLabel>
-                    <InputValue>
-                        <InputCheck
-                            checked={data.isIncoming}
-                            onChange={event => setData( { ...data, isIncoming: event.target.checked } )}
-                            label='Εισπράξεων'
-                        />
-                        <InputCheck
-                            checked={data.isOutgoing}
-                            onChange={event => setData( { ...data, isOutgoing: event.target.checked } )}
-                            label='Πληρωμών'
-                        />                        
-                    </InputValue>
-                </InputBox>
-
-                <InputBox>
-                    <InputLabel>
                         Λογ.Κωδικ.
                     </InputLabel>
                     <InputValue>
@@ -90,4 +71,4 @@ function GenreForm( { genres, index } ) {
     );
 }
 
-export default GenreForm;
+export default FundForm;

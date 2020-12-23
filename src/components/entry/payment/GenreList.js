@@ -1,11 +1,11 @@
 import React, { useContext, useEffect } from 'react';
-import { STATEContext } from '../STATEContext';
+import { STATEContext } from '../../STATEContext';
 
-import { RowBox, RowValue, RowMenu } from '../libs/RowBox';
+import { RowBox, RowValue, RowMenu } from '../../libs/RowBox';
 
-import { CRUDContextProvider, CRUDMenu, RetrieveManyRequest, CreateRequest, UpdateRequest, DeleteRequest } from '../libs/CRUD';
+import { CRUDContextProvider, CRUDMenu, RetrieveManyRequest, CreateRequest, UpdateRequest, DeleteRequest } from '../../libs/CRUD';
 import GenreForm from './GenreForm';
-import { parseGenreToDB } from '../../storage/payments/parsers';
+import { parseGenreToDB } from '../../../storage/payments/parsers';
 
 const namespace = 'payments.genres';
 

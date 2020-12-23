@@ -1,10 +1,10 @@
 import React, { useContext, useRef } from 'react';
-import { REFContext } from './REFContext';
-import { CopyPasteContext } from './libs/CopyPaste';
-import { CRUDContext } from "./libs/CRUD";
-import { Modal } from './libs/Modal';
-import { MenuBox } from './libs/MenuBox';
-import { MenuTool, EditTool, AddNoteTool, AddPaymentTool, DeleteTool, CutTool, CopyTool, PasteTool, CloseTool } from './libs/Tools';
+import { REFContext } from '../REFContext';
+import { CopyPasteContext } from '../libs/CopyPaste';
+import { CRUDContext } from "../libs/CRUD";
+import { Modal } from '../libs/Modal';
+import { MenuBox } from '../libs/MenuBox';
+import { MenuTool, EditTool, AddNoteTool, AddPaymentTool, DeleteTool, CutTool, CopyTool, PasteTool, CloseTool } from '../libs/Tools';
 
 function EntryMenuTool() {
 

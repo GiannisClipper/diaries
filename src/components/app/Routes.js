@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { STATEContext } from './STATEContext';
+import { STATEContext } from '../STATEContext';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { AppBox } from './AppBox';
 
@@ -15,7 +15,7 @@ function Routes() {
             ?
                 <Switch>
                     <Route exact path='/' render={() => (<AppBox page="home" />)} />
-                    <Route exact path='/dates' render={() => (<AppBox page="dates" />)} />
+                    <Route exact path='/diaries' render={() => (<AppBox page="diaries" />)} />
                     <Route exact path='/reports' render={() => (<AppBox page="reports" />)} />
                     <Route exact path='/users' render={() => (<AppBox page="users" />)} />
                     <Route exact path='/settings' render={() => (<AppBox page="settings" />)} />
@@ -34,3 +34,4 @@ function Routes() {
 }
 
 export default Routes;
+export { Routes };

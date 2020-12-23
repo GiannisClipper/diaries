@@ -12,7 +12,6 @@ function InputEmail( { className, value, onChange, readOnly } ) {
     const _onBlur = event => {
         let value = event.target.value;
         value = _isValid( value ) ? value : '';
-        console.log( 'email', value )
         onChange( { target: { value } } );
     }
 

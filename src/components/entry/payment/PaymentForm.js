@@ -1,12 +1,12 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { STATEContext } from '../STATEContext';
+import { STATEContext } from '../../STATEContext';
 import EntryForm from '../EntryForm';
-import { heads } from '../../storage/texts';
-import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
-import { InputNumber } from '../libs/InputNumber';
-import { InputFromList } from '../libs/InputFromList';
-import { isBlank } from '../../helpers/validation';
-import { getFromList } from '../../storage/payments/parsers';
+import { heads } from '../../../storage/texts';
+import { InputBox, InputLabel, InputValue } from '../../libs/InputBox';
+import { InputNumber } from '../../libs/InputNumber';
+import { InputFromList } from '../../libs/InputFromList';
+import { isBlank } from '../../../helpers/validation';
+import { getFromList } from '../../../storage/payments/parsers';
 
 function PaymentForm( { date, entry } ) {
 

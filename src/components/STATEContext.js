@@ -2,7 +2,7 @@ import React, { createContext, useReducer, useEffect } from 'react';
 import { initState } from '../storage/schemas';
 import authReducer from '../storage/authReducer';
 import settingsReducer from '../storage/settingsReducer';
-import usersReducer from '../storage/usersReducer';
+//import usersReducer from '../storage/usersReducer';
 import datesReducer from '../storage/datesReducer';
 import entriesReducer from '../storage/entriesReducer';
 import genresReducer from '../storage/payments/genresReducer';
@@ -19,8 +19,8 @@ const STATEReducer = ( state, action ) => {
         } case 'settings': {
             return settingsReducer( state, action );
 
-        } case 'users': {
-            return usersReducer( state, action );
+        // } case 'users': {
+        //     return usersReducer( state, action );
 
         } case 'dates': {
             return datesReducer( state, action );
@@ -48,8 +48,6 @@ const STATEContext = createContext();
 const STATEContextProvider = props => {
 
     const [ state, dispatch ] = useReducer( STATEReducer, initState() );
-
-    window.state = state;
 
     useEffect( () => console.log( 'Has rendered. ', 'STATEContextProvider' ) );
 

@@ -2,8 +2,8 @@ import React from 'react';
 import { ListBox } from './libs/ListBox';
 import { BlockBox, BlockLabel, BlockValue } from './libs/BlockBox';
 import SettingsList from "./SettingsList";
-import GenreList from "./payments/GenreList";
-import FundList from "./payments/FundList";
+import GenreList from "./entry/payment/GenreList";
+import FundList from "./entry/payment/FundList";
 import { heads } from '../storage/texts';
 
 function Settings() {
