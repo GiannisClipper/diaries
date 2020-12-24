@@ -10,11 +10,11 @@ import { Loader } from '../libs/Loader';
 import { EntryMenuTool, BlankEntryMenu, ExistsEntryMenu } from './EntryMenu';
 import { EntryRepr } from './EntryRepr';
 
-import NoteForm from './note/NoteForm';
-import PaymentForm from './payment/PaymentForm';
+import NoteForm from '../note/NoteForm';
+import PaymentForm from '../payment/PaymentForm';
 import { dateToYYYYMMDD } from '../../helpers/dates';
-import { parseNoteToDB } from '../../storage/notes/parsers';
-import { parsePaymentToDB } from '../../storage/payments/parsers';
+import { parseNoteToDB } from '../../storage/note/parsers';
+import { parsePaymentToDB } from '../../storage/payment/parsers';
 
 import styled, { css } from 'styled-components';
 import StyledRow from '../libs/RowBox';

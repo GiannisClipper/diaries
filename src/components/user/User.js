@@ -4,12 +4,13 @@ import { AppContext } from '../app/AppContext';
 import { parseUserToDB } from '../../storage/user/parsers';
 import { heads } from '../../storage/texts';
 
+import { CRUDContextProvider, CRUDMenu, CreateRequest, UpdateRequest, DeleteRequest } from '../libs/CRUD';
+
 import { ListBox } from '../libs/ListBox';
 import { BlockBox, BlockLabel, BlockValue } from '../libs/BlockBox';
 import { RowBox, RowValue, RowMenu } from '../libs/RowBox';
 
-import { CRUDContextProvider, CRUDMenu, CreateRequest, UpdateRequest, DeleteRequest } from '../libs/CRUD';
-import { UserInit } from './UserInit';
+import UserInit from './UserInit';
 import UserForm from './UserForm';
 
 function User( { index } ) {

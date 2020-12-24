@@ -13,8 +13,8 @@ import { faBackward, faForward } from '@fortawesome/free-solid-svg-icons';
 
 import { CopyPasteContextProvider } from '../libs/CopyPaste';
 import { Scroll } from '../libs/Scroll';
-import { GenreInit } from '../entry/payment/GenreList';
-import { FundInit } from '../entry/payment/FundList';
+import { GenreInit } from '../payment/Genre';
+import { FundInit } from '../payment/Fund';
 
 import styled from 'styled-components';
 import StyledList from '../libs/ListBox';

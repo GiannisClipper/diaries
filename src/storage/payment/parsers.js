@@ -52,4 +52,12 @@ const parseFundToDB = data => ( {
     name: data.name
 } );
 
-export { getFromList, parsePaymentFromDB, parsePaymentToDB, parseGenreFromDB, parseGenreToDB, parseFundFromDB, parseFundToDB };
+export { 
+    getFromList, 
+    parsePaymentFromDB, 
+    parsePaymentToDB, 
+    parseGenreFromDB, 
+    parseGenreToDB, 
+    parseFundFromDB, 
+    parseFundToDB 
+};

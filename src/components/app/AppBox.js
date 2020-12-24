@@ -194,7 +194,7 @@ const AppBox = React.memo( ( { page } ) => {
                 : page === 'users' ? <Users />
                 : page === 'diaries' ? <Diaries />
                 // : page === 'reports' ? <ReportList />
-                // : page === 'settings' ? <Settings />
+                : page === 'settings' ? <Settings />
                 : <Error404 /> }
             </AppMain>
        </ThemeProvider>

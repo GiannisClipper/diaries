@@ -4,8 +4,8 @@ const heads = {
     settings: 'Γενικές ρυθμίσεις',
     notes: 'Εγγραφές σημειωμάτων',
     payments: 'Εγγραφές πληρωμών',
-    payment_genres: 'Κατηγορίες πληρωμών',
-    payment_funds: 'Μέσα πληρωμών',
+    paymentGenres: 'Κατηγορίες πληρωμών',
+    paymentFunds: 'Μέσα πληρωμών',
     reports: 'Καταστάσεις',
 }
 

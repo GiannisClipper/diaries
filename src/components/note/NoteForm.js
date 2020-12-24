@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import EntryForm from '../EntryForm';
-import { heads } from '../../../storage/texts';
-import { InputBox, InputLabel, InputValue } from '../../libs/InputBox';
-import { isBlank } from '../../../helpers/validation';
+import EntryForm from '../entry/EntryForm';
+import { heads } from '../../storage/texts';
+import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
+import { isBlank } from '../../helpers/validation';
 
 function NoteForm( { date, entry } ) {
 

@@ -1,8 +1,8 @@
 import { initEntry } from './schemas';
 import { daysBetween, shiftDate, dateToYYYYMMDD } from '../helpers/dates';
 import { initNotes, initPayments } from './schemas';
-import { parseNoteFromDB } from './notes/parsers';
-import { parsePaymentFromDB } from './payments/parsers';
+import { parseNoteFromDB } from './note/parsers';
+import { parsePaymentFromDB } from './payment/parsers';
 
 let dates, prevDates, activeDate, nextDates;
 let entries, prevEntries, activeEntry, nextEntries;

@@ -5,8 +5,8 @@ import settingsReducer from '../storage/settingsReducer';
 //import usersReducer from '../storage/usersReducer';
 import datesReducer from '../storage/datesReducer';
 import entriesReducer from '../storage/entriesReducer';
-import genresReducer from '../storage/payments/genresReducer';
-import fundsReducer from '../storage/payments/fundsReducer';
+//import genresReducer from '../storage/payments/genresReducer';
+//import fundsReducer from '../storage/payments/fundsReducer';
 import reportsReducer from '../storage/reportsReducer';
 
 const STATEReducer = ( state, action ) => {
@@ -28,11 +28,11 @@ const STATEReducer = ( state, action ) => {
         } case 'entries': {
             return entriesReducer( state, action );
     
-        } case 'payments.genres': {
-            return genresReducer( state, action );
+        // } case 'payments.genres': {
+        //     return genresReducer( state, action );
 
-        } case 'payments.funds': {
-            return fundsReducer( state, action );
+        // } case 'payments.funds': {
+        //     return fundsReducer( state, action );
 
         } case 'reports': {
             return reportsReducer( state, action );

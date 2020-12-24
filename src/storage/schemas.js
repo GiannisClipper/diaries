@@ -2,9 +2,17 @@ const appSchema = () => ( {
     theme: null,
     users: [],
     diaries: [ diarySchema() ],
+    payments: {
+        genres: [],
+        funds: [],
+    },
     _uiux: {
         users: { process: { isRequestBefore: true }, },  // process: isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
         diaries: {},
+        payments: {
+            genres: { process: { isRequestBefore: true }, },  // process: isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
+            funds: { process: { isRequestBefore: true }, },  // process: isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
+        },
         _error: {},
     },
 } );
@@ -22,6 +30,30 @@ const userSchema = () => ( {
         mode: {},  // isCreate, isUpdate, isDelete
         process: {},  // isRequest, isResponseWaiting, isResponseError, isValidation, isValidationOk
     },
+} );
+
+const paymentGenreSchema = () => ( {
+    id: null,
+    name: '',
+    code: '',
+    isIncoming: null,
+    isOutgoing: null,
+    _uiux: {
+        form: {},  // isOpen
+        mode: {},  // isCreate, isUpdate, isDelete
+        process: {},  // isRequest, isResponseWaiting, isResponseError, isValidation, isValidationOk
+    }
+} );
+
+const paymentFundSchema = () => ( {
+    id: null,
+    name: '',
+    code: '',
+    _uiux: {
+        form: {},  // isOpen
+        mode: {},  // isCreate, isUpdate, isDelete
+        process: {},  // isRequest, isResponseWaiting, isResponseError, isValidation, isValidationOk
+    }
 } );
 
 const diarySchema = () => ( {
@@ -203,7 +235,9 @@ const initReport = () => ( {
 
 export { 
     appSchema, 
-    userSchema, 
+    userSchema,
+    paymentGenreSchema,
+    paymentFundSchema,
     diarySchema,
     periodSchema, 
     dateSchema, 

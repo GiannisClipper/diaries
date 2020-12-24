@@ -2,8 +2,8 @@ import React from 'react';
 import { ListBox } from './libs/ListBox';
 import { BlockBox, BlockLabel, BlockValue } from './libs/BlockBox';
 import SettingsList from "./SettingsList";
-import GenreList from "./entry/payment/GenreList";
-import FundList from "./entry/payment/FundList";
+import { Genres } from "./payment/Genre";
+import { Funds } from "./payment/Fund";
 import { heads } from '../storage/texts';
 
 function Settings() {
@@ -22,19 +22,19 @@ function Settings() {
 
             <BlockBox>
                 <BlockLabel>
-                    {heads.payment_genres}
+                    {heads.paymentGenres}
                 </BlockLabel>
                 <BlockValue>
-                    <GenreList />
+                    <Genres />
                 </BlockValue>
             </BlockBox>
 
             <BlockBox>
                 <BlockLabel>
-                    {heads.payment_funds}
+                    {heads.paymentFunds}
                 </BlockLabel>
                 <BlockValue>
-                    <FundList />
+                    <Funds />
                 </BlockValue>
             </BlockBox>
 

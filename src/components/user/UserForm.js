@@ -10,11 +10,12 @@ import { InputEmail } from '../libs/InputEmail';
 import { InputCheck } from '../libs/InputCheck';
 import { isBlank, isFound } from '../../helpers/validation';
 
-function UserForm( {index} ) {
+function UserForm( { index } ) {
 
     const { state } = useContext( AppContext );
     const { users } = state;
     const user = users[ index ];
+    const { _uiux } = user;
 
     const { closeForm } = useContext( CRUDContext );
 
@@ -29,13 +30,13 @@ function UserForm( {index} ) {
         errors += !isBlank( data.username ) && isFound( users.map( x=> x.username ), data.username, index ) 
             ? 'Το Όνομα xρήστη υπάρχει ήδη.\n' : '';
  
-        errors += isBlank( data.password ) && user._uiux.mode.isCreate 
+        errors += isBlank( data.password ) && _uiux.mode.isCreate 
             ? 'Ο Κωδικός εισόδου δεν μπορεί να είναι κενός.\n' : '';
  
         errors += !isBlank( data.password ) && data.password !== data.password2 
             ? 'Διαφορά στην πληκτρολόγηση του Κωδικού εισόδου.\n' : '';
  
-            return { data, errors };
+        return { data, errors };
     }
 
     return (
@@ -43,8 +44,8 @@ function UserForm( {index} ) {
 
             <CRUDForm
                 headLabel={ heads.users }
-                mode={ user._uiux.mode }
-                process={ user._uiux.process }
+                mode={ _uiux.mode }
+                process={ _uiux.process }
                 validation={ validation }
             >
                 <InputBox>
