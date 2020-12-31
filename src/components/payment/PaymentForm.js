@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { STATEContext } from '../STATEContext';
+import { AppContext } from '../app/AppContext';
 import EntryForm from '../entry/EntryForm';
 import { heads } from '../../storage/texts';
 import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
@@ -10,17 +10,19 @@ import { getFromList } from '../../storage/payment/parsers';
 
 function PaymentForm( { date, entry } ) {
 
-    const  { state } = useContext( STATEContext );
+    const [ data, setData ] = useState( { ...entry } );
 
-    let allGenres = [ ...state.data.payments.genres ].reverse();
-    allGenres = allGenres.filter( ( x, i ) => i === 0 || !allGenres[ i - 1 ].data.code.startsWith( x.data.code ) );
-    allGenres = allGenres.map( x => x.data.name ).filter( x => x !== '' );
+    const  { state } = useContext( AppContext );
+    const { payments} = state;
+    const { genres, funds } = payments;
 
-    let allFunds = [ ...state.data.payments.funds ].reverse();
-    allFunds = allFunds.filter( ( x, i ) => i === 0 || !allFunds[ i - 1 ].data.code.startsWith( x.data.code ) );
-    allFunds = allFunds.map( x => x.data.name ).filter( x => x !== '' );
+    let allGenres = [ ...genres ].reverse();
+    allGenres = allGenres.filter( ( x, i ) => i === 0 || !allGenres[ i - 1 ].code.startsWith( x.code ) );
+    allGenres = allGenres.map( x => x.name ).filter( x => x !== '' );
 
-    const [ data, setData ] = useState( { ...entry.data } );
+    let allFunds = [ ...funds ].reverse();
+    allFunds = allFunds.filter( ( x, i ) => i === 0 || !allFunds[ i - 1 ].code.startsWith( x.code ) );
+    allFunds = allFunds.map( x => x.name ).filter( x => x !== '' );
 
     const setupGenre = name => {
         let isIncoming = false;
@@ -29,7 +31,7 @@ function PaymentForm( { date, entry } ) {
         let outgoing = null;
 
         if ( name ) {
-            const genre = getFromList( state.data.payments.genres, 'name', name );
+            const genre = getFromList( genres, 'name', name );
             isIncoming = genre.isIncoming;
             isOutgoing = genre.isOutgoing;
             incoming = isIncoming ? data.incoming : null;
@@ -40,8 +42,13 @@ function PaymentForm( { date, entry } ) {
 
     const validation = () => {
         let errors = '';
-        errors += isBlank( data.genre_name ) ? 'Η κατηγορία οικονομικής κίνησης δεν μπορεί να είναι κενή.\n' : '';
-        errors += isBlank( data.fund_name ) ? 'Το μέσο οικονομικής κίνησης δεν μπορεί να είναι κενό.\n' : '';
+
+        errors += isBlank( data.genre_name ) 
+            ? 'Η κατηγορία οικονομικής κίνησης δεν μπορεί να είναι κενή.\n' : '';
+
+        errors += isBlank( data.fund_name ) 
+            ? 'Το μέσο οικονομικής κίνησης δεν μπορεί να είναι κενό.\n' : '';
+
         return { data, errors };
     }
 
@@ -49,10 +56,10 @@ function PaymentForm( { date, entry } ) {
 
     return (
         <EntryForm
-            headLabel={heads.payments}
-            validation={validation}
-            date={date}
-            entry={entry}
+            headLabel={ heads.payments }
+            validation={ validation }
+            date={ date }
+            entry={ entry }
         >
             <InputBox>
                 <InputLabel>
@@ -60,12 +67,12 @@ function PaymentForm( { date, entry } ) {
                 </InputLabel>
                 <InputValue>
                     <InputFromList
-                        value={data.genre_name}
-                        allValues={allGenres}
-                        onChange={event => {
+                        value={ data.genre_name }
+                        allValues={ allGenres }
+                        onChange={ event => {
                             const genre_name = event.target.value;
                             setData( { ...data, genre_name, ...setupGenre( genre_name ) } );
-                        }}
+                        } }
                     />
                 </InputValue>
             </InputBox>
@@ -77,9 +84,9 @@ function PaymentForm( { date, entry } ) {
                 <InputValue>
                     <InputNumber
                         decimals="2"
-                        value={data.incoming || ''}
-                        onChange={event => setData( { ...data, incoming: event.target.value } )}
-                        readOnly={!data.isIncoming}
+                        value={ data.incoming || '' }
+                        onChange={ event => setData( { ...data, incoming: event.target.value } ) }
+                        readOnly={ !data.isIncoming }
                     />
                 </InputValue>
             </InputBox>
@@ -91,9 +98,9 @@ function PaymentForm( { date, entry } ) {
                 <InputValue>
                     <InputNumber
                         decimals="2"
-                        value={data.outgoing || ''}
-                        onChange={event => setData( { ...data, outgoing: event.target.value } )}
-                        readOnly={!data.isOutgoing}
+                        value={ data.outgoing || '' }
+                        onChange={ event => setData( { ...data, outgoing: event.target.value } ) }
+                        readOnly={ !data.isOutgoing }
                     />
                 </InputValue>
             </InputBox>
@@ -104,8 +111,8 @@ function PaymentForm( { date, entry } ) {
                 </InputLabel>
                 <InputValue>
                     <input
-                        value={data.remark}
-                        onChange={event => setData( { ...data, remark: event.target.value } )}
+                        value={ data.remark }
+                        onChange={ event => setData( { ...data, remark: event.target.value } ) }
                     />
                 </InputValue>
             </InputBox>
@@ -116,9 +123,9 @@ function PaymentForm( { date, entry } ) {
                 </InputLabel>
                 <InputValue>
                     <InputFromList
-                        value={data.fund_name}
-                        allValues={allFunds}
-                        onChange={event => setData( { ...data, fund_name: event.target.value } )}
+                        value={ data.fund_name }
+                        allValues={ allFunds }
+                        onChange={ event => setData( { ...data, fund_name: event.target.value } ) }
                     />
                 </InputValue>
             </InputBox>

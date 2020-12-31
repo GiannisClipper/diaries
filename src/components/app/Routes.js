@@ -1,17 +1,16 @@
 import React, { useContext } from 'react';
-import { STATEContext } from '../STATEContext';
+import { AppContext } from './AppContext';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { AppBox } from './AppBox';
 
 function Routes() {
 
-    const STATE = useContext( STATEContext );
-
-    const { signin } = STATE.state.data;
+    const { state } = useContext( AppContext );
+    const { signin } = state;
 
     return (
         <BrowserRouter>
-            {signin.data.token
+            {signin.token
             ?
                 <Switch>
                     <Route exact path='/' render={() => (<AppBox page="home" />)} />

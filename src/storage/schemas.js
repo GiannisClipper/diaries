@@ -1,20 +1,46 @@
 const appSchema = () => ( {
-    theme: null,
+
+    signin: signinSchema(),
+
+    settings: settingsSchema(),
+
     users: [],
+
     diaries: [ diarySchema() ],
+
     payments: {
         genres: [],
         funds: [],
     },
+
     _uiux: {
-        users: { process: { isRequestBefore: true }, },  // process: isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
+        users: { process: { isRequestBefore: true }, },  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
         diaries: {},
         payments: {
-            genres: { process: { isRequestBefore: true }, },  // process: isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
-            funds: { process: { isRequestBefore: true }, },  // process: isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
+            genres: { process: { isRequestBefore: true }, },  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
+            funds: { process: { isRequestBefore: true }, },  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
         },
         _error: {},
     },
+} );
+
+const signinSchema = () => ( {
+    username: '',
+    password: '',
+    _uiux: {
+        process: {},  // isRequest, isResponseWaiting, isResponseError, isValidation, isValidationOk
+    },
+    ...JSON.parse( localStorage.getItem( 'signin' ) || '{}' ),
+} );
+
+const settingsSchema = () => ( {
+    theme: null,
+    _uiux: {
+        form: {},  // isOpen
+        mode: {},  // isUpdate
+        process: {},  // isRequest, isResponseWaiting, isResponseError, isValidation, isValidationOk
+    },
+    ...JSON.parse( localStorage.getItem( 'settings' ) || '{}' ),
 } );
 
 const userSchema = () => ( {
@@ -68,7 +94,9 @@ const diarySchema = () => ( {
 
 const periodSchema = () => ( {
     dates: [],
-    _uiux: {},
+    _uiux: {
+        process: { isRequestBefore: true }, // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
+    },
 } );
 
 const dateSchema = () => ( {
@@ -90,10 +118,41 @@ const entrySchema = () => ( {
         type: {},  // isNote, isPayment
         mode: {},  // isCreate, isUpdate, isDelete, isRetrieveMany
         process: {},  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError
-        dateFrom: null,  // when mode = isRetrieveMany
-        dateTill: null,  // when mode = isRetrieveMany
     }
 } );
+
+const noteSchema = () => ( {
+    type: 'note',
+    note: '',
+} );
+
+const paymentSchema = () => ( {
+    type: 'payment',
+    genre_name: '',
+    incoming: null,
+    outgoing: null,
+    remark: '',
+    fund_name: '',
+} );
+
+const reportsSchema = () => ( {
+    reports: [],
+    _uiux: { 
+        process: {},
+    },
+} );
+
+const reportSchema = () => ( {
+    descr: '',
+    type: '',
+    dateFrom: '',
+    dateTill: '',
+    _uiux: {
+        form: {},  // isOpen
+        process: {},  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError
+    }
+} );
+
 
 const initSignin = () => ( {
     data: JSON.parse( localStorage.getItem( 'signin' ) || '{}' ),
@@ -235,12 +294,18 @@ const initReport = () => ( {
 
 export { 
     appSchema, 
+    signinSchema,
+    settingsSchema,
     userSchema,
     paymentGenreSchema,
     paymentFundSchema,
     diarySchema,
     periodSchema, 
-    dateSchema, 
-    entrySchema, 
+    dateSchema,
+    entrySchema,
+    noteSchema,
+    paymentSchema,
+    reportsSchema,
+    reportSchema,
     initState, initSignin, initSettings, initDate, initEntry, initNotes, initPayments, initReport 
 };

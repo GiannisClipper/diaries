@@ -45,6 +45,8 @@ function DiaryInit( { mode, process } ) {
         }
     } );
 
+    useEffect( () => console.log( 'Has rendered. ', 'DiaryInit', process, mode ) );
+
     return null;
 }
 

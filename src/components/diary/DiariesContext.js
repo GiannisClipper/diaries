@@ -1,5 +1,5 @@
 import React, { createContext, useReducer, useEffect } from 'react';
-import { diariesReducer, diaryReducer } from '../../storage/diary/reducers';
+import { diariesReducer } from '../../storage/diary/reducers';
 
 const DiariesContext = createContext();
 
@@ -10,8 +10,8 @@ const DiariesContextProvider = props => {
     useEffect( () => console.log( 'Has rendered. ', 'DiariesContextProvider' ) );
 
     return (
-        <DiariesContext.Provider value={{ state, dispatch }}>
-            {props.children}
+        <DiariesContext.Provider value={ { state, dispatch } }>
+            { props.children }
         </DiariesContext.Provider>
     )
 }

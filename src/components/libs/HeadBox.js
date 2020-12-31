@@ -8,5 +8,4 @@ const HeadBox = styled( InputBox )`
     ${props => props.theme.HeadBox && props.theme.HeadBox };
 `;
 
-export default { HeadBox };
 export { HeadBox };

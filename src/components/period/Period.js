@@ -1,16 +1,20 @@
 import React, { useEffect } from 'react';
-
+import { DatesContextProvider } from '../date/DatesContext';
+import { DateInit } from '../date/DateInit';
 import { Dates } from '../date/Date1';
 
 const Period = React.memo( ( { period, centralItem } ) => {
 
-    // useEffect( () => console.log( 'Has rendered. ', 'Periods' ) );
+    // useEffect( () => console.log( 'Has rendered. ', 'Period' ) );
 
     return (
-        <Dates
-            dates={ period.dates }
-            centralItem={ centralItem }
-        />
+        <DatesContextProvider state={ period }>
+            <DateInit />
+
+            <Dates
+                centralItem={ centralItem }
+            />
+        </DatesContextProvider>
     );
 } );
 

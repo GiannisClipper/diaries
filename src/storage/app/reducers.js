@@ -1,3 +1,5 @@
+import { signinReducer, signoutReducer } from '../sign/reducers';
+import { settingsReducer } from '../settings/reducers';
 import { usersReducer, userReducer } from '../user/reducers';
 import { paymentGenresReducer, paymentGenreReducer } from '../payment/genreReducers';
 import { paymentFundsReducer, paymentFundReducer } from '../payment/fundReducers';
@@ -6,7 +8,16 @@ const appReducer = ( state, action ) => {
 
     switch ( action.namespace ) {
 
-        case 'users': {
+        case 'signin': {
+            return signinReducer( state, action );
+
+        } case 'signout': {
+            return signoutReducer( state, action );
+
+        } case 'settings': {
+            return settingsReducer( state, action );
+
+        } case 'users': {
             return usersReducer( state, action );
 
         } case 'user': {

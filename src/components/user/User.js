@@ -43,7 +43,7 @@ function User( { index } ) {
                     process={ _uiux.process }
                     url={ `/.netlify/functions/user?id=${user.id}` }
                     dataToDB={ dataToDB }
-                    body={JSON.stringify( { data: dataToDB } ) }
+                    body={ JSON.stringify( { data: dataToDB } ) }
                     id={ user.id }
                 />
 

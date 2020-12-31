@@ -96,7 +96,7 @@ function Genres() {
     const { payments } = state;
     const { genres } = payments;
 
-    useEffect( () => console.log( 'Has rendered. ', 'payment/Genre' ) );
+    useEffect( () => console.log( 'Has rendered. ', 'payment/Genres' ) );
 
     let index = 0;
 

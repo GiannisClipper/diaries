@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from 'react';
 
-import { PeriodContext } from '../period/PeriodContext'; 
+import { DatesContext } from './DatesContext';
 import { DateContextProvider, DateContext } from './DateContext';
 import { DateRepr } from './DateRepr'; 
 import { Entries } from '../entry/Entry';
@@ -28,15 +28,16 @@ const BlockValue = styled( StyledBlock.BlockValue )`
 
 const Date1 = ( { reference } ) => {  // Date1(), to differ from native function Date()
 
-    const { date } = useContext( DateContext ).state;
+    const { state } = useContext( DateContext ); 
+    const { date } = state;
 
-    // useEffect( () => console.log( 'Has rendered. ', date ) );
+    useEffect( () => console.log( 'Has rendered. ', 'Date1' ) );
 
     return (
-        <BlockBox ref={reference} isTheCentral={reference}>
+        <BlockBox ref={ reference } isTheCentral={ reference }>
 
             <BlockLabel>
-                <DateRepr date={date} />
+                <DateRepr date={ date } />
             </BlockLabel>
 
             <BlockValue>
@@ -47,9 +48,12 @@ const Date1 = ( { reference } ) => {  // Date1(), to differ from native function
     )
 }
 
-const Dates = ( { dates, centralItem } ) => {
+const Dates = ( { centralItem } ) => {
 
-    // useEffect( () => console.log( 'Has rendered. ', 'Dates' ) );
+    const { state } = useContext( DatesContext ); 
+    const { dates } = state;
+
+    // useEffect( () => console.log( 'Has rendered. ', 'Dates', dates ) );
 
     return (
         <ul>

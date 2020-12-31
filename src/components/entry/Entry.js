@@ -1,5 +1,5 @@
 import React, { useContext, useRef, useEffect } from 'react';
-import { STATEContext } from '../STATEContext';
+import { AppContext } from '../app/AppContext';
 import { DateContext } from '../date/DateContext';
 
 import { ToolBox } from '../libs/ToolBox';
@@ -19,135 +19,7 @@ import { parsePaymentToDB } from '../../storage/payment/parsers';
 import styled, { css } from 'styled-components';
 import StyledRow from '../libs/RowBox';
 import { CopyPasteContext } from '../libs/CopyPaste';
-import { CRUDContext, CRUDContextProvider, RetrieveManyRequest, CreateRequest, UpdateRequest, DeleteRequest } from '../libs/CRUD';
-
-
-const namespace = 'entries';
-
-const List = styled.ul`
-    display: inline-block;
-    vertical-align: top;
-    width: 100%;
-`;
-
-function Entries() {
-
-    const { date, entries } = useContext( DateContext ).state;
-
-    let inSequence = 0;
-    console.log( entries)
-    return (
-        <List>
-            { entries.map( entry =>
-                <EntryContext
-                    key={ inSequence++ }
-                    date={ date } 
-                    inSequence={ inSequence } 
-                    entry={ entry } />
-            ) }
-        </List>
-    );
-}
-
-const EntryContext = ( { date, inSequence, entry } ) => {
-
-    const STATE = useContext( STATEContext )
-    const { state, dispatch } = STATE;
-    const { genres, funds } = state.data.payments;
-
-    const saved = useRef( { date, inSequence, entry } );
-
-    const parseDataToDB = entry._uiux.type.isPayment 
-        ? 
-        () => parsePaymentToDB(
-                { ...entry.data, date: dateToYYYYMMDD( date ), inSequence }, 
-                genres, 
-                funds 
-            )
-        : 
-        () => parseNoteToDB( 
-                { ...entry.data, date: dateToYYYYMMDD( date ), inSequence },
-            );
-
-    const body = () => JSON.stringify( {
-        old: { date: dateToYYYYMMDD( saved.date ), inSequence: saved.inSequence },
-        new: { date: dateToYYYYMMDD( date ), inSequence },
-        data: parseDataToDB(),
-    } );
-
-    const strDateFrom = dateToYYYYMMDD( entry._uiux.dateFrom );
-    const strDateTill = dateToYYYYMMDD( entry._uiux.dateTill );
-
-    const payload = { date, inSequence, entry };
-
-    //useEffect( () =>  console.log( 'Has rendered. ', 'EntryContext' ) );
-
-    return (
-        <CRUDContextProvider 
-            dispatch={dispatch} 
-            namespace={namespace} 
-            payload={payload}
-        >
-            { entry._uiux.mode.isRetrieveMany && entry._uiux.process.isResponseOk ?
-                <RetrieveManyResponseSetup />
-
-            : entry._uiux.mode.isRetrieveMany ?
-                <RetrieveManyRequest
-                    process={entry._uiux.process}
-                    url={`/.netlify/functions/entry?range=${strDateFrom}-${strDateTill}`}
-                />
-            : entry._uiux.mode.isCreate ?
-                <CreateRequest
-                    process={entry._uiux.process}
-                    url={ `/.netlify/functions/entry`}
-                    body={body()}
-                    dataToDB={parseDataToDB()}
-                />
-            : entry._uiux.mode.isUpdate ?
-                <UpdateRequest 
-                    process={entry._uiux.process}
-                    url={`/.netlify/functions/entry?id=${entry.data.id}`}
-                    body={body()}
-                    dataToDB={parseDataToDB()}
-                    id={entry.data.id}
-                />
-            : entry._uiux.mode.isDelete ?
-                <DeleteRequest 
-                    process={entry._uiux.process}
-                    url={`/.netlify/functions/entry?id=${entry.data.id}`}
-                    body={body()}
-                    dataToDB={parseDataToDB()}
-                    id={entry.data.id}
-                />
-            : null }
-
-            <Entry inSequence={inSequence} date={date} entry={entry} />
-
-        </CRUDContextProvider>
-    )
-}
-
-function RetrieveManyResponseSetup() {
-
-    const { retrieveManyResponseSetup, retrieveManyResponseError } = useContext( CRUDContext );
-    const STATE = useContext( STATEContext )
-
-    useEffect( () => {
-        const { init } = STATE.state.uiux;
-
-        const process1 = init.payments.genres.process;
-        const process2 = init.payments.funds.process;
-
-        if ( process1.isResponseOk && process2.isResponseOk ) {
-            retrieveManyResponseSetup()
-
-        } else if ( process1.isResponseError || process2.isResponseError ) {
-            retrieveManyResponseError()
-        }
-    } );
-
-    return null;
-};
+import { CRUDContextProvider, CreateRequest, UpdateRequest, DeleteRequest } from '../libs/CRUD';
 
 const RowBox = StyledRow.RowBox;
 
@@ -165,13 +37,22 @@ const RowMenu = styled( StyledRow.RowMenu )`
     width: 2em;
 `;
 
-const Entry = React.memo( ( { date, inSequence, entry } ) => {
+const Entry = ( { inSequence } ) => {
+
+    const { payments } = useContext( AppContext ).state;
+    const { genres, funds } = payments;
+
+    const { state, dispatch } = useContext( DateContext );
+    const { date, entries } = state;
+    const entry = entries[ inSequence ];
+    const { _uiux } = entry;
+
 
     const { doCut, doPaste } = useContext( CopyPasteContext );
 
     let draggable, onDragStart, onDragOver, onDrop;
 
-    if ( !entry._uiux.form.isOpen && !entry._uiux.process.isResponseError ) {
+    if ( ! _uiux.form.isOpen && ! _uiux.process.isResponseError ) {
 
         if ( entry.id ) {  // no drag empty rows
 
@@ -193,70 +74,157 @@ const Entry = React.memo( ( { date, inSequence, entry } ) => {
         }
     }
 
+    const _saved = useRef( { date, inSequence } );
+
+    const parseDataToDB = _uiux.type.isPayment 
+        ? 
+        () => parsePaymentToDB(
+                { ...entry, date: dateToYYYYMMDD( date ), inSequence }, 
+                genres, 
+                funds 
+            )
+        : 
+        () => parseNoteToDB( 
+                { ...entry, date: dateToYYYYMMDD( date ), inSequence },
+            );
+
+    const body = () => JSON.stringify( {
+        old: { date: dateToYYYYMMDD( _saved.current.date ), inSequence: _saved.current.inSequence },
+        new: { date: dateToYYYYMMDD( date ), inSequence },
+        data: parseDataToDB(),
+    } );
+
+    const payload = { inSequence, genres, funds };
+
+
     // useEffect( () =>  console.log( 'Has rendered. ', 'Entry' ) );
 
     return (
-        <RowBox
-            key={inSequence}
-            draggable={draggable}
-            onDragStart={onDragStart}
-            onDragOver={onDragOver}
-            onDrop={onDrop}
+        <CRUDContextProvider 
+            dispatch={ dispatch } 
+            payload={ payload }
         >
-            <RowValue
-                draggable={draggable}
-                title={`${entry.date}, ${inSequence}, ${entry.inSequence}, ${entry.id}`}
+
+            { _uiux.mode.isCreate ?
+                <CreateRequest
+                    process={ _uiux.process }
+                    url={ `/.netlify/functions/entry` }
+                    body={ body() }
+                    dataToDB={ parseDataToDB() }
+                />
+
+            : _uiux.mode.isUpdate ?
+                <UpdateRequest 
+                    process={ _uiux.process }
+                    url={ `/.netlify/functions/entry?id=${entry.id}` }
+                    body={ body() }
+                    dataToDB={ parseDataToDB() }
+                    id={ entry.id }
+                />
+
+            : _uiux.mode.isDelete ?
+                <DeleteRequest 
+                    process={ _uiux.process }
+                    url={ `/.netlify/functions/entry?id=${entry.id}` }
+                    body={ body() }
+                    dataToDB={ parseDataToDB() }
+                    id={ entry.id }
+                />
+
+            : null }
+
+            <RowBox
+                key={ inSequence }
+                draggable={ draggable }
+                onDragStart={ onDragStart }
+                onDragOver={ onDragOver }
+                onDrop={ onDrop }
             >
-                <EntryRepr entry={entry} />
-            </RowValue>
+                <RowValue
+                    draggable={ draggable }
+                    title={ `${entry.date}, ${inSequence}, ${entry.inSequence}, ${entry.id}` }
+                >
+                    <EntryRepr entry={ entry } />
+                </RowValue>
 
-            <RowMenu>
-                {entry._uiux.process.isValidation || 
-                entry._uiux.process.isRequestBefore ||
-                entry._uiux.process.isRequest ||
-                entry._uiux.process.isResponseWaiting ||
-                entry._uiux.process.isResponseOk ?
-                    <ToolBox><Loader /></ToolBox>
-                : entry._uiux.process.isResponseError ?
-                    <ToolBox><FontAwesomeIcon icon={ faBan } className="icon" /></ToolBox>
+                <RowMenu>
+                    { 
+                    _uiux.process.isValidation || 
+                    _uiux.process.isRequestBefore ||
+                    _uiux.process.isRequest ||
+                    _uiux.process.isResponseWaiting ||
+                    _uiux.process.isResponseOk ?
+                        <ToolBox><Loader /></ToolBox>
+                    : _uiux.process.isResponseError ?
+                        <ToolBox><FontAwesomeIcon icon={ faBan } className="icon" /></ToolBox>
+                    : 
+                        <EntryMenuTool date={date} entry={entry} inSequence={inSequence} />
+                    }
+                </RowMenu>
+
+                { !_uiux.menu.isOpen ?
+                    null
+                : !entry.id ? 
+                    <BlankEntryMenu 
+                        date={ date }
+                        entry={ entry }
+                        inSequence={ inSequence }
+                    />
                 : 
-                    <EntryMenuTool date={date} entry={entry} inSequence={inSequence} />
+                    <ExistsEntryMenu 
+                        date={ date }
+                        entry={ entry }
+                        inSequence={ inSequence }
+                    />
                 }
-            </RowMenu>
 
-            {!entry._uiux.menu.isOpen ?
-                null
-            : !entry.data.id ? 
-                <BlankEntryMenu 
-                    date={date} 
-                    entry={entry} 
-                    inSequence={inSequence}
-                />
-            : 
-                <ExistsEntryMenu 
-                    date={date} 
-                    entry={entry} 
-                    inSequence={inSequence}
-                />
-            }
+                { !_uiux.form.isOpen ?
+                    null
+                : !_uiux.type.isPayment ?
+                    <NoteForm 
+                        date={ date }
+                        entry={ entry } 
+                        inSequence={ inSequence }
+                    /> 
+                :
+                    <PaymentForm 
+                        date={ date }
+                        entry={ entry } 
+                        inSequence={ inSequence } 
+                    /> 
+                }
+            </RowBox> 
 
-            { !entry._uiux.form.isOpen ?
-                null
-            : !entry._uiux.type.isPayment ?
-                <NoteForm 
-                    date={date} 
-                    entry={entry} 
-                    inSequence={inSequence}
-                /> 
-            :
-                <PaymentForm 
-                    date={date} 
-                    entry={entry} 
-                    inSequence={inSequence} 
-                /> 
-            }
-        </RowBox> 
+        </CRUDContextProvider>
     );
-} );
+}
+
+const List = styled.ul`
+    display: inline-block;
+    vertical-align: top;
+    width: 100%;
+`;
+
+function Entries() {
+
+    const { state } = useContext( DateContext );
+    const { entries } = state;
+
+    // useEffect( () => console.log( 'Has rendered. ', 'Entries' ) );
+
+    let inSequence = 0;
+
+    return (
+        <List>
+            { entries.map( entry =>
+                <Entry
+                    inSequence={ inSequence++ }
+                    key={ inSequence }
+                />
+            ) }
+        </List>
+    );
+}
+
 
 export { Entry, Entries };

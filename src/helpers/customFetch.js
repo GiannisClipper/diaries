@@ -1,9 +1,10 @@
+import getToken from './getToken';
+
 const fetch = require( 'node-fetch' );
 
 const realFetch = async ( url, args ) => {
 
-    const signin = JSON.parse( localStorage.getItem( 'signin' ) || '{}' );
-    const { token } = signin;
+    const token = getToken();
 
     args.headers = { 
         'Content-Type': 'application/json; charset=utf-8',

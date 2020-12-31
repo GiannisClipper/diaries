@@ -81,7 +81,7 @@ function ExistsEntryMenu( { date, entry, inSequence } ) {
 
     const { closeMenu, openForm } = useContext( CRUDContext );
 
-    const type = entry.data.type === 'payment'
+    const type = entry.type === 'payment'
         ? { isPayment: true }
         : { isNote: true };
 

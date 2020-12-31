@@ -7,11 +7,11 @@ const DateContextProvider = props => {
 
     const [ state, dispatch ] = useReducer( dateReducer, props.state );
 
-    useEffect( () => console.log( 'Has rendered. ', 'DateContextProvider' ) );
+    // useEffect( () => console.log( 'Has rendered. ', 'DateContextProvider' ) );
 
     return (
         <DateContext.Provider value={{ state, dispatch }}>
-            {props.children}
+            { props.children }
         </DateContext.Provider>
     )
 }

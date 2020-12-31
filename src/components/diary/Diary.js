@@ -13,8 +13,8 @@ import { faBackward, faForward } from '@fortawesome/free-solid-svg-icons';
 
 import { CopyPasteContextProvider } from '../libs/CopyPaste';
 import { Scroll } from '../libs/Scroll';
-import { GenreInit } from '../payment/Genre';
-import { FundInit } from '../payment/Fund';
+import { GenreInit } from '../payment/GenreInit';
+import { FundInit } from '../payment/FundInit';
 
 import styled from 'styled-components';
 import StyledList from '../libs/ListBox';
@@ -99,14 +99,15 @@ const Diary = () => {
         outer.current.scrollTop = centralItem.current.offsetTop - ( outer.current.clientHeight * 0.10 );
     }
 
-    useEffect( () => console.log( 'Has rendered. ', 'Diary' ) );
+    // useEffect( () => console.log( 'Has rendered. ', 'Diary' ) );
 
     return (
         <List reference={outer}>
 
             <ContentBox ref={inner}>
-                {/* <GenreInit />
-                <FundInit /> */}
+                <GenreInit />
+
+                <FundInit />
 
                 <DiaryInit
                     process={ _uiux.process }

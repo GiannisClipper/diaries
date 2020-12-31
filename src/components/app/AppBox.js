@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from 'react';
 import { AppContext } from '../app/AppContext';
-import { STATEContext } from '../STATEContext';
 import { REFContext } from '../REFContext';
 //import { realFetch, mockFetch } from '../../helpers/customFetch';
 
@@ -10,11 +9,12 @@ import { centeredness } from '../libs/InitStyle';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faBookOpen, faCog, faCompass, faMap, faDoorOpen, faDoorClosed } from '@fortawesome/free-solid-svg-icons';
 
-import { Signin, Signout } from '../Auth';
+import { Signin } from '../sign/Signin';
+import { Signout } from '../sign/Signout';
 import { Users } from '../user/User';
 import { Diaries } from '../diary/Diary';
-import ReportList from '../ReportList';
-import Settings from '../Settings';
+import ReportApp from '../report/ReportApp';
+import Settings from '../settings/Settings';
 
 import { ThemeProvider } from 'styled-components';
 import { InitStyle } from '../libs/InitStyle';
@@ -127,11 +127,9 @@ function Error404() {
 const AppBox = React.memo( ( { page } ) => {
 
     const { state } = useContext( AppContext );
-    const { _uiux } = state;
+    const { settings, _uiux } = state;
+    const { theme } = settings;
     const { _error } = _uiux;
-
-    const STATE = useContext( STATEContext );
-    const theme = STATE.state.data.settings.data.theme;
 
     page = _error && _error.message && _error.message.includes( 'No auth' ) ? 'signin' : page;
 
@@ -190,10 +188,11 @@ const AppBox = React.memo( ( { page } ) => {
             <AppMain centeredness>
                 { page === 'home' ? null
                 : page === 'signin' ? <Signin />
+                : page === 'signin' ?  null
                 : page === 'signout' ? <Signout />
                 : page === 'users' ? <Users />
                 : page === 'diaries' ? <Diaries />
-                // : page === 'reports' ? <ReportList />
+                : page === 'reports' ? <ReportApp />
                 : page === 'settings' ? <Settings />
                 : <Error404 /> }
             </AppMain>
