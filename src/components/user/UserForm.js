@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 
-import { AppContext } from '../app/AppContext';
+import { UsersContext } from './UsersContext';
 import { CRUDContext, CRUDForm } from "../libs/CRUD";
 
 import { Modal } from '../libs/Modal';
@@ -12,7 +12,7 @@ import { isBlank, isFound } from '../../helpers/validation';
 
 function UserForm( { index } ) {
 
-    const { state } = useContext( AppContext );
+    const { state } = useContext( UsersContext );
     const { users } = state;
     const user = users[ index ];
     const { _uiux } = user;

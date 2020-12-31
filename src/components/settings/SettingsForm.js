@@ -23,7 +23,7 @@ function SettingsForm( { index } ) {
         let errors = '';
 
         errors += isBlank( data.theme ) 
-            ? 'Το Χρωματικό Θέμα δεν μπορεί να είναι κενό.\n' : '';
+            ? 'Το `Χρωματικό Θέμα` δεν μπορεί να είναι κενό.\n' : '';
 
         return { data, errors };
     }
@@ -32,7 +32,7 @@ function SettingsForm( { index } ) {
         <Modal onClick={ closeForm } centeredness>
 
             <CRUDForm
-                headLabel={ heads.users }
+                headLabel={ heads.settings }
                 mode={ _uiux.mode }
                 process={ _uiux.process }
                 validation={ validation }

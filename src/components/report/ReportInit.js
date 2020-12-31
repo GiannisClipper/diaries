@@ -1,12 +1,13 @@
 import { useEffect, useContext } from 'react';
 import { ReportsContext } from './ReportsContext';
 
-function ReportInit( { process } ) {
+function ReportInit() {
 
-    const { dispatch } = useContext( ReportsContext );
+    const { state, dispatch } = useContext( ReportsContext );
+    const { _uiux } = state;
 
     useEffect( () => {
-        if ( Object.keys( process ).length === 0 ) {  // process === {}
+        if ( Object.keys( _uiux.process ).length === 0 ) {  // process === {}
             dispatch( { 
                 type: 'DO_INIT', 
                 payload: {}

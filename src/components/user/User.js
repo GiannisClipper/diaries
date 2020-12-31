@@ -1,21 +1,15 @@
 import React, { useContext, useEffect } from 'react';
-
-import { AppContext } from '../app/AppContext';
-import { parseUserToDB } from '../../storage/user/parsers';
-import { heads } from '../../storage/texts';
-
+import { UsersContext } from './UsersContext';
 import { CRUDContextProvider, CRUDMenu, CreateRequest, UpdateRequest, DeleteRequest } from '../libs/CRUD';
+import { parseUserToDB } from '../../storage/user/parsers';
 
-import { ListBox } from '../libs/ListBox';
-import { BlockBox, BlockLabel, BlockValue } from '../libs/BlockBox';
 import { RowBox, RowValue, RowMenu } from '../libs/RowBox';
 
-import UserInit from './UserInit';
 import UserForm from './UserForm';
 
 function User( { index } ) {
 
-    const { state, dispatch } = useContext( AppContext );
+    const { state, dispatch } = useContext( UsersContext );
     const { users } = state;
     const user = users[ index ];
     const { _uiux } = user;
@@ -26,7 +20,6 @@ function User( { index } ) {
     return (
         <CRUDContextProvider 
             dispatch={ dispatch }
-            namespace={ 'user' }
             payload={ payload }
         >
 
@@ -82,37 +75,5 @@ function User( { index } ) {
     );
 }
 
-function Users() {
-
-    const { state } = useContext( AppContext );
-    const { users } = state;
-
-    // useEffect( () => console.log( 'Has rendered. ', 'Users' ) );
-
-    let index = 0;
-
-    return (
-        <ListBox>
-            <UserInit />
-
-            <BlockBox>
-                <BlockLabel>
-                    { heads.users }
-                </BlockLabel>
-
-                <BlockValue>
-                    <ul>
-                        { users.map( user => (
-                            <User
-                                index={ index++ }
-                                key={ index } 
-                            />
-                        ) ) }
-                    </ul>
-                </BlockValue>
-            </BlockBox>
-        </ListBox>
-    );
-}
-
-export { User, Users };
+export default User;
+export { User };

@@ -7,7 +7,7 @@ const usersReducer = ( state, action ) => {
 
         case 'RETRIEVE_MANY_REQUEST_BEFORE': {
             const { _uiux } = state;
-            _uiux.users.process = { isRequestBefore: true };
+            _uiux.process = { isRequestBefore: true };
 
             return { ...state, _uiux };
 
@@ -17,13 +17,13 @@ const usersReducer = ( state, action ) => {
             users[ 0 ]._uiux.process = { isRequest: true };
 
             const { _uiux } = state;
-            _uiux.users.process = { isRequest: true };
+            _uiux.process = { isRequest: true };
 
             return { ...state, users, _uiux };
 
         } case 'RETRIEVE_MANY_RESPONSE_WAITING': {
             const { _uiux } = state;
-            _uiux.users.process = { isResponseWaiting: true };
+            _uiux.process = { isResponseWaiting: true };
 
             return { ...state, _uiux };
 
@@ -36,7 +36,7 @@ const usersReducer = ( state, action ) => {
             users.push( userSchema() );
 
             const { _uiux } = state;
-            _uiux.users.process = { isResponseOk: true };
+            _uiux.process = { isResponseOk: true };
 
             return { ...state, users, _uiux };
 
@@ -45,22 +45,12 @@ const usersReducer = ( state, action ) => {
             users[ 0 ]._uiux.process = { isResponseError: true }
 
             const { _uiux } = state;
-            _uiux.users.process = { isResponseError: true };
+            _uiux.process = { isResponseError: true };
             _uiux._error = action.payload.error;
 
             return { ...state, users, _uiux };
 
-        } default: {
-            throw new Error();
-        }
-    }
-}
-
-const userReducer = ( state, action ) => {
-
-    switch ( action.type ) {
-
-        case 'OPEN_FORM': {
+        } case 'OPEN_FORM': {
             const { index, mode } = action.payload;
             const { users } = state ;
             users[ index ]._uiux.form = { isOpen: true };
@@ -170,4 +160,4 @@ const userReducer = ( state, action ) => {
     }
 }
 
-export { usersReducer, userReducer }; 
+export { usersReducer }; 

@@ -1,13 +1,10 @@
-import React, { useContext, useState, useEffect  } from 'react';
+import React, { useContext, useEffect  } from 'react';
 
 import { AppContext } from '../app/AppContext';
 import { parseSettingsToDB } from '../../storage/settings/parsers';
-import { heads } from '../../storage/texts';
 
 import { CRUDContextProvider, UpdateRequest, CRUDMenu } from '../libs/CRUD';
 
-import { ListBox } from '../libs/ListBox';
-import { BlockBox, BlockLabel, BlockValue } from '../libs/BlockBox';
 import { RowBox, RowValue, RowMenu } from '../libs/RowBox';
 
 import SettingsForm from './SettingsForm';
@@ -35,37 +32,25 @@ function Settings() {
                 body={ JSON.stringify( { data: dataToDB } ) }
             />
 
-            <ListBox>
+            <RowBox>
+                <RowValue title={ `${settings.id}` }>
+                    <div>{ `Χρωματικό Θέμα: ${settings.theme}` }</div>
+                    <br />
+                    <div>{ `Perhaps more settings...` }</div>
+                    <br />
+                </RowValue>
 
-                <BlockBox>
-                    <BlockLabel>
-                        { heads.settings }
-                    </BlockLabel>
+                <RowMenu>
+                    <CRUDMenu
+                        options={ [ 'U' ] }
+                        process={ _uiux.process }
+                    />
+                </RowMenu>
 
-                    <BlockValue>
-                        <RowBox>
-                            <RowValue title={ `${settings.id}` }>
-                                <div>{ `Χρωματικό Θέμα: ${settings.theme}` }</div>
-                                <br />
-                                <div>{ `Perhaps more settings...` }</div>
-                                <br />
-                            </RowValue>
-
-                            <RowMenu>
-                                <CRUDMenu
-                                    options={ [ 'U' ] }
-                                    process={ _uiux.process }
-                                />
-                            </RowMenu>
-
-                            { _uiux.form.isOpen ?
-                                <SettingsForm /> 
-                            : null }
-                        </RowBox> 
-                    </BlockValue>
-                </BlockBox>
-
-            </ListBox>
+                { _uiux.form.isOpen ?
+                    <SettingsForm /> 
+                : null }
+            </RowBox> 
     
         </CRUDContextProvider>
     );

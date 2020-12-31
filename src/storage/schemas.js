@@ -4,18 +4,12 @@ const appSchema = () => ( {
 
     settings: settingsSchema(),
 
-    users: [],
-
-    diaries: [ diarySchema() ],
-
     payments: {
         genres: [],
         funds: [],
     },
 
     _uiux: {
-        users: { process: { isRequestBefore: true }, },  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
-        diaries: {},
         payments: {
             genres: { process: { isRequestBefore: true }, },  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
             funds: { process: { isRequestBefore: true }, },  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
@@ -43,6 +37,13 @@ const settingsSchema = () => ( {
     ...JSON.parse( localStorage.getItem( 'settings' ) || '{}' ),
 } );
 
+const usersSchema = () => ( {
+    users: [],
+    _uiux: { 
+        process: { isRequestBefore: true },  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
+    },
+} );
+
 const userSchema = () => ( {
     id: null,
     username: '',
@@ -58,33 +59,24 @@ const userSchema = () => ( {
     },
 } );
 
-const paymentGenreSchema = () => ( {
-    id: null,
-    name: '',
-    code: '',
-    isIncoming: null,
-    isOutgoing: null,
-    _uiux: {
-        form: {},  // isOpen
-        mode: {},  // isCreate, isUpdate, isDelete
-        process: {},  // isRequest, isResponseWaiting, isResponseError, isValidation, isValidationOk
-    }
-} );
-
-const paymentFundSchema = () => ( {
-    id: null,
-    name: '',
-    code: '',
-    _uiux: {
-        form: {},  // isOpen
-        mode: {},  // isCreate, isUpdate, isDelete
-        process: {},  // isRequest, isResponseWaiting, isResponseError, isValidation, isValidationOk
-    }
+const diariesSchema = () => ( {
+    diaries: [],
+    _uiux: { 
+        process: { isRequestBefore: true },  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
+    },
 } );
 
 const diarySchema = () => ( {
-    descr: null,
-    centralDate: null,
+    title: null,
+    startDate: null,
+    _uiux: {
+        form: {},  // isOpen
+        mode: {},  // isCreate, isUpdate, isDelete
+        process: {},  // isRequest, isResponseWaiting, isResponseError, isValidation, isValidationOk
+    },
+} );
+
+const benchSchema = () => ( {
     periods: [],
     _uiux: {
         process: { isInitBefore: true },  // isInitBefore, isInit
@@ -103,7 +95,7 @@ const dateSchema = () => ( {
     date: null,
     entries: [],
     _uiux: {
-        isTheCentral: null,
+        isStartDate: null,
     }
 } );
 
@@ -135,6 +127,30 @@ const paymentSchema = () => ( {
     fund_name: '',
 } );
 
+const paymentGenreSchema = () => ( {
+    id: null,
+    name: '',
+    code: '',
+    isIncoming: null,
+    isOutgoing: null,
+    _uiux: {
+        form: {},  // isOpen
+        mode: {},  // isCreate, isUpdate, isDelete
+        process: {},  // isRequest, isResponseWaiting, isResponseError, isValidation, isValidationOk
+    }
+} );
+
+const paymentFundSchema = () => ( {
+    id: null,
+    name: '',
+    code: '',
+    _uiux: {
+        form: {},  // isOpen
+        mode: {},  // isCreate, isUpdate, isDelete
+        process: {},  // isRequest, isResponseWaiting, isResponseError, isValidation, isValidationOk
+    }
+} );
+
 const reportsSchema = () => ( {
     reports: [],
     _uiux: { 
@@ -153,159 +169,22 @@ const reportSchema = () => ( {
     }
 } );
 
-
-const initSignin = () => ( {
-    data: JSON.parse( localStorage.getItem( 'signin' ) || '{}' ),
-    uiux: {
-        process: {},  // isRequest, isValidation, isValidationOk
-    }
-} )
-
-const initSettings = () => ( {
-    data: JSON.parse( localStorage.getItem( 'settings' ) || '{}' ),
-    uiux: {
-        form: {},  // isOpen
-        mode: {},  // isUpdate
-        process: {},  // isRequest, isValidation, isValidationOk
-    }
-} );
-
-const initState = () => ( {
-    data: {
-        signin: initSignin(),
-        settings: initSettings(),
-        users: [],
-        dates: [],
-        payments: {
-            genres: [],
-            funds: [],
-        },
-        reports: [],
-    },
-    uiux: {
-        init: {
-            users: { process: { isRequestBefore: true }, },  // process: isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
-            dates: { 
-                process: { isInitBefore: true },  // isInitBefore, isInit
-                mode: {},  // isInitStart, isInitPrev, isInitNext
-            },
-            payments: {
-                genres: { process: { isRequestBefore: true }, },  // process: isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
-                funds: { process: { isRequestBefore: true }, },  // process: isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
-            },
-            reports: { 
-                process: {},  // isResponseOk
-            },
-        },
-        error: {}
-    }
-} );
-
-const initDate = () => ( {
-    date: null,
-    entries: [],
-    _uiux: {
-        isTheCentral: null,
-    }
-} );
-
-const initEntry = () => ( {
-    data: {
-        id: null,
-        date: '',
-        type: '',  // 'note', 'payment'
-        inSequence: 0,
-    },
-    uiux: {
-        menu: {},  // isOpen
-        form: {},  // isOpen
-        type: {},  // isNote, isPayment
-        mode: {},  // isCreate, isUpdate, isDelete, isRetrieveMany
-        process: {},  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError
-        dateFrom: null,  // when mode = isRetrieveMany
-        dateTill: null,  // when mode = isRetrieveMany
-    }
-} );
-
-const initNotes = {
-    note: () => ( {
-        data: {
-            type: 'note',
-            note: '',
-        },
-        uiux : {}
-    } ),
-}
-
-const initPayments = {
-    payment: () => ( {
-        data: {
-            type: 'payment',
-            genre_name: '',
-            incoming: null,
-            outgoing: null,
-            remark: '',
-            fund_name: '',
-        },
-        uiux : {}
-    } ),
-
-    genre: () => ( {
-        data: {
-            id: null,
-            name: '',
-            code: '',
-            isIncoming: null,
-            isOutgoing: null,
-        },
-        uiux: {
-            form: {},  // isOpen
-            mode: {},  // isCreate, isUpdate, isDelete
-            process: {},  // isRequest, isResponseWaiting, isResponseError, isValidation, isValidationOk
-        }
-    } ),
-
-    fund: () => ( {
-        data: {
-            id: null,
-            name: '',
-            code: '',
-        },
-        uiux: {
-            form: {},  // isOpen
-            mode: {},  // isCreate, isUpdate, isDelete
-            process: {},  // isRequest, isResponseWaiting, isResponseError, isValidation, isValidationOk
-        }
-    } )
-}
-
-const initReport = () => ( {
-    data: {
-        descr: '',
-        type: '',
-        dateFrom: '',
-        dateTill: '',
-    },
-    uiux: {
-        form: {},  // isOpen
-        process: {},  // process: isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError
-    }
-} );
-
 export { 
     appSchema, 
     signinSchema,
     settingsSchema,
+    usersSchema,
     userSchema,
-    paymentGenreSchema,
-    paymentFundSchema,
+    diariesSchema,
     diarySchema,
+    benchSchema,
     periodSchema, 
     dateSchema,
     entrySchema,
     noteSchema,
     paymentSchema,
+    paymentGenreSchema,
+    paymentFundSchema,
     reportsSchema,
-    reportSchema,
-    initState, initSignin, initSettings, initDate, initEntry, initNotes, initPayments, initReport 
+    reportSchema, 
 };

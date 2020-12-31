@@ -1,38 +1,38 @@
 import React, { useContext, useEffect } from 'react';
 
-import { ReportsContext } from './ReportsContext';
+import { DiariesContext } from './DiariesContext';
 import { heads } from '../../storage/texts';
 
 import { ListBox } from '../libs/ListBox';
 import { BlockBox, BlockLabel, BlockValue } from '../libs/BlockBox';
 
-import ReportInit from './ReportInit';
-import Report from './Report';
+import DiaryInit from './DiaryInit';
+import Diary from './Diary';
 
-function Reports() {
+function Diaries() {
 
-    const { state } = useContext( ReportsContext );
-    const { reports } = state;
+    const { state } = useContext( DiariesContext );
+    const { diaries } = state;
 
-    useEffect( () => console.log( 'Has rendered. ', 'Reports' ) );
+    // useEffect( () => console.log( 'Has rendered. ', 'Diaries' ) );
 
     let index = 0;
 
     return (
         <ListBox>
+            <DiaryInit />
+
             <BlockBox>
                 <BlockLabel>
-                    { heads.reports }
+                    { heads.diaries }
                 </BlockLabel>
-
-                <ReportInit />
 
                 <BlockValue>
                     <ul>
-                        { reports.map( report => (
-                            <Report 
+                        { diaries.map( diary => (
+                            <Diary
                                 index={ index++ }
-                                key={ index }
+                                key={ index } 
                             />
                         ) ) }
                     </ul>
@@ -42,5 +42,5 @@ function Reports() {
     );
 }
 
-export default Reports;
-export { Reports };
+export default Diaries;
+export { Diaries };

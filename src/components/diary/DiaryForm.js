@@ -1,0 +1,93 @@
+import React, { useState, useContext } from 'react';
+
+import { DiariesContext } from './DiariesContext';
+import { CRUDContext, CRUDForm } from "../libs/CRUD";
+
+import { Modal } from '../libs/Modal';
+import { heads } from '../../storage/texts';
+import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
+import { InputDate } from '../libs/InputDate';
+import { isBlank, isFound } from '../../helpers/validation';
+
+function DiaryForm( { index } ) {
+
+    const { state } = useContext( DiariesContext );
+    const { diaries } = state;
+    const diary = diaries[ index ];
+    const { _uiux } = diary;
+
+    const { closeForm } = useContext( CRUDContext );
+
+    const [ data, setData ] = useState( { ...diary } );
+
+    const validation = () => {
+        let errors = '';
+ 
+        errors += isBlank( data.title ) 
+            ? 'Ο Τίτλος ημερολογίου δεν μπορεί να είναι κενός.\n' : '';
+ 
+        errors += !isBlank( data.title ) && isFound( diaries.map( x=> x.title ), data.title, index ) 
+            ? 'Ο Τίτλος ημερολογίου ήδη.\n' : '';
+ 
+        errors += isBlank( data.password ) && _uiux.mode.isCreate 
+            ? 'Ο Κωδικός εισόδου δεν μπορεί να είναι κενός.\n' : '';
+ 
+        errors += !isBlank( data.password ) && data.password !== data.password2 
+            ? 'Διαφορά στην πληκτρολόγηση του Κωδικού εισόδου.\n' : '';
+ 
+        return { data, errors };
+    }
+
+    return (
+        <Modal onClick={ closeForm } centeredness>
+
+            <CRUDForm
+                headLabel={ heads.diaries }
+                mode={ _uiux.mode }
+                process={ _uiux.process }
+                validation={ validation }
+            >
+                <InputBox>
+                    <InputLabel>
+                        Id
+                    </InputLabel>
+                    <InputValue>
+                        <input 
+                            value={ data.id || '' }
+                            tabIndex="-1"
+                            readOnly
+                        />
+                    </InputValue>
+                </InputBox>
+
+                <InputBox>
+                    <InputLabel>
+                        Τίτλος ημερολογίου
+                    </InputLabel>
+                    <InputValue>
+                        <input
+                            value={ data.title || '' }
+                            onChange={ event => setData( { ...data, title: event.target.value } ) }
+                        />
+                    </InputValue>
+                </InputBox>
+
+                <InputBox>
+                    <InputLabel>
+                        Ημ/νία εκκίνησης
+                    </InputLabel>
+                    <InputValue>
+                        <InputDate
+                            value={ data.startDate }
+                            onChange={ event => setData( { ...data, startDate: event.target.value } ) }
+                        />
+                    </InputValue>
+                </InputBox>
+
+            </CRUDForm>
+        </Modal>
+    );
+}
+
+export default DiaryForm;
+export { DiaryForm };

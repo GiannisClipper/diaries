@@ -1,38 +1,38 @@
 import React, { useContext, useEffect } from 'react';
 
-import { ReportsContext } from './ReportsContext';
+import { UsersContext } from './UsersContext';
 import { heads } from '../../storage/texts';
 
 import { ListBox } from '../libs/ListBox';
 import { BlockBox, BlockLabel, BlockValue } from '../libs/BlockBox';
 
-import ReportInit from './ReportInit';
-import Report from './Report';
+import UserInit from './UserInit';
+import User from './User';
 
-function Reports() {
+function Users() {
 
-    const { state } = useContext( ReportsContext );
-    const { reports } = state;
+    const { state } = useContext( UsersContext );
+    const { users } = state;
 
-    useEffect( () => console.log( 'Has rendered. ', 'Reports' ) );
+    // useEffect( () => console.log( 'Has rendered. ', 'Users' ) );
 
     let index = 0;
 
     return (
         <ListBox>
+            <UserInit />
+
             <BlockBox>
                 <BlockLabel>
-                    { heads.reports }
+                    { heads.users }
                 </BlockLabel>
-
-                <ReportInit />
 
                 <BlockValue>
                     <ul>
-                        { reports.map( report => (
-                            <Report 
+                        { users.map( user => (
+                            <User
                                 index={ index++ }
-                                key={ index }
+                                key={ index } 
                             />
                         ) ) }
                     </ul>
@@ -42,5 +42,5 @@ function Reports() {
     );
 }
 
-export default Reports;
-export { Reports };
+export default Users;
+export { Users };

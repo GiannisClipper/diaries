@@ -28,7 +28,6 @@ exports.handler = async function( event, context, callback ) {
                     token: createToken( payload ),
                     username: result.username,
                     theme: result.theme,
-                    centralDate: result.centralDate,
                 };
             }
 

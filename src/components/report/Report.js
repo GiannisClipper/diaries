@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { ReportsContext } from './ReportsContext';
 import { CRUDContextProvider, RetrieveManyRequest, CRUDMenu } from '../libs/CRUD';
-import { parseReportToDB } from '../../storage/parsers';
+import { parseReportToDB } from '../../storage/report/parsers';
 
 import { RowBox, RowValue, RowMenu } from '../libs/RowBox';
 

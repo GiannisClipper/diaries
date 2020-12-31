@@ -11,7 +11,7 @@ const BlockBox = styled( StyledBlock.BlockBox )`
     margin-bottom: .5em;
     text-align: left;
 
-    ${props => props.isTheCentral && css`
+    ${props => props.isStartDate && css`
         border: 1px dashed black;
     `}
 `;
@@ -34,7 +34,7 @@ const Date1 = ( { reference } ) => {  // Date1(), to differ from native function
     useEffect( () => console.log( 'Has rendered. ', 'Date1' ) );
 
     return (
-        <BlockBox ref={ reference } isTheCentral={ reference }>
+        <BlockBox ref={ reference } isStartDate={ reference }>
 
             <BlockLabel>
                 <DateRepr date={ date } />
@@ -48,7 +48,7 @@ const Date1 = ( { reference } ) => {  // Date1(), to differ from native function
     )
 }
 
-const Dates = ( { centralItem } ) => {
+const Dates = ( { startDate } ) => {
 
     const { state } = useContext( DatesContext ); 
     const { dates } = state;
@@ -60,7 +60,7 @@ const Dates = ( { centralItem } ) => {
             { dates.map( date => (
                 <DateContextProvider key={ date.date } state={ date }>
                     <Date1
-                        reference={ date._uiux.isTheCentral ? centralItem : null }
+                        reference={ date._uiux.isStartDate ? startDate : null }
                     />
                 </DateContextProvider>
             ) ) }

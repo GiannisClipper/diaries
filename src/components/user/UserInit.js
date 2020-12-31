@@ -1,10 +1,10 @@
 import React, { useContext, useEffect } from 'react';
 import { CRUDContextProvider, RetrieveManyRequest } from '../libs/CRUD';
-import { AppContext } from '../app/AppContext';
+import { UsersContext } from './UsersContext';
 
 function UserInit() {
 
-    const { state, dispatch } = useContext( AppContext );
+    const { state, dispatch } = useContext( UsersContext );
     const { _uiux } = state;
 
     //useEffect( () => console.log( 'Has rendered. ', 'UserInit' ) );
@@ -12,10 +12,9 @@ function UserInit() {
     return (
         <CRUDContextProvider
             dispatch={ dispatch }
-            namespace={ 'users' }
         >
             <RetrieveManyRequest 
-                process={ _uiux.users.process }
+                process={ _uiux.process }
                 url={ `/.netlify/functions/user` }
             />
         </CRUDContextProvider>

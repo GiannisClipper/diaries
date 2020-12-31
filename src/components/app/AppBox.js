@@ -11,10 +11,10 @@ import { faUser, faBookOpen, faCog, faCompass, faMap, faDoorOpen, faDoorClosed }
 
 import { Signin } from '../sign/Signin';
 import { Signout } from '../sign/Signout';
-import { Users } from '../user/User';
-import { Diaries } from '../diary/Diary';
+import UserApp from '../user/UserApp';
+import BenchApp from '../bench/BenchApp';
 import ReportApp from '../report/ReportApp';
-import Settings from '../settings/Settings';
+import SettingsApp from '../settings/SettingsApp';
 
 import { ThemeProvider } from 'styled-components';
 import { InitStyle } from '../libs/InitStyle';
@@ -190,10 +190,10 @@ const AppBox = React.memo( ( { page } ) => {
                 : page === 'signin' ? <Signin />
                 : page === 'signin' ?  null
                 : page === 'signout' ? <Signout />
-                : page === 'users' ? <Users />
-                : page === 'diaries' ? <Diaries />
+                : page === 'users' ? <UserApp />
+                : page === 'diaries' ? <BenchApp />
                 : page === 'reports' ? <ReportApp />
-                : page === 'settings' ? <Settings />
+                : page === 'settings' ? <SettingsApp />
                 : <Error404 /> }
             </AppMain>
        </ThemeProvider>
