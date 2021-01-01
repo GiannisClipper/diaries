@@ -1,18 +1,17 @@
 import React, { useState, useContext } from 'react';
 
-import { AppContext } from '../app/AppContext';
-import { CRUDContext, CRUDForm } from '../libs/CRUD';
+import { FundsContext } from './FundsContext';
+import { CRUDContext, CRUDForm } from '../../libs/CRUD';
 
-import { Modal } from '../libs/Modal';
-import { heads } from '../../storage/texts';
-import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
-import { isBlank, isFound } from '../../helpers/validation';
+import { Modal } from '../../libs/Modal';
+import { heads } from '../../../storage/texts';
+import { InputBox, InputLabel, InputValue } from '../../libs/InputBox';
+import { isBlank, isFound } from '../../../helpers/validation';
 
 function FundForm( { index } ) {
     
-    const { state } = useContext( AppContext );
-    const { payments } = state;
-    const { funds } = payments;
+    const { state } = useContext( FundsContext );
+    const { funds } = state;
     const fund = funds[ index ];
     const { _uiux } = fund;
 

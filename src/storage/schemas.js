@@ -4,16 +4,7 @@ const appSchema = () => ( {
 
     settings: settingsSchema(),
 
-    payments: {
-        genres: [],
-        funds: [],
-    },
-
     _uiux: {
-        payments: {
-            genres: { process: { isRequestBefore: true }, },  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
-            funds: { process: { isRequestBefore: true }, },  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
-        },
         _error: {},
     },
 } );
@@ -127,6 +118,13 @@ const paymentSchema = () => ( {
     fund_name: '',
 } );
 
+const paymentGenresSchema = () => ( {
+    genres: [],
+    _uiux: { 
+        process: { isRequestBefore: true },  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
+    },
+} );
+
 const paymentGenreSchema = () => ( {
     id: null,
     name: '',
@@ -138,6 +136,13 @@ const paymentGenreSchema = () => ( {
         mode: {},  // isCreate, isUpdate, isDelete
         process: {},  // isRequest, isResponseWaiting, isResponseError, isValidation, isValidationOk
     }
+} );
+
+const paymentFundsSchema = () => ( {
+    funds: [],
+    _uiux: { 
+        process: { isRequestBefore: true },  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
+    },
 } );
 
 const paymentFundSchema = () => ( {
@@ -183,7 +188,9 @@ export {
     entrySchema,
     noteSchema,
     paymentSchema,
+    paymentGenresSchema,
     paymentGenreSchema,
+    paymentFundsSchema,
     paymentFundSchema,
     reportsSchema,
     reportSchema, 

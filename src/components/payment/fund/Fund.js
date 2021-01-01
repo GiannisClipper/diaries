@@ -1,20 +1,16 @@
 import React, { useContext, useEffect } from 'react';
+import { FundsContext } from './FundsContext';
+import { CRUDContextProvider, CRUDMenu, CreateRequest, UpdateRequest, DeleteRequest } from '../../libs/CRUD';
+import { parseFundToDB } from '../../../storage/payment/fund/parsers';
 
-import { AppContext } from '../app/AppContext';
-import { parseFundToDB } from '../../storage/payment/parsers';
+import { RowBox, RowValue, RowMenu } from '../../libs/RowBox';
 
-import { CRUDContextProvider, CRUDMenu, CreateRequest, UpdateRequest, DeleteRequest } from '../libs/CRUD';
-
-import { RowBox, RowValue, RowMenu } from '../libs/RowBox';
-
-import FundInit from './FundInit';
 import FundForm from './FundForm';
 
 function Fund( { index } ) {
 
-    const { state, dispatch } = useContext( AppContext );
-    const { payments } = state;
-    const { funds } = payments;
+    const { state, dispatch } = useContext( FundsContext );
+    const { funds } = state;
     const fund = funds[ index ];
     const { _uiux } = fund;
 
@@ -24,7 +20,6 @@ function Fund( { index } ) {
     return (
         <CRUDContextProvider 
             dispatch={ dispatch } 
-            namespace={ 'paymentFund' } 
             payload={ payload }
         >
 
@@ -71,7 +66,6 @@ function Fund( { index } ) {
 
                 { _uiux.form.isOpen ?
                     <FundForm 
-                        funds={ funds } 
                         index={ index } 
                     /> 
                 : null }
@@ -81,28 +75,5 @@ function Fund( { index } ) {
     );
 }
 
-function Funds() {
-
-    const { state } = useContext( AppContext );
-    const { payments } = state;
-    const { funds } = payments;
-
-    //useEffect( () => console.log( 'Has rendered. ', 'payment/Funds' ) );
-
-    let index = 0;
-
-    return (
-        <ul>
-            <FundInit />
-
-            { funds.map( fund => (
-                <Fund 
-                    index={ index++ }
-                    key={ index }
-                />
-            ) ) }
-        </ul>
-    );
-}
-
-export { Fund, Funds };
+export default Fund;
+export { Fund };

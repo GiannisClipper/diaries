@@ -5,8 +5,10 @@ const heads = {
     diaries: 'Ημερολόγια χρήστη',
     notes: 'Εγγραφές σημειωμάτων',
     payments: 'Εγγραφές πληρωμών',
-    paymentGenres: 'Κατηγορίες πληρωμών',
-    paymentFunds: 'Μέσα πληρωμών',
+    payment: {
+        genres: 'Κατηγορίες πληρωμών',
+        funds: 'Μέσα πληρωμών',
+    },
     reports: 'Καταστάσεις',
 }
 

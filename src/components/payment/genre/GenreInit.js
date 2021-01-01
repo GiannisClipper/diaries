@@ -1,10 +1,10 @@
 import React, { useContext, useEffect  } from 'react';
-import { CRUDContextProvider, RetrieveManyRequest } from '../libs/CRUD';
-import { AppContext } from '../app/AppContext';
+import { CRUDContextProvider, RetrieveManyRequest } from '../../libs/CRUD';
+import { GenresContext } from './GenresContext';
 
 function GenreInit() {
 
-    const { state, dispatch } = useContext( AppContext );
+    const { state, dispatch } = useContext( GenresContext );
     const { _uiux } = state;
 
     //useEffect( () => console.log( 'Has rendered. ', 'payment/GenreInit' ) );
@@ -12,10 +12,9 @@ function GenreInit() {
     return (
         <CRUDContextProvider 
             dispatch={ dispatch }
-            namespace={ 'paymentGenres' }
         >
             <RetrieveManyRequest 
-                process={ _uiux.payments.genres.process }
+                process={ _uiux.process }
                 url={ `/.netlify/functions/payment-genre` }
             />
         </CRUDContextProvider>

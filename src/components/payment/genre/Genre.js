@@ -1,20 +1,16 @@
 import React, { useContext, useEffect } from 'react';
+import { GenresContext } from './GenresContext';
+import { CRUDContextProvider, CRUDMenu, CreateRequest, UpdateRequest, DeleteRequest } from '../../libs/CRUD';
+import { parseGenreToDB } from '../../../storage/payment/genre/parsers';
 
-import { AppContext } from '../app/AppContext';
-import { parseGenreToDB } from '../../storage/payment/parsers';
+import { RowBox, RowValue, RowMenu } from '../../libs/RowBox';
 
-import { CRUDContextProvider, CRUDMenu, CreateRequest, UpdateRequest, DeleteRequest } from '../libs/CRUD';
-
-import { RowBox, RowValue, RowMenu } from '../libs/RowBox';
-
-import GenreInit from './GenreInit';
 import GenreForm from './GenreForm';
 
 function Genre( { index } ) {
 
-    const { state, dispatch } = useContext( AppContext );
-    const { payments } = state;
-    const { genres } = payments;
+    const { state, dispatch } = useContext( GenresContext );
+    const { genres } = state;
     const genre = genres[ index ];
     const { _uiux } = genre;
 
@@ -34,7 +30,6 @@ function Genre( { index } ) {
     return (
         <CRUDContextProvider 
             dispatch={ dispatch } 
-            namespace={ 'paymentGenre' } 
             payload={ payload }
         >
 
@@ -81,7 +76,6 @@ function Genre( { index } ) {
 
                 { _uiux.form.isOpen ? 
                     <GenreForm 
-                        genres={ genres } 
                         index={ index } 
                     /> 
                 : null }
@@ -90,28 +84,5 @@ function Genre( { index } ) {
     );
 }
 
-function Genres() {
-
-    const { state } = useContext( AppContext );
-    const { payments } = state;
-    const { genres } = payments;
-
-    useEffect( () => console.log( 'Has rendered. ', 'payment/Genres' ) );
-
-    let index = 0;
-
-    return (
-        <ul>
-            <GenreInit />
-
-            { genres.map( genre => (
-                <Genre
-                    index={ index++ }
-                    key={ index }
-                />
-            ) ) }
-        </ul>
-    );
-}
-
-export { Genre, Genres };
+export default Genre;
+export { Genre };

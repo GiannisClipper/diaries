@@ -1,19 +1,18 @@
 import React, { useState, useContext } from 'react';
 
-import { AppContext } from '../app/AppContext';
-import { CRUDContext, CRUDForm } from '../libs/CRUD';
+import { GenresContext } from './GenresContext';
+import { CRUDContext, CRUDForm } from '../../libs/CRUD';
 
-import { Modal } from '../libs/Modal';
-import { heads } from '../../storage/texts';
-import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
-import { InputCheck } from '../libs/InputCheck';
-import { isBlank, isFound } from '../../helpers/validation';
+import { Modal } from '../../libs/Modal';
+import { heads } from '../../../storage/texts';
+import { InputBox, InputLabel, InputValue } from '../../libs/InputBox';
+import { InputCheck } from '../../libs/InputCheck';
+import { isBlank, isFound } from '../../../helpers/validation';
 
 function GenreForm( { index } ) {
     
-    const { state } = useContext( AppContext );
-    const { payments } = state;
-    const { genres } = payments;
+    const { state } = useContext( GenresContext );
+    const { genres } = state;
     const genre = genres[ index ];
     const { _uiux } = genre;
 

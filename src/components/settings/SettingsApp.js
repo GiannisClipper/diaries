@@ -8,16 +8,14 @@ import { BlockBox, BlockLabel, BlockValue } from '../libs/BlockBox';
 
 import Settings from './Settings';
 import DiaryApp from '../diary/DiaryApp';
-import { Genres } from "../payment/Genre";
-import { Funds } from "../payment/Fund";
+import GenreApp from "../payment/genre/GenreApp";
+import FundApp from "../payment/fund/FundApp";
 
 function SettingsApp() {
 
-    // useEffect( () => console.log( 'Has rendered. ', 'ReportApp' ) );
+    //useEffect( () => console.log( 'Has rendered. ', 'SettingsApp' ) );
 
     return (
-//        <ReportsContextProvider>
-
         <ListBox>
             <BlockBox>
                 <BlockLabel>
@@ -39,25 +37,23 @@ function SettingsApp() {
 
             <BlockBox>
                 <BlockLabel>
-                    { heads.paymentGenres }
+                    { heads.payment.genres }
                 </BlockLabel>
                 <BlockValue>
-                    <Genres />
+                    <GenreApp />
                 </BlockValue>
             </BlockBox>
 
             <BlockBox>
                 <BlockLabel>
-                    { heads.paymentFunds }
+                    { heads.payment.funds }
                 </BlockLabel>
                 <BlockValue>
-                    <Funds />
+                    <FundApp />
                 </BlockValue>
             </BlockBox>
 
         </ListBox>
-
-//        </ReportsContextProvider>
     );
 }
 

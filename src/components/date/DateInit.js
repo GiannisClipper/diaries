@@ -1,22 +1,26 @@
 import React, { useContext, useEffect  } from 'react';
 import { CRUDContext, CRUDContextProvider, RetrieveManyRequest } from '../libs/CRUD';
 import { DatesContext } from '../date/DatesContext';
-import { AppContext } from '../app/AppContext';
+import { GenresContext } from '../payment/genre/GenresContext';
+import { FundsContext } from '../payment/fund/FundsContext';
 import { dateToYYYYMMDD } from '../../helpers/dates';
 
 function RetrieveManyResponseSetup() {
 
-    const { state } = useContext( AppContext )
-    const { payments, _uiux } = state;
+    const { genres } = useContext( GenresContext ).state;
+    const { funds } = useContext( FundsContext ).state;
+    const genres_uiux = useContext( GenresContext ).state._uiux;
+    const funds_uiux = useContext( FundsContext ).state._uiux;
+
     const { retrieveManyResponseSetup, retrieveManyResponseError } = useContext( CRUDContext );
 
     useEffect( () => {
 
-        const process1 = _uiux.payments.genres.process;
-        const process2 = _uiux.payments.funds.process;
+        const process1 = genres_uiux.process;
+        const process2 = funds_uiux.process;
 
         if ( process1.isResponseOk && process2.isResponseOk ) {
-            const payload = { payments }; 
+            const payload = { payments: { genres, funds } };
             retrieveManyResponseSetup( payload );
 
         } else if ( process1.isResponseError || process2.isResponseError ) {

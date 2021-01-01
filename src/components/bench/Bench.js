@@ -11,8 +11,8 @@ import { faBackward, faForward } from '@fortawesome/free-solid-svg-icons';
 
 import { CopyPasteContextProvider } from '../libs/CopyPaste';
 import { Scroll } from '../libs/Scroll';
-import { GenreInit } from '../payment/GenreInit';
-import { FundInit } from '../payment/FundInit';
+import GenreInit from '../payment/genre/GenreInit';
+import FundInit from '../payment/fund/FundInit';
 
 import styled from 'styled-components';
 import StyledList from '../libs/ListBox';

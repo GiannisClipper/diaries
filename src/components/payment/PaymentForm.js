@@ -1,20 +1,20 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { AppContext } from '../app/AppContext';
+import { GenresContext } from '../payment/genre/GenresContext';
+import { FundsContext } from '../payment/fund/FundsContext';
 import EntryForm from '../entry/EntryForm';
 import { heads } from '../../storage/texts';
 import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
 import { InputNumber } from '../libs/InputNumber';
 import { InputFromList } from '../libs/InputFromList';
 import { isBlank } from '../../helpers/validation';
-import { getFromList } from '../../storage/payment/parsers';
+import { getFromList } from '../../helpers/getFromList';
 
 function PaymentForm( { date, entry } ) {
 
     const [ data, setData ] = useState( { ...entry } );
 
-    const  { state } = useContext( AppContext );
-    const { payments} = state;
-    const { genres, funds } = payments;
+    const  { genres } = useContext( GenresContext ).state;
+    const  { funds } = useContext( FundsContext ).state;
 
     let allGenres = [ ...genres ].reverse();
     allGenres = allGenres.filter( ( x, i ) => i === 0 || !allGenres[ i - 1 ].code.startsWith( x.code ) );

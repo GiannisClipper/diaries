@@ -1,5 +1,6 @@
 import React, { useContext, useRef, useEffect } from 'react';
-import { AppContext } from '../app/AppContext';
+import { GenresContext } from '../payment/genre/GenresContext';
+import { FundsContext } from '../payment/fund/FundsContext';
 import { DateContext } from '../date/DateContext';
 
 import { ToolBox } from '../libs/ToolBox';
@@ -39,8 +40,8 @@ const RowMenu = styled( StyledRow.RowMenu )`
 
 const Entry = ( { inSequence } ) => {
 
-    const { payments } = useContext( AppContext ).state;
-    const { genres, funds } = payments;
+    const { genres } = useContext( GenresContext ).state;
+    const { funds } = useContext( FundsContext ).state;
 
     const { state, dispatch } = useContext( DateContext );
     const { date, entries } = state;
