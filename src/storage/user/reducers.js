@@ -50,46 +50,17 @@ const usersReducer = ( state, action ) => {
 
             return { ...state, users, _uiux };
 
-        } case 'OPEN_FORM': {
-            const { index, mode } = action.payload;
-            const { users } = state ;
-            users[ index ]._uiux.form = { isOpen: true };
-            users[ index ]._uiux.mode = mode;
+        } default: {
+            return state;
+        }    
+    }
+}
 
-            return { ...state, users };
+const userReducer = ( state, action ) => {
 
-        } case 'CLOSE_FORM': {
-            const { index } = action.payload;
-            const { users } = state ;
-            users[ index ]._uiux.process = {};
-            users[ index ]._uiux.form = {};
-            users[ index ]._uiux.mode = {};
-
-            return { ...state, users };
-
-        } case 'DO_VALIDATION': {
-            const { index } = action.payload;
-            const { users } = state ;
-            users[ index ]._uiux.process = { isValidation: true };
-
-            return { ...state, users };
-
-        } case 'VALIDATION_OK': {
-            const { index, data } = action.payload;
-            const { users } = state ;
-            users[ index ] = { ...users[ index ], ...data };
-            users[ index ]._uiux.process = { isValidationOk: true };
-
-            return { ...state, users };
-
-        } case 'VALIDATION_ERROR': {
-            const { index } = action.payload;
-            const { users } = state ;
-            users[ index ]._uiux.process = {};
-
-            return { ...state, users };
-
-        } case 'DO_REQUEST': {
+    switch ( action.type ) {
+            
+        case 'DO_REQUEST': {
             const { index } = action.payload;
             const { users } = state ;
             users[ index ]._uiux.process = { isRequest: true };
@@ -155,9 +126,12 @@ const usersReducer = ( state, action ) => {
             return { ...state, users };
 
         } default: {
-            throw new Error();
+            return state;
         }
     }
 }
 
-export { usersReducer }; 
+export { 
+    usersReducer,
+    userReducer,
+}; 

@@ -15,7 +15,7 @@ function Signin() {
     const { signin } = state;
     const { _uiux } = signin;
 
-    const payload = { ...signin };
+    const payload = { namespace: 'signin', ...signin };
     const dataToDB = parseSigninToDB( signin );
 
     return (

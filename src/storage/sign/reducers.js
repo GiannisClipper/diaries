@@ -6,24 +6,7 @@ const signinReducer = ( state, action ) => {
 
     switch ( action.type ) {
 
-        case 'DO_VALIDATION': {
-            const { signin } = state;
-            signin._uiux.process = { isValidation: true };
-            return { ...state, signin };
-
-        } case 'VALIDATION_OK': {
-            const { data } = action.payload;
-            const { _uiux } = state.signin;
-            _uiux.process = { isValidationOk: true };
-            const signin = { ...data, _uiux };
-            return { ...state, signin };
-
-        } case 'VALIDATION_ERROR': {
-            const { signin } = state;
-            signin._uiux.process = {};
-            return { ...state, signin };
-
-        } case 'DO_REQUEST': {
+        case 'DO_REQUEST': {
             const { signin } = state;
             signin._uiux.process = { isRequest: true };
             return { ...state, signin };
@@ -54,7 +37,7 @@ const signinReducer = ( state, action ) => {
             return { ...appSchema() };
 
         } default: {
-            throw new Error();
+            return state;
         }
     }
 }

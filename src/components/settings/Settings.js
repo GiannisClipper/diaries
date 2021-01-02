@@ -18,7 +18,7 @@ function Settings() {
     const { settings } = state;
     const { _uiux } = settings;
 
-    const payload = { _saved: settings };
+    const payload = { namespace: 'settings', _saved: settings };
     const dataToDB = parseSettingsToDB( settings );
 
     return (

@@ -19,7 +19,7 @@ function User( { index } ) {
     const user = users[ index ];
     const { _uiux } = user;
 
-    const payload = { index, _saved: user };
+    const payload = { namespace: 'users', index, _saved: user };
     const dataToDB = parseUserToDB( user );
 
     return (
