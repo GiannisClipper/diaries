@@ -1,16 +1,19 @@
 import React, { useContext } from 'react';
-import { CRUDContext, CRUDForm } from "../libs/CRUD";
+
+import { CoreContext } from "../core/CoreContext";
+import CoreForm from "../core/CoreForm";
+
 import { Modal } from '../libs/Modal';
 import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
 import { dayNames, YYYYMMDDToRepr, dateToYYYYMMDD } from '../../helpers/dates';
 
 function EntryForm( { headLabel, validation, date, entry, children } ) {
 
-    const { closeForm } = useContext( CRUDContext );
+    const { closeForm } = useContext( CoreContext );
 
     return (
-        <Modal onClick={closeForm} centeredness>
-            <CRUDForm
+        <Modal onClick={ closeForm } centeredness>
+            <CoreForm
                 headLabel={ headLabel }
                 mode={ entry._uiux.mode }
                 process={ entry._uiux.process }
@@ -44,7 +47,7 @@ function EntryForm( { headLabel, validation, date, entry, children } ) {
 
                 {children}
 
-            </CRUDForm>
+            </CoreForm>
         </Modal>
     );
 }

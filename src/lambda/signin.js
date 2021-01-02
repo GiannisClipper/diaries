@@ -12,7 +12,7 @@ exports.handler = async function( event, context, callback ) {
         const db = client.db( 'diaries' );
         const collection = db.collection( 'users' );
 
-        if ( event.httpMethod === 'POST' ) {
+        if ( event.httpMethod === 'PUT' ) {
             const body = JSON.parse( event.body );
             const data = body.data;
  

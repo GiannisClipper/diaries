@@ -12,8 +12,10 @@ const signinReducer = ( state, action ) => {
             return { ...state, signin };
 
         } case 'VALIDATION_OK': {
-            const { signin } = state;
-            signin._uiux.process = { isValidationOk: true };
+            const { data } = action.payload;
+            const { _uiux } = state.signin;
+            _uiux.process = { isValidationOk: true };
+            const signin = { ...data, _uiux };
             return { ...state, signin };
 
         } case 'VALIDATION_ERROR': {

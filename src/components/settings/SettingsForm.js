@@ -1,7 +1,8 @@
 import React, { useState, useContext } from 'react';
 
 import { AppContext } from '../app/AppContext';
-import { CRUDContext, CRUDForm } from "../libs/CRUD";
+import { CoreContext } from "../core/CoreContext";
+import CoreForm from "../core/CoreForm";
 
 import { Modal } from '../libs/Modal';
 import { heads } from '../../storage/texts';
@@ -15,7 +16,7 @@ function SettingsForm( { index } ) {
     const { settings } = state;
     const { _uiux } = settings;
 
-    const { closeForm } = useContext( CRUDContext );
+    const { closeForm } = useContext( CoreContext );
 
     const [ data, setData ] = useState( { ...settings } );
 
@@ -31,7 +32,7 @@ function SettingsForm( { index } ) {
     return (
         <Modal onClick={ closeForm } centeredness>
 
-            <CRUDForm
+            <CoreForm
                 headLabel={ heads.settings }
                 mode={ _uiux.mode }
                 process={ _uiux.process }
@@ -64,7 +65,7 @@ function SettingsForm( { index } ) {
                     </InputValue>
                 </InputBox>
 
-            </CRUDForm>
+            </CoreForm>
         </Modal>
     );
 }

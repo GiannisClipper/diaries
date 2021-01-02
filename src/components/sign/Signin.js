@@ -1,13 +1,13 @@
-import React, { useContext, useState, useEffect  } from 'react';
+import React, { useContext, useEffect  } from 'react';
+
+import { CoreContextProvider } from '../core/CoreContext';
+import actions from '../../storage/core/actions';
+import { SigninRequest } from '../core/CoreRequests';
 
 import { AppContext } from '../app/AppContext';
 import { parseSigninToDB } from '../../storage/sign/parsers';
-import { heads } from '../../storage/texts';
 
-import { SignContextProvider, SigninRequest, SignForm } from './Sign';
-
-import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
-import { isBlank } from '../../helpers/validation';
+import SigninForm from './SigninForm';
 
 function Signin() {
 
@@ -15,25 +15,15 @@ function Signin() {
     const { signin } = state;
     const { _uiux } = signin;
 
-    const [ data, setData ] = useState( { ...signin } );
-
-    const validation = () => {
-        let errors = '';
- 
-        errors += isBlank( data.username ) 
-            ? 'Το Όνομα χρήστη δεν μπορεί να είναι κενό.\n' : '';
- 
-        errors += isBlank( data.password )
-            ? 'Ο Κωδικός εισόδου δεν μπορεί να είναι κενός.\n' : '';
-  
-        return { data, errors };
-    }
-
-    const payload = { ...data };
-    const dataToDB = parseSigninToDB( data );
+    const payload = { ...signin };
+    const dataToDB = parseSigninToDB( signin );
 
     return (
-        <SignContextProvider 
+        <CoreContextProvider 
+            actions={ [ 
+                actions.validation, 
+                actions.signin,
+            ] }
             dispatch={ dispatch }
             namespace={ 'signin' }
             payload={ payload }
@@ -46,41 +36,11 @@ function Signin() {
                 body={ JSON.stringify( { data: dataToDB } ) }
             />
 
-            <SignForm
-                headLabel={ heads.app }
-                mode={ { isSignin: true } }
+            <SigninForm
                 process={ _uiux.process }
-                validation={ validation }
-            >
+            / >
 
-                <InputBox>
-                    <InputLabel>
-                        Όνομα
-                    </InputLabel>
-                    <InputValue>
-                        <input
-                            value={ data.username || '' }
-                            onChange={ event => setData( { ...data, username: event.target.value || '' } ) }
-                        />
-                    </InputValue>
-                </InputBox>
-
-                <InputBox>
-                    <InputLabel>
-                        Κωδικός
-                    </InputLabel>
-                    <InputValue>
-                        <input
-                            type="password"
-                            value={data.password || ''}
-                            onChange={ event => setData( { ...data, password: event.target.value || '' } ) }
-                        />
-                    </InputValue>
-                </InputBox>
-
-            </SignForm>
-
-        </SignContextProvider>
+        </CoreContextProvider>
     );
 }
 

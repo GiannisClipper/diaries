@@ -1,6 +1,11 @@
 import React, { useContext, useEffect } from 'react';
+
+import { CoreContextProvider } from '../../core/CoreContext';
+import actions from '../../../storage/core/actions';
+import { CreateRequest, UpdateRequest, DeleteRequest } from '../../core/CoreRequests';
+import CoreMenu from '../../core/CoreMenu';
+
 import { FundsContext } from './FundsContext';
-import { CRUDContextProvider, CRUDMenu, CreateRequest, UpdateRequest, DeleteRequest } from '../../libs/CRUD';
 import { parseFundToDB } from '../../../storage/payment/fund/parsers';
 
 import { RowBox, RowValue, RowMenu } from '../../libs/RowBox';
@@ -18,7 +23,14 @@ function Fund( { index } ) {
     const dataToDB = parseFundToDB( fund );
 
     return (
-        <CRUDContextProvider 
+        <CoreContextProvider 
+            actions={ [ 
+                actions.form, 
+                actions.validation, 
+                actions.createOne, 
+                actions.updateOne, 
+                actions.deleteOne 
+            ] }
             dispatch={ dispatch } 
             payload={ payload }
         >
@@ -58,7 +70,7 @@ function Fund( { index } ) {
                 </RowValue>
 
                 <RowMenu>
-                    <CRUDMenu 
+                    <CoreMenu 
                         options={ ! fund.id ? [ 'C' ] : [ 'U', 'D' ] }
                         process={ _uiux.process }
                     />
@@ -71,7 +83,7 @@ function Fund( { index } ) {
                 : null }
             </RowBox>
 
-        </CRUDContextProvider>
+        </CoreContextProvider>
     );
 }
 

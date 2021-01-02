@@ -1,6 +1,11 @@
 import React, { useContext, useEffect } from 'react';
+
+import { CoreContextProvider } from '../core/CoreContext';
+import actions from '../../storage/core/actions';
+import { CreateRequest, UpdateRequest, DeleteRequest } from '../core/CoreRequests';
+import CoreMenu from '../core/CoreMenu';
+
 import { UsersContext } from './UsersContext';
-import { CRUDContextProvider, CRUDMenu, CreateRequest, UpdateRequest, DeleteRequest } from '../libs/CRUD';
 import { parseUserToDB } from '../../storage/user/parsers';
 
 import { RowBox, RowValue, RowMenu } from '../libs/RowBox';
@@ -18,7 +23,14 @@ function User( { index } ) {
     const dataToDB = parseUserToDB( user );
 
     return (
-        <CRUDContextProvider 
+        <CoreContextProvider 
+            actions={ [ 
+                actions.form, 
+                actions.validation, 
+                actions.createOne, 
+                actions.updateOne, 
+                actions.deleteOne 
+            ] }
             dispatch={ dispatch }
             payload={ payload }
         >
@@ -59,7 +71,7 @@ function User( { index } ) {
                 </RowValue>
 
                 <RowMenu>
-                    <CRUDMenu
+                    <CoreMenu
                         options={ ! user.id ? [ 'C' ] : [ 'U', 'D' ] }
                         process={ _uiux.process }
                     />
@@ -71,7 +83,7 @@ function User( { index } ) {
 
             </RowBox>
 
-        </CRUDContextProvider>
+        </CoreContextProvider>
     );
 }
 

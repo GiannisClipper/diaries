@@ -11,9 +11,9 @@ const BlockBox = styled( StyledBlock.BlockBox )`
     margin-bottom: .5em;
     text-align: left;
 
-    ${props => props.isStartDate && css`
+    ${ props => props.isStartDate && css`
         border: 1px dashed black;
-    `}
+    ` }
 `;
 
 const BlockLabel = styled( StyledBlock.BlockLabel )`

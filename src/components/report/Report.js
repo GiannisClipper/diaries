@@ -1,6 +1,11 @@
 import React, { useContext, useEffect } from 'react';
+
+import { CoreContextProvider } from '../core/CoreContext';
+import actions from '../../storage/core/actions';
+import { RetrieveManyRequest } from '../core/CoreRequests';
+import CoreMenu from '../core/CoreMenu';
+
 import { ReportsContext } from './ReportsContext';
-import { CRUDContextProvider, RetrieveManyRequest, CRUDMenu } from '../libs/CRUD';
 import { parseReportToDB } from '../../storage/report/parsers';
 
 import { RowBox, RowValue, RowMenu } from '../libs/RowBox';
@@ -26,7 +31,12 @@ function Report( { index } ) {
     } );
 
     return (
-        <CRUDContextProvider 
+        <CoreContextProvider 
+            actions={ [ 
+                actions.form, 
+                actions.validation, 
+                actions.retrieveMany,
+            ] }
             dispatch={ dispatch }
             payload={ payload }
         >
@@ -46,7 +56,7 @@ function Report( { index } ) {
                 </RowValue>
 
                 <RowMenu>
-                    <CRUDMenu
+                    <CoreMenu
                         options={ [ 'RM' ] }
                         process={ _uiux.process }
                     />
@@ -58,7 +68,7 @@ function Report( { index } ) {
                     /> 
                 : null }
             </RowBox>
-        </CRUDContextProvider>
+        </CoreContextProvider>
     );
 }
 

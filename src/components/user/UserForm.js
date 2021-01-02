@@ -1,7 +1,9 @@
 import React, { useState, useContext } from 'react';
 
+import { CoreContext } from "../core/CoreContext";
+import CoreForm from "../core/CoreForm";
+
 import { UsersContext } from './UsersContext';
-import { CRUDContext, CRUDForm } from "../libs/CRUD";
 
 import { Modal } from '../libs/Modal';
 import { heads } from '../../storage/texts';
@@ -17,7 +19,7 @@ function UserForm( { index } ) {
     const user = users[ index ];
     const { _uiux } = user;
 
-    const { closeForm } = useContext( CRUDContext );
+    const { closeForm } = useContext( CoreContext );
 
     const [ data, setData ] = useState( { ...user } );
 
@@ -42,7 +44,7 @@ function UserForm( { index } ) {
     return (
         <Modal onClick={ closeForm } centeredness>
 
-            <CRUDForm
+            <CoreForm
                 headLabel={ heads.users }
                 mode={ _uiux.mode }
                 process={ _uiux.process }
@@ -141,7 +143,7 @@ function UserForm( { index } ) {
                     </InputValue>
                 </InputBox>
 
-            </CRUDForm>
+            </CoreForm>
         </Modal>
     );
 }

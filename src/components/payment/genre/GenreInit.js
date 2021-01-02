@@ -1,5 +1,7 @@
 import React, { useContext, useEffect  } from 'react';
-import { CRUDContextProvider, RetrieveManyRequest } from '../../libs/CRUD';
+import { CoreContextProvider } from '../../core/CoreContext';
+import actions from '../../../storage/core/actions';
+import { RetrieveManyRequest } from '../../core/CoreRequests';
 import { GenresContext } from './GenresContext';
 
 function GenreInit() {
@@ -10,14 +12,15 @@ function GenreInit() {
     //useEffect( () => console.log( 'Has rendered. ', 'payment/GenreInit' ) );
 
     return (
-        <CRUDContextProvider 
+        <CoreContextProvider 
+            actions={ [ actions.retrieveMany ] }
             dispatch={ dispatch }
         >
             <RetrieveManyRequest 
                 process={ _uiux.process }
                 url={ `/.netlify/functions/payment-genre` }
             />
-        </CRUDContextProvider>
+        </CoreContextProvider>
     );
 }
 

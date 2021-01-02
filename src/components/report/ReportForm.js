@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 
-import { AppContext } from '../app/AppContext';
-import { CRUDContext, CRUDForm } from "../libs/CRUD";
+import { CoreContext } from "../core/CoreContext";
+import CoreForm from "../core/CoreForm";
 
 import { Modal } from '../libs/Modal';
 import { heads } from '../../storage/texts';
@@ -13,7 +13,7 @@ function ReportForm( { report } ) {
 
     const { _uiux } = report;
 
-    const { closeForm } = useContext( CRUDContext );
+    const { closeForm } = useContext( CoreContext );
 
     const [ data, setData ] = useState( { 
         ...report,
@@ -28,7 +28,7 @@ function ReportForm( { report } ) {
 
     return (
         <Modal onClick={ closeForm } centeredness>
-            <CRUDForm
+            <CoreForm
                 headLabel={ heads.reports }
                 mode={ { isRetrieveMany: true } }
                 process={ _uiux.process }
@@ -71,7 +71,7 @@ function ReportForm( { report } ) {
                     </InputValue>
                 </InputBox>
 
-            </CRUDForm>
+            </CoreForm>
         </Modal>
     );
 }

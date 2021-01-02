@@ -1,14 +1,16 @@
 import React, { useContext, useRef } from 'react';
+
+import { CoreContext } from '../core/CoreContext';
+
 import { REFContext } from '../REFContext';
 import { CopyPasteContext } from '../libs/CopyPaste';
-import { CRUDContext } from "../libs/CRUD";
 import { Modal } from '../libs/Modal';
 import { MenuBox } from '../libs/MenuBox';
 import { MenuTool, EditTool, AddNoteTool, AddPaymentTool, DeleteTool, CutTool, CopyTool, PasteTool, CloseTool } from '../libs/Tools';
 
 function EntryMenuTool() {
 
-    const { openMenu } = useContext( CRUDContext );
+    const { openMenu } = useContext( CoreContext );
 
     const REF = useContext( REFContext );
 
@@ -27,7 +29,7 @@ function EntryMenuTool() {
 
 function EntryMenu( { children } ) {
 
-    const { closeMenu } = useContext( CRUDContext );
+    const { closeMenu } = useContext( CoreContext );
 
     const REF = useContext( REFContext );
 
@@ -49,7 +51,7 @@ function BlankEntryMenu( { date, entry, inSequence } ) {
 
     const { doPaste, isAbleToPaste } = useContext( CopyPasteContext );
 
-    const { closeMenu, openForm } = useContext( CRUDContext );
+    const { closeMenu, openForm } = useContext( CoreContext );
 
     return (
         <EntryMenu>
@@ -79,7 +81,7 @@ function ExistsEntryMenu( { date, entry, inSequence } ) {
 
     const { doCut, doCopy, doPaste, isAbleToPaste } = useContext( CopyPasteContext );
 
-    const { closeMenu, openForm } = useContext( CRUDContext );
+    const { closeMenu, openForm } = useContext( CoreContext );
 
     const type = entry.type === 'payment'
         ? { isPayment: true }

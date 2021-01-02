@@ -1,4 +1,9 @@
 import React, { useContext, useRef, useEffect } from 'react';
+
+import { CoreContextProvider } from '../core/CoreContext';
+import actions from '../../storage/core/actions';
+import { CreateRequest, UpdateRequest, DeleteRequest } from '../core/CoreRequests';
+
 import { GenresContext } from '../payment/genre/GenresContext';
 import { FundsContext } from '../payment/fund/FundsContext';
 import { DateContext } from '../date/DateContext';
@@ -20,7 +25,6 @@ import { parsePaymentToDB } from '../../storage/payment/parsers';
 import styled, { css } from 'styled-components';
 import StyledRow from '../libs/RowBox';
 import { CopyPasteContext } from '../libs/CopyPaste';
-import { CRUDContextProvider, CreateRequest, UpdateRequest, DeleteRequest } from '../libs/CRUD';
 
 const RowBox = StyledRow.RowBox;
 
@@ -101,7 +105,15 @@ const Entry = ( { inSequence } ) => {
     // useEffect( () =>  console.log( 'Has rendered. ', 'Entry' ) );
 
     return (
-        <CRUDContextProvider 
+        <CoreContextProvider 
+            actions={ [ 
+                actions.menu,
+                actions.form,
+                actions.validation, 
+                actions.createOne, 
+                actions.updateOne, 
+                actions.deleteOne 
+            ] }
             dispatch={ dispatch } 
             payload={ payload }
         >
@@ -196,7 +208,7 @@ const Entry = ( { inSequence } ) => {
                 }
             </RowBox> 
 
-        </CRUDContextProvider>
+        </CoreContextProvider>
     );
 }
 

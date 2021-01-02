@@ -1,5 +1,9 @@
 import React, { useContext, useEffect  } from 'react';
-import { CRUDContext, CRUDContextProvider, RetrieveManyRequest } from '../libs/CRUD';
+
+import { CoreContextProvider, CoreContext } from '../core/CoreContext';
+import actions from '../../storage/core/actions';
+import { RetrieveManyRequest } from '../core/CoreRequests';
+
 import { DatesContext } from '../date/DatesContext';
 import { GenresContext } from '../payment/genre/GenresContext';
 import { FundsContext } from '../payment/fund/FundsContext';
@@ -12,7 +16,7 @@ function RetrieveManyResponseSetup() {
     const genres_uiux = useContext( GenresContext ).state._uiux;
     const funds_uiux = useContext( FundsContext ).state._uiux;
 
-    const { retrieveManyResponseSetup, retrieveManyResponseError } = useContext( CRUDContext );
+    const { retrieveManyResponseSetup, retrieveManyResponseError } = useContext( CoreContext );
 
     useEffect( () => {
 
@@ -42,7 +46,8 @@ function DateInit() {
     // useEffect( () => console.log( 'Has rendered. ', 'DateInit' ) );
 
     return (
-        <CRUDContextProvider 
+        <CoreContextProvider 
+            actions={ [ actions.retrieveMany ] }
             dispatch={ dispatch }
         >
             { _uiux.process.isResponseOk ?
@@ -53,7 +58,7 @@ function DateInit() {
                     url={ `/.netlify/functions/entry?range=${dateFrom}-${dateTill}` }
                 />
             }
-        </CRUDContextProvider>
+        </CoreContextProvider>
     );
 }
 

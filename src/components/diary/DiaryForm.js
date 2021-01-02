@@ -1,7 +1,9 @@
 import React, { useState, useContext } from 'react';
 
+import { CoreContext } from "../core/CoreContext";
+import CoreForm from "../core/CoreForm";
+
 import { DiariesContext } from './DiariesContext';
-import { CRUDContext, CRUDForm } from "../libs/CRUD";
 
 import { Modal } from '../libs/Modal';
 import { heads } from '../../storage/texts';
@@ -16,7 +18,7 @@ function DiaryForm( { index } ) {
     const diary = diaries[ index ];
     const { _uiux } = diary;
 
-    const { closeForm } = useContext( CRUDContext );
+    const { closeForm } = useContext( CoreContext );
 
     const [ data, setData ] = useState( { ...diary } );
 
@@ -41,7 +43,7 @@ function DiaryForm( { index } ) {
     return (
         <Modal onClick={ closeForm } centeredness>
 
-            <CRUDForm
+            <CoreForm
                 headLabel={ heads.diaries }
                 mode={ _uiux.mode }
                 process={ _uiux.process }
@@ -84,7 +86,7 @@ function DiaryForm( { index } ) {
                     </InputValue>
                 </InputBox>
 
-            </CRUDForm>
+            </CoreForm>
         </Modal>
     );
 }

@@ -1,7 +1,9 @@
 import React, { useState, useContext } from 'react';
 
+import { CoreContext } from "../../core/CoreContext";
+import CoreForm from "../../core/CoreForm";
+
 import { GenresContext } from './GenresContext';
-import { CRUDContext, CRUDForm } from '../../libs/CRUD';
 
 import { Modal } from '../../libs/Modal';
 import { heads } from '../../../storage/texts';
@@ -16,7 +18,7 @@ function GenreForm( { index } ) {
     const genre = genres[ index ];
     const { _uiux } = genre;
 
-    const { closeForm } = useContext( CRUDContext );
+    const { closeForm } = useContext( CoreContext );
 
     const [ data, setData ] = useState( { ...genre } );
 
@@ -38,7 +40,7 @@ function GenreForm( { index } ) {
     return (
         <Modal onClick={closeForm} centeredness>
 
-            <CRUDForm
+            <CoreForm
                 headLabel={ heads.payment_genres }
                 mode={ _uiux.mode }
                 process={ _uiux.process }
@@ -99,7 +101,7 @@ function GenreForm( { index } ) {
                     </InputValue>
                 </InputBox>
 
-            </CRUDForm>
+            </CoreForm>
         </Modal>
     );
 }

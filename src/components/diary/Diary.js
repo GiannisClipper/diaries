@@ -1,6 +1,11 @@
 import React, { useContext, useEffect } from 'react';
+
+import { CoreContextProvider } from '../core/CoreContext';
+import actions from '../../storage/core/actions';
+import { CreateRequest, UpdateRequest, DeleteRequest } from '../core/CoreRequests';
+import CoreMenu from '../core/CoreMenu';
+
 import { DiariesContext } from './DiariesContext';
-import { CRUDContextProvider, CRUDMenu, CreateRequest, UpdateRequest, DeleteRequest } from '../libs/CRUD';
 import { parseDiaryToDB } from '../../storage/diary/parsers';
 
 import { RowBox, RowValue, RowMenu } from '../libs/RowBox';
@@ -18,7 +23,14 @@ function Diary( { index } ) {
     const dataToDB = parseDiaryToDB( diary );
 
     return (
-        <CRUDContextProvider 
+        <CoreContextProvider 
+            actions={ [ 
+                actions.form, 
+                actions.validation, 
+                actions.createOne, 
+                actions.updateOne, 
+                actions.deleteOne 
+            ] }
             dispatch={ dispatch }
             payload={ payload }
         >
@@ -58,7 +70,7 @@ function Diary( { index } ) {
                 </RowValue>
 
                 <RowMenu>
-                    <CRUDMenu
+                    <CoreMenu
                         options={ ! diary.id ? [ 'C' ] : [ 'U', 'D' ] }
                         process={ _uiux.process }
                     />
@@ -70,7 +82,7 @@ function Diary( { index } ) {
 
             </RowBox>
 
-        </CRUDContextProvider>
+        </CoreContextProvider>
     );
 }
 

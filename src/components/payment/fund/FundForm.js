@@ -1,7 +1,9 @@
 import React, { useState, useContext } from 'react';
 
+import { CoreContext } from "../../core/CoreContext";
+import CoreForm from "../../core/CoreForm";
+
 import { FundsContext } from './FundsContext';
-import { CRUDContext, CRUDForm } from '../../libs/CRUD';
 
 import { Modal } from '../../libs/Modal';
 import { heads } from '../../../storage/texts';
@@ -15,7 +17,7 @@ function FundForm( { index } ) {
     const fund = funds[ index ];
     const { _uiux } = fund;
 
-    const { closeForm } = useContext( CRUDContext );
+    const { closeForm } = useContext( CoreContext );
 
     const [ data, setData ] = useState( { ...fund } );
 
@@ -37,7 +39,7 @@ function FundForm( { index } ) {
     return (
         <Modal onClick={ closeForm } centeredness>
 
-            <CRUDForm
+            <CoreForm
                 headLabel={ heads.payment_funds }
                 mode={ _uiux.mode }
                 process={ _uiux.process }
@@ -80,7 +82,7 @@ function FundForm( { index } ) {
                     </InputValue>
                 </InputBox>
 
-            </CRUDForm>
+            </CoreForm>
         </Modal>
     );
 }

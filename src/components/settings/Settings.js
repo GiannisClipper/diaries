@@ -1,9 +1,12 @@
 import React, { useContext, useEffect  } from 'react';
 
+import { CoreContextProvider } from '../core/CoreContext';
+import actions from '../../storage/core/actions';
+import { UpdateRequest } from '../core/CoreRequests';
+import CoreMenu from '../core/CoreMenu';
+
 import { AppContext } from '../app/AppContext';
 import { parseSettingsToDB } from '../../storage/settings/parsers';
-
-import { CRUDContextProvider, UpdateRequest, CRUDMenu } from '../libs/CRUD';
 
 import { RowBox, RowValue, RowMenu } from '../libs/RowBox';
 
@@ -19,7 +22,12 @@ function Settings() {
     const dataToDB = parseSettingsToDB( settings );
 
     return (
-        <CRUDContextProvider 
+        <CoreContextProvider 
+            actions={ [ 
+                actions.form,
+                actions.validation, 
+                actions.updateOne, 
+            ] }
             dispatch={ dispatch }
             namespace={ 'settings' }
             payload={ payload }
@@ -41,7 +49,7 @@ function Settings() {
                 </RowValue>
 
                 <RowMenu>
-                    <CRUDMenu
+                    <CoreMenu
                         options={ [ 'U' ] }
                         process={ _uiux.process }
                     />
@@ -52,7 +60,7 @@ function Settings() {
                 : null }
             </RowBox> 
     
-        </CRUDContextProvider>
+        </CoreContextProvider>
     );
 }
 
