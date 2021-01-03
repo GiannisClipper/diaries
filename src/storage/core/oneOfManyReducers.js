@@ -95,7 +95,7 @@ const oneOfManyRequestReducer = ( state, action ) => {
             const { _namespace, index, _schema, _sort } = action.payload;
             const _items = [ ...state[ _namespace ] ];
 
-            _items[ index ]._uiux.process = {};
+            _items[ index ]._uiux.process = { isResponseAfter: true };
             _items[ index ]._uiux.mode = {};
             _items[ index ]._uiux.form = {};
 
@@ -128,7 +128,7 @@ const oneOfManyRequestReducer = ( state, action ) => {
             const { _namespace, index, _schema, _sort } = action.payload;
             const _items = [ ...state[ _namespace ] ];
 
-            _items[ index ]._uiux.process = {};
+            _items[ index ]._uiux.process = { isResponseAfter: true };
             _items[ index ]._uiux.mode = {};
             _items[ index ]._uiux.form = {};
 

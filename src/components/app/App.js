@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { REFContextProvider } from '../REFContext';
 import { AppContextProvider } from './AppContext';
-import Routes from './Routes';
+import AppStyle from './AppStyle';
+import AppRoutes from './AppRoutes';
 
 function App() {
 
@@ -10,7 +11,9 @@ function App() {
     return (
         <REFContextProvider>
         <AppContextProvider>
-            <Routes />
+            <AppStyle>
+                <AppRoutes />
+            </AppStyle>
         </AppContextProvider>
         </REFContextProvider>
     );

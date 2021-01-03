@@ -17,7 +17,7 @@ const GenresContextProvider = props => {
 
     const [ state, dispatch ] = useReducer( comboReducer( ...reducers ), paymentGenresSchema() );
 
-    useEffect( () => console.log( 'Has rendered. ', 'GenresContextProvider' ) );
+    //useEffect( () => console.log( 'Has rendered. ', 'GenresContextProvider' ) );
 
     return (
         <GenresContext.Provider value={ { state, dispatch } }>

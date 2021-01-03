@@ -75,7 +75,7 @@ const datesReducer = ( state, action ) => {
                     entries.push( entrySchema() );
                     dates[ i ].entries = entries;
                 }
-                _uiux.process = {};
+                _uiux.process = { isResponseAfter: true };
 
                 return { ...state, dates, _uiux, dataFromDB: null };
             }

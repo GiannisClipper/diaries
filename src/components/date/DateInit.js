@@ -23,7 +23,7 @@ function RetrieveManyResponseAfter() {
         const process1 = genres_uiux.process;
         const process2 = funds_uiux.process;
 
-        if ( process1.isResponseOk && process2.isResponseOk ) {
+        if ( process1.isResponseAfter && process2.isResponseAfter ) {
             const payload = { genres, funds };
             retrieveManyResponseAfter( payload );
 

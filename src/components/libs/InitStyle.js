@@ -36,11 +36,11 @@ const InitStyle = createGlobalStyle`
     }
 
     input:-moz-read-only, textarea:-moz-read-only { /* For Firefox */
-        color: ${props => props.theme.weakText};
+        color: ${ props => props.theme.weakText };
     }
     
     input:read-only, textarea:read-only {
-        color: ${props => props.theme.weakText};
+        color: ${ props => props.theme.weakText };
     }
 
     body {

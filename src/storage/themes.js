@@ -8,12 +8,12 @@ const createTheme = colors => ( {
             ${parseInt( colors.appNormalBack.substring( 5, 7 ), 16 )}, 
         0.5 );
     `,
-    AppBox: null,
-    AppHeader: css`
+//    AppBox: null,
+    AppNav: css`
         background-color: ${colors.appStrongBack};
         color: ${colors.appNormalText};
     `,
-    AppMain: css`
+    AppBox: css`
         background-color: ${colors.appNormalBack};
     `,
     ListBox: null,

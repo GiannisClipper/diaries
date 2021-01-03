@@ -93,7 +93,7 @@ const oneRequestReducer = ( state, action ) => {
             const { _namespace } = action.payload;
             const _item = state[ _namespace ];
 
-            _item._uiux.process = {};
+            _item._uiux.process = { isResponseAfter: true };
             _item._uiux.mode = {};
             _item._uiux.form = {};
 
@@ -123,7 +123,7 @@ const oneRequestReducer = ( state, action ) => {
             const { _namespace } = action.payload;
             const _item = state[ _namespace ];
 
-            _item._uiux.process = {};
+            _item._uiux.process = { isResponseAfter: true };
             _item._uiux.mode = {};
             _item._uiux.form = {};
 
@@ -147,7 +147,7 @@ const oneRequestReducer = ( state, action ) => {
             const { _namespace } = action.payload;
             const _item = state[ _namespace ];
 
-            _item._uiux.process = {};
+            _item._uiux.process = { isResponseAfter: true };
 
             return { ...state, [ _namespace ]: _item };
 

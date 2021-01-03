@@ -386,8 +386,8 @@ const manyRequestReducer = ( state, action ) => {
             const _items = state[ _namespace ];
             const { _uiux } = state;
 
-            _items.forEach( x => x._uiux.process = {} );
-            _uiux.process = {};
+            _items.forEach( x => x._uiux.process = { isResponseAfter: true } );
+            _uiux.process = { isResponseAfter: true };
 
             return { ...state, [ _namespace ]: _items, _uiux };
 
