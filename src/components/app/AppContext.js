@@ -13,8 +13,8 @@ const AppContextProvider = props => {
     useEffect( () => console.log( 'Has rendered. ', 'AppContextProvider' ) );
 
     return (
-        <AppContext.Provider value={{ state, dispatch }}>
-            {props.children}
+        <AppContext.Provider value={ { state, dispatch } }>
+            { props.children }
         </AppContext.Provider>
     )
 }

@@ -2,6 +2,8 @@ import React, { useContext, useEffect  } from 'react';
 
 import { CoreContextProvider } from '../core/CoreContext';
 import actions from '../../storage/core/actions';
+import { settingsSchema } from '../../storage/schemas';
+import { parseSettingsFromDB } from '../../storage/settings/parsers';
 import { UpdateRequest } from '../core/CoreRequests';
 import CoreMenu from '../core/CoreMenu';
 
@@ -18,7 +20,14 @@ function Settings() {
     const { settings } = state;
     const { _uiux } = settings;
 
-    const payload = { namespace: 'settings', _saved: settings };
+    const payload = { 
+        _namespace: 'settings', 
+        _saved: settings,
+        _schema: settingsSchema,
+        _parseFromDB: parseSettingsFromDB,
+        _sort: null,
+    };
+
     const dataToDB = parseSettingsToDB( settings );
 
     return (
@@ -42,7 +51,7 @@ function Settings() {
 
             <RowBox>
                 <RowValue title={ `${settings.id}` }>
-                    <div>{ `Χρωματικό Θέμα: ${settings.theme}` }</div>
+                    <div>{ `Χρωματικό θέμα: ${settings.theme}` }</div>
                     <br />
                     <div>{ `Perhaps more settings...` }</div>
                     <br />

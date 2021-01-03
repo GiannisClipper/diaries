@@ -1,12 +1,21 @@
 import React, { createContext, useReducer, useEffect } from 'react';
 import { diariesSchema } from '../../storage/schemas';
-import { diariesReducer } from '../../storage/diary/reducers';
+import comboReducer from '../../helpers/comboReducer';
+import { oneOfManyFormReducer, oneOfManyValidationReducer, oneOfManyRequestReducer } from '../../storage/core/oneOfManyReducers';
+import { manyRequestReducer } from '../../storage/core/manyReducers';
 
 const DiariesContext = createContext();
 
 const DiariesContextProvider = props => {
 
-    const [ state, dispatch ] = useReducer( diariesReducer, diariesSchema() );
+    const reducers = [ 
+        oneOfManyFormReducer,
+        oneOfManyValidationReducer,
+        oneOfManyRequestReducer,
+        manyRequestReducer,
+    ];
+
+    const [ state, dispatch ] = useReducer( comboReducer( ...reducers ), diariesSchema() );
 
     useEffect( () => console.log( 'Has rendered. ', 'DiariesContextProvider' ) );
 

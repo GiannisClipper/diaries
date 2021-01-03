@@ -17,7 +17,7 @@ const signinReducer = ( state, action ) => {
             const settings = { ...settingsSchema(), ...parseSettingsFromDB( dataFromDB ) };
 
             if ( ! signin.token ) {
-                throw new Error( 'Τα στοιχεία εισόδου είναι λανθασμένα.' ); 
+                throw new Error( 'Τα στοιχεία εισόδου είναι λανθασμένα.' );
             }
 
             const signin_uiux = signin._uiux;

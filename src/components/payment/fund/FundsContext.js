@@ -1,14 +1,23 @@
 import React, { createContext, useReducer, useEffect } from 'react';
 import { paymentFundsSchema } from '../../../storage/schemas';
-import { fundsReducer } from '../../../storage/payment/fund/reducers';
+import comboReducer from '../../../helpers/comboReducer';
+import { oneOfManyFormReducer, oneOfManyValidationReducer, oneOfManyRequestReducer } from '../../../storage/core/oneOfManyReducers';
+import { manyRequestReducer } from '../../../storage/core/manyReducers';
 
 const FundsContext = createContext();
 
 const FundsContextProvider = props => {
 
-    const [ state, dispatch ] = useReducer( fundsReducer, paymentFundsSchema() );
+    const reducers = [ 
+        oneOfManyFormReducer,
+        oneOfManyValidationReducer,
+        oneOfManyRequestReducer,
+        manyRequestReducer,
+    ];
 
-    useEffect( () => console.log( 'Has rendered. ', 'FundsContextProvider' ) );
+    const [ state, dispatch ] = useReducer( comboReducer( ...reducers ), paymentFundsSchema() );
+
+    //useEffect( () => console.log( 'Has rendered. ', 'FundsContextProvider' ) );
 
     return (
         <FundsContext.Provider value={ { state, dispatch } }>

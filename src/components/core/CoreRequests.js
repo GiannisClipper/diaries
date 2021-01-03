@@ -21,7 +21,7 @@ function SigninRequest( { process, url, body, dataToDB }) {
 
 function CreateRequest( { process, url, body, dataToDB }) {
 
-    const { createResponseOk, createResponseError } = useContext( CoreContext );
+    const { createResponseOk, createResponseError, createResponseAfter } = useContext( CoreContext );
 
     useEffect( () => {
         if ( process.isRequest ) {
@@ -30,6 +30,9 @@ function CreateRequest( { process, url, body, dataToDB }) {
             const onError = createResponseError;
             const dataFromDB = res => ( { ...dataToDB, _id: res.insertedId } );
             doFetch( url, args, onDone, onError, dataFromDB );
+
+        } else if ( process.isResponseOk ) {
+            createResponseAfter();
         }
     } );
 
@@ -38,7 +41,7 @@ function CreateRequest( { process, url, body, dataToDB }) {
 
 function UpdateRequest( { process, url, body, dataToDB, id }) {
 
-    const { updateResponseOk, updateResponseError } = useContext( CoreContext );
+    const { updateResponseOk, updateResponseError, updateResponseAfter } = useContext( CoreContext );
 
     useEffect( () => {
         if ( process.isRequest ) {
@@ -47,6 +50,9 @@ function UpdateRequest( { process, url, body, dataToDB, id }) {
             const onError = updateResponseError;
             const dataFromDB = () => ( { ...dataToDB, _id: id } );
             doFetch( url, args, onDone, onError, dataFromDB );
+
+        } else if ( process.isResponseOk ) {
+            updateResponseAfter();
         }
     } );
 
@@ -55,7 +61,7 @@ function UpdateRequest( { process, url, body, dataToDB, id }) {
 
 function DeleteRequest( { process, url, body, dataToDB, id }) {
 
-    const { deleteResponseOk, deleteResponseError } = useContext( CoreContext );
+    const { deleteResponseOk, deleteResponseError, deleteResponseAfter } = useContext( CoreContext );
 
     useEffect( () => {
         if ( process.isRequest ) {
@@ -64,6 +70,9 @@ function DeleteRequest( { process, url, body, dataToDB, id }) {
             const onError = deleteResponseError;
             const dataFromDB = () => ( { ...dataToDB, _id: id } );
             doFetch( url, args, onDone, onError, dataFromDB );
+
+        } else if ( process.isResponseOk ) {
+            deleteResponseAfter();
         }
     } );
 
@@ -76,7 +85,8 @@ function RetrieveManyRequest( { process, url } ) {
         retrieveManyRequest,
         retrieveManyResponseWaiting,
         retrieveManyResponseOk,
-        retrieveManyResponseError 
+        retrieveManyResponseError,
+        retrieveManyResponseAfter,
     } = useContext( CoreContext );
 
     useEffect( () => {
@@ -95,7 +105,7 @@ function RetrieveManyRequest( { process, url } ) {
             // do nothing here
 
         } else if ( process.isResponseOk ) {
-            // do nothing here
+            retrieveManyResponseAfter();
 
         } else if ( process.isResponseError ) {
             // do nothing here

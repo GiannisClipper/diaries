@@ -47,35 +47,40 @@ const datesReducer = ( state, action ) => {
 
             return { ...state, dates, _uiux };
 
-        } case 'RETRIEVE_MANY_RESPONSE_SETUP': {
-            const { dates, _uiux, dataFromDB } = state;
-            const { payments } = action.payload;
-            const { genres, funds } = payments;
+        } case 'RETRIEVE_MANY_RESPONSE_AFTER': {
 
-            dataFromDB.sort( ( a, b ) => a.inSequence < b.inSequence ? -1 : a.inSequence > b.inSequence ? 1 : 0 );
+            const { genres, funds } = action.payload;
 
-            const dateFrom = dates[ 0 ].date;
-            const dateTill = dates[ dates.length - 1 ].date;
-            const days = daysBetween( dateFrom, dateTill ) + 1;
+            if ( genres && funds ) {
+                const { dates, _uiux, dataFromDB } = state;
 
-            for ( let i = 0; i < days; i++ ) { 
-                const date = shiftDate( dateFrom, i );
-                const dateStr = dateToYYYYMMDD( date );
-                const dateFromDB = dataFromDB.filter( x => x.date === dateStr );
-                const entries = [];
+                dataFromDB.sort( ( a, b ) => a.inSequence < b.inSequence ? -1 : a.inSequence > b.inSequence ? 1 : 0 );
 
-                for ( const entryFromDB of dateFromDB ) {
-                    const entry = entryFromDB.type === 'payment'
-                        ? parsePaymentFromDB( entryFromDB, genres, funds )
-                        : parseNoteFromDB( entryFromDB )
-                    entries.push( { ...entrySchema(), ...entry } );
+                const dateFrom = dates[ 0 ].date;
+                const dateTill = dates[ dates.length - 1 ].date;
+                const days = daysBetween( dateFrom, dateTill ) + 1;
+
+                for ( let i = 0; i < days; i++ ) { 
+                    const date = shiftDate( dateFrom, i );
+                    const dateStr = dateToYYYYMMDD( date );
+                    const dateFromDB = dataFromDB.filter( x => x.date === dateStr );
+                    const entries = [];
+
+                    for ( const entryFromDB of dateFromDB ) {
+                        const entry = entryFromDB.type === 'payment'
+                            ? parsePaymentFromDB( entryFromDB, genres, funds )
+                            : parseNoteFromDB( entryFromDB )
+                        entries.push( { ...entrySchema(), ...entry } );
+                    }
+                    entries.push( entrySchema() );
+                    dates[ i ].entries = entries;
                 }
-                entries.push( entrySchema() );
-                dates[ i ].entries = entries;
-            }
-            _uiux.process = {};
+                _uiux.process = {};
 
-            return { ...state, dates, _uiux, dataFromDB: null };
+                return { ...state, dates, _uiux, dataFromDB: null };
+            }
+
+            return state;
 
         } default: {
             throw new Error();

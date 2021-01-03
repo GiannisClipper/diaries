@@ -2,6 +2,8 @@ import React, { useContext, useEffect } from 'react';
 
 import { CoreContextProvider } from '../core/CoreContext';
 import actions from '../../storage/core/actions';
+import { userSchema } from '../../storage/schemas';
+import { parseUserFromDB } from '../../storage/user/parsers';
 import { CreateRequest, UpdateRequest, DeleteRequest } from '../core/CoreRequests';
 import CoreMenu from '../core/CoreMenu';
 
@@ -19,7 +21,15 @@ function User( { index } ) {
     const user = users[ index ];
     const { _uiux } = user;
 
-    const payload = { namespace: 'users', index, _saved: user };
+    const payload = { 
+        _namespace: 'users',
+        index,
+        _saved: user,
+        _schema: userSchema,
+        _parseFromDB: parseUserFromDB,
+        _sort: ( x, y ) => x.username > y.username ? 1 : -1,
+    };
+
     const dataToDB = parseUserToDB( user );
 
     return (

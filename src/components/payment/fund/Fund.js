@@ -2,6 +2,8 @@ import React, { useContext, useEffect } from 'react';
 
 import { CoreContextProvider } from '../../core/CoreContext';
 import actions from '../../../storage/core/actions';
+import { paymentFundSchema } from '../../../storage/schemas';
+import { parseFundFromDB } from '../../../storage/payment/fund/parsers';
 import { CreateRequest, UpdateRequest, DeleteRequest } from '../../core/CoreRequests';
 import CoreMenu from '../../core/CoreMenu';
 
@@ -19,7 +21,14 @@ function Fund( { index } ) {
     const fund = funds[ index ];
     const { _uiux } = fund;
 
-    const payload = { index, _saved: fund };
+    const payload = { 
+        _namespace: 'funds',
+        index, 
+        _saved: fund,
+        _schema: paymentFundSchema,
+        _parseFromDB: parseFundFromDB,
+        _sort: null,
+ };
     const dataToDB = parseFundToDB( fund );
 
     return (

@@ -2,6 +2,8 @@ import React, { useContext, useEffect } from 'react';
 
 import { CoreContextProvider } from '../core/CoreContext';
 import actions from '../../storage/core/actions';
+import { diarySchema } from '../../storage/schemas';
+import { parseDiaryFromDB } from '../../storage/diary/parsers';
 import { CreateRequest, UpdateRequest, DeleteRequest } from '../core/CoreRequests';
 import CoreMenu from '../core/CoreMenu';
 
@@ -19,7 +21,15 @@ function Diary( { index } ) {
     const diary = diaries[ index ];
     const { _uiux } = diary;
 
-    const payload = { index, _saved: diary };
+    const payload = { 
+        _namespace: 'diaries',
+        index, 
+        _saved: diary,
+        _schema: diarySchema,
+        _parseFromDB: parseDiaryFromDB,
+        _sort: null,
+    };
+
     const dataToDB = parseDiaryToDB( diary );
 
     return (

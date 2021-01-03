@@ -2,6 +2,8 @@ import React, { useContext, useEffect } from 'react';
 
 import { CoreContextProvider } from '../../core/CoreContext';
 import actions from '../../../storage/core/actions';
+import { paymentGenreSchema } from '../../../storage/schemas';
+import { parseGenreFromDB } from '../../../storage/payment/genre/parsers';
 import { CreateRequest, UpdateRequest, DeleteRequest } from '../../core/CoreRequests';
 import CoreMenu from '../../core/CoreMenu';
 
@@ -19,7 +21,15 @@ function Genre( { index } ) {
     const genre = genres[ index ];
     const { _uiux } = genre;
 
-    const payload = { index, _saved: genre };
+    const payload = { 
+        _namespace: 'genres',
+        index,
+        _saved: genre,
+        _schema: paymentGenreSchema,
+        _parseFromDB: parseGenreFromDB,
+        _sort: null,
+    };
+
     const dataToDB = parseGenreToDB( genre );
 
     const typeInfo = _uiux.mode.isCreate

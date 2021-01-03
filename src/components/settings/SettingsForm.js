@@ -24,7 +24,7 @@ function SettingsForm( { index } ) {
         let errors = '';
 
         errors += isBlank( data.theme ) 
-            ? 'Το `Χρωματικό Θέμα` δεν μπορεί να είναι κενό.\n' : '';
+            ? 'Το `Χρωματικό θέμα` δεν μπορεί να είναι κενό.\n' : '';
 
         return { data, errors };
     }

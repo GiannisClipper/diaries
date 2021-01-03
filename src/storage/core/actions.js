@@ -18,18 +18,21 @@ const signinResponseError = 'SIGNIN_RESPONSE_ERROR';
 
 const createResponseOk = 'CREATE_RESPONSE_OK';
 const createResponseError = 'CREATE_RESPONSE_ERROR';
+const createResponseAfter = 'CREATE_RESPONSE_AFTER'; 
 
 const updateResponseOk = 'UPDATE_RESPONSE_OK'; 
 const updateResponseError = 'UPDATE_RESPONSE_ERROR';
+const updateResponseAfter = 'UPDATE_RESPONSE_AFTER'; 
 
 const deleteResponseOk = 'DELETE_RESPONSE_OK'; 
 const deleteResponseError = 'DELETE_RESPONSE_ERROR';
+const deleteResponseAfter = 'DELETE_RESPONSE_AFTER'; 
 
 const retrieveManyRequest = 'RETRIEVE_MANY_REQUEST'; 
 const retrieveManyResponseWaiting = 'RETRIEVE_MANY_RESPONSE_WAITING'; 
 const retrieveManyResponseOk = 'RETRIEVE_MANY_RESPONSE_OK'; 
 const retrieveManyResponseError = 'RETRIEVE_MANY_RESPONSE_ERROR'; 
-const retrieveManyResponseSetup = 'RETRIEVE_MANY_RESPONSE_SETUP'; 
+const retrieveManyResponseAfter = 'RETRIEVE_MANY_RESPONSE_AFTER'; 
 
 const menu = { openMenu, closeMenu };
 const form = { openForm, closeForm };
@@ -39,16 +42,16 @@ const validation = { doValidation, validationOk, validationError };
 const signup = { doRequest, signupResponseOk, signupResponseError };
 const signin = { doRequest, signinResponseOk, signinResponseError };
 
-const createOne = { doRequest, createResponseOk, createResponseError };
-const updateOne = { doRequest, updateResponseOk, updateResponseError };
-const deleteOne = { doRequest, deleteResponseOk, deleteResponseError };
+const createOne = { doRequest, createResponseOk, createResponseError, createResponseAfter };
+const updateOne = { doRequest, updateResponseOk, updateResponseError, updateResponseAfter };
+const deleteOne = { doRequest, deleteResponseOk, deleteResponseError, deleteResponseAfter };
 
 const retrieveMany = { 
     retrieveManyRequest, 
     retrieveManyResponseWaiting, 
     retrieveManyResponseOk, 
     retrieveManyResponseError, 
-    retrieveManyResponseSetup 
+    retrieveManyResponseAfter,
 };
 
 export default {

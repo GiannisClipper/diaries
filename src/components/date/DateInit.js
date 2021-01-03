@@ -9,14 +9,14 @@ import { GenresContext } from '../payment/genre/GenresContext';
 import { FundsContext } from '../payment/fund/FundsContext';
 import { dateToYYYYMMDD } from '../../helpers/dates';
 
-function RetrieveManyResponseSetup() {
+function RetrieveManyResponseAfter() {
 
     const { genres } = useContext( GenresContext ).state;
     const { funds } = useContext( FundsContext ).state;
     const genres_uiux = useContext( GenresContext ).state._uiux;
     const funds_uiux = useContext( FundsContext ).state._uiux;
 
-    const { retrieveManyResponseSetup, retrieveManyResponseError } = useContext( CoreContext );
+    const { retrieveManyResponseAfter, retrieveManyResponseError } = useContext( CoreContext );
 
     useEffect( () => {
 
@@ -24,8 +24,8 @@ function RetrieveManyResponseSetup() {
         const process2 = funds_uiux.process;
 
         if ( process1.isResponseOk && process2.isResponseOk ) {
-            const payload = { payments: { genres, funds } };
-            retrieveManyResponseSetup( payload );
+            const payload = { genres, funds };
+            retrieveManyResponseAfter( payload );
 
         } else if ( process1.isResponseError || process2.isResponseError ) {
             retrieveManyResponseError();
@@ -43,7 +43,7 @@ function DateInit() {
     const dateFrom = dateToYYYYMMDD( dates[ 0 ].date );
     const dateTill = dateToYYYYMMDD( dates[ dates.length - 1 ].date );
 
-    // useEffect( () => console.log( 'Has rendered. ', 'DateInit' ) );
+    //useEffect( () => console.log( 'Has rendered. ', 'DateInit' ) );
 
     return (
         <CoreContextProvider 
@@ -51,7 +51,7 @@ function DateInit() {
             dispatch={ dispatch }
         >
             { _uiux.process.isResponseOk ?
-                <RetrieveManyResponseSetup />
+                <RetrieveManyResponseAfter />
             :
                 <RetrieveManyRequest 
                     process={ _uiux.process }
