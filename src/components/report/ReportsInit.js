@@ -1,7 +1,7 @@
 import { useEffect, useContext } from 'react';
 import { ReportsContext } from './ReportsContext';
 
-function ReportInit() {
+function ReportsInit() {
 
     const { state, dispatch } = useContext( ReportsContext );
     const { _uiux } = state;
@@ -18,4 +18,4 @@ function ReportInit() {
     return null;
 }
 
-export default ReportInit;
+export default ReportsInit;

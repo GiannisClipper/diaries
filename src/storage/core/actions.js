@@ -20,6 +20,10 @@ const createResponseOk = 'CREATE_RESPONSE_OK';
 const createResponseError = 'CREATE_RESPONSE_ERROR';
 const createResponseAfter = 'CREATE_RESPONSE_AFTER'; 
 
+const retrieveResponseOk = 'RETRIEVE_RESPONSE_OK'; 
+const retrieveResponseError = 'RETRIEVE_RESPONSE_ERROR';
+const retrieveResponseAfter = 'RETRIEVE_RESPONSE_AFTER'; 
+
 const updateResponseOk = 'UPDATE_RESPONSE_OK'; 
 const updateResponseError = 'UPDATE_RESPONSE_ERROR';
 const updateResponseAfter = 'UPDATE_RESPONSE_AFTER'; 
@@ -43,6 +47,7 @@ const signup = { doRequest, signupResponseOk, signupResponseError };
 const signin = { doRequest, signinResponseOk, signinResponseError };
 
 const createOne = { doRequest, createResponseOk, createResponseError, createResponseAfter };
+const retrieveOne = { doRequest, retrieveResponseOk, retrieveResponseError, retrieveResponseAfter }
 const updateOne = { doRequest, updateResponseOk, updateResponseError, updateResponseAfter };
 const deleteOne = { doRequest, deleteResponseOk, deleteResponseError, deleteResponseAfter };
 
@@ -55,12 +60,13 @@ const retrieveMany = {
 };
 
 export default {
-    menu, 
-    form, 
+    menu,
+    form,
     validation,
     signup,
     signin,
     createOne,
+    retrieveOne,
     updateOne,
     deleteOne,
     retrieveMany,

@@ -9,6 +9,7 @@ import { AppBox, AppNav } from '../app/AppPage';
 import { LinkHome, LinkDiaries, LinkUsers, LinkSettings, LinkSignout } from '../app/AppLinks';
 
 import Settings from './Settings';
+import Backup from './Backup';
 
 function SettingsPage() {
 
@@ -40,7 +41,7 @@ function SettingsPage() {
                         { heads.backup }
                     </BlockLabel>
                     <BlockValue>
-                        <Settings />
+                        <Backup />
                     </BlockValue>
                 </BlockBox>
             </ListBox>

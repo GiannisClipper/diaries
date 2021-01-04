@@ -99,6 +99,36 @@ const oneRequestReducer = ( state, action ) => {
 
             return { ...state, [ _namespace ]: _item };
 
+        } case 'RETRIEVE_RESPONSE_OK': {
+            let { _namespace, dataFromDB, _parseFromDB } = action.payload;
+            let _item = state[ _namespace ];
+            _parseFromDB = _parseFromDB || ( data => data );
+
+            _item = { ..._item, ..._parseFromDB( dataFromDB ) };
+            _item._uiux.process = { isResponseOk: true };
+
+            return { ...state, [ _namespace ]: _item };
+
+        } case 'RETRIEVE_RESPONSE_ERROR': {
+            const { _namespace } = action.payload;
+            let _item = state[ _namespace ];
+
+            _item._uiux.process = {};
+            _item._uiux.mode = {};
+            _item._uiux.form = {};
+
+            return { ...state, [ _namespace ]: _item };
+
+        } case 'RETRIEVE_RESPONSE_AFTER': {
+            const { _namespace } = action.payload;
+            const _item = state[ _namespace ];
+
+            _item._uiux.process = { isResponseAfter: true };
+            _item._uiux.mode = {};
+            _item._uiux.form = {};
+
+            return { ...state, [ _namespace ]: _item };
+
         } case 'UPDATE_RESPONSE_OK': {
             const { _namespace, dataFromDB, _parseFromDB } = action.payload;
             let _item = state[ _namespace ];

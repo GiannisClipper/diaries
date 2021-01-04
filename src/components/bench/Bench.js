@@ -11,8 +11,8 @@ import { faBackward, faForward } from '@fortawesome/free-solid-svg-icons';
 
 import { CopyPasteContextProvider } from '../libs/CopyPaste';
 import { Scroll } from '../libs/Scroll';
-import GenreInit from '../payment/genre/GenreInit';
-import FundInit from '../payment/fund/FundInit';
+import GenresInit from '../payment/genre/GenresInit';
+import FundsInit from '../payment/fund/FundsInit';
 
 import styled from 'styled-components';
 import StyledList from '../libs/ListBox';
@@ -103,9 +103,9 @@ const Bench = () => {
         <List reference={outer}>
 
             <ContentBox ref={inner}>
-                <GenreInit />
+                <GenresInit />
 
-                <FundInit />
+                <FundsInit />
 
                 <BenchInit
                     process={ _uiux.process }

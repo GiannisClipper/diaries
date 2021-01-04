@@ -6,7 +6,7 @@ import { heads } from '../../storage/texts';
 import { ListBox } from '../libs/ListBox';
 import { BlockBox, BlockLabel, BlockValue } from '../libs/BlockBox';
 
-import ReportInit from './ReportInit';
+import ReportsInit from './ReportsInit';
 import Report from './Report';
 
 function Reports() {
@@ -25,7 +25,7 @@ function Reports() {
                     { heads.reports }
                 </BlockLabel>
 
-                <ReportInit />
+                <ReportsInit />
 
                 <BlockValue>
                     <ul>

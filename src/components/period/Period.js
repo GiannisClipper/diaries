@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { DatesContextProvider } from '../date/DatesContext';
-import { DateInit } from '../date/DateInit';
+import { DatesInit } from '../date/DatesInit';
 import { Dates } from '../date/Date1';
 
 const Period = React.memo( ( { period, startDate } ) => {
@@ -9,7 +9,7 @@ const Period = React.memo( ( { period, startDate } ) => {
 
     return (
         <DatesContextProvider state={ period }>
-            <DateInit />
+            <DatesInit />
 
             <Dates
                 startDate={ startDate }

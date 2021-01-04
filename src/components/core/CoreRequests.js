@@ -39,6 +39,27 @@ function CreateRequest( { process, url, body, dataToDB }) {
     return null;
 }
 
+function RetrieveRequest( { process, url }) {
+
+    const { retrieveResponseOk, retrieveResponseError, retrieveResponseAfter } = useContext( CoreContext );
+
+    useEffect( () => {
+        if ( process.isRequest ) {
+            const args = { method: 'GET' };
+            const onDone = retrieveResponseOk;
+            const onError = retrieveResponseError;
+            const dataFromDB = res => res;
+            //typeof res === 'object' && res !== null
+            doFetch( url, args, onDone, onError, dataFromDB );
+
+        } else if ( process.isResponseOk ) {
+            retrieveResponseAfter();
+        }
+    } );
+
+    return null;
+}
+
 function UpdateRequest( { process, url, body, dataToDB, id }) {
 
     const { updateResponseOk, updateResponseError, updateResponseAfter } = useContext( CoreContext );
@@ -119,6 +140,7 @@ function RetrieveManyRequest( { process, url } ) {
 export { 
     SigninRequest,
     CreateRequest,
+    RetrieveRequest,
     UpdateRequest,
     DeleteRequest,
     RetrieveManyRequest

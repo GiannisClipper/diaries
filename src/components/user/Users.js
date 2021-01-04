@@ -6,7 +6,7 @@ import { heads } from '../../storage/texts';
 import { ListBox } from '../libs/ListBox';
 import { BlockBox, BlockLabel, BlockValue } from '../libs/BlockBox';
 
-import UserInit from './UserInit';
+import UsersInit from './UsersInit';
 import User from './User';
 
 function Users() {
@@ -20,7 +20,7 @@ function Users() {
 
     return (
         <ListBox>
-            <UserInit />
+            <UsersInit />
 
             <BlockBox>
                 <BlockLabel>

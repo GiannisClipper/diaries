@@ -35,7 +35,7 @@ function RetrieveManyResponseAfter() {
     return null;
 };
 
-function DateInit() {
+function DatesInit() {
 
     const { state, dispatch } = useContext( DatesContext );
     const { dates, _uiux } = state;
@@ -43,7 +43,7 @@ function DateInit() {
     const dateFrom = dateToYYYYMMDD( dates[ 0 ].date );
     const dateTill = dateToYYYYMMDD( dates[ dates.length - 1 ].date );
 
-    //useEffect( () => console.log( 'Has rendered. ', 'DateInit' ) );
+    //useEffect( () => console.log( 'Has rendered. ', 'DatesInit' ) );
 
     return (
         <CoreContextProvider 
@@ -62,5 +62,5 @@ function DateInit() {
     );
 }
 
-export default DateInit;
-export { DateInit };
+export default DatesInit;
+export { DatesInit };

@@ -1,38 +1,38 @@
 import React, { useContext, useEffect  } from 'react';
 import { CoreContextProvider } from '../../core/CoreContext';
 import actions from '../../../storage/core/actions';
-import { paymentGenreSchema } from '../../../storage/schemas';
-import { parseGenreFromDB } from '../../../storage/payment/genre/parsers';
+import { paymentFundSchema } from '../../../storage/schemas';
+import { parseFundFromDB } from '../../../storage/payment/fund/parsers';
 import { RetrieveManyRequest } from '../../core/CoreRequests';
-import { GenresContext } from './GenresContext';
+import { FundsContext } from './FundsContext';
 
-function GenreInit() {
+function FundsInit() {
 
-    const { state, dispatch } = useContext( GenresContext );
+    const { state, dispatch } = useContext( FundsContext );
     const { _uiux } = state;
 
     const payload = {
-        _namespace: 'genres',
-        _schema: paymentGenreSchema,
-        _parseFromDB: parseGenreFromDB,
+        _namespace: 'funds',
+        _schema: paymentFundSchema,
+        _parseFromDB: parseFundFromDB,
         _sort: ( x, y ) => x.code > y.code ? 1 : -1,
     };
 
-    //useEffect( () => console.log( 'Has rendered. ', 'payment/GenreInit' ) );
+    //useEffect( () => console.log( 'Has rendered. ', 'payment/FundsInit' ) );
 
     return (
-        <CoreContextProvider 
+        <CoreContextProvider
             actions={ [ actions.retrieveMany ] }
             dispatch={ dispatch }
             payload={ payload }
         >
             <RetrieveManyRequest 
                 process={ _uiux.process }
-                url={ `/.netlify/functions/payment-genre` }
+                url={ `/.netlify/functions/payment-fund` }
             />
         </CoreContextProvider>
     );
 }
 
-export default GenreInit;
-export { GenreInit };
+export default FundsInit;
+export { FundsInit };

@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 
 import { FundsContext } from './FundsContext';
 
-import FundInit from './FundInit';
+import FundsInit from './FundsInit';
 import Fund from './Fund';
 
 function Funds() {
@@ -16,7 +16,7 @@ function Funds() {
 
     return (
         <ul>
-            <FundInit />
+            <FundsInit />
 
             { funds.map( fund => (
                 <Fund 

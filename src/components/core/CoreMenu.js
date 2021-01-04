@@ -46,19 +46,19 @@ function CreateMenuOption( { reference } ) {
     )
 }
 
-function RetrieveManyMenuOption( { reference } ) {
+function RetrieveMenuOption( { reference } ) {
 
     const { openForm } = useContext( CoreContext );
 
     return (
         <MenuOptionBox 
             ref={ reference }
-            onClick={ () => openForm( { mode: { isRetrieveMany: true } } ) }
+            onClick={ () => openForm( { mode: { isRetrieve: true } } ) }
         >
             <FontAwesomeIcon 
                 className="icon" 
                 icon={ faEdit } 
-                title="Επεξεργασία" 
+                title="Ανάκτηση δεδομένων"
             />
         </MenuOptionBox>
     )
@@ -76,7 +76,7 @@ function UpdateMenuOption( { reference } ) {
             <FontAwesomeIcon 
                 className="icon" 
                 icon={ faEdit } 
-                title="Τροποποίηση" 
+                title="Τροποποίηση εγγραφής" 
             />
         </MenuOptionBox>
     )
@@ -94,7 +94,25 @@ function DeleteMenuOption( { reference } ) {
             <FontAwesomeIcon 
                 className="icon" 
                 icon={ faTrashAlt } 
-                title="Διαγραφή" 
+                title="Διαγραφή εγγραφής" 
+            />
+        </MenuOptionBox>
+    )
+}
+
+function RetrieveManyMenuOption( { reference } ) {
+
+    const { openForm } = useContext( CoreContext );
+
+    return (
+        <MenuOptionBox 
+            ref={ reference }
+            onClick={ () => openForm( { mode: { isRetrieveMany: true } } ) }
+        >
+            <FontAwesomeIcon 
+                className="icon" 
+                icon={ faEdit } 
+                title="Ανάκτηση δεδομένων"
             />
         </MenuOptionBox>
     )
@@ -104,7 +122,8 @@ export default CoreMenu;
 export { 
     CoreMenu,
     CreateMenuOption,
-    RetrieveManyMenuOption,
+    RetrieveMenuOption,
     UpdateMenuOption,
-    DeleteMenuOption
+    DeleteMenuOption,
+    RetrieveManyMenuOption,
 };

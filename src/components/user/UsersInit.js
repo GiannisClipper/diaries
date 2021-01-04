@@ -6,7 +6,7 @@ import { parseUserFromDB } from '../../storage/user/parsers';
 import { RetrieveManyRequest } from '../core/CoreRequests';
 import { UsersContext } from './UsersContext';
 
-function UserInit() {
+function UsersInit() {
 
     const { state, dispatch } = useContext( UsersContext );
     const { _uiux } = state;
@@ -18,7 +18,7 @@ function UserInit() {
         _sort: ( x, y ) => x.username > y.username ? 1 : -1,
     };
 
-    //useEffect( () => console.log( 'Has rendered. ', 'UserInit' ) );
+    //useEffect( () => console.log( 'Has rendered. ', 'UsersInit' ) );
 
     return (
         <CoreContextProvider
@@ -34,5 +34,5 @@ function UserInit() {
     );
 }
 
-export default UserInit;
-export { UserInit };
+export default UsersInit;
+export { UsersInit };

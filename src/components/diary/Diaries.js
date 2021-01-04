@@ -6,7 +6,7 @@ import { heads } from '../../storage/texts';
 import { ListBox } from '../libs/ListBox';
 import { BlockBox, BlockLabel, BlockValue } from '../libs/BlockBox';
 
-import DiaryInit from './DiaryInit';
+import DiariesInit from './DiariesInit';
 import Diary from './Diary';
 
 function Diaries() {
@@ -20,7 +20,7 @@ function Diaries() {
 
     return (
         <ListBox>
-            <DiaryInit />
+            <DiariesInit />
 
             <BlockBox>
                 <BlockLabel>

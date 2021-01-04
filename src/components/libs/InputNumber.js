@@ -28,7 +28,6 @@ function InputNumber( { className, value, decimals, onChange, readOnly } ) {
     const _onBlur = event => {
         let value = event.target.value;
         value = value ? _formatted( value ) : '';
-        console.log( 'number', value )
         onChange( { target: { value } } );
     }
 

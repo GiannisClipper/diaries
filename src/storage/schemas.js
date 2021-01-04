@@ -4,6 +4,8 @@ const appSchema = () => ( {
 
     settings: settingsSchema(),
 
+    backup: backupSchema(),
+
     _uiux: {
         _error: {},
     },
@@ -20,12 +22,20 @@ const signinSchema = () => ( {
 
 const settingsSchema = () => ( {
     theme: null,
+    language: null,
     _uiux: {
         form: {},  // isOpen
         mode: {},  // isUpdate
         process: {},  // isRequest, isResponseWaiting, isResponseError, isValidation, isValidationOk
     },
     ...JSON.parse( localStorage.getItem( 'settings' ) || '{}' ),
+} );
+
+const backupSchema = () => ( {
+    _uiux: {
+        form: {},  // isOpen
+        process: {},  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
+    },
 } );
 
 const usersSchema = () => ( {
@@ -178,6 +188,7 @@ export {
     appSchema, 
     signinSchema,
     settingsSchema,
+    backupSchema,
     usersSchema,
     userSchema,
     diariesSchema,

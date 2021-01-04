@@ -24,7 +24,10 @@ function SettingsForm( { index } ) {
         let errors = '';
 
         errors += isBlank( data.theme ) 
-            ? 'Το `Χρωματικό θέμα` δεν μπορεί να είναι κενό.\n' : '';
+            ? 'Το Θέμα δεν μπορεί να είναι κενό.\n' : '';
+
+        errors += isBlank( data.language ) 
+            ? 'Η Γλώσσα δεν μπορεί να είναι κενή.\n' : '';
 
         return { data, errors };
     }
@@ -41,26 +44,26 @@ function SettingsForm( { index } ) {
 
                 <InputBox>
                     <InputLabel>
-                        Id
-                    </InputLabel>
-                    <InputValue>
-                        <input 
-                            value={data.id || ''}
-                            tabIndex="-1"
-                            readOnly
-                        />
-                    </InputValue>
-                </InputBox>
-
-                <InputBox>
-                    <InputLabel>
-                        Χρωματικό Θέμα
+                        Θέμα
                     </InputLabel>
                     <InputValue>
                         <InputFromList
                             value={ data.theme }
                             allValues={ [ 'light', 'dark' ] }
                             onChange={ event => setData( { ...data, theme: event.target.value } ) }
+                        />
+                    </InputValue>
+                </InputBox>
+
+                <InputBox>
+                    <InputLabel>
+                        Γλώσσα
+                    </InputLabel>
+                    <InputValue>
+                        <InputFromList
+                            value={ data.language }
+                            allValues={ [ 'English', 'Greek' ] }
+                            onChange={ event => setData( { ...data, language: event.target.value } ) }
                         />
                     </InputValue>
                 </InputBox>

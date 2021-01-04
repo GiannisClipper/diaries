@@ -34,8 +34,8 @@ function Settings() {
         <CoreContextProvider 
             actions={ [ 
                 actions.form,
-                actions.validation, 
-                actions.updateOne, 
+                actions.validation,
+                actions.updateOne,
             ] }
             dispatch={ dispatch }
             namespace={ 'settings' }
@@ -51,9 +51,9 @@ function Settings() {
 
             <RowBox>
                 <RowValue title={ `${settings.id}` }>
-                    <div>{ `Χρωματικό θέμα: ${settings.theme}` }</div>
+                    <div>{ `Επιλογή θέματος: ${settings.theme}` }</div>
                     <br />
-                    <div>{ `Perhaps more settings...` }</div>
+                    <div>{ `Επιλογή γλώσσας:` }</div>
                     <br />
                 </RowValue>
 

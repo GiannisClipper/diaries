@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 
 import { GenresContext } from './GenresContext';
 
-import GenreInit from './GenreInit';
+import GenresInit from './GenresInit';
 import Genre from './Genre';
 
 function Genres() {
@@ -16,7 +16,7 @@ function Genres() {
 
     return (
         <ul>
-            <GenreInit />
+            <GenresInit />
 
             { genres.map( genre => (
                 <Genre

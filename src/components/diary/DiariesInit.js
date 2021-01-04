@@ -6,7 +6,7 @@ import { parseDiaryFromDB } from '../../storage/diary/parsers';
 import { RetrieveManyRequest } from '../core/CoreRequests';
 import { DiariesContext } from './DiariesContext';
 
-function DiaryInit() {
+function DiariesInit() {
 
     const { state, dispatch } = useContext( DiariesContext );
     const { _uiux } = state;
@@ -18,7 +18,7 @@ function DiaryInit() {
         _sort: null,
     };
 
-    //useEffect( () => console.log( 'Has rendered. ', 'DiaryInit' ) );
+    //useEffect( () => console.log( 'Has rendered. ', 'DiariesInit' ) );
 
     return (
         <CoreContextProvider
@@ -34,5 +34,5 @@ function DiaryInit() {
     );
 }
 
-export default DiaryInit;
-export { DiaryInit };
+export default DiariesInit;
+export { DiariesInit };

@@ -2,6 +2,7 @@ import comboReducer from '../../helpers/comboReducer';
 import { oneFormReducer, oneValidationReducer, oneRequestReducer } from '../core/oneReducers';
 import { signinReducer, signoutReducer } from '../sign/reducers';
 import { settingsReducer } from '../settings/reducers';
+import { backupReducer } from '../backup/reducers';
 
 const appReducer = ( state, action ) => {
 
@@ -15,6 +16,9 @@ const appReducer = ( state, action ) => {
 
         } case 'settings': {
             return comboReducer( oneFormReducer, oneValidationReducer, settingsReducer, oneRequestReducer )( state, action );
+
+        } case 'backup': {
+            return comboReducer( oneFormReducer, backupReducer, oneRequestReducer )( state, action );
 
         } default: {
             throw new Error();

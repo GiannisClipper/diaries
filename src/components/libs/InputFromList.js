@@ -53,7 +53,7 @@ function InputFromList( { className, allValues, value, onChange } ) {
 
     const listStatus = useRef( {} );
 
-    const [ match, setMatch ] = useState( { value, values: simplifyList( allValues ), index: -1 } );
+    const [ match, setMatch ] = useState( { value, values: simplifyList( allValues ), index: -2 } );
 
     const indexRef = useRef( null );
 
@@ -104,7 +104,15 @@ function InputFromList( { className, allValues, value, onChange } ) {
     const _onBlur = event => {
         listStatus.current = {};
         let { value, values, index } = match;
-        value = index >= 0 && value ? values[ index ].accurate : '';
+
+        value = ! value 
+            ? ''
+            : index === -2  // initial value
+            ? value 
+            : index === -1  // changed to invaid value
+            ? ''
+            : values[ index ].accurate ;  // index >= 0, changed to valid value
+
         setMatch( { value, values, index } );
         onChange( { target: { value } } );  // This is an `InputFromList` attribute
     }
@@ -125,7 +133,7 @@ function InputFromList( { className, allValues, value, onChange } ) {
                 listRef.current.scrollTop += ( top + height ) - ( listBounds.top + listBounds.height );
             }
         }
-    }, [ indexRef.current ] );
+    }, [ listBounds.top, listBounds.height ] );
 
     let _key = -1;
 
