@@ -3,7 +3,7 @@ import React, { useContext, useEffect } from 'react';
 import { CoreContextProvider } from '../core/CoreContext';
 import actions from '../../storage/core/actions';
 import { RetrieveManyRequest } from '../core/CoreRequests';
-import CoreMenu from '../core/CoreMenu';
+import { CoreMenu, RetrieveManyMenuOption } from '../core/CoreMenu';
 
 import { ReportsContext } from './ReportsContext';
 import { parseReportToDB } from '../../storage/report/parsers';
@@ -56,18 +56,18 @@ function Report( { index } ) {
                 </RowValue>
 
                 <RowMenu>
-                    <CoreMenu
-                        options={ [ 'RM' ] }
-                        process={ _uiux.process }
-                    />
+                    <CoreMenu process={ _uiux.process } >
+                        <RetrieveManyMenuOption />
+                    </CoreMenu>
                 </RowMenu>
+            </RowBox> 
 
-                { _uiux.form.isOpen ?
-                    <ReportForm
-                        report={ report }
-                    /> 
-                : null }
-            </RowBox>
+            { _uiux.form.isOpen ?
+                <ReportForm
+                    report={ report }
+                /> 
+            : null }
+
         </CoreContextProvider>
     );
 }

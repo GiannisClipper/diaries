@@ -5,10 +5,11 @@ import { heads } from '../../storage/texts';
 import { ListBox } from '../libs/ListBox';
 import { BlockBox, BlockLabel, BlockValue } from '../libs/BlockBox';
 
-import { AppBox, AppNav } from '../app/AppPage';
-import { LinkHome, LinkDiaries, LinkUsers, LinkSettings, LinkSignout } from '../app/AppLinks';
+import { AppBox, AppNav, LinkHome, LinkBench, LinkReports, LinkSettings, LinkSignout } from '../app/AppPage';
 
 import Settings from './Settings';
+import GenrePage from "../payment/genre/GenrePage";
+import FundPage from "../payment/fund/FundPage";
 
 function SettingsPage() {
 
@@ -18,8 +19,8 @@ function SettingsPage() {
         <>
         <AppNav>
             <LinkHome />
-            <LinkDiaries />
-            <LinkUsers />
+            <LinkBench />
+            <LinkReports />
             <LinkSettings />
             <LinkSignout />
         </AppNav>
@@ -37,12 +38,22 @@ function SettingsPage() {
 
                 <BlockBox>
                     <BlockLabel>
-                        { heads.backup }
+                        { heads.payment.genres }
                     </BlockLabel>
                     <BlockValue>
-                        <Settings />
+                        <GenrePage />
                     </BlockValue>
                 </BlockBox>
+
+                <BlockBox>
+                    <BlockLabel>
+                        { heads.payment.funds }
+                    </BlockLabel>
+                    <BlockValue>
+                        <FundPage />
+                    </BlockValue>
+                </BlockBox>
+
             </ListBox>
         </AppBox>
         </>

@@ -8,7 +8,6 @@ const createTheme = colors => ( {
             ${parseInt( colors.appNormalBack.substring( 5, 7 ), 16 )}, 
         0.5 );
     `,
-//    AppBox: null,
     AppNav: css`
         background-color: ${colors.appStrongBack};
         color: ${colors.appNormalText};
@@ -39,6 +38,9 @@ const createTheme = colors => ( {
     `,
     MenuBox: css`
         background-color: ${colors.weakBack};
+    `,
+    MenuOptionBox: css`
+        background-color: inherited;
     `,
     ToolBox: css`
         background-color: inherited;

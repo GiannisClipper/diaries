@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { GenresContextProvider } from './GenresContext';
-import { AppBox, AppNav, LinkHome, LinkBench, LinkReports, LinkSettings, LinkSignout } from '../../app/AppPage';
+import { AppBox, AppNav } from '../../app/AppPage';
+import { LinkHome, LinkBench, LinkReports, LinkBenchSettings, LinkSignout } from '../../app/AppLinks';
 import Genres from './Genres';
 
 function GenrePage() {
@@ -13,7 +14,7 @@ function GenrePage() {
                 <LinkHome />
                 <LinkBench />
                 <LinkReports />
-                <LinkSettings />
+                <LinkBenchSettings />
                 <LinkSignout />
             </AppNav>
 

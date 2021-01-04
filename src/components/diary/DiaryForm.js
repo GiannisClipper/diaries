@@ -29,13 +29,7 @@ function DiaryForm( { index } ) {
             ? 'Ο Τίτλος ημερολογίου δεν μπορεί να είναι κενός.\n' : '';
  
         errors += !isBlank( data.title ) && isFound( diaries.map( x=> x.title ), data.title, index ) 
-            ? 'Ο Τίτλος ημερολογίου ήδη.\n' : '';
- 
-        errors += isBlank( data.password ) && _uiux.mode.isCreate 
-            ? 'Ο Κωδικός εισόδου δεν μπορεί να είναι κενός.\n' : '';
- 
-        errors += !isBlank( data.password ) && data.password !== data.password2 
-            ? 'Διαφορά στην πληκτρολόγηση του Κωδικού εισόδου.\n' : '';
+            ? 'Ο Τίτλος ημερολογίου υπάρχει ήδη.\n' : '';
  
         return { data, errors };
     }

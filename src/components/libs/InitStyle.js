@@ -1,14 +1,5 @@
 import { css, createGlobalStyle } from 'styled-components';
 
-const centeredness = css`
-    min-height: 100vh;
-    min-width: 100vw;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-`;
-
 const InitStyle = createGlobalStyle`
     * {
         box-sizing: border-box;
@@ -46,6 +37,15 @@ const InitStyle = createGlobalStyle`
     body {
         height: 100vh;
     }
+`;
+
+const centeredness = css`
+    min-height: 100vh;
+    min-width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 `;
 
 export { InitStyle, centeredness };

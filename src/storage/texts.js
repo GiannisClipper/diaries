@@ -10,6 +10,7 @@ const heads = {
         funds: 'Μέσα πληρωμών',
     },
     reports: 'Καταστάσεις',
+    backup: 'Αντίγραφο δεδομένων',
 }
 
 const buttons = {

@@ -5,7 +5,7 @@ import actions from '../../../storage/core/actions';
 import { paymentFundSchema } from '../../../storage/schemas';
 import { parseFundFromDB } from '../../../storage/payment/fund/parsers';
 import { CreateRequest, UpdateRequest, DeleteRequest } from '../../core/CoreRequests';
-import CoreMenu from '../../core/CoreMenu';
+import { CoreMenu, CreateMenuOption, UpdateMenuOption, DeleteMenuOption } from '../../core/CoreMenu';
 
 import { FundsContext } from './FundsContext';
 import { parseFundToDB } from '../../../storage/payment/fund/parsers';
@@ -79,18 +79,25 @@ function Fund( { index } ) {
                 </RowValue>
 
                 <RowMenu>
-                    <CoreMenu 
-                        options={ ! fund.id ? [ 'C' ] : [ 'U', 'D' ] }
-                        process={ _uiux.process }
-                    />
+                    { ! fund.id 
+                    ?
+                    <CoreMenu process={ _uiux.process } >
+                        <CreateMenuOption />
+                    </CoreMenu>
+                    :
+                    <CoreMenu process={ _uiux.process } >
+                        <UpdateMenuOption />
+                        <DeleteMenuOption />
+                    </CoreMenu>
+                    }
                 </RowMenu>
-
-                { _uiux.form.isOpen ?
-                    <FundForm 
-                        index={ index } 
-                    /> 
-                : null }
             </RowBox>
+
+            { _uiux.form.isOpen ?
+                <FundForm 
+                    index={ index } 
+                /> 
+            : null }
 
         </CoreContextProvider>
     );

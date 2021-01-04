@@ -5,12 +5,14 @@ import actions from '../../storage/core/actions';
 import { diarySchema } from '../../storage/schemas';
 import { parseDiaryFromDB } from '../../storage/diary/parsers';
 import { CreateRequest, UpdateRequest, DeleteRequest } from '../core/CoreRequests';
-import CoreMenu from '../core/CoreMenu';
+import { CoreMenu, CreateMenuOption, UpdateMenuOption, DeleteMenuOption } from '../core/CoreMenu';
 
 import { DiariesContext } from './DiariesContext';
 import { parseDiaryToDB } from '../../storage/diary/parsers';
 
 import { RowBox, RowValue, RowMenu } from '../libs/RowBox';
+
+import { LinkBench } from '../app/AppLinks';
 
 import DiaryForm from './DiaryForm';
 
@@ -75,22 +77,29 @@ function Diary( { index } ) {
 
             <RowBox>
                 <RowValue title={ `${diary.id}` }>
+                    { ! diary.id || <LinkBench /> }
                     <span>{ diary.title }</span>
                     <span>{ diary.startDate }</span>
                 </RowValue>
 
                 <RowMenu>
-                    <CoreMenu
-                        options={ ! diary.id ? [ 'C' ] : [ 'U', 'D' ] }
-                        process={ _uiux.process }
-                    />
+                    { ! diary.id 
+                    ?
+                    <CoreMenu process={ _uiux.process } >
+                        <CreateMenuOption />
+                    </CoreMenu>
+                    :
+                    <CoreMenu process={ _uiux.process } >
+                        <UpdateMenuOption />
+                        <DeleteMenuOption />
+                    </CoreMenu>
+                    }
                 </RowMenu>
-
-                { _uiux.form.isOpen ?
-                    <DiaryForm index={index} /> 
-                : null }
-
             </RowBox>
+
+            { _uiux.form.isOpen ?
+                <DiaryForm index={index} /> 
+            : null }
 
         </CoreContextProvider>
     );

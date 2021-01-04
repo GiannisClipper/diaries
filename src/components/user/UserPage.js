@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { UsersContextProvider } from './UsersContext';
-import { AppBox, AppNav, LinkHome, LinkDiaries, LinkUsers, LinkSettings, LinkSignout } from '../app/AppPage';
+import { AppBox, AppNav } from '../app/AppPage';
+import { LinkHome, LinkDiaries, LinkUsers, LinkSettings, LinkSignout } from '../app/AppLinks';
 import Users from './Users';
 
 function UserPage() {
@@ -8,19 +8,19 @@ function UserPage() {
     //useEffect( () => console.log( 'Has rendered. ', 'UserPage' ) );
 
     return (
-        <UsersContextProvider>
-            <AppNav>
-                <LinkHome />
-                <LinkDiaries />
-                <LinkUsers />
-                <LinkSettings />
-                <LinkSignout />
-            </AppNav>
+        <>
+        <AppNav>
+            <LinkHome />
+            <LinkDiaries />
+            <LinkUsers />
+            <LinkSettings />
+            <LinkSignout />
+        </AppNav>
 
-            <AppBox centeredness>
-                <Users />
-            </AppBox>
-        </UsersContextProvider>
+        <AppBox centeredness>
+            <Users />
+        </AppBox>
+        </>
     );
 }
 

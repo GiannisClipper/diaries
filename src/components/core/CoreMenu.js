@@ -2,33 +2,109 @@ import React, { useContext, useEffect } from 'react';
 import { CoreContext } from './CoreContext';
 
 import { Loader } from '../libs/Loader';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBan } from '@fortawesome/free-solid-svg-icons';
-import { EditTool, DeleteTool } from '../libs/Tools';
+import { faBan, faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { MenuOptionBox } from '../libs/MenuBox';
 
-function CoreMenu( { options, process } ) {
+function CoreMenu( { process, children } ) {
 
-    const { openForm } = useContext( CoreContext );
+    process = process || {};
 
     return ( 
-        process.isValidation || 
+        process.isValidation ||
         process.isRequestBefore ||
         process.isRequest ||
         process.isResponseWaiting ?
-            <Loader />
-
+            <MenuOptionBox>
+                <Loader />
+            </MenuOptionBox>
         : process.isResponseError ?
-            <FontAwesomeIcon icon={faBan} className="icon" />
-
+            <MenuOptionBox>
+                <FontAwesomeIcon icon={faBan} className="icon" />
+            </MenuOptionBox>
         : 
-        <>
-            { options.includes( 'C' ) ? <EditTool onClick={ event => openForm( { mode: { isCreate: true } } ) } /> : null }
-            { options.includes( 'RM' ) ? <EditTool onClick={ event => openForm( { mode: { isRetrieveMany: true } } ) } /> : null }
-            { options.includes( 'U' ) ? <EditTool onClick={ event => openForm( { mode: { isUpdate: true } } ) } /> : null }
-            { options.includes( 'D' ) ? <DeleteTool onClick={ event => openForm( { mode: { isDelete: true } } ) } /> : null }
-        </>
+            <>{ children }</>
     );
 }
 
+function CreateMenuOption( { reference } ) {
+
+    const { openForm } = useContext( CoreContext );
+
+    return (
+        <MenuOptionBox 
+            ref={ reference }
+            onClick={ () => openForm( { mode: { isCreate: true } } ) }
+        >
+            <FontAwesomeIcon 
+                className="icon" 
+                icon={ faEdit } 
+                title="Νέα εγγραφή" 
+            />
+        </MenuOptionBox>
+    )
+}
+
+function RetrieveManyMenuOption( { reference } ) {
+
+    const { openForm } = useContext( CoreContext );
+
+    return (
+        <MenuOptionBox 
+            ref={ reference }
+            onClick={ () => openForm( { mode: { isRetrieveMany: true } } ) }
+        >
+            <FontAwesomeIcon 
+                className="icon" 
+                icon={ faEdit } 
+                title="Επεξεργασία" 
+            />
+        </MenuOptionBox>
+    )
+}
+
+function UpdateMenuOption( { reference } ) {
+
+    const { openForm } = useContext( CoreContext );
+
+    return (
+        <MenuOptionBox 
+            ref={ reference }
+            onClick={ () => openForm( { mode: { isUpdate: true } } ) }
+        >
+            <FontAwesomeIcon 
+                className="icon" 
+                icon={ faEdit } 
+                title="Τροποποίηση" 
+            />
+        </MenuOptionBox>
+    )
+}
+
+function DeleteMenuOption( { reference } ) {
+
+    const { openForm } = useContext( CoreContext );
+
+    return (
+        <MenuOptionBox 
+            ref={ reference }
+            onClick={ () => openForm( { mode: { isDelete: true } } ) }
+        >
+            <FontAwesomeIcon 
+                className="icon" 
+                icon={ faTrashAlt } 
+                title="Διαγραφή" 
+            />
+        </MenuOptionBox>
+    )
+}
+
 export default CoreMenu;
-export { CoreMenu };
+export { 
+    CoreMenu,
+    CreateMenuOption,
+    RetrieveManyMenuOption,
+    UpdateMenuOption,
+    DeleteMenuOption
+};

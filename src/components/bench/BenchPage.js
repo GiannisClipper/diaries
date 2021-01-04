@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import { GenresContextProvider } from '../payment/genre/GenresContext';
-import { FundsContextProvider } from '../payment/fund/FundsContext';
-import { BenchContextProvider } from './BenchContext';
-import { AppBox, AppNav, LinkHome, LinkReports, LinkSettings, LinkSignout } from '../app/AppPage';
+import { AppBox, AppNav } from '../app/AppPage';
+import { LinkHome, LinkDiaries, LinkBench, LinkReports, LinkBenchSettings, LinkSignout } from '../app/AppLinks';
 import Bench from './Bench';
 
 function BenchPage() {
@@ -10,22 +8,20 @@ function BenchPage() {
     //useEffect( () => console.log( 'Has rendered. ', 'BenchPage' ) );
 
     return (
-        <GenresContextProvider>
-        <FundsContextProvider>
-        <BenchContextProvider>
-            <AppNav>
-                <LinkHome />
-                <LinkReports />
-                <LinkSettings />
-                <LinkSignout />
-            </AppNav>
+        <>
+        <AppNav>
+            <LinkHome />
+            <LinkDiaries />
+            <LinkBench />
+            <LinkReports />
+            <LinkBenchSettings />
+            <LinkSignout />
+        </AppNav>
 
-            <AppBox>
-                <Bench />
-            </AppBox>
-        </BenchContextProvider>
-        </FundsContextProvider>
-        </GenresContextProvider>
+        <AppBox>
+            <Bench />
+        </AppBox>
+        </>
     );
 }
 

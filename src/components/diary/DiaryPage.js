@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { DiariesContextProvider } from './DiariesContext';
-import { AppBox, AppNav, LinkHome, LinkDiaries, LinkUsers, LinkSettings, LinkSignout } from '../app/AppPage';
+import { AppBox, AppNav } from '../app/AppPage';
+import { LinkHome, LinkDiaries, LinkUsers, LinkSettings, LinkSignout } from '../app/AppLinks';
+
 import Diaries from './Diaries';
 
 function DiaryPage() {
@@ -8,19 +9,19 @@ function DiaryPage() {
     //useEffect( () => console.log( 'Has rendered. ', 'DiaryPage' ) );
 
     return (
-        <DiariesContextProvider>
-            <AppNav>
-                <LinkHome />
-                <LinkDiaries />
-                <LinkUsers />
-                <LinkSettings />
-                <LinkSignout />
-            </AppNav>
+        <>
+        <AppNav>
+            <LinkHome />
+            <LinkDiaries />
+            <LinkUsers />
+            <LinkSettings />
+            <LinkSignout />
+        </AppNav>
 
-            <AppBox centeredness>
-                <Diaries />
-            </AppBox>
-        </DiariesContextProvider>
+        <AppBox centeredness>
+            <Diaries />
+        </AppBox>
+        </>
     );
 }
 

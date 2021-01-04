@@ -5,7 +5,7 @@ import actions from '../../storage/core/actions';
 import { settingsSchema } from '../../storage/schemas';
 import { parseSettingsFromDB } from '../../storage/settings/parsers';
 import { UpdateRequest } from '../core/CoreRequests';
-import CoreMenu from '../core/CoreMenu';
+import { CoreMenu, UpdateMenuOption } from '../core/CoreMenu';
 
 import { AppContext } from '../app/AppContext';
 import { parseSettingsToDB } from '../../storage/settings/parsers';
@@ -58,17 +58,16 @@ function Settings() {
                 </RowValue>
 
                 <RowMenu>
-                    <CoreMenu
-                        options={ [ 'U' ] }
-                        process={ _uiux.process }
-                    />
+                    <CoreMenu process={ _uiux.process } >
+                        <UpdateMenuOption />
+                    </CoreMenu>
                 </RowMenu>
-
-                { _uiux.form.isOpen ?
-                    <SettingsForm /> 
-                : null }
             </RowBox> 
-    
+
+            { _uiux.form.isOpen ?
+                <SettingsForm /> 
+            : null }
+
         </CoreContextProvider>
     );
 }

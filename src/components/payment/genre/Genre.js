@@ -5,7 +5,7 @@ import actions from '../../../storage/core/actions';
 import { paymentGenreSchema } from '../../../storage/schemas';
 import { parseGenreFromDB } from '../../../storage/payment/genre/parsers';
 import { CreateRequest, UpdateRequest, DeleteRequest } from '../../core/CoreRequests';
-import CoreMenu from '../../core/CoreMenu';
+import { CoreMenu, CreateMenuOption, UpdateMenuOption, DeleteMenuOption } from '../../core/CoreMenu';
 
 import { GenresContext } from './GenresContext';
 import { parseGenreToDB } from '../../../storage/payment/genre/parsers';
@@ -90,18 +90,26 @@ function Genre( { index } ) {
                 </RowValue>
 
                 <RowMenu>
-                    <CoreMenu 
-                        options={ ! genre.id ? [ 'C' ] : [ 'U', 'D' ] }
-                        process={ _uiux.process }
-                    />
+                    { ! genre.id 
+                    ?
+                    <CoreMenu process={ _uiux.process } >
+                        <CreateMenuOption />
+                    </CoreMenu>
+                    :
+                    <CoreMenu process={ _uiux.process } >
+                        <UpdateMenuOption />
+                        <DeleteMenuOption />
+                    </CoreMenu>
+                    }
                 </RowMenu>
-
-                { _uiux.form.isOpen ? 
-                    <GenreForm 
-                        index={ index } 
-                    /> 
-                : null }
             </RowBox> 
+
+            { _uiux.form.isOpen ? 
+                <GenreForm 
+                    index={ index } 
+                /> 
+            : null }
+
         </CoreContextProvider>
     );
 }

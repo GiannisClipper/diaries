@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ReportsContextProvider } from './ReportsContext';
-import { AppBox, AppNav, LinkHome, LinkBench, LinkReports, LinkSettings, LinkSignout } from '../app/AppPage';
+import { AppBox, AppNav } from '../app/AppPage';
+import { LinkHome, LinkBench, LinkReports, LinkBenchSettings, LinkSignout } from '../app/AppLinks';
 import Reports from './Reports';
 
 function ReportPage() {
@@ -13,7 +14,7 @@ function ReportPage() {
                 <LinkHome />
                 <LinkBench />
                 <LinkReports />
-                <LinkSettings />
+                <LinkBenchSettings />
                 <LinkSignout />
             </AppNav>
 
