@@ -54,7 +54,7 @@ const datesReducer = ( state, action ) => {
             if ( genres && funds ) {
                 const { dates, _uiux, dataFromDB } = state;
 
-                dataFromDB.sort( ( a, b ) => a.inSequence < b.inSequence ? -1 : a.inSequence > b.inSequence ? 1 : 0 );
+                dataFromDB.sort( ( a, b ) => a.index < b.index ? -1 : a.index > b.index ? 1 : 0 );
 
                 const dateFrom = dates[ 0 ].date;
                 const dateTill = dates[ dates.length - 1 ].date;
@@ -94,91 +94,91 @@ const dateReducer = ( state, action ) => {
 
         case 'OPEN_MENU': {
             const { entries } = state;
-            const { inSequence } = action.payload;
-            entries[ inSequence ]._uiux.menu = { isOpen: true };
+            const { index } = action.payload;
+            entries[ index ]._uiux.menu = { isOpen: true };
 
             return { ...state, entries };
 
         } case 'CLOSE_MENU': {
             const { entries } = state;
-            const { inSequence } = action.payload;
-            entries[ inSequence ]._uiux.menu = {};
+            const { index } = action.payload;
+            entries[ index ]._uiux.menu = {};
 
             return { ...state, entries };
 
         } case 'OPEN_FORM': {
             const { entries } = state;
-            const { inSequence, type, mode } = action.payload;
-            entries[ inSequence ]._uiux.form = { isOpen: true };
-            entries[ inSequence ]._uiux.type = type;
-            entries[ inSequence ]._uiux.mode = mode;
+            const { index, type, mode } = action.payload;
+            entries[ index ]._uiux.form = { isOpen: true };
+            entries[ index ]._uiux.type = type;
+            entries[ index ]._uiux.mode = mode;
 
             if ( mode.isCreate ) {
-                const { _uiux } = entries[ inSequence ];
-                entries[ inSequence ] = type.isPayment
+                const { _uiux } = entries[ index ];
+                entries[ index ] = type.isPayment
                     ? { ...paymentSchema(), _uiux }
                     : { ...noteSchema(), _uiux };
                 }
 
-            entries[ inSequence ]._saved = { ...entries[ inSequence ] };
-            delete entries[ inSequence ]._saved._uiux;
+            entries[ index ]._saved = { ...entries[ index ] };
+            delete entries[ index ]._saved._uiux;
 
             return { ...state, entries };
 
         } case 'CLOSE_FORM': {
             const { entries } = state;
-            const { inSequence } = action.payload;
-            entries[ inSequence ]._uiux.process = {};
-            entries[ inSequence ]._uiux.form = {};
-            entries[ inSequence ]._uiux.type = {};
-            entries[ inSequence ]._uiux.mode = {};
+            const { index } = action.payload;
+            entries[ index ]._uiux.process = {};
+            entries[ index ]._uiux.form = {};
+            entries[ index ]._uiux.type = {};
+            entries[ index ]._uiux.mode = {};
 
-            delete entries[ inSequence ]._saved;
+            delete entries[ index ]._saved;
 
             return { ...state, entries };
 
         } case 'DO_VALIDATION': {
             const { entries } = state;
-            const { inSequence } = action.payload;
-            entries[ inSequence ]._uiux.process = { isValidation: true };
+            const { index } = action.payload;
+            entries[ index ]._uiux.process = { isValidation: true };
 
             return { ...state, entries };
 
         } case 'VALIDATION_OK': {
             const { entries } = state;
-            const { inSequence, data } = action.payload;
-            const { _uiux } = entries[ inSequence ];
+            const { index, data } = action.payload;
+            const { _uiux } = entries[ index ];
             _uiux.process = { isValidationOk: true };
-            entries[ inSequence ] = { ...data, _uiux };
+            entries[ index ] = { ...data, _uiux };
 
             return { ...state, entries };
 
         } case 'VALIDATION_ERROR': {
             const { entries } = state;
-            const { inSequence } = action.payload;
-            entries[ inSequence ]._uiux.process = {};
+            const { index } = action.payload;
+            entries[ index ]._uiux.process = {};
 
             return { ...state, entries };
 
         } case 'DO_REQUEST': {
             const { entries } = state;
-            const { inSequence } = action.payload;
-            entries[ inSequence ]._uiux.process = { isRequest: true };
+            const { index } = action.payload;
+            entries[ index ]._uiux.process = { isRequest: true };
 
             return { ...state, entries };
 
         } case 'CREATE_RESPONSE_OK': {
             const entries = [ ...state.entries ];
-            const { inSequence, genres, funds, dataFromDB } = action.payload;
-            const { _uiux } = entries[ inSequence ];
+            const { index, genres, funds, dataFromDB } = action.payload;
+            const { _uiux } = entries[ index ];
             _uiux.mode = {};
             _uiux.form = {};
 
-            entries[ inSequence ] = dataFromDB.type === 'payment'
+            entries[ index ] = dataFromDB.type === 'payment'
                 ? { ...parsePaymentFromDB( dataFromDB, genres, funds ), _uiux }
                 : { ...parseNoteFromDB( dataFromDB ), _uiux };
 
-            if ( inSequence === entries.length - 1 ) {
+            if ( index === entries.length - 1 ) {
                 entries.push( entrySchema() );
             }
 
@@ -188,21 +188,21 @@ const dateReducer = ( state, action ) => {
 
         } case 'CREATE_RESPONSE_ERROR': {
             const { entries } = state;
-            const { inSequence } = action.payload;
-            const { _uiux } = entries[ inSequence ];
-            entries[ inSequence ] = { ...entrySchema(), _uiux };
+            const { index } = action.payload;
+            const { _uiux } = entries[ index ];
+            entries[ index ] = { ...entrySchema(), _uiux };
             entries.forEach( x => x._uiux.process = {} );
 
             return { ...state, entries };
 
         } case 'UPDATE_RESPONSE_OK': {
             const entries = [ ...state.entries ];
-            const { inSequence, genres, funds, dataFromDB } = action.payload;
-            const { _uiux } = entries[ inSequence ];
+            const { index, genres, funds, dataFromDB } = action.payload;
+            const { _uiux } = entries[ index ];
             _uiux.mode = {};
             _uiux.form = {};
 
-            entries[ inSequence ] = dataFromDB.type === 'payment'
+            entries[ index ] = dataFromDB.type === 'payment'
                 ? { ...parsePaymentFromDB( dataFromDB, genres, funds ), _uiux }
                 : { ...parseNoteFromDB( dataFromDB ), _uiux };
 
@@ -212,26 +212,26 @@ const dateReducer = ( state, action ) => {
 
         } case 'UPDATE_RESPONSE_ERROR': {
             const { entries } = state;
-            const { inSequence } = action.payload;
-            const { _uiux, _saved } = entries[ inSequence ];
-            entries[ inSequence ] = { ..._saved, _uiux };
+            const { index } = action.payload;
+            const { _uiux, _saved } = entries[ index ];
+            entries[ index ] = { ..._saved, _uiux };
             entries.forEach( x => x._uiux.process = {} );
 
             return { ...state, entries };
 
         } case 'DELETE_RESPONSE_OK': {
             const entries = [ ...state.entries ];
-            const { inSequence } = action.payload;
-            entries.splice( inSequence, 1 );
+            const { index } = action.payload;
+            entries.splice( index, 1 );
             entries.forEach( x => x._uiux.process = {} );
 
             return { ...state, entries };
 
         } case 'DELETE_RESPONSE_ERROR': {
             const { entries } = state;
-            const { inSequence } = action.payload;
-            entries[ inSequence ]._uiux.mode = {};
-            entries[ inSequence ]._uiux.form = {};
+            const { index } = action.payload;
+            entries[ index ]._uiux.mode = {};
+            entries[ index ]._uiux.form = {};
             entries.forEach( x => x._uiux.process = {} );
 
             return { ...state, entries };

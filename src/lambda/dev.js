@@ -10,8 +10,8 @@ exports.handler = async function( event, context, callback ) {
         const db = client.db( 'diaries' );
         const collection = db.collection( 'entries' );
 
-        const result = {};
-//        const result = await collection.updateMany( {}, { $set: { type: 'note' } } );
+        //const result = await collection.updateMany( {}, { $set: { type: 'note' } } );
+        const result = await collection.updateMany( {}, { $rename: { "inSequence": "index" } } );
 
         console.log( result ); // output to netlify function log
         callback( null, responseOnSuccess( result ) );

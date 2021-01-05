@@ -3,8 +3,8 @@ import { getFromList } from '../../helpers/getFromList';
 const parsePaymentFromDB = ( data, genres, funds ) => ( {
     id: data._id,
     date: data.date,
+    index: data.index,
     type: data.type,
-    inSequence: data.inSequence,
     genre_name: getFromList( genres, 'id', data.genre_id ).name,
     incoming: data.incoming,
     outgoing: data.outgoing,
@@ -14,8 +14,8 @@ const parsePaymentFromDB = ( data, genres, funds ) => ( {
 
 const parsePaymentToDB = ( data, genres, funds ) => ( {
     date: data.date,
+    index: data.index,
     type: data.type,
-    inSequence: data.inSequence,
     genre_id: getFromList( genres, 'name', data.genre_name ).id,
     incoming: data.incoming,
     outgoing: data.outgoing,

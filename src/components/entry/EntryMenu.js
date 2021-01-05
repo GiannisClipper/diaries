@@ -47,7 +47,7 @@ function EntryMenu( { children } ) {
     );
 }
 
-function BlankEntryMenu( { date, entry, inSequence } ) {
+function BlankEntryMenu( { date, entry, index } ) {
 
     const { doPaste, isAbleToPaste } = useContext( CopyPasteContext );
 
@@ -68,7 +68,7 @@ function BlankEntryMenu( { date, entry, inSequence } ) {
             <PasteTool onClick={event => {
                 if ( isAbleToPaste() ) {
                     closeMenu();
-                    doPaste( { date, entry, inSequence } );
+                    doPaste( { date, entry, index } );
                 }
             }} />
 
@@ -77,7 +77,7 @@ function BlankEntryMenu( { date, entry, inSequence } ) {
     );
 }
 
-function ExistsEntryMenu( { date, entry, inSequence } ) {
+function ExistsEntryMenu( { date, entry, index } ) {
 
     const { doCut, doCopy, doPaste, isAbleToPaste } = useContext( CopyPasteContext );
 
@@ -91,7 +91,7 @@ function ExistsEntryMenu( { date, entry, inSequence } ) {
         <EntryMenu>
             <EditTool onClick={event => {
                 openForm( { type, mode: { isUpdate: true } } );
-                closeMenu( event, date, inSequence );
+                closeMenu( event, date, index );
             }} />
 
             <DeleteTool onClick={event => {
@@ -100,19 +100,19 @@ function ExistsEntryMenu( { date, entry, inSequence } ) {
             }} />
 
             <CutTool onClick={event => {
-                doCut( { date, entry, inSequence } );
+                doCut( { date, entry, index } );
                 closeMenu();
             }} />
 
             <CopyTool onClick={event => {
-                doCopy( { date, entry, inSequence } );
+                doCopy( { date, entry, index } );
                 closeMenu();
             }} />
 
             <PasteTool onClick={event => {
                 if ( isAbleToPaste() ) {
                     closeMenu();
-                    doPaste( { date, entry, inSequence } );
+                    doPaste( { date, entry, index } );
                 }
             }} />
 

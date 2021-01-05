@@ -57,13 +57,13 @@ const mockResult = ( url, args ) => {
                 _id: strFrom,
                 date: strFrom,
                 note: strFrom + '/' + url,
-                inSequence: 0
+                index: 0
             },
             {
                 _id: strTill,
                 date: strTill,
                 note: strTill + '/' + url,
-                inSequence: 0
+                index: 0
             }
         ];
 

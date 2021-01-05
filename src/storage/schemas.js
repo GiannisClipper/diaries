@@ -103,8 +103,8 @@ const dateSchema = () => ( {
 const entrySchema = () => ( {
     id: null,
     date: '',
+    index: 0,
     type: '',  // 'note', 'payment'
-    inSequence: 0,
     _uiux: {
         menu: {},  // isOpen
         form: {},  // isOpen

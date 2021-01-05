@@ -42,14 +42,14 @@ const RowMenu = styled( StyledRow.RowMenu )`
     width: 2em;
 `;
 
-const Entry = ( { inSequence } ) => {
+const Entry = ( { index } ) => {
 
     const { genres } = useContext( GenresContext ).state;
     const { funds } = useContext( FundsContext ).state;
 
     const { state, dispatch } = useContext( DateContext );
     const { date, entries } = state;
-    const entry = entries[ inSequence ];
+    const entry = entries[ index ];
     const { _uiux } = entry;
 
 
@@ -65,7 +65,7 @@ const Entry = ( { inSequence } ) => {
 
             onDragStart = event => {
                 event.dataTransfer.effectAllowed = 'move';
-                doCut( { date, entry, inSequence } );
+                doCut( { date, entry, index } );
             }
         }
 
@@ -75,31 +75,31 @@ const Entry = ( { inSequence } ) => {
 
         onDrop = event => {
             event.preventDefault();
-            doPaste( { date, entry, inSequence } );
+            doPaste( { date, entry, index } );
         }
     }
 
-    const _saved = useRef( { date, inSequence } );
+    const _saved = useRef( { date, index } );
 
     const parseDataToDB = _uiux.type.isPayment 
         ? 
         () => parsePaymentToDB(
-                { ...entry, date: dateToYYYYMMDD( date ), inSequence }, 
+                { ...entry, date: dateToYYYYMMDD( date ), index }, 
                 genres, 
                 funds 
             )
         : 
         () => parseNoteToDB( 
-                { ...entry, date: dateToYYYYMMDD( date ), inSequence },
+                { ...entry, date: dateToYYYYMMDD( date ), index },
             );
 
     const body = () => JSON.stringify( {
-        old: { date: dateToYYYYMMDD( _saved.current.date ), inSequence: _saved.current.inSequence },
-        new: { date: dateToYYYYMMDD( date ), inSequence },
+        old: { date: dateToYYYYMMDD( _saved.current.date ), index: _saved.current.index },
+        new: { date: dateToYYYYMMDD( date ), index },
         data: parseDataToDB(),
     } );
 
-    const payload = { inSequence, genres, funds };
+    const payload = { index, genres, funds };
 
 
     // useEffect( () =>  console.log( 'Has rendered. ', 'Entry' ) );
@@ -147,7 +147,7 @@ const Entry = ( { inSequence } ) => {
             : null }
 
             <RowBox
-                key={ inSequence }
+                key={ index }
                 draggable={ draggable }
                 onDragStart={ onDragStart }
                 onDragOver={ onDragOver }
@@ -155,7 +155,7 @@ const Entry = ( { inSequence } ) => {
             >
                 <RowValue
                     draggable={ draggable }
-                    title={ `${entry.date}, ${inSequence}, ${entry.inSequence}, ${entry.id}` }
+                    title={ `${entry.date}, ${index}, ${entry.index}, ${entry.id}` }
                 >
                     <EntryRepr entry={ entry } />
                 </RowValue>
@@ -171,7 +171,7 @@ const Entry = ( { inSequence } ) => {
                     : _uiux.process.isResponseError ?
                         <ToolBox><FontAwesomeIcon icon={ faBan } className="icon" /></ToolBox>
                     : 
-                        <EntryMenuTool date={date} entry={entry} inSequence={inSequence} />
+                        <EntryMenuTool date={date} entry={entry} index={index} />
                     }
                 </RowMenu>
 
@@ -181,13 +181,13 @@ const Entry = ( { inSequence } ) => {
                     <BlankEntryMenu 
                         date={ date }
                         entry={ entry }
-                        inSequence={ inSequence }
+                        index={ index }
                     />
                 : 
                     <ExistsEntryMenu 
                         date={ date }
                         entry={ entry }
-                        inSequence={ inSequence }
+                        index={ index }
                     />
                 }
 
@@ -197,13 +197,13 @@ const Entry = ( { inSequence } ) => {
                     <NoteForm 
                         date={ date }
                         entry={ entry } 
-                        inSequence={ inSequence }
+                        index={ index }
                     /> 
                 :
                     <PaymentForm 
                         date={ date }
                         entry={ entry } 
-                        inSequence={ inSequence } 
+                        index={ index } 
                     /> 
                 }
             </RowBox> 
@@ -225,14 +225,14 @@ function Entries() {
 
     // useEffect( () => console.log( 'Has rendered. ', 'Entries' ) );
 
-    let inSequence = 0;
+    let index = 0;
 
     return (
         <List>
             { entries.map( entry =>
                 <Entry
-                    inSequence={ inSequence++ }
-                    key={ inSequence }
+                    index={ index++ }
+                    key={ index }
                 />
             ) }
         </List>

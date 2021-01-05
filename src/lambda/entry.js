@@ -33,8 +33,8 @@ exports.handler = async function( event, context, callback ) {
             console.log( result );
 
             const id = result.insertedId;
-            const { date, inSequence } = body.new;
-            await updateSequence( collection, id, date, inSequence, 1 );
+            const { date, index } = body.new;
+            await updateSequence( collection, id, date, index, 1 );
     
             callback( null, responseOnSuccess( result ) );
 
@@ -45,9 +45,9 @@ exports.handler = async function( event, context, callback ) {
             const result = await collection.updateOne( { _id: ObjectId( id ) }, { $set: data } );
 
             const oldDate = body.old.date;
-            const oldInSequence = body.old.inSequence;
+            const oldInSequence = body.old.index;
             const newDate = body.new.date;
-            const newInSequence = body.new.inSequence;
+            const newInSequence = body.new.index;
     
             if ( oldDate + oldInSequence !== newDate + newInSequence ) {
                 await updateSequence( collection, id, oldDate, oldInSequence, -1 );
@@ -63,8 +63,8 @@ exports.handler = async function( event, context, callback ) {
             console.log( result );
 
             const body = JSON.parse( event.body );
-            const { date, inSequence } = body.old;
-            await updateSequence( collection, id, date, inSequence, -1 );
+            const { date, index } = body.old;
+            await updateSequence( collection, id, date, index, -1 );
     
             callback( null, responseOnSuccess( result ) );
     
