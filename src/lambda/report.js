@@ -1,40 +1,23 @@
-import { verifyToken } from './common/token';
-import { connectDB } from './common/connectDB';
-import { responseOnSuccess, responseOnError } from './common/responses';
+import { createHandler, auth } from './common/handler';
 
-exports.handler = async function( event, context, callback ) {
-    // Allows to freeze open connections to a database
-    context.callbackWaitsForEmptyEventLoop = false;
+const getMethod = async ( event, collection, payload ) => {
+    const { 
+        type, 
+        dateFrom, 
+        dateTill,
+    } = event.queryStringParameters;
 
-    try {
-        let token = event.headers.authorization;
-        const payload = verifyToken( token );
-        if ( payload.error ) {
-            throw new Error( `No authorization (${payload.error}).` );
-        }
+    const filters = { 
+        type: { $eq: type },
+        date: { $gte: dateFrom, $lte: dateTill },
+    };
 
-        const [ client ] = await connectDB();
-        const db = client.db( 'diaries' );
-        const collection = db.collection( 'entries' );
-
-        if ( event.httpMethod === 'GET' ) {
-            const { type, dateFrom, dateTill } = event.queryStringParameters;
-            const filters = { 
-                type: { $eq: type },
-                date: { $gte: dateFrom, $lte: dateTill },
-            };
-            const result = await collection.find( filters ).toArray();
-            callback( null, responseOnSuccess( result ) );
-
-        } else {
-            throw new Error( `${event.httpMethod} method not supported.` );
-        }
-
-    } catch ( err ) {
-        console.log( err );
-        callback( null, responseOnError( err ) );
-
-    } finally {
-        // await client.close();
-    }
+    const result = await collection.find( filters ).toArray();
+    return result;
 }
+
+exports.handler = createHandler( {
+    collectionName: 'entries',
+    auth,
+    getMethod
+} );

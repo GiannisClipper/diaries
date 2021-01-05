@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { centeredness } from '../libs/InitStyle';
 import texts from '../../storage/texts';
-import { LinkHome, LinkDiaries, LinkUsers, LinkSettings, LinkSignout } from './AppLinks';
+import { LinkBench, LinkDiaries, LinkUsers, LinkSettings, LinkSignout } from './AppLinks';
 
 const AppNavStyle = styled.div`
     position: fixed;
@@ -57,7 +57,7 @@ const AppPage = props => {
     return (
         <>
         <AppNav>
-            <LinkHome />
+            <LinkBench />
             <LinkDiaries />
             <LinkUsers />
             <LinkSettings />

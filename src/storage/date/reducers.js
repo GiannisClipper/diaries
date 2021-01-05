@@ -40,7 +40,10 @@ const datesReducer = ( state, action ) => {
 
         } case 'RETRIEVE_MANY_RESPONSE_ERROR': {
             const { dates, _uiux } = state;
-            dates.forEach( x => x._uiux.process = { isResponseError: true } );
+            dates.forEach( date => { 
+                date._uiux.process = { isResponseError: true };
+                date.entries.forEach( entry => entry._uiux.process = { isResponseError: true } );
+            } );
             _uiux.process = { isResponseError: true };
 
             //_uiux._error = action.payload.error;
@@ -91,20 +94,6 @@ const datesReducer = ( state, action ) => {
 const dateReducer = ( state, action ) => {
 
     switch ( action.type ) {
-
-        // case 'OPEN_MENU': {
-        //     const { entries } = state;
-        //     const { index } = action.payload;
-        //     entries[ index ]._uiux.menu = { isOpen: true };
-
-        //     return { ...state, entries };
-
-        // } case 'CLOSE_MENU': {
-        //     const { entries } = state;
-        //     const { index } = action.payload;
-        //     entries[ index ]._uiux.menu = {};
-
-        //     return { ...state, entries };
 
         case 'OPEN_FORM': {
             const { entries } = state;

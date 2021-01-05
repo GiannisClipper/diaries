@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb';
 
-const updateSequence = async ( collection, id, date, index, step ) => {
+const updateIndex = async ( collection, id, date, index, step ) => {
 
     const res = await collection.updateMany( 
         {
@@ -13,7 +13,7 @@ const updateSequence = async ( collection, id, date, index, step ) => {
         }
     );
 
-    console.log( 'updateSequence', { id, date, index, step, res } );
+    console.log( 'updateIndex', { id, date, index, step, res } );
 }
 
-export { updateSequence };
+export { updateIndex };
