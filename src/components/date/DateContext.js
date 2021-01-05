@@ -1,13 +1,21 @@
 import React, { createContext, useReducer, useEffect } from 'react';
+import comboReducer from '../../helpers/comboReducer';
+import { oneOfManyMenuReducer, oneOfManyValidationReducer } from '../../storage/core/oneOfManyReducers';
 import { dateReducer } from '../../storage/date/reducers';
 
 const DateContext = createContext();
 
 const DateContextProvider = props => {
 
-    const [ state, dispatch ] = useReducer( dateReducer, props.state );
+    const reducers = [ 
+        oneOfManyMenuReducer,
+        oneOfManyValidationReducer,
+        dateReducer
+    ];
 
-    // useEffect( () => console.log( 'Has rendered. ', 'DateContextProvider' ) );
+    const [ state, dispatch ] = useReducer( comboReducer( ...reducers ), props.state );
+
+    //useEffect( () => console.log( 'Has rendered. ', 'DateContextProvider' ) );
 
     return (
         <DateContext.Provider value={{ state, dispatch }}>

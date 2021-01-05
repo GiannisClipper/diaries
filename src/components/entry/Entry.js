@@ -99,7 +99,12 @@ const Entry = ( { index } ) => {
         data: parseDataToDB(),
     } );
 
-    const payload = { index, genres, funds };
+    const payload = { 
+        _namespace: 'entries',
+        index, 
+        genres, 
+        funds 
+    };
 
 
     // useEffect( () =>  console.log( 'Has rendered. ', 'Entry' ) );

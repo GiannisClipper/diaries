@@ -92,21 +92,21 @@ const dateReducer = ( state, action ) => {
 
     switch ( action.type ) {
 
-        case 'OPEN_MENU': {
-            const { entries } = state;
-            const { index } = action.payload;
-            entries[ index ]._uiux.menu = { isOpen: true };
+        // case 'OPEN_MENU': {
+        //     const { entries } = state;
+        //     const { index } = action.payload;
+        //     entries[ index ]._uiux.menu = { isOpen: true };
 
-            return { ...state, entries };
+        //     return { ...state, entries };
 
-        } case 'CLOSE_MENU': {
-            const { entries } = state;
-            const { index } = action.payload;
-            entries[ index ]._uiux.menu = {};
+        // } case 'CLOSE_MENU': {
+        //     const { entries } = state;
+        //     const { index } = action.payload;
+        //     entries[ index ]._uiux.menu = {};
 
-            return { ...state, entries };
+        //     return { ...state, entries };
 
-        } case 'OPEN_FORM': {
+        case 'OPEN_FORM': {
             const { entries } = state;
             const { index, type, mode } = action.payload;
             entries[ index ]._uiux.form = { isOpen: true };
@@ -134,29 +134,6 @@ const dateReducer = ( state, action ) => {
             entries[ index ]._uiux.mode = {};
 
             delete entries[ index ]._saved;
-
-            return { ...state, entries };
-
-        } case 'DO_VALIDATION': {
-            const { entries } = state;
-            const { index } = action.payload;
-            entries[ index ]._uiux.process = { isValidation: true };
-
-            return { ...state, entries };
-
-        } case 'VALIDATION_OK': {
-            const { entries } = state;
-            const { index, data } = action.payload;
-            const { _uiux } = entries[ index ];
-            _uiux.process = { isValidationOk: true };
-            entries[ index ] = { ...data, _uiux };
-
-            return { ...state, entries };
-
-        } case 'VALIDATION_ERROR': {
-            const { entries } = state;
-            const { index } = action.payload;
-            entries[ index ]._uiux.process = {};
 
             return { ...state, entries };
 

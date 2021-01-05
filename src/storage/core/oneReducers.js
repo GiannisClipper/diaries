@@ -1,3 +1,29 @@
+const oneMenuReducer = ( state, action ) => {
+
+    switch ( action.type ) {
+
+        case 'OPEN_MENU': {
+            const { _namespace, mode } = action.payload;
+            const _item = state[ _namespace ];
+
+            _item._uiux.menu = { isOpen: true };
+
+            return { ...state, [ _namespace ]: _item };
+
+        } case 'CLOSE_MENU': {
+            const { _namespace } = action.payload;
+            const _item = state[ _namespace ];
+
+            _item._uiux.menu = {};
+
+            return { ...state, [ _namespace ]: _item };
+
+        } default: {
+            return undefined;
+        }    
+    }
+}
+
 const oneFormReducer = ( state, action ) => {
 
     switch ( action.type ) {
@@ -187,4 +213,9 @@ const oneRequestReducer = ( state, action ) => {
     }
 }
 
-export { oneFormReducer, oneValidationReducer, oneRequestReducer }; 
+export { 
+    oneMenuReducer, 
+    oneFormReducer, 
+    oneValidationReducer, 
+    oneRequestReducer 
+}; 
