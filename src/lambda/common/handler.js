@@ -12,28 +12,32 @@ const auth = event => {
     return payload;
 }
 
-const getMethod = async ( event, collection, payload ) => {
+const getMethod = async ( event, db, collectionName, payload ) => {
+    const collection = db.collection( collectionName );
     const result = await collection.find( {} ).toArray();
     return result;
 }
 
-const postMethod = async ( event, collection, payload ) => {
+const postMethod = async ( event, db, collectionName, payload ) => {
     const body = JSON.parse( event.body )
     const data = body.data;
+    const collection = db.collection( collectionName );
     const result = await collection.insertOne( data );
     return result;
 }
 
-const putMethod = async ( event, collection, payload ) => {
+const putMethod = async ( event, db, collectionName, payload ) => {
     const id = event.queryStringParameters[ 'id' ];
     const body = JSON.parse( event.body );
     const data = body.data;
+    const collection = db.collection( collectionName );
     const result = await collection.updateOne( { _id: ObjectId( id ) }, { $set: data } );
     return result;
 }
 
-const deleteMethod = async ( event, collection, payload ) => {
+const deleteMethod = async ( event, db, collectionName, payload ) => {
     const id = event.queryStringParameters[ 'id' ];
+    const collection = db.collection( collectionName );
     const result = await collection.deleteOne( { _id: ObjectId( id ) } );
     return result;
 }
@@ -51,29 +55,28 @@ function createHandler( { auth, collectionName, getMethod, postMethod, putMethod
 
             const [ client ] = await connectDB();
             const db = client.db( 'diaries' );
-            const collection = db.collection( collectionName );
 
             if ( event.httpMethod === 'GET' && getMethod ) {
 
-                const result = await getMethod( event, collection, payload );
+                const result = await getMethod( event, db, collectionName, payload );
                 console.log( result );
                 callback( null, responseOnSuccess( result ) );
 
             } else if ( event.httpMethod === 'POST' && postMethod ) {
 
-                const result = await postMethod( event, collection, payload );
+                const result = await postMethod( event, db, collectionName, payload );
                 console.log( result );
                 callback( null, responseOnSuccess( result ) );
 
             } else if ( event.httpMethod === 'PUT' && putMethod ) {
 
-                const result = await putMethod( event, collection, payload );
+                const result = await putMethod( event, db, collectionName, payload );
                 console.log( result );
                 callback( null, responseOnSuccess( result ) );
 
             } else if ( event.httpMethod === 'DELETE' && deleteMethod ) {
 
-                const result = await deleteMethod( event, collection, payload );
+                const result = await deleteMethod( event, db, collectionName, payload );
                 console.log( result );
                 callback( null, responseOnSuccess( result ) );
         

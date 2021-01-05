@@ -1,6 +1,6 @@
 import { createHandler, auth } from './common/handler';
 
-const getMethod = async ( event, collection, payload ) => {
+const getMethod = async ( event, db, collectionName, payload ) => {
     const { 
         type, 
         dateFrom, 
@@ -12,6 +12,7 @@ const getMethod = async ( event, collection, payload ) => {
         date: { $gte: dateFrom, $lte: dateTill },
     };
 
+    const collection = db.collection( collectionName );
     const result = await collection.find( filters ).toArray();
     return result;
 }

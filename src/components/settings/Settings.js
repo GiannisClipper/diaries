@@ -53,7 +53,7 @@ function Settings() {
                 <RowValue title={ `${settings.id}` }>
                     <div>{ `Επιλογή θέματος: ${settings.theme}` }</div>
                     <br />
-                    <div>{ `Επιλογή γλώσσας:` }</div>
+                    <div>{ `Επιλογή γλώσσας: ${settings.language}` }</div>
                     <br />
                 </RowValue>
 

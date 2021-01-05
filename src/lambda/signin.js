@@ -2,10 +2,10 @@ import { createHandler } from './common/handler';
 import { createToken } from './common/token';
 const bcrypt = require( 'bcryptjs' );
 
-const putMethod = async ( event, collection, payload ) => {
+const putMethod = async ( event, db, collectionName, payload ) => {
     const body = JSON.parse( event.body );
     const data = body.data;
-
+    const collection = db.collection( collectionName );
     let result = await collection.findOne( { username: data.username } );
 
     if ( !result || !bcrypt.compareSync( data.password, result.password ) ) {
