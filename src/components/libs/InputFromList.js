@@ -107,7 +107,7 @@ function InputFromList( { className, allValues, value, onChange } ) {
 
         value = ! value 
             ? ''
-            : index === -2  // initial value
+            : index === -2  // initial value not changed
             ? value 
             : index === -1  // changed to invaid value
             ? ''

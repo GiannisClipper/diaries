@@ -25,9 +25,12 @@ function Backup() {
 
     useEffect( () => {
         if ( _uiux.process.isResponseOk ) {
-            saveAsTextFile( JSON.stringify( backup ), 'backup.json' );
+            delete backup._uiux;
+            const content = JSON.stringify( backup, null, 2 );  // spacing = 2
+            backup._uiux = _uiux;
+            saveAsTextFile( content, 'backup.json' );
         }
-    }, [ _uiux.process.isResponseOk, backup ] );
+    }, [ _uiux, backup ] );
 
     return (
         <CoreContextProvider 
@@ -42,7 +45,7 @@ function Backup() {
 
             <RetrieveRequest 
                 process={ _uiux.process }
-                url={ `/.netlify/functions/payment-fund` }
+                url={ `/.netlify/functions/backup` }
             />
 
             <RowBox>
