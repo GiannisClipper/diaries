@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useContext, useState } from 'react';
 
+import { AppContext } from '../app/AppContext';
 import { BenchContext } from './BenchContext';
 import { BenchInit } from './BenchInit';
 import { Periods } from '../period/Period';
@@ -64,9 +65,16 @@ function NextButton( { reference } ) {
     );
 }
 
-const Bench = () => {
+const Bench = ( { diary_id } ) => {
 
-    const { state, dispatch } = useContext( BenchContext );
+    let state = useContext( AppContext ).state;
+    let dispatch = useContext( AppContext ).dispatch;
+    if ( diary_id && diary_id !== state.signin.diary_id ) {
+        dispatch( { type: 'SET_ACTIVE_DIARY', payload: { diary_id } } );
+    }
+
+    state = useContext( BenchContext ).state;
+    dispatch = useContext( BenchContext ).dispatch;
     const { periods, _uiux } = state;
 
     const REF = useContext( REFContext );

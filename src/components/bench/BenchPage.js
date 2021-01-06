@@ -6,12 +6,6 @@ import Bench from './Bench';
 
 function BenchPage( { diary_id } ) {
 
-    const { state, dispatch } = useContext( AppContext );
-
-    if ( diary_id && diary_id !== state.signin.diary_id ) {
-        dispatch( { type: 'SET_ACTIVE_DIARY', payload: { diary_id } } );
-    }
-
     //useEffect( () => console.log( 'Has rendered. ', 'BenchPage' ) );
 
     return (
@@ -26,7 +20,7 @@ function BenchPage( { diary_id } ) {
         </AppNav>
 
         <AppBox>
-            <Bench />
+            <Bench diary_id={ diary_id }/>
         </AppBox>
         </>
     );

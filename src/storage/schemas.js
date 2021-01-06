@@ -68,6 +68,8 @@ const diariesSchema = () => ( {
 } );
 
 const diarySchema = () => ( {
+    id: null,
+    user_id: null,
     title: null,
     startDate: null,
     _uiux: {
@@ -102,6 +104,7 @@ const dateSchema = () => ( {
 
 const entrySchema = () => ( {
     id: null,
+    diary_id: null,
     date: '',
     index: 0,
     type: '',  // 'note', 'payment'
@@ -137,6 +140,7 @@ const paymentGenresSchema = () => ( {
 
 const paymentGenreSchema = () => ( {
     id: null,
+    diary_id: null,
     name: '',
     code: '',
     isIncoming: null,
@@ -157,6 +161,7 @@ const paymentFundsSchema = () => ( {
 
 const paymentFundSchema = () => ( {
     id: null,
+    diary_id: null,
     name: '',
     code: '',
     _uiux: {

@@ -7,6 +7,7 @@ import { parseGenreFromDB } from '../../../storage/payment/genre/parsers';
 import { CreateRequest, UpdateRequest, DeleteRequest } from '../../core/CoreRequests';
 import { CoreMenu, CreateMenuOption, UpdateMenuOption, DeleteMenuOption } from '../../core/CoreMenu';
 
+import { AppContext } from '../../app/AppContext';
 import { GenresContext } from './GenresContext';
 import { parseGenreToDB } from '../../../storage/payment/genre/parsers';
 
@@ -15,6 +16,8 @@ import { RowBox, RowValue, RowMenu } from '../../libs/RowBox';
 import GenreForm from './GenreForm';
 
 function Genre( { index } ) {
+
+    const { diary_id } = useContext( AppContext ).state.signin;
 
     const { state, dispatch } = useContext( GenresContext );
     const { genres } = state;
@@ -59,8 +62,8 @@ function Genre( { index } ) {
                 <CreateRequest
                     process={_uiux.process}
                     url={ `/.netlify/functions/payment-genre` }
-                    body={ JSON.stringify( { data: dataToDB } ) }
-                    dataToDB={ dataToDB }
+                    body={ JSON.stringify( { data: { ...dataToDB, diary_id } } ) }
+                    dataToDB={ { ...dataToDB, diary_id } }
                 />
 
             : _uiux.mode.isUpdate ?

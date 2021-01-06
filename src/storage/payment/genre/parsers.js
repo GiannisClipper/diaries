@@ -1,5 +1,6 @@
 const parseGenreFromDB = data => ( {
     id: data._id,
+    diary_id: data.diary_id,
     code: data.code,
     name: data.name,
     isIncoming: data.isIncoming,
@@ -7,6 +8,7 @@ const parseGenreFromDB = data => ( {
 } )
 
 const parseGenreToDB = data => ( {
+    diary_id: data.diary_id,
     code: data.code,
     name: data.name,
     isIncoming: data.isIncoming,

@@ -1,12 +1,17 @@
 import React, { useContext, useEffect  } from 'react';
+
 import { CoreContextProvider } from '../../core/CoreContext';
 import actions from '../../../storage/core/actions';
 import { paymentFundSchema } from '../../../storage/schemas';
 import { parseFundFromDB } from '../../../storage/payment/fund/parsers';
 import { RetrieveManyRequest } from '../../core/CoreRequests';
+
+import { AppContext } from '../../app/AppContext';
 import { FundsContext } from './FundsContext';
 
 function FundsInit() {
+
+    const { diary_id } = useContext( AppContext ).state.signin;
 
     const { state, dispatch } = useContext( FundsContext );
     const { _uiux } = state;
@@ -28,7 +33,7 @@ function FundsInit() {
         >
             <RetrieveManyRequest 
                 process={ _uiux.process }
-                url={ `/.netlify/functions/payment-fund` }
+                url={ `/.netlify/functions/payment-fund?diary_id=${diary_id}` }
             />
         </CoreContextProvider>
     );

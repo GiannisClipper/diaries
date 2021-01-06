@@ -7,6 +7,7 @@ import { parseFundFromDB } from '../../../storage/payment/fund/parsers';
 import { CreateRequest, UpdateRequest, DeleteRequest } from '../../core/CoreRequests';
 import { CoreMenu, CreateMenuOption, UpdateMenuOption, DeleteMenuOption } from '../../core/CoreMenu';
 
+import { AppContext } from '../../app/AppContext';
 import { FundsContext } from './FundsContext';
 import { parseFundToDB } from '../../../storage/payment/fund/parsers';
 
@@ -15,6 +16,8 @@ import { RowBox, RowValue, RowMenu } from '../../libs/RowBox';
 import FundForm from './FundForm';
 
 function Fund( { index } ) {
+
+    const { diary_id } = useContext( AppContext ).state.signin;
 
     const { state, dispatch } = useContext( FundsContext );
     const { funds } = state;
@@ -48,8 +51,8 @@ function Fund( { index } ) {
                 <CreateRequest
                     process={_uiux.process}
                     url={ `/.netlify/functions/payment-fund` }
-                    body={ JSON.stringify( { data: dataToDB } ) }
-                    dataToDB={ dataToDB}
+                    body={ JSON.stringify( { data: { ...dataToDB, diary_id } } ) }
+                    dataToDB={ { ...dataToDB, diary_id } }
                 />
 
             : _uiux.mode.isUpdate ?

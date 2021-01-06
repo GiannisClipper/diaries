@@ -7,6 +7,7 @@ import Signout from '../sign/Signout';
 import UserPage from '../user/UserPage';
 import DiaryPage from '../diary/DiaryPage';
 import BenchPage from '../bench/BenchPage';
+import BenchSettingsPage from '../bench/BenchSettingsPage';
 import ReportPage from '../report/ReportPage';
 import SettingsPage from '../settings/SettingsPage';
 
@@ -37,6 +38,7 @@ function AppRoutes() {
                     <Route exact path='/diaries' render={ () => (<DiaryPage />) } />
                     <Route exact path='/bench' render={ () => (<BenchPage />) } />
                     <Route exact path='/bench/:diary_id' render={ props => (<BenchPage diary_id={ props.match.params.diary_id } />) } />
+                    <Route exact path='/bench_settings' render={ () => (<BenchSettingsPage />) } />
                     <Route exact path='/reports' render={ () => (<ReportPage />) } />
                     <Route render={ () => (<Error404 />) } />
                 </Switch>

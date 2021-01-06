@@ -9,11 +9,17 @@ exports.handler = async function( event, context, callback ) {
         const [ client ] = await connectDB();
         const db = client.db( 'diaries' );
         let collection = null;
+        let result = {};
 
         collection = db.collection( 'entries' );
-        const result = await collection.updateMany( {}, { $set: { diary_id: '5ff4a9f0a71aef59a8695134' } } );
-        //const result = await collection.updateMany( {}, { $set: { type: 'note' } } );
-        //const result = await collection.updateMany( {}, { $rename: { "inSequence": "index" } } );
+        //result = await collection.updateMany( {}, { $set: { type: 'note' } } );
+        //result = await collection.updateMany( {}, { $rename: { "inSequence": "index" } } );
+        //result = await collection.updateMany( {}, { $set: { diary_id: '5ff4a9f0a71aef59a8695134' } } );
+
+        collection = db.collection( 'payments_funds' );
+        result.funds = await collection.updateMany( {}, { $set: { diary_id: '5ff4a9f0a71aef59a8695134' } } );
+        collection = db.collection( 'payments_genres' );
+        result.genres = await collection.updateMany( {}, { $set: { diary_id: '5ff4a9f0a71aef59a8695134' } } );
 
         console.log( result ); // output to netlify function log
         callback( null, responseOnSuccess( result ) );

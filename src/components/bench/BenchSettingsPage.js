@@ -5,15 +5,15 @@ import { heads } from '../../storage/texts';
 import { ListBox } from '../libs/ListBox';
 import { BlockBox, BlockLabel, BlockValue } from '../libs/BlockBox';
 
-import { AppBox, AppNav, LinkHome, LinkBench, LinkReports, LinkSettings, LinkSignout } from '../app/AppPage';
+import { AppBox, AppNav } from '../app/AppPage';
+import { LinkHome, LinkBench, LinkReports, LinkBenchSettings, LinkSignout } from '../app/AppLinks';
 
-import Settings from './Settings';
-import GenrePage from "../payment/genre/GenrePage";
-import FundPage from "../payment/fund/FundPage";
+import Genres from "../payment/genre/Genres";
+import Funds from "../payment/fund/Funds";
 
 function SettingsPage() {
 
-    //useEffect( () => console.log( 'Has rendered. ', 'SettingsPage' ) );
+    //useEffect( () => console.log( 'Has rendered. ', 'BenchSettingsPage' ) );
 
     return (
         <>
@@ -21,27 +21,19 @@ function SettingsPage() {
             <LinkHome />
             <LinkBench />
             <LinkReports />
-            <LinkSettings />
+            <LinkBenchSettings />
             <LinkSignout />
         </AppNav>
 
         <AppBox centeredness>
             <ListBox>
-                <BlockBox>
-                    <BlockLabel>
-                        { heads.settings }
-                    </BlockLabel>
-                    <BlockValue>
-                        <Settings />
-                    </BlockValue>
-                </BlockBox>
 
                 <BlockBox>
                     <BlockLabel>
                         { heads.payment.genres }
                     </BlockLabel>
                     <BlockValue>
-                        <GenrePage />
+                        <Genres />
                     </BlockValue>
                 </BlockBox>
 
@@ -50,7 +42,7 @@ function SettingsPage() {
                         { heads.payment.funds }
                     </BlockLabel>
                     <BlockValue>
-                        <FundPage />
+                        <Funds />
                     </BlockValue>
                 </BlockBox>
 
