@@ -20,21 +20,7 @@ import StyledList from '../libs/ListBox';
 const ListBox = styled( StyledList.ListBox )`
     display: block;
     margin: auto;
-    height: 90vh;
-    overflow: auto;
 `;
-
-const ContentBox = styled.div`
-    border: 0px solid blue;
-`;
-
-function List( { reference, children } ) {
-    return (
-        <ListBox ref={reference}>
-            {children}
-        </ListBox>
-    );
-}
 
 const StyledPrevButton = styled.button`
     margin-right: 1em;
@@ -94,38 +80,13 @@ const Bench = () => {
     } );
 
     REF.current.scrollToCentralDate = () => {
-        outer.current.scrollTop = startDate.current.offsetTop - ( outer.current.clientHeight * 0.10 );
+        //outer.current.scrollTop = startDate.current.offsetTop - ( outer.current.clientHeight * 0.10 );
     }
 
     // useEffect( () => console.log( 'Has rendered. ', 'Bench' ) );
 
     return (
-        <List reference={ outer }>
-
-            <ContentBox ref={ inner }>
-                <GenresInit />
-
-                <FundsInit />
-
-                <BenchInit
-                    process={ _uiux.process }
-                    mode={ _uiux.mode }
-                />
-
-                <PrevButton reference={ prev } />
-
-                    <CopyPasteContextProvider
-                        // doCutPaste={payload => dispatch( { namespace: 'entries', type: 'MOVE_ENTRY', payload } )}
-                        // doCopyPaste={payload => dispatch( { namespace: 'entries', type: 'COPY_ENTRY', payload } )}
-                    >
-                        <Periods
-                            periods={ periods }
-                            startDate={ startDate } 
-                        />
-                    </CopyPasteContextProvider>
-
-                    <NextButton reference={ next } />
-            </ContentBox>
+        <ListBox ref={ inner }>
 
             <Scroll
                 updated={ scrollUpdated }
@@ -137,7 +98,30 @@ const Bench = () => {
                 doScrollDown={ () => dispatch( { type: 'DO_INIT', payload: { mode: { isInitNext: true } } } ) }
             />
 
-        </List>
+            <GenresInit />
+
+            <FundsInit />
+
+            <BenchInit
+                process={ _uiux.process }
+                mode={ _uiux.mode }
+            />
+
+            <PrevButton reference={ prev } />
+
+            <CopyPasteContextProvider
+                // doCutPaste={payload => dispatch( { namespace: 'entries', type: 'MOVE_ENTRY', payload } )}
+                // doCopyPaste={payload => dispatch( { namespace: 'entries', type: 'COPY_ENTRY', payload } )}
+            >
+                <Periods
+                    periods={ periods }
+                    startDate={ startDate } 
+                />
+            </CopyPasteContextProvider>
+
+            <NextButton reference={ next } />
+
+        </ListBox>
     );
 }
 

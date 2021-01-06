@@ -6,26 +6,37 @@ const ScrollContextProvider = props => {
 
     const initRef = useRef( {
         direction: {},  // isUp, isDown
-        scrollTop: 0,  // pixels scrolled vertically of the content of `outer` element
-        offsetHeight: 0,  // total height -including padding, border- of `inner` element
+        scrollTop: 0,  // `outer` element: how many pixels have scrolled vertically 
+        offsetHeight: 0,  // `inner` element: the total height -including padding, border
     } );
 
-    useEffect( () => console.log( 'Has rendered. ', 'ScrollContextProvider' ) );
+    //useEffect( () => console.log( 'Has rendered. ', 'ScrollContextProvider' ) );
 
     return (
         <ScrollContext.Provider value={ initRef }>
-            {props.children}
+            { props.children }
         </ScrollContext.Provider>    
     )
 };
 
 function ScrollHandler( { outer, inner, prev, next, doScrollUp, doScrollDown } ) {
 
+    outer = outer || document.documentElement;
+
     const scrollContext = useContext( ScrollContext );
     const scrollRef = scrollContext.current;
 
     const scroll = event => {
-        event.stopPropagation();
+        // console.log( 
+        //     outer.scrollTop, 
+        //     prev.getBoundingClientRect().top, 
+        //     prev.getBoundingClientRect().height, 
+        //     outer.clientHeight,
+        //     next.getBoundingClientRect().bottom,
+        //     next.getBoundingClientRect().height,
+        //     inner.scrollHeight 
+        // )
+        // event.stopPropagation();
 
         outer.scrollTop < scrollRef.scrollTop
             ? scrollUp( event )
@@ -36,10 +47,9 @@ function ScrollHandler( { outer, inner, prev, next, doScrollUp, doScrollDown } )
         scrollRef.direction = { isUp: true };
         scrollRef.scrollTop = outer.scrollTop;
 
-        const outerBounds = outer.getBoundingClientRect();
-        const { top, height } = prev.getBoundingClientRect();
+        const { bottom, height } = prev.getBoundingClientRect();
 
-        if ( top + ( height * 0.1 ) > outerBounds.top || event.type === 'click' ) {
+        if ( bottom > height * 0.5 || event.type === 'click' ) {
             doScrollUp();
         }
     }
@@ -48,34 +58,35 @@ function ScrollHandler( { outer, inner, prev, next, doScrollUp, doScrollDown } )
         scrollRef.direction = { isDown: true };
         scrollRef.scrollTop = outer.scrollTop;
 
-        const outerBounds = outer.getBoundingClientRect();
+        const clientHeight = outer.clientHeight;
         const { top, height } = next.getBoundingClientRect();
 
-        if ( top + ( height * 0.9 ) < outerBounds.bottom || event.type === 'click' ) {
+        if ( top + height * 0.5 < clientHeight || event.type === 'click' ) {
             doScrollDown();
         }
     }
 
     const addEvents = () => {
-        outer.addEventListener( 'scroll', scroll );
+        outer === document.documentElement
+            ? document.addEventListener( 'scroll', scroll )
+            : outer.addEventListener( 'scroll', scroll );
         prev.addEventListener( 'click', scrollUp );
         next.addEventListener( 'click', scrollDown );
     }
 
     const removeEvents = () => {
-        outer.removeEventListener( 'scroll', scroll );
+        outer === document.documentElement
+            ? document.removeEventListener( 'scroll', scroll )
+            : outer.removeEventListener( 'scroll', scroll );
         prev.removeEventListener( 'click', scrollUp );
         next.removeEventListener( 'click', scrollDown );
     }
 
     useEffect( () => {
-        if ( outer ) {
+        if ( inner ) {
             const direction = scrollRef.direction;
 
             if ( direction.isUp ) {
-                // console.log( 'scrollRef.offsetHeight', scrollRef.offsetHeight )
-                // console.log( 'inner.offsetHeight', inner.offsetHeight )
-
                 const scrollTop = scrollRef.scrollTop;  
                 const offsetHeight = scrollRef.offsetHeight;
                 const offsetDiff = inner.offsetHeight - offsetHeight;
@@ -84,14 +95,14 @@ function ScrollHandler( { outer, inner, prev, next, doScrollUp, doScrollDown } )
 
             scrollRef.direction = {};
             scrollRef.scrollTop = outer.scrollTop;
-            scrollRef.offsetHeight =inner.offsetHeight;
+            scrollRef.offsetHeight = inner.offsetHeight;
     
             addEvents();
             return () => removeEvents();
         }
     } );
 
-    useEffect( () => console.log( 'Has rendered. ', 'ScrollHandler' ) );
+    //useEffect( () => console.log( 'Has rendered. ', 'ScrollHandler' ) );
 
     return null;
 }
