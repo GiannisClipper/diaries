@@ -7,6 +7,7 @@ import { parseDiaryFromDB } from '../../storage/diary/parsers';
 import { CreateRequest, UpdateRequest, DeleteRequest } from '../core/CoreRequests';
 import { CoreMenu, CreateMenuOption, UpdateMenuOption, DeleteMenuOption } from '../core/CoreMenu';
 
+import { AppContext } from '../app/AppContext';
 import { DiariesContext } from './DiariesContext';
 import { parseDiaryToDB } from '../../storage/diary/parsers';
 
@@ -17,6 +18,8 @@ import { LinkBench } from '../app/AppLinks';
 import DiaryForm from './DiaryForm';
 
 function Diary( { index } ) {
+
+    const { user_id } = useContext( AppContext ).state.signin;
 
     const { state, dispatch } = useContext( DiariesContext );
     const { diaries } = state;
@@ -51,8 +54,8 @@ function Diary( { index } ) {
                 <CreateRequest 
                     process={ _uiux.process }
                     url={ `/.netlify/functions/diary` }
-                    dataToDB={ dataToDB }
-                    body={ JSON.stringify( { data: dataToDB } ) }
+                    dataToDB={ { ...dataToDB, user_id } }
+                    body={ JSON.stringify( { data: { ...dataToDB, user_id } } ) }
                 />
 
             : _uiux.mode.isUpdate ?
@@ -77,7 +80,7 @@ function Diary( { index } ) {
 
             <RowBox>
                 <RowValue title={ `${diary.id}` }>
-                    { ! diary.id || <LinkBench /> }
+                    { ! diary.id || <LinkBench diary_id={ diary.id } /> }
                     <span>{ diary.title }</span>
                     <span>{ diary.startDate }</span>
                 </RowValue>

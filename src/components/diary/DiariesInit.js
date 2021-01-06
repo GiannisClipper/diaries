@@ -5,8 +5,11 @@ import { diarySchema } from '../../storage/schemas';
 import { parseDiaryFromDB } from '../../storage/diary/parsers';
 import { RetrieveManyRequest } from '../core/CoreRequests';
 import { DiariesContext } from './DiariesContext';
+import { AppContext } from '../app/AppContext';
 
 function DiariesInit() {
+
+    const { user_id } = useContext( AppContext ).state.signin;
 
     const { state, dispatch } = useContext( DiariesContext );
     const { _uiux } = state;
@@ -28,7 +31,7 @@ function DiariesInit() {
         >
             <RetrieveManyRequest 
                 process={ _uiux.process }
-                url={ `/.netlify/functions/diary` }
+                url={ `/.netlify/functions/diary?user_id=${user_id}` }
             />
         </CoreContextProvider>
     );
