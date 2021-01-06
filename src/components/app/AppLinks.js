@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faUser, faBook, faBookOpen, faCog, faCogs, faCompass, faMap, faDoorOpen, faDoorClosed } from '@fortawesome/free-solid-svg-icons';
+import { AppContext } from '../app/AppContext';
 
 import { REFContext } from '../REFContext';
 
@@ -53,9 +54,10 @@ const LinkDiaries = () => {
     )
 }
 
-const LinkBench = () => {
+const LinkBench = ( { diary_id } ) => {
+
     return (
-        <Link to="/bench"> 
+        <Link to={ `/bench/${diary_id}` }> 
             <FontAwesomeIcon icon={ faBookOpen } className="icon" title="Εγγραφές" />
         </Link>
     )

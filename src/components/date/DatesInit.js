@@ -4,6 +4,7 @@ import { CoreContextProvider, CoreContext } from '../core/CoreContext';
 import actions from '../../storage/core/actions';
 import { RetrieveManyRequest } from '../core/CoreRequests';
 
+import { AppContext } from '../app/AppContext';
 import { DatesContext } from '../date/DatesContext';
 import { GenresContext } from '../payment/genre/GenresContext';
 import { FundsContext } from '../payment/fund/FundsContext';
@@ -37,6 +38,8 @@ function RetrieveManyResponseAfter() {
 
 function DatesInit() {
 
+    const { diary_id } = useContext( AppContext ).state.signin;
+
     const { state, dispatch } = useContext( DatesContext );
     const { dates, _uiux } = state;
 
@@ -55,7 +58,7 @@ function DatesInit() {
             :
                 <RetrieveManyRequest 
                     process={ _uiux.process }
-                    url={ `/.netlify/functions/entry?range=${dateFrom}-${dateTill}` }
+                    url={ `/.netlify/functions/entry?diary_id=${diary_id}&range=${dateFrom}-${dateTill}` }
                 />
             }
         </CoreContextProvider>

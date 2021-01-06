@@ -2,6 +2,7 @@ import { getFromList } from '../../helpers/getFromList';
 
 const parsePaymentFromDB = ( data, genres, funds ) => ( {
     id: data._id,
+    diary_id: data.diary_id,
     date: data.date,
     index: data.index,
     type: data.type,
@@ -13,6 +14,7 @@ const parsePaymentFromDB = ( data, genres, funds ) => ( {
 } )
 
 const parsePaymentToDB = ( data, genres, funds ) => ( {
+    diary_id: data.diary_id,
     date: data.date,
     index: data.index,
     type: data.type,

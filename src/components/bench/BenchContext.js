@@ -11,7 +11,7 @@ const BenchContextProvider = props => {
     useEffect( () => console.log( 'Has rendered. ', 'BenchContextProvider' ) );
 
     return (
-        <BenchContext.Provider value={{ state, dispatch }}>
+        <BenchContext.Provider value={ { state, dispatch } }>
             { props.children }
         </BenchContext.Provider>
     )

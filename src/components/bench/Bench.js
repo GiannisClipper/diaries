@@ -57,8 +57,8 @@ const StyledNextButton = styled.button`
 
 function NextButton( { reference } ) {
     return (
-        <StyledNextButton ref={reference}>
-            {buttons.next}
+        <StyledNextButton ref={ reference }>
+            { buttons.next }
             <FontAwesomeIcon icon={ faForward } className="icon" />
         </StyledNextButton>
     );
@@ -100,9 +100,9 @@ const Bench = () => {
     // useEffect( () => console.log( 'Has rendered. ', 'Bench' ) );
 
     return (
-        <List reference={outer}>
+        <List reference={ outer }>
 
-            <ContentBox ref={inner}>
+            <ContentBox ref={ inner }>
                 <GenresInit />
 
                 <FundsInit />
@@ -112,7 +112,7 @@ const Bench = () => {
                     mode={ _uiux.mode }
                 />
 
-                <PrevButton reference={prev} />
+                <PrevButton reference={ prev } />
 
                     <CopyPasteContextProvider
                         // doCutPaste={payload => dispatch( { namespace: 'entries', type: 'MOVE_ENTRY', payload } )}
@@ -124,17 +124,17 @@ const Bench = () => {
                         />
                     </CopyPasteContextProvider>
 
-                <NextButton reference={next} />
+                <NextButton reference={ next } />
             </ContentBox>
 
             <Scroll
-                updated={scrollUpdated}
-                outer={outer.current}
-                inner={inner.current}
-                prev={prev.current}
-                next={next.current}
-                doScrollUp={() => dispatch( { type: 'DO_INIT', payload: { mode: { isInitPrev: true } } } )}
-                doScrollDown={() => dispatch( { type: 'DO_INIT', payload: { mode: { isInitNext: true } } } )}
+                updated={ scrollUpdated }
+                outer={ outer.current }
+                inner={ inner.current }
+                prev={ prev.current }
+                next={ next.current }
+                doScrollUp={ () => dispatch( { type: 'DO_INIT', payload: { mode: { isInitPrev: true } } } ) }
+                doScrollDown={ () => dispatch( { type: 'DO_INIT', payload: { mode: { isInitNext: true } } } ) }
             />
 
         </List>

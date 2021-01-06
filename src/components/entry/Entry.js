@@ -4,6 +4,7 @@ import { CoreContextProvider } from '../core/CoreContext';
 import actions from '../../storage/core/actions';
 import { CreateRequest, UpdateRequest, DeleteRequest } from '../core/CoreRequests';
 
+import { AppContext } from '../app/AppContext';
 import { GenresContext } from '../payment/genre/GenresContext';
 import { FundsContext } from '../payment/fund/FundsContext';
 import { DateContext } from '../date/DateContext';
@@ -44,6 +45,8 @@ const RowMenu = styled( StyledRow.RowMenu )`
 
 const Entry = ( { index } ) => {
 
+    const { diary_id } = useContext( AppContext ).state.signin;
+
     const { genres } = useContext( GenresContext ).state;
     const { funds } = useContext( FundsContext ).state;
 
@@ -81,16 +84,18 @@ const Entry = ( { index } ) => {
 
     const _saved = useRef( { date, index } );
 
+    const addDiaryId = () => _uiux.mode.isCreate ? { diary_id } : undefined;
+
     const parseDataToDB = _uiux.type.isPayment 
         ? 
         () => parsePaymentToDB(
-                { ...entry, date: dateToYYYYMMDD( date ), index }, 
+                { ...entry, date: dateToYYYYMMDD( date ), index, ...addDiaryId() },
                 genres, 
                 funds 
             )
         : 
         () => parseNoteToDB( 
-                { ...entry, date: dateToYYYYMMDD( date ), index },
+                { ...entry, date: dateToYYYYMMDD( date ), index, ...addDiaryId() },
             );
 
     const body = () => JSON.stringify( {

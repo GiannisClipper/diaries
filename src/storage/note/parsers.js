@@ -1,5 +1,6 @@
 const parseNoteFromDB = data => ( {
     id: data._id,
+    diary_id: data.diary_id,
     date: data.date,
     index: data.index,
     type: data.type,
@@ -7,6 +8,7 @@ const parseNoteFromDB = data => ( {
 } )
 
 const parseNoteToDB = data => ( {
+    diary_id: data.diary_id,
     date: data.date,
     index: data.index,
     type: data.type,

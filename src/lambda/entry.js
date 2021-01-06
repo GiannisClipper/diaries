@@ -3,10 +3,15 @@ import { createHandler, auth } from './common/handler';
 import { updateIndex } from './common/updateIndex';
 
 const getMethod = async ( event, db, collectionName, payload ) => {
-    //console.log('event.queryStringParameters', event.queryStringParameters)
+
+    const diary_id = event.queryStringParameters[ 'diary_id' ];
     const [ dateFrom, dateTill ] = event.queryStringParameters[ 'range' ].split( '-' );
+
     const collection = db.collection( collectionName );
-    const result = await collection.find( { date: { $gte: dateFrom, $lte: dateTill } } ).toArray();
+    const result = await collection.find( { 
+        diary_id: { $eq: diary_id },
+        date: { $gte: dateFrom, $lte: dateTill } 
+    } ).toArray();
 
     return result;            
 }
