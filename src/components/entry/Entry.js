@@ -4,7 +4,7 @@ import { CoreContextProvider } from '../core/CoreContext';
 import actions from '../../storage/core/actions';
 import { CreateRequest, UpdateRequest, DeleteRequest } from '../core/CoreRequests';
 
-import { AppContext } from '../app/AppContext';
+import { BenchContext } from '../bench/BenchContext';
 import { GenresContext } from '../payment/genre/GenresContext';
 import { FundsContext } from '../payment/fund/FundsContext';
 import { DateContext } from '../date/DateContext';
@@ -45,7 +45,7 @@ const RowMenu = styled( StyledRow.RowMenu )`
 
 const Entry = ( { index } ) => {
 
-    const { diary_id } = useContext( AppContext ).state.signin;
+    const { diary_id } = useContext( BenchContext ).state;
 
     const { genres } = useContext( GenresContext ).state;
     const { funds } = useContext( FundsContext ).state;

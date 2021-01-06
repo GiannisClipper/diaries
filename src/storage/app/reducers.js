@@ -21,21 +21,7 @@ const appReducer = ( state, action ) => {
             return comboReducer( oneFormReducer, backupReducer, oneRequestReducer )( state, action );
 
         } default: {
-
-            switch ( action.type ) {
-
-                case 'SET_ACTIVE_DIARY': {
-                    const { signin } = state;
-                    const { diary_id } = action.payload;
-                    signin.diary_id = diary_id;
-        
-                    return { ...state, signin };
-
-                } default: {
-                    throw new Error();
-                }
-            }
-
+            throw new Error();
         }
     }
 }

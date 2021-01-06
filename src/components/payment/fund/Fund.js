@@ -7,7 +7,7 @@ import { parseFundFromDB } from '../../../storage/payment/fund/parsers';
 import { CreateRequest, UpdateRequest, DeleteRequest } from '../../core/CoreRequests';
 import { CoreMenu, CreateMenuOption, UpdateMenuOption, DeleteMenuOption } from '../../core/CoreMenu';
 
-import { AppContext } from '../../app/AppContext';
+import { BenchContext } from '../../bench/BenchContext';
 import { FundsContext } from './FundsContext';
 import { parseFundToDB } from '../../../storage/payment/fund/parsers';
 
@@ -17,7 +17,7 @@ import FundForm from './FundForm';
 
 function Fund( { index } ) {
 
-    const { diary_id } = useContext( AppContext ).state.signin;
+    const { diary_id } = useContext( BenchContext ).state;
 
     const { state, dispatch } = useContext( FundsContext );
     const { funds } = state;

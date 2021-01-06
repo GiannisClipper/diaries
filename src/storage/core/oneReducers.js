@@ -3,7 +3,7 @@ const oneMenuReducer = ( state, action ) => {
     switch ( action.type ) {
 
         case 'OPEN_MENU': {
-            const { _namespace, mode } = action.payload;
+            const { _namespace } = action.payload;
             const _item = state[ _namespace ];
 
             _item._uiux.menu = { isOpen: true };

@@ -1,4 +1,4 @@
-import { periodSchema, dateSchema, entrySchema } from '../../storage/schemas';
+import { benchSchema, periodSchema, dateSchema, entrySchema } from '../../storage/schemas';
 import { shiftDate } from '../../helpers/dates';
 
 const calcDates = ( dateFrom, days ) => {
@@ -34,7 +34,11 @@ const benchReducer = ( state, action ) => {
 
     switch ( action.type ) {
 
-        case 'DO_INIT': {
+        case 'OPEN_DIARY': {
+            const { diary_id } = action.payload;
+            return { ...benchSchema(), diary_id };
+
+        } case 'DO_INIT': {
             const { _uiux } = state;
             const { mode } = action.payload;
             _uiux.mode = mode;

@@ -14,6 +14,7 @@ const appSchema = () => ( {
 const signinSchema = () => ( {
     username: '',
     password: '',
+    user_id: null,
     _uiux: {
         process: {},  // isRequest, isResponseWaiting, isResponseError, isValidation, isValidationOk
     },
@@ -80,6 +81,7 @@ const diarySchema = () => ( {
 } );
 
 const benchSchema = () => ( {
+    diary_id: null,
     periods: [],
     _uiux: {
         process: { isInitBefore: true },  // isInitBefore, isInit

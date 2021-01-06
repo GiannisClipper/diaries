@@ -7,7 +7,7 @@ import { parseGenreFromDB } from '../../../storage/payment/genre/parsers';
 import { CreateRequest, UpdateRequest, DeleteRequest } from '../../core/CoreRequests';
 import { CoreMenu, CreateMenuOption, UpdateMenuOption, DeleteMenuOption } from '../../core/CoreMenu';
 
-import { AppContext } from '../../app/AppContext';
+import { BenchContext } from '../../bench/BenchContext';
 import { GenresContext } from './GenresContext';
 import { parseGenreToDB } from '../../../storage/payment/genre/parsers';
 
@@ -17,7 +17,7 @@ import GenreForm from './GenreForm';
 
 function Genre( { index } ) {
 
-    const { diary_id } = useContext( AppContext ).state.signin;
+    const { diary_id } = useContext( BenchContext ).state;
 
     const { state, dispatch } = useContext( GenresContext );
     const { genres } = state;
