@@ -6,7 +6,7 @@ import { ListBox } from '../libs/ListBox';
 import { BlockBox, BlockLabel, BlockValue } from '../libs/BlockBox';
 
 import { AppBox, AppNav } from '../app/AppPage';
-import { LinkHome, LinkDiaries, LinkUsers, LinkSettings, LinkSignout } from '../app/AppLinks';
+import { LinkHome, LinkDiaries, LinkBench, LinkUsers, LinkSettings, LinkSignout } from '../app/AppLinks';
 
 import Settings from './Settings';
 import Backup from './Backup';
@@ -20,8 +20,9 @@ function SettingsPage() {
         <AppNav>
             <LinkHome />
             <LinkDiaries />
+            <LinkBench />
             <LinkUsers />
-            <LinkSettings />
+            <LinkSettings active />
             <LinkSignout />
         </AppNav>
 

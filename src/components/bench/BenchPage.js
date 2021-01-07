@@ -25,7 +25,7 @@ function BenchPage( { diary_id } ) {
         <AppNav>
             <LinkHome />
             <LinkDiaries />
-            <LinkBench diary_id={ diary_id } />
+            <LinkBench id={ diary_id } active />
             <LinkReports />
             <LinkBenchSettings />
             <LinkSignout />

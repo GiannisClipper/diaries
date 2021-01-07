@@ -8,13 +8,24 @@ const createTheme = colors => ( {
             ${parseInt( colors.appNormalBack.substring( 5, 7 ), 16 )}, 
         0.5 );
     `,
-    AppNav: css`
-        background-color: ${colors.appStrongBack};
-        color: ${colors.appNormalText};
-    `,
+    AppNav: null,
     AppBox: css`
         background-color: ${colors.appNormalBack};
+        color: ${colors.appNormalText};
     `,
+    AppInfo: css`
+        color: ${colors.appNormalText};
+    `,
+    LinkBox: css`
+        :first-child {
+            color: ${colors.OkButtonBack};
+        }
+    `,
+    activeLinkBox: css`
+        :first-child {
+            color: ${colors.CautionButtonBack};
+        }
+`,
     ListBox: null,
     BlockBox: null,
     BlockLabel: css`

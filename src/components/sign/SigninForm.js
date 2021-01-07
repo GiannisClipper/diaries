@@ -78,7 +78,7 @@ function SignForm( { process, children } ) {
                 <InputValue>
                     <input
                         type="password"
-                        value={data.password || ''}
+                        value={ data.password || '' }
                         onChange={ event => setData( { ...data, password: event.target.value || '' } ) }
                     />
                 </InputValue>

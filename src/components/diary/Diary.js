@@ -80,7 +80,7 @@ function Diary( { index } ) {
 
             <RowBox>
                 <RowValue title={ `${diary.id}` }>
-                    { ! diary.id || <LinkBench diary_id={ diary.id } /> }
+                    { ! diary.id || <LinkBench id={ diary.id } /> }
                     <span>{ diary.title }</span>
                     <span>{ diary.startDate }</span>
                 </RowValue>

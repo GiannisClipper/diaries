@@ -18,8 +18,8 @@ const StyledModal = styled.div`
     height: 100%;
     background: rgba( 0, 0, 0, 0.5 );
 
-    ${props => props.centeredness && centeredness}
-    ${props => props.theme.Modal && props.theme.Modal };
+    ${ props => props.centeredness && centeredness }
+    ${ props => props.theme.Modal && props.theme.Modal };
 `;
 
 function Modal( { onClick, centeredness, children } ) { 
@@ -27,8 +27,8 @@ function Modal( { onClick, centeredness, children } ) {
     onClick = onClick || null;
 
     return (
-        <StyledModal onClick={onClick} centeredness={centeredness}>
-            {children}
+        <StyledModal onClick={ onClick } centeredness={ centeredness }>
+            { children }
         </StyledModal> 
     )
 }

@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
 import { ReportsContextProvider } from './ReportsContext';
 import { AppBox, AppNav } from '../app/AppPage';
-import { LinkHome, LinkBench, LinkReports, LinkBenchSettings, LinkSignout } from '../app/AppLinks';
+import { LinkHome, LinkDiaries, LinkBench, LinkReports, LinkBenchSettings, LinkSignout } from '../app/AppLinks';
 import Reports from './Reports';
 
-function ReportPage() {
+function ReportsPage() {
 
-    //useEffect( () => console.log( 'Has rendered. ', 'ReportPage' ) );
+    //useEffect( () => console.log( 'Has rendered. ', 'ReportsPage' ) );
 
     return (
         <ReportsContextProvider>
             <AppNav>
                 <LinkHome />
+                <LinkDiaries />
                 <LinkBench />
-                <LinkReports />
+                <LinkReports active />
                 <LinkBenchSettings />
                 <LinkSignout />
             </AppNav>
@@ -25,5 +26,5 @@ function ReportPage() {
     );
 }
 
-export default ReportPage;
-export { ReportPage };
+export default ReportsPage;
+export { ReportsPage };

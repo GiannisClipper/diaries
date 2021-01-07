@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 import { AppBox, AppNav } from '../app/AppPage';
-import { LinkHome, LinkDiaries, LinkUsers, LinkSettings, LinkSignout } from '../app/AppLinks';
+import { LinkHome, LinkDiaries, LinkBench, LinkUsers, LinkSettings, LinkSignout } from '../app/AppLinks';
 
 import Diaries from './Diaries';
 
-function DiaryPage() {
+function DiariesPage() {
 
-    //useEffect( () => console.log( 'Has rendered. ', 'DiaryPage' ) );
+    //useEffect( () => console.log( 'Has rendered. ', 'DiariesPage' ) );
 
     return (
         <>
         <AppNav>
             <LinkHome />
-            <LinkDiaries />
+            <LinkDiaries active />
+            <LinkBench />
             <LinkUsers />
             <LinkSettings />
             <LinkSignout />
@@ -25,5 +26,5 @@ function DiaryPage() {
     );
 }
 
-export default DiaryPage;
-export { DiaryPage };
+export default DiariesPage;
+export { DiariesPage };

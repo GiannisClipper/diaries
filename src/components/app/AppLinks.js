@@ -1,83 +1,83 @@
 import React from 'react';
+import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faUser, faBook, faBookOpen, faCog, faCogs, faCompass, faMap, faDoorOpen, faDoorClosed } from '@fortawesome/free-solid-svg-icons';
-import { AppContext } from '../app/AppContext';
 
 import { REFContext } from '../REFContext';
 
-const LinkHome = () => {
-    return (
-        <Link to="/"> 
-            <FontAwesomeIcon icon={ faHome } className="icon" title="Αρχική" />
-        </Link>
-    )
+const LinkBoxStyle = styled.span`
+    ${ props => props.theme.LinkBox && props.theme.LinkBox };
+    ${ props => props.active && props.theme.activeLinkBox };
+`;
+
+const LinkBox = ( { to, icon, title } ) => {
+
+    return ( { id, active } ) => {
+
+        return (
+            <Link to={ id ? `${to}/${id}` : to }> 
+                <LinkBoxStyle active={ active }>
+                    <FontAwesomeIcon icon={ icon } className="icon" title={ title } />
+                </LinkBoxStyle>
+            </Link>
+        ) 
+    }
 }
 
-const LinkSignin = () => {
-    return (
-        <Link to="/signin"> 
-            <FontAwesomeIcon icon={ faDoorOpen } className="icon" title="Είσοδος" />
-        </Link>
-    )
-}
+const LinkHome = LinkBox( { 
+    to: "/", 
+    icon: faHome, 
+    title: "Αρχική" 
+} );
 
-const LinkSignout = () => {
-    return (
-        <Link to="/signout"> 
-            <FontAwesomeIcon icon={ faDoorClosed } className="icon" title="Έξοδος" />
-        </Link>
-    )
-}
+const LinkSignin = LinkBox( { 
+    to: '/signin', 
+    icon: faDoorOpen, 
+    title: 'Είσοδος' 
+} );
 
-const LinkSettings = () => {
-    return (
-        <Link to="/settings"> 
-            <FontAwesomeIcon icon={ faCog } className="icon" title="Ρυθμίσεις" />
-        </Link>
-    )
-}
+const LinkSignout = LinkBox( { 
+    to: '/signout', 
+    icon: faDoorClosed, 
+    title: 'Έξοδος' 
+} );
 
-const LinkUsers = () => {
-    return (
-        <Link to="/users"> 
-            <FontAwesomeIcon icon={ faUser } className="icon" title="Χρήστες" />
-        </Link>
-    )
-}
+const LinkSettings = LinkBox( { 
+    to: '/settings', 
+    icon: faCog, 
+    title: 'Ρυθμίσεις' 
+} );
 
-const LinkDiaries = () => {
-    return (
-        <Link to="/diaries"> 
-            <FontAwesomeIcon icon={ faBook } className="icon" title="Ημερολόγια" />
-        </Link>
-    )
-}
+const LinkUsers = LinkBox( { 
+    to: '/users', 
+    icon: faUser, 
+    title: 'Χρήστες' 
+} );
 
-const LinkBench = ( { diary_id } ) => {
+const LinkDiaries = LinkBox( { 
+    to: '/diaries', 
+    icon: faBook, 
+    title: 'Ημερολόγια' 
+} );
 
-    return (
-        <Link to={ `/bench/${diary_id}` }> 
-            <FontAwesomeIcon icon={ faBookOpen } className="icon" title="Εγγραφές" />
-        </Link>
-    )
-}
+const LinkBench = LinkBox( { 
+    to: '/bench', 
+    icon: faBookOpen, 
+    title: 'Εγγραφές' 
+} );
 
-const LinkBenchSettings = () => {
-    return (
-        <Link to="/bench_settings"> 
-            <FontAwesomeIcon icon={ faCogs } className="icon" title="Ρυθμίσεις" />
-        </Link>
-    )
-}
+const LinkBenchSettings = LinkBox( { 
+    to: '/bench_settings', 
+    icon: faCogs, 
+    title: 'Ρυθμίσεις' 
+} );
 
-const LinkReports = () => {
-    return (
-        <Link to="/reports"> 
-            <FontAwesomeIcon icon={ faMap } className="icon" title="Καταστάσεις" />
-        </Link>
-    )
-}
+const LinkReports = LinkBox( { 
+    to: '/reports', 
+    icon: faMap, 
+    title: 'Καταστάσεις' 
+} );
 
 // const ScrollToCentralDate = () => {
 //     const REF = useContext( REFContext );

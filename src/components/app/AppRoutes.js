@@ -4,11 +4,11 @@ import { AppContext } from './AppContext';
 import AppPage from './AppPage';
 import SigninPage from '../sign/SigninPage';
 import Signout from '../sign/Signout';
-import UserPage from '../user/UserPage';
-import DiaryPage from '../diary/DiaryPage';
+import UsersPage from '../user/UsersPage';
+import DiariesPage from '../diary/DiariesPage';
 import BenchPage from '../bench/BenchPage';
 import BenchSettingsPage from '../bench/BenchSettingsPage';
-import ReportPage from '../report/ReportPage';
+import ReportsPage from '../report/ReportsPage';
 import SettingsPage from '../settings/SettingsPage';
 
 function Error404() {
@@ -33,13 +33,13 @@ function AppRoutes() {
                     <Route exact path='/' render={ () => (<AppPage />) } />
                     <Route exact path='/signin' render={ () => (<Redirect to={ { pathname: '/' } } />) } />
                     <Route exact path='/signout' render={ () => (<Signout />) } />
-                    <Route exact path='/users' render={ () => (<UserPage />) } />
+                    <Route exact path='/users' render={ () => (<UsersPage />) } />
                     <Route exact path='/settings' render={ () => (<SettingsPage />) } />
-                    <Route exact path='/diaries' render={ () => (<DiaryPage />) } />
+                    <Route exact path='/diaries' render={ () => (<DiariesPage />) } />
                     <Route exact path='/bench' render={ () => (<BenchPage />) } />
                     <Route exact path='/bench/:diary_id' render={ props => (<BenchPage diary_id={ props.match.params.diary_id } />) } />
                     <Route exact path='/bench_settings' render={ () => (<BenchSettingsPage />) } />
-                    <Route exact path='/reports' render={ () => (<ReportPage />) } />
+                    <Route exact path='/reports' render={ () => (<ReportsPage />) } />
                     <Route render={ () => (<Error404 />) } />
                 </Switch>
             :
