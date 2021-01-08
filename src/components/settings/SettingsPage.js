@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 
-import { heads } from '../../storage/texts';
+import texts from '../../storage/texts';
 
 import { ListBox } from '../libs/ListBox';
 import { BlockBox, BlockLabel, BlockValue } from '../libs/BlockBox';
 
-import { AppBox, AppNav } from '../app/AppPage';
+import { AppBox, AppNav, AppInfo } from '../app/AppPage';
 import { LinkHome, LinkDiaries, LinkBench, LinkUsers, LinkSettings, LinkSignout } from '../app/AppLinks';
 
 import Settings from './Settings';
@@ -30,7 +30,7 @@ function SettingsPage() {
             <ListBox>
                 <BlockBox>
                     <BlockLabel>
-                        { heads.settings }
+                        { texts.heads.settings }
                     </BlockLabel>
                     <BlockValue>
                         <Settings />
@@ -39,7 +39,7 @@ function SettingsPage() {
 
                 <BlockBox>
                     <BlockLabel>
-                        { heads.backup }
+                        { texts.heads.backup }
                     </BlockLabel>
                     <BlockValue>
                         <Backup />
@@ -47,6 +47,10 @@ function SettingsPage() {
                 </BlockBox>
             </ListBox>
         </AppBox>
+
+        <AppInfo>
+            { texts.heads.settings }
+        </AppInfo>
         </>
     );
 }

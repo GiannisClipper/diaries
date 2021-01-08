@@ -29,6 +29,7 @@ function UsersInit() {
             <RetrieveManyRequest 
                 process={ _uiux.process }
                 url={ `/.netlify/functions/user` }
+                error={ _uiux.error }
             />
         </CoreContextProvider>
     );

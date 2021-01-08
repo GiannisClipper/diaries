@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AppBox, AppNav } from '../app/AppPage';
+import { AppBox, AppNav, AppInfo } from '../app/AppPage';
 import { LinkHome, LinkDiaries, LinkBench, LinkUsers, LinkSettings, LinkSignout } from '../app/AppLinks';
 
 import Diaries from './Diaries';
@@ -22,6 +22,10 @@ function DiariesPage() {
         <AppBox centeredness>
             <Diaries />
         </AppBox>
+
+        <AppInfo>
+            Ημερολόγια
+        </AppInfo>
         </>
     );
 }

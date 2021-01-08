@@ -64,6 +64,7 @@ function Genre( { index } ) {
                     url={ `/.netlify/functions/payment-genre` }
                     body={ JSON.stringify( { data: { ...dataToDB, diary_id } } ) }
                     dataToDB={ { ...dataToDB, diary_id } }
+                    error={ _uiux.error }
                 />
 
             : _uiux.mode.isUpdate ?
@@ -73,6 +74,7 @@ function Genre( { index } ) {
                     body={ JSON.stringify( { data: dataToDB } ) }
                     dataToDB={ dataToDB }
                     id={ genre.id }
+                    error={ _uiux.error }
                 />
 
             : _uiux.mode.isDelete ?
@@ -82,6 +84,7 @@ function Genre( { index } ) {
                     body={ JSON.stringify( { data: dataToDB } ) }
                     dataToDB={ dataToDB }
                     id={ genre.id }
+                    error={ _uiux.error }
                 />
 
             : null }

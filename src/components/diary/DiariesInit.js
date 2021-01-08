@@ -32,6 +32,7 @@ function DiariesInit() {
             <RetrieveManyRequest 
                 process={ _uiux.process }
                 url={ `/.netlify/functions/diary?user_id=${user_id}` }
+                error={ _uiux.error }
             />
         </CoreContextProvider>
     );

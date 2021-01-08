@@ -18,12 +18,8 @@ function Error404() {
 function AppRoutes() {
 
     const { state } = useContext( AppContext );
-    const { signin, _uiux } = state;
-    const { _error } = _uiux;
-
-    const token = _error && _error.message && _error.message.includes( 'No auth' ) 
-        ? null
-        : signin.token;
+    const { signin } = state;
+    const { token } = signin;
 
     return (
         <BrowserRouter>

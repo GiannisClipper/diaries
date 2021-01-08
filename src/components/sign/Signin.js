@@ -34,6 +34,7 @@ function Signin() {
                 url={ `/.netlify/functions/signin` }
                 dataToDB={ dataToDB }
                 body={ JSON.stringify( { data: dataToDB } ) }
+                error={ _uiux.error }
             />
 
             <SigninForm

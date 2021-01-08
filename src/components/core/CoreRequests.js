@@ -19,9 +19,14 @@ function SigninRequest( { process, url, body, dataToDB }) {
     return null;
 }
 
-function CreateRequest( { process, url, body, dataToDB }) {
-
-    const { createResponseOk, createResponseError, createResponseAfter } = useContext( CoreContext );
+function CreateRequest( { process, url, body, dataToDB, error }) {
+    const { 
+        createResponseOk, 
+        createResponseError, 
+        createResponseOkAfter, 
+        createResponseErrorAfter,
+        handleError
+    } = useContext( CoreContext );
 
     useEffect( () => {
         if ( process.isRequest ) {
@@ -32,16 +37,26 @@ function CreateRequest( { process, url, body, dataToDB }) {
             doFetch( url, args, onDone, onError, dataFromDB );
 
         } else if ( process.isResponseOk ) {
-            createResponseAfter();
+            createResponseOkAfter();
+
+        } else if ( process.isResponseError ) {
+            handleError( error );
+            createResponseErrorAfter();
         }
     } );
 
     return null;
 }
 
-function RetrieveRequest( { process, url }) {
+function RetrieveRequest( { process, url, error }) {
 
-    const { retrieveResponseOk, retrieveResponseError, retrieveResponseAfter } = useContext( CoreContext );
+    const { 
+        retrieveResponseOk, 
+        retrieveResponseError, 
+        retrieveResponseOkAfter,
+        retrieveResponseErrorAfter,
+        handleError
+    } = useContext( CoreContext );
 
     useEffect( () => {
         if ( process.isRequest ) {
@@ -53,16 +68,26 @@ function RetrieveRequest( { process, url }) {
             doFetch( url, args, onDone, onError, dataFromDB );
 
         } else if ( process.isResponseOk ) {
-            retrieveResponseAfter();
+            retrieveResponseOkAfter();
+
+        } else if ( process.isResponseError ) {
+            handleError( error );
+            retrieveResponseErrorAfter();
         }
-    } );
+} );
 
     return null;
 }
 
-function UpdateRequest( { process, url, body, dataToDB, id }) {
+function UpdateRequest( { process, url, body, dataToDB, id, error }) {
 
-    const { updateResponseOk, updateResponseError, updateResponseAfter } = useContext( CoreContext );
+    const { 
+        updateResponseOk, 
+        updateResponseError, 
+        updateResponseOkAfter,
+        updateResponseErrorAfter,
+        handleError
+    } = useContext( CoreContext );
 
     useEffect( () => {
         if ( process.isRequest ) {
@@ -73,16 +98,26 @@ function UpdateRequest( { process, url, body, dataToDB, id }) {
             doFetch( url, args, onDone, onError, dataFromDB );
 
         } else if ( process.isResponseOk ) {
-            updateResponseAfter();
+            updateResponseOkAfter();
+
+        } else if ( process.isResponseError ) {
+            handleError( error );
+            updateResponseErrorAfter();
         }
     } );
 
     return null;
 }
 
-function DeleteRequest( { process, url, body, dataToDB, id }) {
+function DeleteRequest( { process, url, body, dataToDB, id, error }) {
 
-    const { deleteResponseOk, deleteResponseError, deleteResponseAfter } = useContext( CoreContext );
+    const { 
+        deleteResponseOk, 
+        deleteResponseError, 
+        deleteResponseOkAfter, 
+        deleteResponseErrorAfter, 
+        handleError
+    } = useContext( CoreContext );
 
     useEffect( () => {
         if ( process.isRequest ) {
@@ -93,21 +128,27 @@ function DeleteRequest( { process, url, body, dataToDB, id }) {
             doFetch( url, args, onDone, onError, dataFromDB );
 
         } else if ( process.isResponseOk ) {
-            deleteResponseAfter();
+            deleteResponseOkAfter();
+
+        } else if ( process.isResponseError ) {
+            handleError( error );
+            deleteResponseErrorAfter();
         }
     } );
 
     return null;
 }
 
-function RetrieveManyRequest( { process, url } ) {
+function RetrieveManyRequest( { process, url, error } ) {
 
     const { 
         retrieveManyRequest,
         retrieveManyResponseWaiting,
         retrieveManyResponseOk,
         retrieveManyResponseError,
-        retrieveManyResponseAfter,
+        retrieveManyResponseOkAfter,
+        retrieveManyResponseErrorAfter,
+        handleError
     } = useContext( CoreContext );
 
     useEffect( () => {
@@ -126,10 +167,11 @@ function RetrieveManyRequest( { process, url } ) {
             // do nothing here
 
         } else if ( process.isResponseOk ) {
-            retrieveManyResponseAfter();
+            retrieveManyResponseOkAfter();
 
         } else if ( process.isResponseError ) {
-            // do nothing here
+            handleError( error );
+            retrieveManyResponseErrorAfter();
 
         }
     } );

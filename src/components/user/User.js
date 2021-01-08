@@ -51,6 +51,7 @@ function User( { index } ) {
                     url={ `/.netlify/functions/user` }
                     dataToDB={ dataToDB }
                     body={ JSON.stringify( { data: dataToDB } ) }
+                    error={ _uiux.error }
                 />
 
             : _uiux.mode.isUpdate ?
@@ -60,6 +61,7 @@ function User( { index } ) {
                     dataToDB={ dataToDB }
                     body={ JSON.stringify( { data: dataToDB } ) }
                     id={ user.id }
+                    error={ _uiux.error }
                 />
 
             : _uiux.mode.isDelete ?
@@ -69,6 +71,7 @@ function User( { index } ) {
                     dataToDB={ dataToDB }
                     body={ JSON.stringify( { data: dataToDB } ) }
                     id={ user.id }
+                    error={ _uiux.error }
                 />
 
             : null }

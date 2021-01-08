@@ -46,6 +46,7 @@ function Backup() {
             <RetrieveRequest 
                 process={ _uiux.process }
                 url={ `/.netlify/functions/backup` }
+                error={ _uiux.error }
             />
 
             <RowBox>

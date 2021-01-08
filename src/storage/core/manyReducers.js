@@ -39,24 +39,34 @@ const manyRequestReducer = ( state, action ) => {
 
             return { ...state, [ _namespace ]: _items, _uiux };
 
+        } case 'RETRIEVE_MANY_RESPONSE_OK_AFTER': {
+            const { _namespace } = action.payload; 
+            const _items = state[ _namespace ];
+            const { _uiux } = state;
+
+            _items.forEach( x => x._uiux.process = { isResponseOkAfter: true } );
+            _uiux.process = { isResponseOkAfter: true };
+
+            return { ...state, [ _namespace ]: _items, _uiux };
+
         } case 'RETRIEVE_MANY_RESPONSE_ERROR': {
-            const { _namespace, _schema } = action.payload; 
+            const { _namespace, _schema, error } = action.payload;
             const _items = [ _schema() ];
             _items[ 0 ]._uiux.process = { isResponseError: true }
 
             const { _uiux } = state;
             _uiux.process = { isResponseError: true };
-            _uiux._error = action.payload.error;
+            _uiux.error = error;
 
             return { ...state, [ _namespace ]: _items, _uiux };
 
-        } case 'RETRIEVE_MANY_RESPONSE_AFTER': {
+        } case 'RETRIEVE_MANY_RESPONSE_ERROR_AFTER': {
             const { _namespace } = action.payload; 
             const _items = state[ _namespace ];
             const { _uiux } = state;
 
-            _items.forEach( x => x._uiux.process = { isResponseAfter: true } );
-            _uiux.process = { isResponseAfter: true };
+            _items.forEach( x => x._uiux.process = { isResponseErrorAfter: true } );
+            _uiux.process = { isResponseErrorAfter: true };
 
             return { ...state, [ _namespace ]: _items, _uiux };
 

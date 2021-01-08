@@ -50,7 +50,7 @@ const datesReducer = ( state, action ) => {
 
             return { ...state, dates, _uiux };
 
-        } case 'RETRIEVE_MANY_RESPONSE_AFTER': {
+        } case 'RETRIEVE_MANY_RESPONSE_OK_AFTER': {
 
             const { genres, funds } = action.payload;
 
@@ -78,12 +78,24 @@ const datesReducer = ( state, action ) => {
                     entries.push( entrySchema() );
                     dates[ i ].entries = entries;
                 }
-                _uiux.process = { isResponseAfter: true };
+                _uiux.process = { isResponseOkAfter: true };
 
                 return { ...state, dates, _uiux, dataFromDB: null };
             }
 
             return state;
+
+        } case 'RETRIEVE_MANY_RESPONSE_ERROR_AFTER': {
+            const { dates, _uiux } = state;
+            dates.forEach( date => { 
+                date._uiux.process = { isResponseErrorAfter: true };
+                date.entries.forEach( entry => entry._uiux.process = { isResponseErrorAfter: true } );
+            } );
+            _uiux.process = { isResponseError: true };
+
+            //_uiux._error = action.payload.error;
+
+            return { ...state, dates, _uiux };
 
         } default: {
             throw new Error();

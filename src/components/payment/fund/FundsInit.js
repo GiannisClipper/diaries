@@ -38,6 +38,7 @@ function FundsInit() {
                 <RetrieveManyRequest 
                     process={ _uiux.process }
                     url={ `/.netlify/functions/payment-fund?diary_id=${diary_id}` }
+                    error={ _uiux.error }
                 />
             </CoreContextProvider>
         );

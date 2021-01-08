@@ -38,6 +38,7 @@ function GenresInit() {
                 <RetrieveManyRequest 
                     process={ _uiux.process }
                     url={ `/.netlify/functions/payment-genre?diary_id=${diary_id}` }
+                    error={ _uiux.error }
                 />
             </CoreContextProvider>
         );

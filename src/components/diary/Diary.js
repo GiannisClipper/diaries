@@ -49,13 +49,13 @@ function Diary( { index } ) {
             dispatch={ dispatch }
             payload={ payload }
         >
-
             { _uiux.mode.isCreate ?
                 <CreateRequest 
                     process={ _uiux.process }
                     url={ `/.netlify/functions/diary` }
                     dataToDB={ { ...dataToDB, user_id } }
                     body={ JSON.stringify( { data: { ...dataToDB, user_id } } ) }
+                    error={ _uiux.error }
                 />
 
             : _uiux.mode.isUpdate ?
@@ -65,6 +65,7 @@ function Diary( { index } ) {
                     dataToDB={ dataToDB }
                     body={ JSON.stringify( { data: dataToDB } ) }
                     id={ diary.id }
+                    error={ _uiux.error }
                 />
 
             : _uiux.mode.isDelete ?
@@ -74,6 +75,7 @@ function Diary( { index } ) {
                     dataToDB={ dataToDB }
                     body={ JSON.stringify( { data: dataToDB } ) }
                     id={ diary.id }
+                    error={ _uiux.error }
                 />
 
             : null }

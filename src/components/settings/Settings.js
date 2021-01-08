@@ -47,6 +47,7 @@ function Settings() {
                 url={ `/.netlify/functions/settings` }
                 dataToDB={ dataToDB }
                 body={ JSON.stringify( { data: dataToDB } ) }
+                error={ _uiux.error }
             />
 
             <RowBox>

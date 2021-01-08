@@ -6,7 +6,11 @@ const AppContext = createContext();
 
 const AppContextProvider = props => {
 
-    const [ state, dispatch ] = useReducer( appReducer, appSchema() );
+    const schema = appSchema();
+    schema.signin = { ...schema.signin, ...JSON.parse( localStorage.getItem( 'signin' ) || '{}' ) };
+    schema.settings = { ...schema.settings, ...JSON.parse( localStorage.getItem( 'settings' ) || '{}' ) };
+
+    const [ state, dispatch ] = useReducer( appReducer, schema );
 
     window.state = state;
 

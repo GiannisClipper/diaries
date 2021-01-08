@@ -48,6 +48,7 @@ function Report( { index } ) {
                     `&dateFrom=${dataToDB.dateFrom}` +
                     `&dateTill=${dataToDB.dateTill} `
                 }
+                error={ _uiux.error }
             />
 
             <RowBox key={ index }>

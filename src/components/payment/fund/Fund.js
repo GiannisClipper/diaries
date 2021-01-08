@@ -53,6 +53,7 @@ function Fund( { index } ) {
                     url={ `/.netlify/functions/payment-fund` }
                     body={ JSON.stringify( { data: { ...dataToDB, diary_id } } ) }
                     dataToDB={ { ...dataToDB, diary_id } }
+                    error={ _uiux.error }
                 />
 
             : _uiux.mode.isUpdate ?
@@ -62,6 +63,7 @@ function Fund( { index } ) {
                     body={ JSON.stringify( { data: dataToDB } ) }
                     dataToDB={ dataToDB }
                     id={ fund.id }
+                    error={ _uiux.error }
                 />
 
             : _uiux.mode.isDelete ?
@@ -71,6 +73,7 @@ function Fund( { index } ) {
                     body={ JSON.stringify( { data: dataToDB } ) }
                     dataToDB={ dataToDB }
                     id={ fund.id }
+                    error={ _uiux.error }
                 />
 
             : null }

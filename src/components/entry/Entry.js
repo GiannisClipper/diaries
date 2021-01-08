@@ -114,112 +114,120 @@ const Entry = ( { index } ) => {
 
     // useEffect( () =>  console.log( 'Has rendered. ', 'Entry' ) );
 
-    return (
-        <CoreContextProvider 
-            actions={ [ 
-                actions.menu,
-                actions.form,
-                actions.validation, 
-                actions.createOne, 
-                actions.updateOne, 
-                actions.deleteOne 
-            ] }
-            dispatch={ dispatch } 
-            payload={ payload }
-        >
+    if ( ! diary_id ) {
+        return null;
 
-            { _uiux.mode.isCreate ?
-                <CreateRequest
-                    process={ _uiux.process }
-                    url={ `/.netlify/functions/entry` }
-                    body={ body() }
-                    dataToDB={ parseDataToDB() }
-                />
-
-            : _uiux.mode.isUpdate ?
-                <UpdateRequest 
-                    process={ _uiux.process }
-                    url={ `/.netlify/functions/entry?id=${entry.id}` }
-                    body={ body() }
-                    dataToDB={ parseDataToDB() }
-                    id={ entry.id }
-                />
-
-            : _uiux.mode.isDelete ?
-                <DeleteRequest 
-                    process={ _uiux.process }
-                    url={ `/.netlify/functions/entry?id=${entry.id}` }
-                    body={ body() }
-                    dataToDB={ parseDataToDB() }
-                    id={ entry.id }
-                />
-
-            : null }
-
-            <RowBox
-                key={ index }
-                draggable={ draggable }
-                onDragStart={ onDragStart }
-                onDragOver={ onDragOver }
-                onDrop={ onDrop }
+    } else {
+        return (
+            <CoreContextProvider 
+                actions={ [ 
+                    actions.menu,
+                    actions.form,
+                    actions.validation, 
+                    actions.createOne, 
+                    actions.updateOne, 
+                    actions.deleteOne 
+                ] }
+                dispatch={ dispatch } 
+                payload={ payload }
             >
-                <RowValue
+
+                { _uiux.mode.isCreate ?
+                    <CreateRequest
+                        process={ _uiux.process }
+                        url={ `/.netlify/functions/entry` }
+                        body={ body() }
+                        dataToDB={ parseDataToDB() }
+                        error={ _uiux.error }
+                    />
+
+                : _uiux.mode.isUpdate ?
+                    <UpdateRequest 
+                        process={ _uiux.process }
+                        url={ `/.netlify/functions/entry?id=${entry.id}` }
+                        body={ body() }
+                        dataToDB={ parseDataToDB() }
+                        id={ entry.id }
+                        error={ _uiux.error }
+                    />
+
+                : _uiux.mode.isDelete ?
+                    <DeleteRequest 
+                        process={ _uiux.process }
+                        url={ `/.netlify/functions/entry?id=${entry.id}` }
+                        body={ body() }
+                        dataToDB={ parseDataToDB() }
+                        id={ entry.id }
+                        error={ _uiux.error }
+                    />
+
+                : null }
+
+                <RowBox
+                    key={ index }
                     draggable={ draggable }
-                    title={ `${entry.date}, ${index}, ${entry.index}, ${entry.id}` }
+                    onDragStart={ onDragStart }
+                    onDragOver={ onDragOver }
+                    onDrop={ onDrop }
                 >
-                    <EntryRepr entry={ entry } />
-                </RowValue>
+                    <RowValue
+                        draggable={ draggable }
+                        title={ `${entry.date}, ${index}, ${entry.index}, ${entry.id}` }
+                    >
+                        <EntryRepr entry={ entry } />
+                    </RowValue>
 
-                <RowMenu>
-                    { 
-                    _uiux.process.isValidation || 
-                    _uiux.process.isRequestBefore ||
-                    _uiux.process.isRequest ||
-                    _uiux.process.isResponseWaiting ||
-                    _uiux.process.isResponseOk ?
-                        <ToolBox><Loader /></ToolBox>
-                    : _uiux.process.isResponseError ?
-                        <ToolBox><FontAwesomeIcon icon={ faBan } className="icon" /></ToolBox>
+                    <RowMenu>
+                        { 
+                        _uiux.process.isValidation || 
+                        _uiux.process.isRequestBefore ||
+                        _uiux.process.isRequest ||
+                        _uiux.process.isResponseWaiting ||
+                        _uiux.process.isResponseOk ?
+                            <ToolBox><Loader /></ToolBox>
+                        : _uiux.process.isResponseError ?
+                            <ToolBox><FontAwesomeIcon icon={ faBan } className="icon" /></ToolBox>
+                        : 
+                            <EntryMenuTool date={date} entry={entry} index={index} />
+                        }
+                    </RowMenu>
+
+                    { !_uiux.menu.isOpen ?
+                        null
+                    : !entry.id ? 
+                        <BlankEntryMenu 
+                            date={ date }
+                            entry={ entry }
+                            index={ index }
+                        />
                     : 
-                        <EntryMenuTool date={date} entry={entry} index={index} />
+                        <ExistsEntryMenu 
+                            date={ date }
+                            entry={ entry }
+                            index={ index }
+                        />
                     }
-                </RowMenu>
 
-                { !_uiux.menu.isOpen ?
-                    null
-                : !entry.id ? 
-                    <BlankEntryMenu 
-                        date={ date }
-                        entry={ entry }
-                        index={ index }
-                    />
-                : 
-                    <ExistsEntryMenu 
-                        date={ date }
-                        entry={ entry }
-                        index={ index }
-                    />
-                }
+                    { !_uiux.form.isOpen ?
+                        null
+                    : !_uiux.type.isPayment ?
+                        <NoteForm 
+                            date={ date }
+                            entry={ entry } 
+                            index={ index }
+                        /> 
+                    :
+                        <PaymentForm 
+                            date={ date }
+                            entry={ entry } 
+                            index={ index } 
+                        /> 
+                    }
+                </RowBox> 
 
-                { !_uiux.form.isOpen ?
-                    null
-                : !_uiux.type.isPayment ?
-                    <NoteForm 
-                        date={ date }
-                        entry={ entry } 
-                        index={ index }
-                    /> 
-                :
-                    <PaymentForm 
-                        date={ date }
-                        entry={ entry } 
-                        index={ index } 
-                    /> 
-                }
-            </RowBox> 
-
-        </CoreContextProvider>
-    );
+            </CoreContextProvider>
+        );
+    }
 }
 
 const List = styled.ul`

@@ -4,9 +4,9 @@ const backupReducer = ( state, action ) => {
 
     switch ( action.type ) {
 
-    case 'RETRIEVE_RESPONSE_AFTER': {
+    case 'RETRIEVE_RESPONSE_OK_AFTER': {
         const backup = backupSchema();
-        backup._uiux.process = { isResponseAfter: true };
+        backup._uiux.process = { isResponseOkAfter: true };
 
         return { ...state, backup };
 

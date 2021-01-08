@@ -8,12 +8,13 @@ import { AppContext } from './AppContext';
 const AppNav = styled.div`
     position: fixed;
     top: 10vh;
-    left: 0;
+    left: calc( ( 10% - 4em ) / 2 );
 
     height: 80vh;
     width: 4em;
-    text-align: center;
 
+    text-align: center;
+    //border: 1px dotted black;
     * {
         width: 4em;
         height: calc( 80vh / 6 );
@@ -36,15 +37,18 @@ const AppBox = styled.div`
 const AppInfo = styled.div`
     position: fixed;
     top: 10vh;
-    left: calc( 100vw - 4em );
+    right: calc( ( 10% - 4em ) / 2 );
 
     height: 80vh;
     width: 4em;
+    //border: 1px dotted black;
 
     text-align: center;
     writing-mode: vertical-rl;
     -ms-transform: rotate( 180deg ); /* IE 9 */
     transform: rotate( 180deg );
+
+    padding: .5em;
 
     ${ props => props.theme.AppInfo && props.theme.AppInfo };
 `;
@@ -80,4 +84,4 @@ const AppPage = props => {
 }
 
 export default AppPage;
-export { AppNav, AppBox, AppPage };
+export { AppNav, AppBox, AppInfo, AppPage };

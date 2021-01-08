@@ -3,6 +3,7 @@ import { oneFormReducer, oneValidationReducer, oneRequestReducer } from '../core
 import { signinReducer, signoutReducer } from '../sign/reducers';
 import { settingsReducer } from '../settings/reducers';
 import { backupReducer } from '../backup/reducers';
+import { signinSchema } from '../schemas';
 
 const appReducer = ( state, action ) => {
 
@@ -21,7 +22,27 @@ const appReducer = ( state, action ) => {
             return comboReducer( oneFormReducer, backupReducer, oneRequestReducer )( state, action );
 
         } default: {
-            throw new Error();
+
+            switch ( action.type ) {
+    
+                case 'HANDLE_ERROR': {
+                    const error = action.payload;
+
+                    let { signin } = state;
+
+                    if ( error && error.message && error.message.includes( 'No auth' ) ) {
+                        signin = signinSchema();
+                    }
+
+                    state._uiux.error = error;
+
+                    return { ...state, signin };
+        
+                } default: {
+                    console.log( `undefined type:${action.type}` );
+                    throw new Error();
+                }
+            }
         }
     }
 }

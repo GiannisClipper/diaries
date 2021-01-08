@@ -19,9 +19,10 @@ function CoreMenu( { process, children } ) {
             <MenuOptionBox>
                 <Loader />
             </MenuOptionBox>
-        : process.isResponseError ?
+        : process.isResponseError ||
+          process.isResponseErrorAfter ?
             <MenuOptionBox>
-                <FontAwesomeIcon icon={faBan} className="icon" />
+                <FontAwesomeIcon icon={ faBan } className="icon" />
             </MenuOptionBox>
         : 
             <>{ children }</>

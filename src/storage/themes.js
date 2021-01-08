@@ -15,15 +15,17 @@ const createTheme = colors => ( {
     `,
     AppInfo: css`
         color: ${colors.appNormalText};
+        font-weight: 600;
     `,
     LinkBox: css`
         :first-child {
-            color: ${colors.OkButtonBack};
+            color: ${colors.appNormalText};
+            font-weight: 600;
         }
     `,
     activeLinkBox: css`
         :first-child {
-            color: ${colors.CautionButtonBack};
+            color: ${colors.strongBack};
         }
 `,
     ListBox: null,

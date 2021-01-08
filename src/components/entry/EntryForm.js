@@ -45,7 +45,7 @@ function EntryForm( { headLabel, validation, date, entry, children } ) {
                     </InputValue>
                 </InputBox>
 
-                {children}
+                { children }
 
             </CoreForm>
         </Modal>

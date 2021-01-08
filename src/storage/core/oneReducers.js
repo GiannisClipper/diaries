@@ -109,19 +109,30 @@ const oneRequestReducer = ( state, action ) => {
 
             return { ...state, [ _namespace ]: _item };
 
-        } case 'CREATE_RESPONSE_ERROR': {
-            const { _namespace, _schema } = action.payload;
-            const _item = _schema();
-
-            return { ...state, [ _namespace ]: _item };
-
-        } case 'CREATE_RESPONSE_AFTER': {
+        } case 'CREATE_RESPONSE_OK_AFTER': {
             const { _namespace } = action.payload;
             const _item = state[ _namespace ];
 
-            _item._uiux.process = { isResponseAfter: true };
             _item._uiux.mode = {};
             _item._uiux.form = {};
+            _item._uiux.process = { isResponseOkAfter: true };
+
+            return { ...state, [ _namespace ]: _item };
+
+        } case 'CREATE_RESPONSE_ERROR': {
+            const { _namespace, error } = action.payload;
+            const _item = state[ _namespace ];
+
+            _item._uiux.process = { isResponseError: true };
+            _item._uiux.error = error;
+
+            return { ...state, [ _namespace ]: _item };
+
+        } case 'CREATE_RESPONSE_ERROR_AFTER': {
+            const { _namespace,_schema } = action.payload;
+            const _item = _schema();
+
+            _item._uiux.process = { isResponseErrorAfter: true };
 
             return { ...state, [ _namespace ]: _item };
 
@@ -135,53 +146,67 @@ const oneRequestReducer = ( state, action ) => {
 
             return { ...state, [ _namespace ]: _item };
 
-        } case 'RETRIEVE_RESPONSE_ERROR': {
-            const { _namespace } = action.payload;
-            let _item = state[ _namespace ];
-
-            _item._uiux.process = {};
-            _item._uiux.mode = {};
-            _item._uiux.form = {};
-
-            return { ...state, [ _namespace ]: _item };
-
-        } case 'RETRIEVE_RESPONSE_AFTER': {
+        } case 'RETRIEVE_RESPONSE_OK_AFTER': {
             const { _namespace } = action.payload;
             const _item = state[ _namespace ];
 
-            _item._uiux.process = { isResponseAfter: true };
             _item._uiux.mode = {};
             _item._uiux.form = {};
+            _item._uiux.process = { isResponseOkAfter: true };
+
+            return { ...state, [ _namespace ]: _item };
+
+        } case 'RETRIEVE_RESPONSE_ERROR': {
+            const { _namespace, error } = action.payload;
+            let _item = state[ _namespace ];
+
+            _item._uiux.process = { isResponseError: true };
+            _item._uiux.error = error;
+
+            return { ...state, [ _namespace ]: _item };
+
+        } case 'RETRIEVE_RESPONSE_ERROR_AFTER': {
+            const { _namespace } = action.payload;
+            const _item = state[ _namespace ];
+
+            _item._uiux.process = { isResponseErrorAfter: true };
 
             return { ...state, [ _namespace ]: _item };
 
         } case 'UPDATE_RESPONSE_OK': {
             const { _namespace, dataFromDB, _parseFromDB } = action.payload;
             let _item = state[ _namespace ];
-
+            console.log( 'UPDATE_RESPONSE_OK')
             _item = { ..._item, ..._parseFromDB( dataFromDB ) };
             _item._uiux.process = { isResponseOk: true };
 
             return { ...state, [ _namespace ]: _item };
 
+        } case 'UPDATE_RESPONSE_OK_AFTER': {
+            const { _namespace } = action.payload;
+            const _item = state[ _namespace ];
+
+            _item._uiux.mode = {};
+            _item._uiux.form = {};
+            _item._uiux.process = { isResponseOkAfter: true };
+
+            return { ...state, [ _namespace ]: _item };
+
         } case 'UPDATE_RESPONSE_ERROR': {
+            const { _namespace, error } = action.payload;
+            const _item = state[ _namespace ];
+
+            _item._uiux.process = { isResponseError: true };
+            _item._uiux.error = error;
+
+            return { ...state, [ _namespace ]: _item };
+
+        } case 'UPDATE_RESPONSE_ERROR_AFTER': {
             const { _namespace, _saved } = action.payload;
             let _item = state[ _namespace ];
 
             _item = { ..._item, ..._saved };
-            _item._uiux.process = {};
-            _item._uiux.mode = {};
-            _item._uiux.form = {};
-
-            return { ...state, [ _namespace ]: _item };
-
-        } case 'UPDATE_RESPONSE_AFTER': {
-            const { _namespace } = action.payload;
-            const _item = state[ _namespace ];
-
-            _item._uiux.process = { isResponseAfter: true };
-            _item._uiux.mode = {};
-            _item._uiux.form = {};
+            _item._uiux.process = { isResponseErrorAfter: true };
 
             return { ...state, [ _namespace ]: _item };
 
@@ -193,17 +218,28 @@ const oneRequestReducer = ( state, action ) => {
 
             return { ...state, [ _namespace ]: _item };
 
-        } case 'DELETE_RESPONSE_ERROR': {
-            const { _namespace, _schema } = action.payload;
-            const _item = _schema();
-
-            return { ...state, [ _namespace ]: _item };
-
-        } case 'DELETE_RESPONSE_AFTER': {
+        } case 'DELETE_RESPONSE_OK_AFTER': {
             const { _namespace } = action.payload;
             const _item = state[ _namespace ];
 
-            _item._uiux.process = { isResponseAfter: true };
+            _item._uiux.process = { isResponseOkAfter: true };
+
+            return { ...state, [ _namespace ]: _item };
+
+        } case 'DELETE_RESPONSE_ERROR': {
+            const { _namespace, error } = action.payload;
+            const _item = state[ _namespace ];
+
+            _item._uiux.process = { isResponseError: true };
+            _item._uiux.error = error;
+
+            return { ...state, [ _namespace ]: _item };
+
+        } case 'DELETE_RESPONSE_ERROR_AFTER': {
+            const { _namespace, _schema } = action.payload;
+            const _item = _schema();
+
+            _item._uiux.process = { isResponseErrorAfter: true };
 
             return { ...state, [ _namespace ]: _item };
 

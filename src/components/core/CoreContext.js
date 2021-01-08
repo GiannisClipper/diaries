@@ -1,8 +1,11 @@
-import React, { createContext, useCallback, useEffect } from 'react';
+import React, { useContext, createContext, useCallback, useEffect } from 'react';
+import { AppContext } from '../app/AppContext';
 
 const CoreContext = createContext();
 
 const CoreContextProvider = React.memo( ( { actions, dispatch, namespace, payload, children } ) => {
+
+    const appDispatch = useContext( AppContext ).dispatch;
 
     let types = {};
 
@@ -12,11 +15,15 @@ const CoreContextProvider = React.memo( ( { actions, dispatch, namespace, payloa
 
     payload = payload || '{}';
 
-    Object.keys( types ).forEach(
-        key => actions[ key ] = useCallback( 
-            payload2 => dispatch( { namespace, type: types[ key ], payload: { ...payload, ...payload2 } } ),
-            [ key ]
-        )
+    Object.keys( types ).forEach( 
+        
+            key => actions[ key ] = useCallback( ( key !== 'handleError' 
+
+                ? payload2 => dispatch( { namespace, type: types[ key ], payload: { ...payload, ...payload2 } } )
+
+                : error => appDispatch( { type: types[ key ], payload: error } )
+
+            ), [ key ] ) 
     );
 
     //useEffect( () => console.log( 'Has rendered. ', 'CoreContextProvider' + namespace) );

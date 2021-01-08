@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { BenchContext } from '../bench/BenchContext';
 import { GenresContext } from '../payment/genre/GenresContext';
 import { FundsContext } from '../payment/fund/FundsContext';
-import { AppBox, AppNav } from '../app/AppPage';
+import { AppBox, AppNav, AppInfo } from '../app/AppPage';
 import { LinkHome, LinkDiaries, LinkBench, LinkReports, LinkBenchSettings, LinkSignout } from '../app/AppLinks';
 import Bench from './Bench';
 
@@ -34,6 +34,10 @@ function BenchPage( { diary_id } ) {
         <AppBox>
             <Bench />
         </AppBox>
+
+        <AppInfo>
+            { diary_id }
+        </AppInfo>
         </>
     );
 }
