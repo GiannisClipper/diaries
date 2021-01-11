@@ -33,7 +33,7 @@ function AppRoutes() {
                     <Route exact path='/settings' render={ () => (<SettingsPage />) } />
                     <Route exact path='/diaries' render={ () => (<DiariesPage />) } />
                     <Route exact path='/bench' render={ () => (<BenchPage />) } />
-                    <Route exact path='/bench/:diary_id' render={ props => (<BenchPage diary_id={ props.match.params.diary_id } />) } />
+                    <Route exact path='/bench/:id' render={ props => (<BenchPage diary_id={ props.match.params.id } />) } />
                     <Route exact path='/bench_settings' render={ () => (<BenchSettingsPage />) } />
                     <Route exact path='/reports' render={ () => (<ReportsPage />) } />
                     <Route render={ () => (<Error404 />) } />

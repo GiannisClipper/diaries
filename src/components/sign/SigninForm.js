@@ -1,9 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 
-import { CoreContext } from '../core/CoreContext';
-import { InputValidation } from '../core/CoreForm';
-
 import { AppContext } from '../app/AppContext';
+import { InputValidation } from '../core/CoreForm';
 
 import styled from 'styled-components';
 import { ListBox } from '../libs/ListBox';
@@ -21,16 +19,22 @@ const SignList = styled( ListBox )`
     ${ props => props.theme.AppHeader && props.theme.AppHeader };
 `;
 
-function SignForm( { process, children } ) {
+function SignForm( { process } ) {
 
-    const { doValidation, doRequest } = useContext( CoreContext );
+    const { state, actions, customization } = useContext( AppContext );
 
-    const { state } = useContext( AppContext );
+    const { namespace } = customization.signin;
+
+    const validation = payload => actions.validation( { namespace, ...payload } );
+    const validationOk = payload => actions.validationOk( { namespace, ...payload } );
+    const validationError = payload => actions.validationError( { namespace, ...payload } );
+    const signinRequest = payload => actions.signinRequest( { namespace, ...payload } );
+
     const { signin } = state;
 
     const [ data, setData ] = useState( { ...signin } );
 
-    const validation = () => {
+    const validationRules = () => {
         let errors = '';
  
         errors += isBlank( data.username )
@@ -46,7 +50,7 @@ function SignForm( { process, children } ) {
 
     const okLabel = texts.buttons.signin;
 
-    const onClickOk = ! validation ? doRequest : doValidation;
+    const onClickOk = ! validationRules ? signinRequest : validation;
 
     return (
         <SignList>
@@ -56,7 +60,10 @@ function SignForm( { process, children } ) {
 
             <InputValidation
                 process={ process }
-                validation={ validation }
+                validationRules={ validationRules }
+                validationOk={ validationOk }
+                validationError={ validationError }
+                request={ signinRequest }
             />
 
             <InputBox>

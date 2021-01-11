@@ -1,10 +1,22 @@
 import { useContext, useEffect } from 'react';
-import { CoreContext } from './CoreContext';
 import { doFetch } from '../../helpers/customFetch';
 
-function SigninRequest( { process, url, body, dataToDB }) {
+function SigninRequest( { Context, url }) {
 
-    const { signinResponseOk, signinResponseError } = useContext( CoreContext );
+    const { state, actions, customization } = useContext( Context );
+
+    const { namespace, parseToDB } = customization.signin;
+
+    const signinResponseOk = payload => actions.signinResponseOk( { namespace, ...payload } );
+    const signinResponseError = payload => actions.signinResponseError( { namespace, ...payload } );
+
+    const _item = state[ namespace ];
+
+    const { _uiux } = _item;
+    const { process } = _uiux;
+
+    const dataToDB = parseToDB( _item );
+    const body = JSON.stringify( { data: { ...dataToDB } } );
 
     useEffect( () => {
         if ( process.isRequest ) {
@@ -19,14 +31,24 @@ function SigninRequest( { process, url, body, dataToDB }) {
     return null;
 }
 
-function CreateRequest( { process, url, body, dataToDB, error }) {
-    const { 
-        createResponseOk, 
-        createResponseError, 
-        createResponseOkAfter, 
-        createResponseErrorAfter,
-        handleError
-    } = useContext( CoreContext );
+function CreateRequest( { Context, index, url } ) {
+
+    const { state, actions, customization } = useContext( Context );
+
+    const createResponseOk = payload => actions.createResponseOk( { index, ...payload } );
+    const createResponseError = payload => actions.createResponseError( { index, ...payload } );
+    const createResponseOkAfter = payload => actions.createResponseOkAfter( { index, ...payload } );
+    const createResponseErrorAfter = payload => actions.createResponseErrorAfter( { index, ...payload } );
+    const handleError = actions.handleError;
+
+    const { namespace, parseToDB } = customization;
+    const _item = state[ namespace ][ index ];
+
+    const { _uiux } = _item;
+    const { process, error } = _uiux;
+
+    const dataToDB = parseToDB( _item );
+    const body = JSON.stringify( { data: { ...dataToDB } } );
 
     useEffect( () => {
         if ( process.isRequest ) {
@@ -48,15 +70,21 @@ function CreateRequest( { process, url, body, dataToDB, error }) {
     return null;
 }
 
-function RetrieveRequest( { process, url, error }) {
+function RetrieveRequest( { Context, index, url } ) {
 
-    const { 
-        retrieveResponseOk, 
-        retrieveResponseError, 
-        retrieveResponseOkAfter,
-        retrieveResponseErrorAfter,
-        handleError
-    } = useContext( CoreContext );
+    const { state, actions, customization } = useContext( Context );
+
+    const retrieveResponseOk = payload => actions.retrieveResponseOk( { index, ...payload } );
+    const retrieveResponseError = payload => actions.retrieveResponseError( { index, ...payload } );
+    const retrieveResponseOkAfter = payload => actions.retrieveResponseOkAfter( { index, ...payload } );
+    const retrieveResponseErrorAfter = payload => actions.retrieveResponseErrorAfter( { index, ...payload } );
+    const handleError = actions.handleError;
+
+    const { namespace } = customization;
+    const _item = state[ namespace ][ index ];
+
+    const { _uiux } = _item;
+    const { process, error } = _uiux;
 
     useEffect( () => {
         if ( process.isRequest ) {
@@ -79,15 +107,25 @@ function RetrieveRequest( { process, url, error }) {
     return null;
 }
 
-function UpdateRequest( { process, url, body, dataToDB, id, error }) {
+function UpdateRequest( { Context, index, url } ) {
 
-    const { 
-        updateResponseOk, 
-        updateResponseError, 
-        updateResponseOkAfter,
-        updateResponseErrorAfter,
-        handleError
-    } = useContext( CoreContext );
+    const { state, actions, customization } = useContext( Context );
+
+    const updateResponseOk = payload => actions.updateResponseOk( { index, ...payload } );
+    const updateResponseError = payload => actions.updateResponseError( { index, ...payload } );
+    const updateResponseOkAfter = payload => actions.updateResponseOkAfter( { index, ...payload } );
+    const updateResponseErrorAfter = payload => actions.updateResponseErrorAfter( { index, ...payload } );
+    const handleError = actions.handleError;
+
+    const { namespace, parseToDB } = customization;
+    const _item = state[ namespace ][ index ];
+
+    const { _uiux } = _item;
+    const { process, error } = _uiux;
+
+    const dataToDB = parseToDB( _item );
+    const body = JSON.stringify( { data: { ...dataToDB } } );
+    const id = _item.id;
 
     useEffect( () => {
         if ( process.isRequest ) {
@@ -109,15 +147,25 @@ function UpdateRequest( { process, url, body, dataToDB, id, error }) {
     return null;
 }
 
-function DeleteRequest( { process, url, body, dataToDB, id, error }) {
+function DeleteRequest( { Context, index, url } ) {
 
-    const { 
-        deleteResponseOk, 
-        deleteResponseError, 
-        deleteResponseOkAfter, 
-        deleteResponseErrorAfter, 
-        handleError
-    } = useContext( CoreContext );
+    const { state, actions, customization } = useContext( Context );
+
+    const deleteResponseOk = payload => actions.deleteResponseOk( { index, ...payload } );
+    const deleteResponseError = payload => actions.deleteResponseError( { index, ...payload } );
+    const deleteResponseOkAfter = payload => actions.deleteResponseOkAfter( { index, ...payload } );
+    const deleteResponseErrorAfter = payload => actions.deleteResponseErrorAfter( { index, ...payload } );
+    const handleError = actions.handleError;
+
+    const { namespace, parseToDB } = customization;
+    const _item = state[ namespace ][ index ];
+
+    const { _uiux } = _item;
+    const { process, error } = _uiux;
+
+    const dataToDB = parseToDB( _item );
+    const body = JSON.stringify( { data: { ...dataToDB } } );
+    const id = _item.id;
 
     useEffect( () => {
         if ( process.isRequest ) {
@@ -139,7 +187,9 @@ function DeleteRequest( { process, url, body, dataToDB, id, error }) {
     return null;
 }
 
-function RetrieveManyRequest( { process, url, error } ) {
+function RetrieveManyRequest( { Context, url } ) {
+
+    const { state, actions } = useContext( Context );
 
     const { 
         retrieveManyRequest,
@@ -149,7 +199,10 @@ function RetrieveManyRequest( { process, url, error } ) {
         retrieveManyResponseOkAfter,
         retrieveManyResponseErrorAfter,
         handleError
-    } = useContext( CoreContext );
+    } = actions;
+
+    const { _uiux } = state;
+    const { process, error } = _uiux;
 
     useEffect( () => {
         if ( process.isRequestBefore ) {

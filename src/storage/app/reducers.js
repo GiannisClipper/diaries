@@ -1,5 +1,7 @@
 import comboReducer from '../../helpers/comboReducer';
-import { oneFormReducer, oneValidationReducer, oneRequestReducer } from '../core/oneReducers';
+import { formOneReducer } from '../core/reducers/form';
+import { validationOneReducer } from '../core/reducers/validation';
+import { updateOneReducer } from '../core/reducers/update';
 import { signinReducer, signoutReducer } from '../sign/reducers';
 import { settingsReducer } from '../settings/reducers';
 import { backupReducer } from '../backup/reducers';
@@ -7,19 +9,31 @@ import { signinSchema } from '../schemas';
 
 const appReducer = ( state, action ) => {
 
-    switch ( action.namespace ) {
+    switch ( action.payload.namespace ) {
 
         case 'signin': {
-            return comboReducer( oneValidationReducer, signinReducer )( state, action );
+            return comboReducer( 
+                validationOneReducer,
+                signinReducer 
+            )( state, action );
 
         } case 'signout': {
             return signoutReducer( state, action );
 
         } case 'settings': {
-            return comboReducer( oneFormReducer, oneValidationReducer, settingsReducer, oneRequestReducer )( state, action );
+            return comboReducer( 
+                formOneReducer, 
+                validationOneReducer, 
+                settingsReducer, 
+                updateOneReducer
+            )( state, action );
 
         } case 'backup': {
-            return comboReducer( oneFormReducer, backupReducer, oneRequestReducer )( state, action );
+            return comboReducer( 
+                formOneReducer, 
+                backupReducer, 
+                updateOneReducer 
+            )( state, action );
 
         } default: {
 

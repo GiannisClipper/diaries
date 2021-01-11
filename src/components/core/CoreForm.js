@@ -1,16 +1,19 @@
 import React, { useContext, useEffect } from 'react';
-import { CoreContext } from './CoreContext';
 import { OkCancelForm } from '../libs/Forms';
 import texts from '../../storage/texts';
 
-function InputValidation( { process, validation } ) {
-
-    const { validationOk, validationError, doRequest } = useContext( CoreContext );
+function InputValidation( { 
+    process, 
+    validationRules,
+    validationOk,
+    validationError,
+    request,     
+} ) {
 
     useEffect( () => {
     
         if ( process.isValidation ) {
-            const { data, errors } = validation();
+            const { data, errors } = validationRules();
 
             if ( errors === '' ) {
                 validationOk( { data } )
@@ -21,16 +24,42 @@ function InputValidation( { process, validation } ) {
             }
 
         } else if ( process.isValidationOk ) {
-            doRequest();
+            request();
         }
     } );
 
     return null;
 }
 
-function CoreForm( { headLabel, mode, process, validation, children } ) {
+function CoreForm( { Context, index, validationRules, children } ) {
 
-    const { closeForm, doValidation, doRequest } = useContext( CoreContext );
+    const { state, actions, customization } = useContext( Context );
+    const { namespace } = customization;
+    const _item = state[ namespace ][ index ];
+
+    const { _uiux } = _item;
+    const { process, mode } = _uiux;
+
+    const validation = payload => actions.validation( { index, ...payload } );
+    const validationOk = payload => actions.validationOk( { index, ...payload } );
+    const validationError = payload => actions.validationError( { index, ...payload } );
+
+    const rawRequest = (
+        mode.isCreate ?
+            actions.createRequest :
+        mode.isUpdate ?
+            actions.updateRequest :
+        mode.isDelete ?
+            actions.deleteRequest :
+        mode.isRetrieveMany ?
+            actions.retrieveManyRequest :
+        null
+    );
+
+    const request = payload => rawRequest( { index, ...payload } );
+    const closeForm = payload => actions.closeForm( { index, ...payload } );
+
+    const headLabel = texts.heads[ namespace ];
 
     const okLabel = ( 
         mode.isCreate ?
@@ -51,14 +80,17 @@ function CoreForm( { headLabel, mode, process, validation, children } ) {
             headLabel={ headLabel }
             okLabel={ okLabel }
             cancelLabel={ cancelLabel }
-            onClickOk={ ! validation || mode.isDelete ? doRequest : doValidation }
+            onClickOk={ ! validation || mode.isDelete ? request : validation }
             onClickCancel={ closeForm }
             isRequest={ process.isRequest }
             isDelete={ mode.isDelete }
         >
             <InputValidation
                 process={ process }
-                validation={ validation }
+                validationRules={ validationRules }
+                validationOk={ validationOk }
+                validationError={ validationError }
+                request={ request }
             />
 
             { children }

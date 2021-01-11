@@ -3,22 +3,16 @@ import { AppContext } from '../app/AppContext';
 
 function Signout() {
 
-    const signin = JSON.parse( localStorage.getItem( 'signin' ) || '{}' );
+    const { state, actions, customization } = useContext( AppContext );
+    const { signin } = state;
     const { token } = signin;
 
-    const { dispatch } = useContext( AppContext );
-
-    const doSignout = () => {
-        dispatch( { 
-            namespace: 'signout',
-            type: 'DO_SIGNOUT',
-            payload: {},
-        } );
-    }
+    const { namespace } = customization.signout;
+    const signoutProcess = payload => actions.signoutProcess( { namespace, ...payload } );
 
     useEffect( () => {
         if ( token ) {
-            doSignout();
+            signoutProcess();
         }
     } );
 

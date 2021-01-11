@@ -34,11 +34,7 @@ const benchReducer = ( state, action ) => {
 
     switch ( action.type ) {
 
-        case 'OPEN_DIARY': {
-            const { diary_id } = action.payload;
-            return { ...benchSchema(), diary_id };
-
-        } case 'DO_INIT': {
+        case 'DO_INIT': {
             const { _uiux } = state;
             const { mode } = action.payload;
             _uiux.mode = mode;
@@ -93,7 +89,7 @@ const benchReducer = ( state, action ) => {
             return { ...state, periods, _uiux };
 
         } default: {
-            throw new Error();
+            return undefined;
         }
     }
 }

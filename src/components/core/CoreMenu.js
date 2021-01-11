@@ -1,8 +1,5 @@
-import React, { useContext, useEffect } from 'react';
-import { CoreContext } from './CoreContext';
-
+import React from 'react';
 import { Loader } from '../libs/Loader';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBan, faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { MenuOptionBox } from '../libs/MenuBox';
@@ -19,19 +16,19 @@ function CoreMenu( { process, children } ) {
             <MenuOptionBox>
                 <Loader />
             </MenuOptionBox>
+
         : process.isResponseError ||
           process.isResponseErrorAfter ?
             <MenuOptionBox>
                 <FontAwesomeIcon icon={ faBan } className="icon" />
             </MenuOptionBox>
+
         : 
             <>{ children }</>
     );
 }
 
-function CreateMenuOption( { reference } ) {
-
-    const { openForm } = useContext( CoreContext );
+function CreateMenuOption( { reference, openForm } ) {
 
     return (
         <MenuOptionBox 
@@ -47,9 +44,7 @@ function CreateMenuOption( { reference } ) {
     )
 }
 
-function RetrieveMenuOption( { reference } ) {
-
-    const { openForm } = useContext( CoreContext );
+function RetrieveMenuOption( { reference, openForm } ) {
 
     return (
         <MenuOptionBox 
@@ -59,15 +54,13 @@ function RetrieveMenuOption( { reference } ) {
             <FontAwesomeIcon 
                 className="icon" 
                 icon={ faEdit } 
-                title="Ανάκτηση δεδομένων"
+                title="Ανάκτηση"
             />
         </MenuOptionBox>
     )
 }
 
-function UpdateMenuOption( { reference } ) {
-
-    const { openForm } = useContext( CoreContext );
+function UpdateMenuOption( { reference, openForm } ) {
 
     return (
         <MenuOptionBox 
@@ -77,15 +70,13 @@ function UpdateMenuOption( { reference } ) {
             <FontAwesomeIcon 
                 className="icon" 
                 icon={ faEdit } 
-                title="Τροποποίηση εγγραφής" 
+                title="Τροποποίηση" 
             />
         </MenuOptionBox>
     )
 }
 
-function DeleteMenuOption( { reference } ) {
-
-    const { openForm } = useContext( CoreContext );
+function DeleteMenuOption( { reference, openForm } ) {
 
     return (
         <MenuOptionBox 
@@ -95,15 +86,13 @@ function DeleteMenuOption( { reference } ) {
             <FontAwesomeIcon 
                 className="icon" 
                 icon={ faTrashAlt } 
-                title="Διαγραφή εγγραφής" 
+                title="Διαγραφή" 
             />
         </MenuOptionBox>
     )
 }
 
-function RetrieveManyMenuOption( { reference } ) {
-
-    const { openForm } = useContext( CoreContext );
+function RetrieveManyMenuOption( { reference, openForm } ) {
 
     return (
         <MenuOptionBox 
@@ -113,7 +102,7 @@ function RetrieveManyMenuOption( { reference } ) {
             <FontAwesomeIcon 
                 className="icon" 
                 icon={ faEdit } 
-                title="Ανάκτηση δεδομένων"
+                title="Ανάκτηση"
             />
         </MenuOptionBox>
     )

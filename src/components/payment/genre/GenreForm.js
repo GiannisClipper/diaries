@@ -1,28 +1,22 @@
 import React, { useState, useContext } from 'react';
-
-import { CoreContext } from "../../core/CoreContext";
-import CoreForm from "../../core/CoreForm";
-
 import { GenresContext } from './GenresContext';
-
 import { Modal } from '../../libs/Modal';
-import { heads } from '../../../storage/texts';
+import CoreForm from "../../core/CoreForm";
 import { InputBox, InputLabel, InputValue } from '../../libs/InputBox';
 import { InputCheck } from '../../libs/InputCheck';
 import { isBlank, isFound } from '../../../helpers/validation';
 
 function GenreForm( { index } ) {
     
-    const { state } = useContext( GenresContext );
+    const { state, actions } = useContext( GenresContext );
     const { genres } = state;
     const genre = genres[ index ];
-    const { _uiux } = genre;
 
-    const { closeForm } = useContext( CoreContext );
+    const closeForm = payload => actions.closeForm( { index, ...payload } );
 
     const [ data, setData ] = useState( { ...genre } );
 
-    const validation = () => {
+    const validationRules = () => {
         let errors = '';
 
         errors += isBlank( data.name ) 
@@ -41,10 +35,9 @@ function GenreForm( { index } ) {
         <Modal onClick={closeForm} centeredness>
 
             <CoreForm
-                headLabel={ heads.payment_genres }
-                mode={ _uiux.mode }
-                process={ _uiux.process }
-                validation={ validation }
+                Context={ GenresContext }
+                index={ index }
+                validationRules={ validationRules }
             >
                 <InputBox>
                     <InputLabel>

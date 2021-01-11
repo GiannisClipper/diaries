@@ -1,39 +1,18 @@
 import React, { useContext, useEffect } from 'react';
-
-import { CoreContextProvider } from '../../core/CoreContext';
-import actions from '../../../storage/core/actions';
-import { paymentGenreSchema } from '../../../storage/schemas';
-import { parseGenreFromDB } from '../../../storage/payment/genre/parsers';
+import { GenresContext } from './GenresContext';
 import { CreateRequest, UpdateRequest, DeleteRequest } from '../../core/CoreRequests';
 import { CoreMenu, CreateMenuOption, UpdateMenuOption, DeleteMenuOption } from '../../core/CoreMenu';
-
-import { BenchContext } from '../../bench/BenchContext';
-import { GenresContext } from './GenresContext';
-import { parseGenreToDB } from '../../../storage/payment/genre/parsers';
-
 import { RowBox, RowValue, RowMenu } from '../../libs/RowBox';
-
 import GenreForm from './GenreForm';
 
 function Genre( { index } ) {
 
-    const { diary_id } = useContext( BenchContext ).state;
-
-    const { state, dispatch } = useContext( GenresContext );
+    const { state, actions } = useContext( GenresContext );
     const { genres } = state;
     const genre = genres[ index ];
     const { _uiux } = genre;
 
-    const payload = { 
-        _namespace: 'genres',
-        index,
-        _saved: genre,
-        _schema: paymentGenreSchema,
-        _parseFromDB: parseGenreFromDB,
-        _sort: null,
-    };
-
-    const dataToDB = parseGenreToDB( genre );
+    const openForm = payload => actions.openForm( { index, ...payload } );
 
     const typeInfo = _uiux.mode.isCreate
         ? ''
@@ -46,77 +25,55 @@ function Genre( { index } ) {
         : '-';
 
     return (
-        <CoreContextProvider 
-            actions={ [ 
-                actions.form, 
-                actions.validation, 
-                actions.createOne, 
-                actions.updateOne, 
-                actions.deleteOne 
-            ] }
-            dispatch={ dispatch } 
-            payload={ payload }
-        >
+        <RowBox key={ index }>
 
             { _uiux.mode.isCreate ?
                 <CreateRequest
-                    process={_uiux.process}
+                    Context={ GenresContext }
+                    index={ index }
                     url={ `/.netlify/functions/payment-genre` }
-                    body={ JSON.stringify( { data: { ...dataToDB, diary_id } } ) }
-                    dataToDB={ { ...dataToDB, diary_id } }
-                    error={ _uiux.error }
                 />
 
             : _uiux.mode.isUpdate ?
                 <UpdateRequest 
-                    process={ _uiux.process}
+                    Context={ GenresContext }
+                    index={ index }
                     url={ `/.netlify/functions/payment-genre?id=${genre.id}` }
-                    body={ JSON.stringify( { data: dataToDB } ) }
-                    dataToDB={ dataToDB }
-                    id={ genre.id }
-                    error={ _uiux.error }
                 />
 
             : _uiux.mode.isDelete ?
                 <DeleteRequest 
-                    process={ _uiux.process }
+                    Context={ GenresContext }
+                    index={ index }
                     url={ `/.netlify/functions/payment-genre?id=${genre.id}` }
-                    body={ JSON.stringify( { data: dataToDB } ) }
-                    dataToDB={ dataToDB }
-                    id={ genre.id }
-                    error={ _uiux.error }
                 />
 
             : null }
 
-            <RowBox key={ index }>
-                <RowValue title={ `${genre.id}` }>
-                    <span style={ { fontFamily: 'monospace' } } >{ `${typeInfo} ${genre.code} ` }</span>
-                    <span>{ genre.name }</span>
-                </RowValue>
+            <RowValue title={ `${genre.diary_id}.${genre.id}` }>
+                <span style={ { fontFamily: 'monospace' } } >{ `${typeInfo} ${genre.code} ` }</span>
+                <span>{ genre.name }</span>
+            </RowValue>
 
-                <RowMenu>
-                    { ! genre.id 
-                    ?
-                    <CoreMenu process={ _uiux.process } >
-                        <CreateMenuOption />
-                    </CoreMenu>
-                    :
-                    <CoreMenu process={ _uiux.process } >
-                        <UpdateMenuOption />
-                        <DeleteMenuOption />
-                    </CoreMenu>
-                    }
-                </RowMenu>
-            </RowBox> 
+            <RowMenu>
+                { ! genre.id 
+                ?
+                <CoreMenu process={ _uiux.process } >
+                    <CreateMenuOption openForm={ openForm } />
+                </CoreMenu>
+                :
+                <CoreMenu process={ _uiux.process } >
+                    <UpdateMenuOption openForm={ openForm } />
+                    <DeleteMenuOption openForm={ openForm } />
+                </CoreMenu>
+                }
+            </RowMenu>
 
             { _uiux.form.isOpen ? 
-                <GenreForm 
-                    index={ index } 
-                /> 
+                <GenreForm index={ index } /> 
             : null }
 
-        </CoreContextProvider>
+        </RowBox> 
     );
 }
 

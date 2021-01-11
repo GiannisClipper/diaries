@@ -1,9 +1,5 @@
 import React, { useContext, useEffect  } from 'react';
 
-import { CoreContextProvider } from '../../core/CoreContext';
-import actions from '../../../storage/core/actions';
-import { paymentGenreSchema } from '../../../storage/schemas';
-import { parseGenreFromDB } from '../../../storage/payment/genre/parsers';
 import { RetrieveManyRequest } from '../../core/CoreRequests';
 
 import { BenchContext } from '../../bench/BenchContext';
@@ -13,15 +9,13 @@ function GenresInit() {
 
     const { diary_id } = useContext( BenchContext ).state;
 
-    const { state, dispatch } = useContext( GenresContext );
-    const { _uiux } = state;
+    const { state, actions, customization } = useContext( GenresContext );
+    const { schema } = customization;
 
-    const payload = {
-        _namespace: 'genres',
-        _schema: paymentGenreSchema,
-        _parseFromDB: parseGenreFromDB,
-        _sort: ( x, y ) => x.code > y.code ? 1 : -1,
-    };
+    if ( state.diary_id !== diary_id ) {
+        actions.updateState( { data: { ...schema, diary_id } } );
+        actions.retrieveManyRequestBefore();
+    }
 
     //useEffect( () => console.log( 'Has rendered. ', 'payment/GenresInit' ) );
 
@@ -30,17 +24,10 @@ function GenresInit() {
 
     } else {
         return (
-            <CoreContextProvider 
-                actions={ [ actions.retrieveMany ] }
-                dispatch={ dispatch }
-                payload={ payload }
-            >
-                <RetrieveManyRequest 
-                    process={ _uiux.process }
-                    url={ `/.netlify/functions/payment-genre?diary_id=${diary_id}` }
-                    error={ _uiux.error }
-                />
-            </CoreContextProvider>
+            <RetrieveManyRequest 
+                Context={ GenresContext }
+                url={ `/.netlify/functions/payment-genre?diary_id=${diary_id}` }
+            />
         );
     }
 }

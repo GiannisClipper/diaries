@@ -1,7 +1,5 @@
 import React, { useContext, useEffect  } from 'react';
 
-import { CoreContextProvider, CoreContext } from '../core/CoreContext';
-import actions from '../../storage/core/actions';
 import { RetrieveManyRequest } from '../core/CoreRequests';
 
 import { BenchContext } from '../bench/BenchContext';
@@ -17,7 +15,7 @@ function RetrieveManyResponseOkAfter() {
     const genres_uiux = useContext( GenresContext ).state._uiux;
     const funds_uiux = useContext( FundsContext ).state._uiux;
 
-    const { retrieveManyResponseOkAfter, retrieveManyResponseError } = useContext( CoreContext );
+    const { actions } = useContext( DatesContext );
 
     useEffect( () => {
 
@@ -26,10 +24,10 @@ function RetrieveManyResponseOkAfter() {
 
         if ( process1.isResponseOkAfter && process2.isResponseOkAfter ) {
             const payload = { genres, funds };
-            retrieveManyResponseOkAfter( payload );
+            actions.retrieveManyResponseOkAfter( payload );
 
         } else if ( process1.isResponseError || process2.isResponseError ) {
-            retrieveManyResponseError();
+            actions.retrieveManyResponseError();
         }
     } );
 
@@ -40,7 +38,7 @@ function DatesInit() {
 
     const { diary_id } = useContext( BenchContext ).state;
 
-    const { state, dispatch } = useContext( DatesContext );
+    const { state } = useContext( DatesContext );
     const { dates, _uiux } = state;
 
     const dateFrom = dateToYYYYMMDD( dates[ 0 ].date );
@@ -54,20 +52,14 @@ function DatesInit() {
     } else {
 
         return (
-            <CoreContextProvider 
-                actions={ [ actions.retrieveMany ] }
-                dispatch={ dispatch }
-            >
-                { _uiux.process.isResponseOk ?
-                    <RetrieveManyResponseOkAfter />
-                :
-                    <RetrieveManyRequest 
-                        process={ _uiux.process }
-                        url={ `/.netlify/functions/entry?diary_id=${diary_id}&range=${dateFrom}-${dateTill}` }
-                        error={ _uiux.error }
-                    />
-                }
-            </CoreContextProvider>
+            _uiux.process.isResponseOk 
+            ?
+                <RetrieveManyResponseOkAfter />
+            :
+                <RetrieveManyRequest 
+                    Context={ DatesContext }
+                    url={ `/.netlify/functions/entry?diary_id=${diary_id}&range=${dateFrom}-${dateTill}` }
+                />
         );
     }
 }

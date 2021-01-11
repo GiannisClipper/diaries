@@ -1,27 +1,21 @@
 import React, { useState, useContext } from 'react';
-
-import { CoreContext } from "../../core/CoreContext";
-import CoreForm from "../../core/CoreForm";
-
 import { FundsContext } from './FundsContext';
-
 import { Modal } from '../../libs/Modal';
-import { heads } from '../../../storage/texts';
+import CoreForm from "../../core/CoreForm";
 import { InputBox, InputLabel, InputValue } from '../../libs/InputBox';
 import { isBlank, isFound } from '../../../helpers/validation';
 
 function FundForm( { index } ) {
     
-    const { state } = useContext( FundsContext );
+    const { state, actions } = useContext( FundsContext );
     const { funds } = state;
     const fund = funds[ index ];
-    const { _uiux } = fund;
 
-    const { closeForm } = useContext( CoreContext );
+    const closeForm = payload => actions.closeForm( { index, ...payload } );
 
     const [ data, setData ] = useState( { ...fund } );
 
-    const validation = () => {
+    const validationRules = () => {
         let errors = '';
 
         errors += isBlank( data.name ) 
@@ -40,10 +34,9 @@ function FundForm( { index } ) {
         <Modal onClick={ closeForm } centeredness>
 
             <CoreForm
-                headLabel={ heads.payment_funds }
-                mode={ _uiux.mode }
-                process={ _uiux.process }
-                validation={ validation }
+                Context={ FundsContext }
+                index={ index }
+                validationRules={ validationRules }
             >
                 <InputBox>
                     <InputLabel>

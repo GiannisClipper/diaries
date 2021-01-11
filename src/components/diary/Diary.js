@@ -1,88 +1,49 @@
 import React, { useContext, useEffect } from 'react';
-
-import { CoreContextProvider } from '../core/CoreContext';
-import actions from '../../storage/core/actions';
-import { diarySchema } from '../../storage/schemas';
-import { parseDiaryFromDB } from '../../storage/diary/parsers';
+import { DiariesContext } from './DiariesContext';
 import { CreateRequest, UpdateRequest, DeleteRequest } from '../core/CoreRequests';
 import { CoreMenu, CreateMenuOption, UpdateMenuOption, DeleteMenuOption } from '../core/CoreMenu';
-
-import { AppContext } from '../app/AppContext';
-import { DiariesContext } from './DiariesContext';
-import { parseDiaryToDB } from '../../storage/diary/parsers';
-
 import { RowBox, RowValue, RowMenu } from '../libs/RowBox';
-
 import { LinkBench } from '../app/AppLinks';
-
 import DiaryForm from './DiaryForm';
 
 function Diary( { index } ) {
 
-    const { user_id } = useContext( AppContext ).state.signin;
-
-    const { state, dispatch } = useContext( DiariesContext );
+    const { state, actions } = useContext( DiariesContext );
     const { diaries } = state;
     const diary = diaries[ index ];
     const { _uiux } = diary;
 
-    const payload = { 
-        _namespace: 'diaries',
-        index, 
-        _saved: diary,
-        _schema: diarySchema,
-        _parseFromDB: parseDiaryFromDB,
-        _sort: null,
-    };
-
-    const dataToDB = parseDiaryToDB( diary );
+    const openForm = payload => actions.openForm( { index, ...payload } );
 
     return (
-        <CoreContextProvider 
-            actions={ [ 
-                actions.form, 
-                actions.validation, 
-                actions.createOne, 
-                actions.updateOne, 
-                actions.deleteOne 
-            ] }
-            dispatch={ dispatch }
-            payload={ payload }
-        >
-            { _uiux.mode.isCreate ?
-                <CreateRequest 
-                    process={ _uiux.process }
-                    url={ `/.netlify/functions/diary` }
-                    dataToDB={ { ...dataToDB, user_id } }
-                    body={ JSON.stringify( { data: { ...dataToDB, user_id } } ) }
-                    error={ _uiux.error }
-                />
-
-            : _uiux.mode.isUpdate ?
-                <UpdateRequest 
-                    process={ _uiux.process }
-                    url={ `/.netlify/functions/diary?id=${diary.id}` }
-                    dataToDB={ dataToDB }
-                    body={ JSON.stringify( { data: dataToDB } ) }
-                    id={ diary.id }
-                    error={ _uiux.error }
-                />
-
-            : _uiux.mode.isDelete ?
-                <DeleteRequest 
-                    process={ _uiux.process }
-                    url={ `/.netlify/functions/diary?id=${diary.id}` }
-                    dataToDB={ dataToDB }
-                    body={ JSON.stringify( { data: dataToDB } ) }
-                    id={ diary.id }
-                    error={ _uiux.error }
-                />
-
-            : null }
-
             <RowBox>
-                <RowValue title={ `${diary.id}` }>
+                { _uiux.mode.isCreate ?
+                    <CreateRequest 
+                        Context={ DiariesContext }
+                        index={ index }
+                        url={ `/.netlify/functions/diary` }
+                    />
+
+                : _uiux.mode.isUpdate ?
+                    <UpdateRequest 
+                        Context={ DiariesContext }
+                        index={ index }
+                        url={ `/.netlify/functions/diary?id=${diary.id}` }
+                    />
+
+                : _uiux.mode.isDelete ?
+                    <DeleteRequest 
+                        Context={ DiariesContext }
+                        index={ index }
+                        url={ `/.netlify/functions/diary?id=${diary.id}` }
+                    />
+
+                : null }
+
+                <RowValue title={ `${diary.user_id}.${diary.id}` }>
+
                     { ! diary.id || <LinkBench id={ diary.id } /> }
+
                     <span>{ diary.title }</span>
                     <span>{ diary.startDate }</span>
                 </RowValue>
@@ -91,22 +52,21 @@ function Diary( { index } ) {
                     { ! diary.id 
                     ?
                     <CoreMenu process={ _uiux.process } >
-                        <CreateMenuOption />
+                        <CreateMenuOption openForm={ openForm } />
                     </CoreMenu>
                     :
                     <CoreMenu process={ _uiux.process } >
-                        <UpdateMenuOption />
-                        <DeleteMenuOption />
+                        <UpdateMenuOption openForm={ openForm } />
+                        <DeleteMenuOption openForm={ openForm } />
                     </CoreMenu>
                     }
                 </RowMenu>
+
+                { _uiux.form.isOpen ?
+                    <DiaryForm index={ index } /> 
+                : null }
+
             </RowBox>
-
-            { _uiux.form.isOpen ?
-                <DiaryForm index={index} /> 
-            : null }
-
-        </CoreContextProvider>
     );
 }
 

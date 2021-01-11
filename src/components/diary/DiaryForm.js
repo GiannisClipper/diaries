@@ -1,30 +1,27 @@
 import React, { useState, useContext } from 'react';
-
-import { CoreContext } from "../core/CoreContext";
-import CoreForm from "../core/CoreForm";
-
 import { DiariesContext } from './DiariesContext';
-
 import { Modal } from '../libs/Modal';
-import { heads } from '../../storage/texts';
+import CoreForm from "../core/CoreForm";
 import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
 import { InputDate } from '../libs/InputDate';
 import { isBlank, isFound } from '../../helpers/validation';
 
 function DiaryForm( { index } ) {
 
-    const { state } = useContext( DiariesContext );
+    const { state, actions } = useContext( DiariesContext );
     const { diaries } = state;
     const diary = diaries[ index ];
-    const { _uiux } = diary;
 
-    const { closeForm } = useContext( CoreContext );
+    const closeForm = payload => actions.closeForm( { index, ...payload } );
 
     const [ data, setData ] = useState( { ...diary } );
 
-    const validation = () => {
+    const validationRules = () => {
         let errors = '';
- 
+
+        errors += isBlank( data.user_id ) 
+            ? 'Ο Κωδικός χρήστη δεν μπορεί να είναι κενός.\n' : '';
+
         errors += isBlank( data.title ) 
             ? 'Ο Τίτλος ημερολογίου δεν μπορεί να είναι κενός.\n' : '';
  
@@ -38,10 +35,9 @@ function DiaryForm( { index } ) {
         <Modal onClick={ closeForm } centeredness>
 
             <CoreForm
-                headLabel={ heads.diaries }
-                mode={ _uiux.mode }
-                process={ _uiux.process }
-                validation={ validation }
+                Context={ DiariesContext }
+                index={ index }
+                validationRules={ validationRules }
             >
                 <InputBox>
                     <InputLabel>

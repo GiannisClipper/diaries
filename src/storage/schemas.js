@@ -1,11 +1,7 @@
 const appSchema = () => ( {
-
-    signin: signinSchema(),
-
-    settings: settingsSchema(),
-
-    backup: backupSchema(),
-
+    signin: {},
+    settings: {},
+    backup: {},
     _uiux: {
         error: {},
     },
@@ -65,6 +61,7 @@ const userSchema = () => ( {
 } );
 
 const diariesSchema = () => ( {
+    user_id: null,
     diaries: [],
     _uiux: { 
         process: { isRequestBefore: true },  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
@@ -142,6 +139,7 @@ const paymentSchema = () => ( {
 } );
 
 const paymentGenresSchema = () => ( {
+    diary_id: null,
     genres: [],
     _uiux: { 
         process: { isRequestBefore: true },  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
@@ -165,6 +163,7 @@ const paymentGenreSchema = () => ( {
 } );
 
 const paymentFundsSchema = () => ( {
+    diary_id: null,
     funds: [],
     _uiux: { 
         process: { isRequestBefore: true },  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended

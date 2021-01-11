@@ -50,10 +50,17 @@ function NextButton( { reference } ) {
     );
 }
 
-const Bench = () => {
+const Bench = ( { diary_id } ) => {
 
-    const { state, dispatch } = useContext( BenchContext );
+    const { state, dispatch, actions, customization } = useContext( BenchContext );
     const { periods, _uiux } = state;
+    const { schema } = customization;
+    console.log('bench, state.diary_id !== diary_id', state.diary_id, diary_id)
+
+    if ( state.diary_id !== diary_id ) {
+        _uiux.process = { isInitBefore: true };
+        actions.updateState( { data: { ...schema, diary_id, _uiux } } );
+    }
 
     const REF = useContext( REFContext );
 

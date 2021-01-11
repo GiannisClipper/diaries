@@ -1,9 +1,5 @@
 import React, { useContext, useEffect  } from 'react';
 
-import { CoreContextProvider } from '../../core/CoreContext';
-import actions from '../../../storage/core/actions';
-import { paymentFundSchema } from '../../../storage/schemas';
-import { parseFundFromDB } from '../../../storage/payment/fund/parsers';
 import { RetrieveManyRequest } from '../../core/CoreRequests';
 
 import { BenchContext } from '../../bench/BenchContext';
@@ -13,15 +9,13 @@ function FundsInit() {
 
     const { diary_id } = useContext( BenchContext ).state;
 
-    const { state, dispatch } = useContext( FundsContext );
-    const { _uiux } = state;
+    const { state, actions, customization } = useContext( FundsContext );
+    const { schema } = customization;
 
-    const payload = {
-        _namespace: 'funds',
-        _schema: paymentFundSchema,
-        _parseFromDB: parseFundFromDB,
-        _sort: ( x, y ) => x.code > y.code ? 1 : -1,
-    };
+    if ( state.diary_id !== diary_id ) {
+        actions.updateState( { data: { ...schema, diary_id } } );
+        actions.retrieveManyRequestBefore();
+    }
 
     //useEffect( () => console.log( 'Has rendered. ', 'payment/FundsInit' ) );
 
@@ -30,17 +24,10 @@ function FundsInit() {
 
     } else {
         return (
-            <CoreContextProvider
-                actions={ [ actions.retrieveMany ] }
-                dispatch={ dispatch }
-                payload={ payload }
-            >
-                <RetrieveManyRequest 
-                    process={ _uiux.process }
-                    url={ `/.netlify/functions/payment-fund?diary_id=${diary_id}` }
-                    error={ _uiux.error }
-                />
-            </CoreContextProvider>
+            <RetrieveManyRequest 
+                Context={ FundsContext }
+                url={ `/.netlify/functions/payment-fund?diary_id=${diary_id}` }
+            />
         );
     }
 }

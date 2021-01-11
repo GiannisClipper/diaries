@@ -6,9 +6,10 @@ const signinReducer = ( state, action ) => {
 
     switch ( action.type ) {
 
-        case 'DO_REQUEST': {
+        case 'SIGNIN_REQUEST': {
             const { signin } = state;
             signin._uiux.process = { isRequest: true };
+
             return { ...state, signin };
 
         } case 'SIGNIN_RESPONSE_OK': {
@@ -29,12 +30,16 @@ const signinReducer = ( state, action ) => {
             signin._uiux = signin_uiux;
             settings._uiux = settings_uiux;
 
-            return { ...appSchema(), signin, settings };
+            return { ...state, signin, settings };
 
         } case 'SIGNIN_RESPONSE_ERROR': {
             localStorage.removeItem( 'settings' );
+            const settings = settingsSchema();
+
             localStorage.removeItem( 'signin' );
-            return { ...appSchema() };
+            const signin = signinSchema();
+
+            return { ...state, signin, settings };
 
         } default: {
             return state;
@@ -46,10 +51,14 @@ const signoutReducer = ( state, action ) => {
 
     switch ( action.type ) {
 
-        case 'DO_SIGNOUT': {
-            localStorage.removeItem( 'settings' );
+        case 'SIGNOUT_PROCESS': {
+            // localStorage.removeItem( 'settings' );
+            // const settings = settingsSchema();
+
             localStorage.removeItem( 'signin' );
-            return { ...appSchema() };
+            const signin = signinSchema();
+
+            return { ...state, signin };
 
         } default: {
             throw new Error();

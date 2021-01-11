@@ -1,12 +1,7 @@
 import React, { useState, useContext } from 'react';
-
-import { CoreContext } from "../core/CoreContext";
-import CoreForm from "../core/CoreForm";
-
 import { UsersContext } from './UsersContext';
-
 import { Modal } from '../libs/Modal';
-import { heads } from '../../storage/texts';
+import CoreForm from "../core/CoreForm";
 import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
 import { InputEmail } from '../libs/InputEmail';
 import { InputCheck } from '../libs/InputCheck';
@@ -14,16 +9,16 @@ import { isBlank, isFound } from '../../helpers/validation';
 
 function UserForm( { index } ) {
 
-    const { state } = useContext( UsersContext );
+    const { state, actions } = useContext( UsersContext );
     const { users } = state;
     const user = users[ index ];
     const { _uiux } = user;
 
-    const { closeForm } = useContext( CoreContext );
+    const closeForm = payload => actions.closeForm( { index, ...payload } );
 
     const [ data, setData ] = useState( { ...user } );
 
-    const validation = () => {
+    const validationRules = () => {
         let errors = '';
  
         errors += isBlank( data.username ) 
@@ -45,10 +40,9 @@ function UserForm( { index } ) {
         <Modal onClick={ closeForm } centeredness>
 
             <CoreForm
-                headLabel={ heads.users }
-                mode={ _uiux.mode }
-                process={ _uiux.process }
-                validation={ validation }
+                Context={ UsersContext }
+                index={ index }
+                validationRules={ validationRules }
             >
                 <InputBox>
                     <InputLabel>
