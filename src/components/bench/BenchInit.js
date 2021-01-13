@@ -45,7 +45,7 @@ function BenchInit( { mode, process } ) {
         }
     } );
 
-    useEffect( () => console.log( 'Has rendered. ', 'BenchInit', process, mode ) );
+    useEffect( () => console.log( 'Has rendered. ', 'BenchInit' ) );
 
     return null;
 }

@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { EntriesContext } from '../entry/EntriesContext';
 import styled from 'styled-components';
+import EntriesInit from './EntriesInit';
 import Entry from './Entry';
 
 const List = styled.ul`
@@ -20,6 +21,8 @@ function Entries() {
 
     return (
         <List>
+            <EntriesInit />
+
             { entries.map( entry =>
                 <Entry
                     index={ index++ }

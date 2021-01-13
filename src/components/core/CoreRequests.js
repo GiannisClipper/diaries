@@ -62,7 +62,7 @@ function CreateRequest( { Context, index, url } ) {
             createResponseOkAfter();
 
         } else if ( process.isResponseError ) {
-            handleError( error );
+            handleError( { error } );
             createResponseErrorAfter();
         }
     } );
@@ -99,7 +99,7 @@ function RetrieveRequest( { Context, index, url } ) {
             retrieveResponseOkAfter();
 
         } else if ( process.isResponseError ) {
-            handleError( error );
+            handleError( { error } );
             retrieveResponseErrorAfter();
         }
 } );
@@ -139,7 +139,7 @@ function UpdateRequest( { Context, index, url } ) {
             updateResponseOkAfter();
 
         } else if ( process.isResponseError ) {
-            handleError( error );
+            handleError( { error } );
             updateResponseErrorAfter();
         }
     } );
@@ -179,7 +179,7 @@ function DeleteRequest( { Context, index, url } ) {
             deleteResponseOkAfter();
 
         } else if ( process.isResponseError ) {
-            handleError( error );
+            handleError( { error } );
             deleteResponseErrorAfter();
         }
     } );
@@ -223,7 +223,7 @@ function RetrieveManyRequest( { Context, url } ) {
             retrieveManyResponseOkAfter();
 
         } else if ( process.isResponseError ) {
-            handleError( error );
+            handleError( { error } );
             retrieveManyResponseErrorAfter();
 
         }

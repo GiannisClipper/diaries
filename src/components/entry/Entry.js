@@ -156,7 +156,9 @@ const Entry = ( { index } ) => {
                     _uiux.process.isResponseWaiting ||
                     _uiux.process.isResponseOk ?
                         <ToolBox><Loader /></ToolBox>
-                    : _uiux.process.isResponseError ?
+                    : _uiux.process.isResponseError ||
+                      _uiux.process.isResponseErrorAfter ?
+          
                         <ToolBox><FontAwesomeIcon icon={ faBan } className="icon" /></ToolBox>
                     : 
                         <EntryMenuTool index={ index } />

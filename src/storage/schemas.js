@@ -86,7 +86,7 @@ const benchSchema = () => ( {
     diary_id: null,
     periods: [],
     _uiux: {
-        process: { isInitBefore: true },  // isInitBefore, isInit
+        process: {},  // isInitBefore, isInit
         mode: {},  // isInitStart, isInitPrev, isInitNext
         error: {},
     },
@@ -95,7 +95,7 @@ const benchSchema = () => ( {
 const datesSchema = () => ( {
     dates: [],
     _uiux: {
-        process: { isRequestBefore: true }, // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
+        process: {}, // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
         error: {},
     },
 } );

@@ -16,7 +16,7 @@ const realFetch = async ( url, args ) => {
     let res = await fetch( url, args );
 
     if ( ![ 200, 201 ].includes( res.status ) ) {
-        error.message += `${res.status} ${res.statusText}`;
+        error.message += `${ res.status } ${ res.statusText }`;
     }
   
     try {
@@ -27,7 +27,7 @@ const realFetch = async ( url, args ) => {
 
     if ( error.message !== '' ) {
         const message = res.message && res.message !== error.message 
-            ? `${error.message} (${res.message})`
+            ? `${ error.message } (${ res.message })`
             : error.message;
         throw new Error( message );
     }
@@ -68,7 +68,7 @@ const mockResult = ( url, args ) => {
         ];
 
     } else if ( url === '/.netlify/functions/create-entry' ) {
-        return { insertedId: `${Math.random()}` };
+        return { insertedId: `${ Math.random() }` };
     }
 }
 
@@ -81,8 +81,8 @@ const doFetch = ( url, args, onDone, onError, dataFromDB ) => {
         onDone( { dataFromDB: dataFromDB( res ) } );
     } )
     .catch( err => { 
-        alert( err );
-        onError( { error: err } );
+        alert( err.message );
+        onError( { error: err.message } );
     } );
 }
 

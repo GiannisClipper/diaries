@@ -6,7 +6,7 @@ import { parsePaymentToDB, parsePaymentFromDB } from '../../storage/payment/pars
 import { parseNoteToDB, parseNoteFromDB } from '../../storage/note/parsers';
 
 import comboReducer from '../../helpers/comboReducer';
-import { dateReducer } from '../../storage/date/reducers';
+import { entriesReducer } from '../../storage/entry/reducers';
 import { menuOneOfManyReducer } from '../../storage/core/reducers/menu';
 import { formOneOfManyReducer } from '../../storage/core/reducers/form';
 import { validationOneOfManyReducer } from '../../storage/core/reducers/validation';
@@ -20,13 +20,14 @@ import validationActionTypes from '../../storage/core/actions/validation';
 import createActionTypes from '../../storage/core/actions/create';
 import updateActionTypes from '../../storage/core/actions/update';
 import deleteActionTypes from '../../storage/core/actions/delete';
+import retrieveManyActionTypes from '../../storage/core/actions/retrieveMany';
 
 import createActions from '../../helpers/createActions';
 import { AppContext } from '../app/AppContext';
 import { BenchContext } from '../bench/BenchContext';
 
 const reducers = [ 
-    dateReducer,
+    entriesReducer,
     menuOneOfManyReducer,
     formOneOfManyReducer,
     validationOneOfManyReducer,
@@ -47,7 +48,7 @@ const customization = {
         ? parsePaymentFromDB( data )
         : parseNoteFromDB( data ),
 
-    sort: null,
+    sort: ( a, b ) => a.index < b.index ? -1 : a.index > b.index ? 1 : 0,
 };
 
 const actionTypes = {
@@ -57,6 +58,7 @@ const actionTypes = {
     ...createActionTypes,
     ...updateActionTypes,
     ...deleteActionTypes,
+    ...retrieveManyActionTypes,
 };
 
 const EntriesContext = createContext();

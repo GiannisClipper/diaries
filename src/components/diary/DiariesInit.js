@@ -12,20 +12,22 @@ function DiariesInit() {
     const { schema } = customization;
 
     if ( state.user_id !== user_id ) {
+
         actions.updateState( { data: {
                 ...diariesSchema(),
                 user_id,
                 diaries: [ schema() ],
         } } );
+
         actions.retrieveManyRequestBefore();
     }
 
-    //useEffect( () => console.log( 'Has rendered. ', 'DiariesInit' ) );
+    // useEffect( () => console.log( 'Has rendered. ', 'DiariesInit' ) );
 
     return (
         <RetrieveManyRequest
             Context={ DiariesContext }
-            url={ `/.netlify/functions/diary?user_id=${user_id}` }
+            url={ `/.netlify/functions/diary?user_id=${ user_id }` }
         />
     );
 }

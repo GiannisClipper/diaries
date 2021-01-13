@@ -31,7 +31,7 @@ function PrevButton( { reference } ) {
     return (
         <StyledPrevButton ref={reference}>
             <FontAwesomeIcon icon={ faBackward } className="icon" />
-            {buttons.prev}
+            { buttons.prev }
         </StyledPrevButton>
     );
 }
@@ -55,7 +55,6 @@ const Bench = ( { diary_id } ) => {
     const { state, dispatch, actions, customization } = useContext( BenchContext );
     const { periods, _uiux } = state;
     const { schema } = customization;
-    console.log('bench, state.diary_id !== diary_id', state.diary_id, diary_id)
 
     if ( state.diary_id !== diary_id ) {
         _uiux.process = { isInitBefore: true };

@@ -35,7 +35,7 @@ const retrieveManyReducer = ( state, action ) => {
             return { ...state, [ namespace ]: _items, _uiux };
 
         } case 'RETRIEVE_MANY_RESPONSE_OK': {
-            const { namespace, schema, parseFromDB, sort, dataFromDB } = action.payload; 
+            const { namespace, schema, parseFromDB, sort, dataFromDB } = action.payload;
             const _items = [];
             dataFromDB.forEach( x => _items.push( { ...schema(), ...parseFromDB( x ) } ) );
             if ( sort ) _items.sort( sort );

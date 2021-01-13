@@ -40,7 +40,9 @@ const appReducer = ( state, action ) => {
             switch ( action.type ) {
     
                 case 'HANDLE_ERROR': {
-                    const error = action.payload;
+                    const { error } = action.payload;
+
+                    // alert( JSON.stringify( error ) );
 
                     let { signin } = state;
 
@@ -53,7 +55,7 @@ const appReducer = ( state, action ) => {
                     return { ...state, signin };
         
                 } default: {
-                    console.log( `undefined type:${action.type}` );
+                    console.log( `undefined type:${ action.type }` );
                     throw new Error();
                 }
             }

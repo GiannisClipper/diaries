@@ -38,13 +38,17 @@ function DatesInit() {
 
     const { diary_id } = useContext( BenchContext ).state;
 
-    const { state } = useContext( DatesContext );
+    const { state, actions } = useContext( DatesContext );
     const { dates, _uiux } = state;
 
     const dateFrom = dateToYYYYMMDD( dates[ 0 ].date );
     const dateTill = dateToYYYYMMDD( dates[ dates.length - 1 ].date );
 
-    //useEffect( () => console.log( 'Has rendered. ', 'DatesInit' ) );
+    if ( Object.keys( _uiux.process ).length === 0 ) {
+        actions.retrieveManyRequestBefore();
+    }
+
+    // useEffect( () => console.log( 'Has rendered. ', 'DatesInit' ) );
 
     if ( ! diary_id ) {
         return null;
@@ -52,13 +56,13 @@ function DatesInit() {
     } else {
 
         return (
-            _uiux.process.isResponseOk 
+            _uiux.process.isResponseOk
             ?
                 <RetrieveManyResponseOkAfter />
             :
                 <RetrieveManyRequest 
                     Context={ DatesContext }
-                    url={ `/.netlify/functions/entry?diary_id=${diary_id}&range=${dateFrom}-${dateTill}` }
+                    url={ `/.netlify/functions/entry?diary_id=${ diary_id }&range=${ dateFrom }-${ dateTill }` }
                 />
         );
     }
