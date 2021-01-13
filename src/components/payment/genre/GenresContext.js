@@ -35,7 +35,7 @@ const reducers = [
 ];
 
 const customization = {
-    namespace: 'funds',
+    namespace: 'genres',
     schema: paymentGenreSchema,
     parseToDB: parseGenreToDB,
     parseFromDB: parseGenreFromDB,

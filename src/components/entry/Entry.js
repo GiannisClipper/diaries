@@ -1,13 +1,12 @@
 import React, { useContext, useRef, useEffect } from 'react';
 
-import { CoreContextProvider } from '../core/CoreContext';
-import actions from '../../storage/core/actions';
-import { CreateRequest, UpdateRequest, DeleteRequest } from '../core/CoreRequests';
-
 import { BenchContext } from '../bench/BenchContext';
 import { GenresContext } from '../payment/genre/GenresContext';
 import { FundsContext } from '../payment/fund/FundsContext';
 import { DateContext } from '../date/DateContext';
+import { CreateRequest, UpdateRequest, DeleteRequest } from '../core/CoreRequests';
+import { dateToYYYYMMDD } from '../../helpers/dates';
+
 
 import { ToolBox } from '../libs/ToolBox';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -15,13 +14,8 @@ import { faBan } from '@fortawesome/free-solid-svg-icons';
 
 import { Loader } from '../libs/Loader';
 import { EntryMenuTool, BlankEntryMenu, ExistsEntryMenu } from './EntryMenu';
-import { EntryRepr } from './EntryRepr';
-
-import NoteForm from '../note/NoteForm';
-import PaymentForm from '../payment/PaymentForm';
-import { dateToYYYYMMDD } from '../../helpers/dates';
-import { parseNoteToDB } from '../../storage/note/parsers';
-import { parsePaymentToDB } from '../../storage/payment/parsers';
+import EntryRepr from './EntryRepr';
+import EntryForm from './EntryForm';
 
 import styled, { css } from 'styled-components';
 import StyledRow from '../libs/RowBox';
@@ -47,14 +41,19 @@ const Entry = ( { index } ) => {
 
     const { diary_id } = useContext( BenchContext ).state;
 
-    const { genres } = useContext( GenresContext ).state;
-    const { funds } = useContext( FundsContext ).state;
-
-    const { state, dispatch } = useContext( DateContext );
+    const { state } = useContext( DateContext );
     const { date, entries } = state;
     const entry = entries[ index ];
     const { _uiux } = entry;
 
+    if ( ! entry.id ) {
+        entry.diary_id = diary_id;
+        entry.date = dateToYYYYMMDD( date );
+    }
+
+    entry.index = index;
+    entry.genres = useContext( GenresContext ).state.genres;
+    entry.funds = useContext( FundsContext ).state.funds;
 
     const { doCut, doPaste } = useContext( CopyPasteContext );
 
@@ -82,180 +81,124 @@ const Entry = ( { index } ) => {
         }
     }
 
-    const _saved = useRef( { date, index } );
+    // const _saved = useRef( { date, index } );
 
-    const addDiaryId = () => _uiux.mode.isCreate ? { diary_id } : undefined;
+    // const addDiaryId = () => _uiux.mode.isCreate ? { diary_id } : undefined;
 
-    const parseDataToDB = _uiux.type.isPayment 
-        ? 
-        () => parsePaymentToDB(
-                { ...entry, date: dateToYYYYMMDD( date ), index, ...addDiaryId() },
-                genres, 
-                funds 
-            )
-        : 
-        () => parseNoteToDB( 
-                { ...entry, date: dateToYYYYMMDD( date ), index, ...addDiaryId() },
-            );
+    // const parseDataToDB = _uiux.type.isPayment 
+    //     ? 
+    //     () => parsePaymentToDB(
+    //             { ...entry, date: dateToYYYYMMDD( date ), index, ...addDiaryId() },
+    //             genres, 
+    //             funds 
+    //     )
+    //     : 
+    //     () => parseNoteToDB( 
+    //             { ...entry, date: dateToYYYYMMDD( date ), index, ...addDiaryId() },
+    //     );
 
-    const body = () => JSON.stringify( {
-        old: { date: dateToYYYYMMDD( _saved.current.date ), index: _saved.current.index },
-        new: { date: dateToYYYYMMDD( date ), index },
-        data: parseDataToDB(),
-    } );
+    // const body = () => JSON.stringify( {
+    //     old: { date: dateToYYYYMMDD( _saved.current.date ), index: _saved.current.index },
+    //     new: { date: dateToYYYYMMDD( date ), index },
+    //     data: parseDataToDB(),
+    // } );
 
-    const payload = { 
-        _namespace: 'entries',
-        index, 
-        genres, 
-        funds 
-    };
-
-
-    // useEffect( () =>  console.log( 'Has rendered. ', 'Entry' ) );
+    //useEffect( () =>  console.log( 'Has rendered. ', 'Entry' ) );
 
     if ( ! diary_id ) {
         return null;
 
     } else {
         return (
-            <CoreContextProvider 
-                actions={ [ 
-                    actions.menu,
-                    actions.form,
-                    actions.validation, 
-                    actions.createOne, 
-                    actions.updateOne, 
-                    actions.deleteOne 
-                ] }
-                dispatch={ dispatch } 
-                payload={ payload }
+            <RowBox
+                key={ index }
+                draggable={ draggable }
+                onDragStart={ onDragStart }
+                onDragOver={ onDragOver }
+                onDrop={ onDrop }
             >
 
                 { _uiux.mode.isCreate ?
                     <CreateRequest
-                        process={ _uiux.process }
+                        Context={ DateContext }
+                        index={ index }
                         url={ `/.netlify/functions/entry` }
-                        body={ body() }
-                        dataToDB={ parseDataToDB() }
-                        error={ _uiux.error }
                     />
 
                 : _uiux.mode.isUpdate ?
                     <UpdateRequest 
-                        process={ _uiux.process }
+                        Context={ DateContext }
+                        index={ index }
                         url={ `/.netlify/functions/entry?id=${entry.id}` }
-                        body={ body() }
-                        dataToDB={ parseDataToDB() }
-                        id={ entry.id }
-                        error={ _uiux.error }
                     />
 
                 : _uiux.mode.isDelete ?
-                    <DeleteRequest 
-                        process={ _uiux.process }
+                    <DeleteRequest
+                        Context={ DateContext }
+                        index={ index }
                         url={ `/.netlify/functions/entry?id=${entry.id}` }
-                        body={ body() }
-                        dataToDB={ parseDataToDB() }
-                        id={ entry.id }
-                        error={ _uiux.error }
                     />
 
                 : null }
 
-                <RowBox
-                    key={ index }
+                <RowValue
                     draggable={ draggable }
-                    onDragStart={ onDragStart }
-                    onDragOver={ onDragOver }
-                    onDrop={ onDrop }
+                    title={ `${entry.diary_id}.${entry.id}.${entry.date}.${entry.index}.${index}.` }
                 >
-                    <RowValue
-                        draggable={ draggable }
-                        title={ `${entry.date}, ${index}, ${entry.index}, ${entry.id}` }
-                    >
-                        <EntryRepr entry={ entry } />
-                    </RowValue>
+                    <EntryRepr entry={ entry } />
+                </RowValue>
 
-                    <RowMenu>
-                        { 
-                        _uiux.process.isValidation || 
-                        _uiux.process.isRequestBefore ||
-                        _uiux.process.isRequest ||
-                        _uiux.process.isResponseWaiting ||
-                        _uiux.process.isResponseOk ?
-                            <ToolBox><Loader /></ToolBox>
-                        : _uiux.process.isResponseError ?
-                            <ToolBox><FontAwesomeIcon icon={ faBan } className="icon" /></ToolBox>
-                        : 
-                            <EntryMenuTool date={date} entry={entry} index={index} />
-                        }
-                    </RowMenu>
-
-                    { !_uiux.menu.isOpen ?
-                        null
-                    : !entry.id ? 
-                        <BlankEntryMenu 
-                            date={ date }
-                            entry={ entry }
-                            index={ index }
-                        />
+                <RowMenu>
+                    { 
+                    _uiux.process.isValidation || 
+                    _uiux.process.isRequestBefore ||
+                    _uiux.process.isRequest ||
+                    _uiux.process.isResponseWaiting ||
+                    _uiux.process.isResponseOk ?
+                        <ToolBox><Loader /></ToolBox>
+                    : _uiux.process.isResponseError ?
+                        <ToolBox><FontAwesomeIcon icon={ faBan } className="icon" /></ToolBox>
                     : 
-                        <ExistsEntryMenu 
-                            date={ date }
-                            entry={ entry }
-                            index={ index }
-                        />
+                        <EntryMenuTool index={ index } />
                     }
+                </RowMenu>
 
-                    { !_uiux.form.isOpen ?
-                        null
-                    : !_uiux.type.isPayment ?
-                        <NoteForm 
-                            date={ date }
-                            entry={ entry } 
-                            index={ index }
-                        /> 
-                    :
-                        <PaymentForm 
-                            date={ date }
-                            entry={ entry } 
-                            index={ index } 
-                        /> 
-                    }
-                </RowBox> 
+                { ! _uiux.menu.isOpen ?
+                    null
+                : ! entry.id ? 
+                    <BlankEntryMenu 
+                        date={ date }
+                        entry={ entry }
+                        index={ index }
+                    />
+                : 
+                    <ExistsEntryMenu 
+                        date={ date }
+                        entry={ entry }
+                        index={ index }
+                    />
+                }
 
-            </CoreContextProvider>
+                { ! _uiux.form.isOpen ?
+                    null
+                : ! _uiux.type.isPayment ?
+                    <EntryForm 
+                        date={ date }
+                        entry={ entry } 
+                        index={ index }
+                    /> 
+                :
+                    <EntryForm 
+                        date={ date }
+                        entry={ entry } 
+                        index={ index } 
+                    /> 
+                }
+
+            </RowBox> 
         );
     }
 }
 
-const List = styled.ul`
-    display: inline-block;
-    vertical-align: top;
-    width: 100%;
-`;
-
-function Entries() {
-
-    const { state } = useContext( DateContext );
-    const { entries } = state;
-
-    // useEffect( () => console.log( 'Has rendered. ', 'Entries' ) );
-
-    let index = 0;
-
-    return (
-        <List>
-            { entries.map( entry =>
-                <Entry
-                    index={ index++ }
-                    key={ index }
-                />
-            ) }
-        </List>
-    );
-}
-
-
-export { Entry, Entries };
+export default Entry;
+export { Entry };

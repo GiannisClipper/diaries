@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { RetrieveManyRequest } from '../core/CoreRequests';
 import { AppContext } from '../app/AppContext';
 import { DiariesContext } from './DiariesContext';
+import { diariesSchema } from '../../storage/schemas';
 
 function DiariesInit() {
 
@@ -11,7 +12,11 @@ function DiariesInit() {
     const { schema } = customization;
 
     if ( state.user_id !== user_id ) {
-        actions.updateState( { data: { ...schema, user_id } } );
+        actions.updateState( { data: {
+                ...diariesSchema(),
+                user_id,
+                diaries: [ schema() ],
+        } } );
         actions.retrieveManyRequestBefore();
     }
 

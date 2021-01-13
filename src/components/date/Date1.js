@@ -3,7 +3,7 @@ import React, { useEffect, useContext } from 'react';
 import { DatesContext } from './DatesContext';
 import { DateContextProvider, DateContext } from './DateContext';
 import { DateRepr } from './DateRepr'; 
-import { Entries } from '../entry/Entry';
+import { Entries } from '../entry/Entries';
 import styled, { css } from 'styled-components';
 import StyledBlock from '../libs/BlockBox';
 

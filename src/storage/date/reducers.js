@@ -7,30 +7,30 @@ const datesReducer = ( state, action ) => {
 
     switch ( action.type ) {
 
-        case 'RETRIEVE_MANY_REQUEST_BEFORE': {
-            const { dates, _uiux } = state;
-            dates.forEach( x => x._uiux.process = { isRequestBefore: true } );
-            _uiux.process = { isRequestBefore: true };
+        // case 'RETRIEVE_MANY_REQUEST_BEFORE': {
+        //     const { dates, _uiux } = state;
+        //     dates.forEach( x => x._uiux.process = { isRequestBefore: true } );
+        //     _uiux.process = { isRequestBefore: true };
 
-            return { ...state, _uiux };
+        //     return { ...state, _uiux };
 
-        } case 'RETRIEVE_MANY_REQUEST': {
-            const { dates, _uiux } = state;
-            dates.forEach( x => x._uiux.mode = { isRetrieveMany: true } );
-            dates.forEach( x => x._uiux.process = { isRequest: true } );
-            _uiux.mode = { isRetrieveMany: true };
-            _uiux.process = { isRequest: true };
+        // } case 'RETRIEVE_MANY_REQUEST': {
+        //     const { dates, _uiux } = state;
+        //     dates.forEach( x => x._uiux.mode = { isRetrieveMany: true } );
+        //     dates.forEach( x => x._uiux.process = { isRequest: true } );
+        //     _uiux.mode = { isRetrieveMany: true };
+        //     _uiux.process = { isRequest: true };
 
-            return { ...state, dates, _uiux };
+        //     return { ...state, dates, _uiux };
 
-        } case 'RETRIEVE_MANY_RESPONSE_WAITING': {
-            const { dates, _uiux } = state;
-            dates.forEach( x => x._uiux.process = { isResponseWaiting: true } );
-            _uiux.process = { isResponseWaiting: true };
+        // } case 'RETRIEVE_MANY_RESPONSE_WAITING': {
+        //     const { dates, _uiux } = state;
+        //     dates.forEach( x => x._uiux.process = { isResponseWaiting: true } );
+        //     _uiux.process = { isResponseWaiting: true };
 
-            return { ...state, dates, _uiux };
+        //     return { ...state, dates, _uiux };
 
-        } case 'RETRIEVE_MANY_RESPONSE_OK': {
+        case 'RETRIEVE_MANY_RESPONSE_OK': {
             const { dataFromDB } = action.payload;
             const { dates, _uiux } = state;
             dates.forEach( x => x._uiux.process = { isResponseOk: true } );
@@ -50,7 +50,7 @@ const datesReducer = ( state, action ) => {
 
             return { ...state, dates, _uiux };
 
-        } case 'RETRIEVE_MANY_RESPONSE_OK_AFTER': {
+         } case 'RETRIEVE_MANY_RESPONSE_OK_AFTER': {
 
             const { genres, funds } = action.payload;
 
@@ -70,8 +70,12 @@ const datesReducer = ( state, action ) => {
                     const entries = [];
 
                     for ( const entryFromDB of dateFromDB ) {
+
+                        entryFromDB.genres = genres;
+                        entryFromDB.funds = funds;
+
                         const entry = entryFromDB.type === 'payment'
-                            ? parsePaymentFromDB( entryFromDB, genres, funds )
+                            ? parsePaymentFromDB( entryFromDB )
                             : parseNoteFromDB( entryFromDB )
                         entries.push( { ...entrySchema(), ...entry } );
                     }
@@ -98,7 +102,7 @@ const datesReducer = ( state, action ) => {
             return { ...state, dates, _uiux };
 
         } default: {
-            throw new Error();
+            return undefined;
         }
     }
 }
@@ -152,8 +156,11 @@ const dateReducer = ( state, action ) => {
             _uiux.mode = {};
             _uiux.form = {};
 
+            dataFromDB.genres = genres;
+            dataFromDB.funds = funds;
+
             entries[ index ] = dataFromDB.type === 'payment'
-                ? { ...parsePaymentFromDB( dataFromDB, genres, funds ), _uiux }
+                ? { ...parsePaymentFromDB( dataFromDB ), _uiux }
                 : { ...parseNoteFromDB( dataFromDB ), _uiux };
 
             if ( index === entries.length - 1 ) {
@@ -180,8 +187,11 @@ const dateReducer = ( state, action ) => {
             _uiux.mode = {};
             _uiux.form = {};
 
+            dataFromDB.genres = genres;
+            dataFromDB.funds = funds;
+
             entries[ index ] = dataFromDB.type === 'payment'
-                ? { ...parsePaymentFromDB( dataFromDB, genres, funds ), _uiux }
+                ? { ...parsePaymentFromDB( dataFromDB ), _uiux }
                 : { ...parseNoteFromDB( dataFromDB ), _uiux };
 
             entries.forEach( x => x._uiux.process = {} );
@@ -215,7 +225,7 @@ const dateReducer = ( state, action ) => {
             return { ...state, entries };
 
         } default: {
-            throw new Error();
+            return undefined;
         }
     }
 }

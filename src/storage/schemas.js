@@ -39,7 +39,7 @@ const backupSchema = () => ( {
 const usersSchema = () => ( {
     users: [],
     _uiux: { 
-        process: { isRequestBefore: true },  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
+        process: {},  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
         error: {},
     },
 } );
@@ -64,7 +64,7 @@ const diariesSchema = () => ( {
     user_id: null,
     diaries: [],
     _uiux: { 
-        process: { isRequestBefore: true },  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
+        process: {},  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
         error: {},
     },
 } );
@@ -142,7 +142,7 @@ const paymentGenresSchema = () => ( {
     diary_id: null,
     genres: [],
     _uiux: { 
-        process: { isRequestBefore: true },  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
+        process: {},  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
         error: {},
     },
 } );
@@ -166,7 +166,7 @@ const paymentFundsSchema = () => ( {
     diary_id: null,
     funds: [],
     _uiux: { 
-        process: { isRequestBefore: true },  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
+        process: {},  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
         error: {},
     },
 } );

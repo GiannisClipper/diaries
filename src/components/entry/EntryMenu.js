@@ -1,16 +1,16 @@
 import React, { useContext, useRef } from 'react';
-
-import { CoreContext } from '../core/CoreContext';
-
+import { DateContext } from '../date/DateContext';
 import { REFContext } from '../REFContext';
 import { CopyPasteContext } from '../libs/CopyPaste';
 import { Modal } from '../libs/Modal';
 import { MenuBox } from '../libs/MenuBox';
 import { MenuTool, EditTool, AddNoteTool, AddPaymentTool, DeleteTool, CutTool, CopyTool, PasteTool, CloseTool } from '../libs/Tools';
 
-function EntryMenuTool() {
+function EntryMenuTool( { index } ) {
 
-    const { openMenu } = useContext( CoreContext );
+    const { actions } = useContext( DateContext );
+
+    const openMenu = payload => actions.openMenu( { index, ...payload } );
 
     const REF = useContext( REFContext );
 
@@ -27,9 +27,11 @@ function EntryMenuTool() {
     );
 }
 
-function EntryMenu( { children } ) {
+function EntryMenu( { index, children } ) {
 
-    const { closeMenu } = useContext( CoreContext );
+    const { actions } = useContext( DateContext );
+
+    const closeMenu = payload => actions.closeMenu( { index, ...payload } );
 
     const REF = useContext( REFContext );
 
@@ -39,9 +41,9 @@ function EntryMenu( { children } ) {
     const style = { top, left };
 
     return (
-        <Modal onClick={closeMenu}>
-            <MenuBox style={style}> 
-                {children}
+        <Modal onClick={ closeMenu }>
+            <MenuBox style={ style }> 
+                { children }
             </MenuBox>
         </Modal>
     );
@@ -51,26 +53,30 @@ function BlankEntryMenu( { date, entry, index } ) {
 
     const { doPaste, isAbleToPaste } = useContext( CopyPasteContext );
 
-    const { closeMenu, openForm } = useContext( CoreContext );
+    const { actions } = useContext( DateContext );
+
+    const closeMenu = payload => actions.closeMenu( { index, ...payload } );
+
+    const openForm = payload => actions.openForm( { index, ...payload } );
 
     return (
         <EntryMenu>
-            <AddNoteTool onClick={event => {
+            <AddNoteTool onClick={ event => {
                 openForm( { type: { isNote: true }, mode: { isCreate: true } } );
                 closeMenu();
-            }} />
+            } } />
 
-            <AddPaymentTool onClick={event => {
+            <AddPaymentTool onClick={ event => {
                 openForm( { type: { isPayment: true }, mode: { isCreate: true } } );
                 closeMenu();
-            }} />
+            } } />
 
-            <PasteTool onClick={event => {
+            <PasteTool onClick={ event => {
                 if ( isAbleToPaste() ) {
                     closeMenu();
                     doPaste( { date, entry, index } );
                 }
-            }} />
+            } } />
 
             <CloseTool onClick={closeMenu} />
         </EntryMenu>
@@ -81,7 +87,11 @@ function ExistsEntryMenu( { date, entry, index } ) {
 
     const { doCut, doCopy, doPaste, isAbleToPaste } = useContext( CopyPasteContext );
 
-    const { closeMenu, openForm } = useContext( CoreContext );
+    const { actions } = useContext( DateContext );
+
+    const closeMenu = payload => actions.closeMenu( { index, ...payload } );
+
+    const openForm = payload => actions.openForm( { index, ...payload } );
 
     const type = entry.type === 'payment'
         ? { isPayment: true }
@@ -89,34 +99,34 @@ function ExistsEntryMenu( { date, entry, index } ) {
 
     return (
         <EntryMenu>
-            <EditTool onClick={event => {
+            <EditTool onClick={ event => {
                 openForm( { type, mode: { isUpdate: true } } );
                 closeMenu( event, date, index );
-            }} />
+            } } />
 
-            <DeleteTool onClick={event => {
+            <DeleteTool onClick={ event => {
                 openForm( { type, mode: { isDelete: true } } );
                 closeMenu();
-            }} />
+            } } />
 
-            <CutTool onClick={event => {
+            <CutTool onClick={ event => {
                 doCut( { date, entry, index } );
                 closeMenu();
-            }} />
+            } } />
 
-            <CopyTool onClick={event => {
+            <CopyTool onClick={ event => {
                 doCopy( { date, entry, index } );
                 closeMenu();
-            }} />
+            } } />
 
-            <PasteTool onClick={event => {
+            <PasteTool onClick={ event => {
                 if ( isAbleToPaste() ) {
                     closeMenu();
                     doPaste( { date, entry, index } );
                 }
-            }} />
+            } } />
 
-            <CloseTool onClick={closeMenu} />
+            <CloseTool onClick={ closeMenu } />
         </EntryMenu>
     );
 }

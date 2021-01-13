@@ -40,6 +40,9 @@ const menuOneOfManyReducer = ( state, action ) => {
             const { namespace, index } = action.payload;
             const _items = state[ namespace ];
 
+            console.log( namespace, index, _items )
+            if ( index === undefined ) return state;
+
             _items[ index ]._uiux.menu = {};
 
             return { ...state, [ namespace ]: _items };

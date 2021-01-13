@@ -1,28 +1,28 @@
 import { getFromList } from '../../helpers/getFromList';
 
-const parsePaymentFromDB = ( data, genres, funds ) => ( {
+const parsePaymentFromDB = ( data ) => ( {
     id: data._id,
     diary_id: data.diary_id,
     date: data.date,
     index: data.index,
     type: data.type,
-    genre_name: getFromList( genres, 'id', data.genre_id ).name,
+    genre_name: getFromList( data.genres, 'id', data.genre_id ).name,
     incoming: data.incoming,
     outgoing: data.outgoing,
     remark: data.remark,
-    fund_name: getFromList( funds, 'id', data.fund_id ).name,
+    fund_name: getFromList( data.funds, 'id', data.fund_id ).name,
 } )
 
-const parsePaymentToDB = ( data, genres, funds ) => ( {
+const parsePaymentToDB = ( data ) => ( {
     diary_id: data.diary_id,
     date: data.date,
     index: data.index,
     type: data.type,
-    genre_id: getFromList( genres, 'name', data.genre_name ).id,
+    genre_id: getFromList( data.genres, 'name', data.genre_name ).id,
     incoming: data.incoming,
     outgoing: data.outgoing,
     remark: data.remark,
-    fund_id: getFromList( funds, 'name', data.fund_name ).id,
+    fund_id: getFromList( data.funds, 'name', data.fund_name ).id,
 } )
 
 export { 

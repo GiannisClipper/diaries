@@ -1,9 +1,8 @@
 import React, { useContext, useEffect  } from 'react';
-
 import { RetrieveManyRequest } from '../../core/CoreRequests';
-
 import { BenchContext } from '../../bench/BenchContext';
 import { GenresContext } from './GenresContext';
+import { paymentGenresSchema } from '../../../storage/schemas';
 
 function GenresInit() {
 
@@ -13,7 +12,11 @@ function GenresInit() {
     const { schema } = customization;
 
     if ( state.diary_id !== diary_id ) {
-        actions.updateState( { data: { ...schema, diary_id } } );
+        actions.updateState( { data: {
+            ...paymentGenresSchema(),
+            diary_id,
+            genres: [ schema() ],
+        } } );
         actions.retrieveManyRequestBefore();
     }
 

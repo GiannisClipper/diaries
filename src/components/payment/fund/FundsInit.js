@@ -1,9 +1,8 @@
 import React, { useContext, useEffect  } from 'react';
-
 import { RetrieveManyRequest } from '../../core/CoreRequests';
-
 import { BenchContext } from '../../bench/BenchContext';
 import { FundsContext } from './FundsContext';
+import { paymentFundsSchema } from '../../../storage/schemas';
 
 function FundsInit() {
 
@@ -11,6 +10,15 @@ function FundsInit() {
 
     const { state, actions, customization } = useContext( FundsContext );
     const { schema } = customization;
+
+    if ( state.diary_id !== diary_id ) {
+        actions.updateState( { data: {
+            ...paymentFundsSchema(),
+            diary_id,
+            funds: [ schema() ],
+        } } );
+        actions.retrieveManyRequestBefore();
+    }
 
     if ( state.diary_id !== diary_id ) {
         actions.updateState( { data: { ...schema, diary_id } } );
