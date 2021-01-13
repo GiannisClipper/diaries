@@ -92,7 +92,7 @@ const benchSchema = () => ( {
     },
 } );
 
-const periodSchema = () => ( {
+const datesSchema = () => ( {
     dates: [],
     _uiux: {
         process: { isRequestBefore: true }, // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
@@ -100,7 +100,7 @@ const periodSchema = () => ( {
     },
 } );
 
-const dateSchema = () => ( {
+const entriesSchema = () => ( {
     date: null,
     entries: [],
     _uiux: {
@@ -213,8 +213,8 @@ export {
     diariesSchema,
     diarySchema,
     benchSchema,
-    periodSchema, 
-    dateSchema,
+    datesSchema, 
+    entriesSchema,
     entrySchema,
     noteSchema,
     paymentSchema,

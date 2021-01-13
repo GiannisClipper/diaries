@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { DateContext } from '../date/DateContext';
+import { EntriesContext } from '../entry/EntriesContext';
 import styled from 'styled-components';
 import Entry from './Entry';
 
@@ -11,7 +11,7 @@ const List = styled.ul`
 
 function Entries() {
 
-    const { state } = useContext( DateContext );
+    const { state } = useContext( EntriesContext );
     const { entries } = state;
 
     //useEffect( () => console.log( 'Has rendered. ', 'Entries' ) );

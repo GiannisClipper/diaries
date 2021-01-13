@@ -1,8 +1,13 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
+
+import { datesSchema } from '../../storage/schemas';
+
 import comboReducer from '../../helpers/comboReducer';
 import { datesReducer } from '../../storage/date/reducers';
 import { retrieveManyReducer } from '../../storage/core/reducers/retrieve';
+
 import retrieveManyActionTypes from '../../storage/core/actions/retrieveMany';
+
 import { AppContext } from '../app/AppContext';
 import createActions from '../../helpers/createActions';
 
@@ -23,7 +28,9 @@ const DatesContext = createContext();
 
 const DatesContextProvider = props => {
 
-    const [ state, dispatch ] = useReducer( comboReducer( ...reducers ), props.state );
+    const schema = { ...datesSchema(), ...props.state };
+
+    const [ state, dispatch ] = useReducer( comboReducer( ...reducers ), schema );
 
     const actions = createActions( { dispatch, actionTypes, customization } );
     

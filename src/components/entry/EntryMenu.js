@@ -1,5 +1,5 @@
 import React, { useContext, useRef } from 'react';
-import { DateContext } from '../date/DateContext';
+import { EntriesContext } from '../entry/EntriesContext';
 import { REFContext } from '../REFContext';
 import { CopyPasteContext } from '../libs/CopyPaste';
 import { Modal } from '../libs/Modal';
@@ -8,7 +8,7 @@ import { MenuTool, EditTool, AddNoteTool, AddPaymentTool, DeleteTool, CutTool, C
 
 function EntryMenuTool( { index } ) {
 
-    const { actions } = useContext( DateContext );
+    const { actions } = useContext( EntriesContext );
 
     const openMenu = payload => actions.openMenu( { index, ...payload } );
 
@@ -29,7 +29,7 @@ function EntryMenuTool( { index } ) {
 
 function EntryMenu( { index, children } ) {
 
-    const { actions } = useContext( DateContext );
+    const { actions } = useContext( EntriesContext );
 
     const closeMenu = payload => actions.closeMenu( { index, ...payload } );
 
@@ -53,7 +53,7 @@ function BlankEntryMenu( { date, entry, index } ) {
 
     const { doPaste, isAbleToPaste } = useContext( CopyPasteContext );
 
-    const { actions } = useContext( DateContext );
+    const { actions } = useContext( EntriesContext );
 
     const closeMenu = payload => actions.closeMenu( { index, ...payload } );
 
@@ -87,7 +87,7 @@ function ExistsEntryMenu( { date, entry, index } ) {
 
     const { doCut, doCopy, doPaste, isAbleToPaste } = useContext( CopyPasteContext );
 
-    const { actions } = useContext( DateContext );
+    const { actions } = useContext( EntriesContext );
 
     const closeMenu = payload => actions.closeMenu( { index, ...payload } );
 

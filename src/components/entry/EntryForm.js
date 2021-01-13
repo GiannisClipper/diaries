@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 
-import { DateContext } from "../date/DateContext";
+import { EntriesContext } from "../entry/EntriesContext";
 import { Modal } from '../libs/Modal';
 import CoreForm from "../core/CoreForm";
 import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
@@ -15,7 +15,7 @@ import { getFromList } from '../../helpers/getFromList';
 
 function EntryForm( { date, index } ) {
 
-    const { state, actions } = useContext( DateContext );
+    const { state, actions } = useContext( EntriesContext );
     const { entries } = state;
     const entry = entries[ index ];
 
@@ -76,7 +76,7 @@ function EntryForm( { date, index } ) {
     return (
         <Modal onClick={ closeForm } centeredness>
             <CoreForm
-                Context={ DateContext }
+                Context={ EntriesContext }
                 index={ index }
                 validationRules={ validationRules }
             >

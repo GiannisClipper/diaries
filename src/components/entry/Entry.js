@@ -3,7 +3,7 @@ import React, { useContext, useRef, useEffect } from 'react';
 import { BenchContext } from '../bench/BenchContext';
 import { GenresContext } from '../payment/genre/GenresContext';
 import { FundsContext } from '../payment/fund/FundsContext';
-import { DateContext } from '../date/DateContext';
+import { EntriesContext } from '../entry/EntriesContext';
 import { CreateRequest, UpdateRequest, DeleteRequest } from '../core/CoreRequests';
 import { dateToYYYYMMDD } from '../../helpers/dates';
 
@@ -41,7 +41,7 @@ const Entry = ( { index } ) => {
 
     const { diary_id } = useContext( BenchContext ).state;
 
-    const { state } = useContext( DateContext );
+    const { state } = useContext( EntriesContext );
     const { date, entries } = state;
     const entry = entries[ index ];
     const { _uiux } = entry;
@@ -120,21 +120,21 @@ const Entry = ( { index } ) => {
 
                 { _uiux.mode.isCreate ?
                     <CreateRequest
-                        Context={ DateContext }
+                        Context={ EntriesContext }
                         index={ index }
                         url={ `/.netlify/functions/entry` }
                     />
 
                 : _uiux.mode.isUpdate ?
                     <UpdateRequest 
-                        Context={ DateContext }
+                        Context={ EntriesContext }
                         index={ index }
                         url={ `/.netlify/functions/entry?id=${entry.id}` }
                     />
 
                 : _uiux.mode.isDelete ?
                     <DeleteRequest
-                        Context={ DateContext }
+                        Context={ EntriesContext }
                         index={ index }
                         url={ `/.netlify/functions/entry?id=${entry.id}` }
                     />

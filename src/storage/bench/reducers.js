@@ -1,4 +1,4 @@
-import { benchSchema, periodSchema, dateSchema, entrySchema } from '../../storage/schemas';
+import { benchSchema, datesSchema, entriesSchema, entrySchema } from '../../storage/schemas';
 import { shiftDate } from '../../helpers/dates';
 
 const calcDates = ( dateFrom, days ) => {
@@ -17,7 +17,7 @@ const initDates = dates => {
     
     return dates.map( x => {
         const central = dates.length === 1 ? dates[ 0 ] : null;
-        const date = dateSchema();
+        const date = entriesSchema();
 
         date.date = x;
         date._uiux.isStartDate = central && date.date.getTime() === central.getTime() ? true : false;
@@ -52,7 +52,7 @@ const benchReducer = ( state, action ) => {
                 ...initDates( [ startDate ] ),
                 ...initDates( nextDates )
             ];
-            const period = periodSchema();
+            const period = datesSchema();
             period.dates = dates;
 
             const periods = [ period ];
@@ -67,7 +67,7 @@ const benchReducer = ( state, action ) => {
             const firstDate = firstPeriod.dates[ 0 ].date;
             const prevDates = calcDates( firstDate, -days );
             const dates = [ ...initDates( prevDates ) ];
-            const period = periodSchema();
+            const period = datesSchema();
             period.dates = dates;
             periods = [ period, ...periods ];
             _uiux.process = {};
@@ -81,7 +81,7 @@ const benchReducer = ( state, action ) => {
             const lastDate = lastPeriod.dates[ lastPeriod.dates.length - 1 ].date;
             const nextDates = calcDates( lastDate, days );
             const dates = [ ...initDates( nextDates ) ];
-            const period = periodSchema();
+            const period = datesSchema();
             period.dates = dates;
             periods = [ ...periods, period ];
             _uiux.process = {};

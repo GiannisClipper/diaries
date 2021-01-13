@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useContext, useState } from 'react';
 
 import { BenchContext } from './BenchContext';
 import { BenchInit } from './BenchInit';
-import { Periods } from '../period/Period';
+import { Periods } from '../period/Periods';
 import { REFContext } from '../REFContext';
 
 import { buttons } from '../../storage/texts';

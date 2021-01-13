@@ -1,8 +1,6 @@
 import React, { useEffect, useContext } from 'react';
-
-import { DatesContext } from './DatesContext';
-import { DateContextProvider, DateContext } from './DateContext';
 import { DateRepr } from './DateRepr'; 
+import { EntriesContextProvider } from '../entry/EntriesContext';
 import { Entries } from '../entry/Entries';
 import styled, { css } from 'styled-components';
 import StyledBlock from '../libs/BlockBox';
@@ -26,10 +24,7 @@ const BlockValue = styled( StyledBlock.BlockValue )`
     padding: 0;
 `;
 
-const Date1 = ( { reference } ) => {  // Date1(), to differ from native function Date()
-
-    const { state } = useContext( DateContext ); 
-    const { date } = state;
+const Date1 = ( { date, reference } ) => {  // Date1(), to differ from native function Date()
 
     useEffect( () => console.log( 'Has rendered. ', 'Date1' ) );
 
@@ -37,35 +32,18 @@ const Date1 = ( { reference } ) => {  // Date1(), to differ from native function
         <BlockBox ref={ reference } isStartDate={ reference }>
 
             <BlockLabel>
-                <DateRepr date={ date } />
+                <DateRepr date={ date.date } />
             </BlockLabel>
 
             <BlockValue>
-                <Entries />
+                <EntriesContextProvider state={ date }>
+                    <Entries />
+                </EntriesContextProvider>
             </BlockValue>
 
         </BlockBox>
     )
 }
 
-const Dates = ( { startDate } ) => {
-
-    const { state } = useContext( DatesContext ); 
-    const { dates } = state;
-
-    // useEffect( () => console.log( 'Has rendered. ', 'Dates', dates ) );
-
-    return (
-        <ul>
-            { dates.map( date => (
-                <DateContextProvider key={ date.date } state={ date }>
-                    <Date1
-                        reference={ date._uiux.isStartDate ? startDate : null }
-                    />
-                </DateContextProvider>
-            ) ) }
-        </ul>
-    );
-}
-
-export { Date1, Dates };
+export default Date1;
+export { Date1 };

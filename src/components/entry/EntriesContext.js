@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
 
-import { entrySchema } from '../../storage/schemas';
+import { entriesSchema, entrySchema } from '../../storage/schemas';
 import { dateToYYYYMMDD } from '../../helpers/dates';
 import { parsePaymentToDB, parsePaymentFromDB } from '../../storage/payment/parsers';
 import { parseNoteToDB, parseNoteFromDB } from '../../storage/note/parsers';
@@ -59,11 +59,14 @@ const actionTypes = {
     ...deleteActionTypes,
 };
 
-const DateContext = createContext();
+const EntriesContext = createContext();
 
-const DateContextProvider = props => {
+const EntriesContextProvider = props => {
 
-    const [ state, dispatch ] = useReducer( comboReducer( ...reducers ), props.state );
+    //const schema = { ...entriesSchema(), ...props.state };
+    const schema = props.state;
+
+    const [ state, dispatch ] = useReducer( comboReducer( ...reducers ), schema );
 
     const { diary_id } = useContext( BenchContext ).state;
 
@@ -73,13 +76,13 @@ const DateContextProvider = props => {
     
     actions.handleError = useContext( AppContext ).actions.handleError;
 
-    //useEffect( () => console.log( 'Has rendered. ', 'DateContextProvider' ) );
+    //useEffect( () => console.log( 'Has rendered. ', 'EntriesContextProvider' ) );
 
     return (
-        <DateContext.Provider value={{ state, dispatch, actions, customization }}>
+        <EntriesContext.Provider value={{ state, dispatch, actions, customization }}>
             { props.children }
-        </DateContext.Provider>
+        </EntriesContext.Provider>
     )
 }
 
-export { DateContext, DateContextProvider };
+export { EntriesContext, EntriesContextProvider };

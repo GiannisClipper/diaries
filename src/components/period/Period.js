@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { DatesContextProvider } from '../date/DatesContext';
-import { DatesInit } from '../date/DatesInit';
-import { Dates } from '../date/Date1';
+import { Dates } from '../date/Dates';
 
 const Period = React.memo( ( { period, startDate } ) => {
 
@@ -9,8 +8,6 @@ const Period = React.memo( ( { period, startDate } ) => {
 
     return (
         <DatesContextProvider state={ period }>
-            <DatesInit />
-
             <Dates
                 startDate={ startDate }
             />
@@ -18,21 +15,5 @@ const Period = React.memo( ( { period, startDate } ) => {
     );
 } );
 
-const Periods = ( { periods, startDate } ) => {
-
-    // useEffect( () => console.log( 'Has rendered. ', 'Periods' ) );
-
-    return (
-        <ul>
-            { periods.map( period => (
-                <Period 
-                    key={ period.dates[ 0 ].date }
-                    period={ period }
-                    startDate={ startDate }
-                />
-            ) ) }
-        </ul>
-    );
-}
-
-export { Period, Periods };
+export default Period;
+export { Period };
