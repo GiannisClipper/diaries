@@ -1,4 +1,4 @@
-import { appSchema, signinSchema, settingsSchema } from '../schemas';
+import { signinSchema, settingsSchema } from '../schemas';
 import { parseSigninFromDB } from './parsers';
 import { parseSettingsFromDB } from '../settings/parsers';
 
@@ -8,7 +8,7 @@ const signinReducer = ( state, action ) => {
 
         case 'SIGNIN_REQUEST': {
             const { signin } = state;
-            signin._uiux.process = { isRequest: true };
+            signin._uiux.status = { isRequest: true };
 
             return { ...state, signin };
 

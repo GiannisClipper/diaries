@@ -9,7 +9,7 @@ function UsersInit() {
     const { _uiux } = state;
     const { schema } = customization;
 
-    if ( Object.keys( _uiux.process ).length === 0 ) {
+    if ( Object.keys( _uiux.status ).length === 0 ) {
         actions.updateState( { data: {
                 ...usersSchema(),
                 users: [ schema() ],

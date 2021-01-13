@@ -6,7 +6,7 @@ const deleteOneReducer = ( state, action ) => {
             const { namespace } = action.payload;
             const _item = state[ namespace ];
 
-            _item._uiux.process = { isRequest: true };
+            _item._uiux.status = { isRequest: true };
 
             return { ...state, [ namespace ]: _item };
 
@@ -14,7 +14,7 @@ const deleteOneReducer = ( state, action ) => {
             const { namespace } = action.payload;
             const _item = state[ namespace ];
 
-            _item._uiux.process = { isResponseOk: true };
+            _item._uiux.status = { isResponseOk: true };
 
             return { ...state, [ namespace ]: _item };
 
@@ -22,7 +22,7 @@ const deleteOneReducer = ( state, action ) => {
             const { namespace } = action.payload;
             const _item = state[ namespace ];
 
-            _item._uiux.process = { isResponseOkAfter: true };
+            _item._uiux.status = { isResponseOkAfter: true };
 
             return { ...state, [ namespace ]: _item };
 
@@ -30,7 +30,7 @@ const deleteOneReducer = ( state, action ) => {
             const { namespace, error } = action.payload;
             const _item = state[ namespace ];
 
-            _item._uiux.process = { isResponseError: true };
+            _item._uiux.status = { isResponseError: true };
             _item._uiux.error = error;
 
             return { ...state, [ namespace ]: _item };
@@ -39,7 +39,7 @@ const deleteOneReducer = ( state, action ) => {
             const { namespace, pahema } = action.payload;
             const _item = pahema();
 
-            _item._uiux.process = { isResponseErrorAfter: true };
+            _item._uiux.status = { isResponseErrorAfter: true };
 
             return { ...state, [ namespace ]: _item };
 
@@ -57,7 +57,7 @@ const deleteOneOfManyReducer = ( state, action ) => {
             const { namespace, index } = action.payload;
             const _items = state[ namespace ];
 
-            _items[ index ]._uiux.process = { isRequest: true };
+            _items[ index ]._uiux.status = { isRequest: true };
 
             return { ...state, [ namespace ]: _items };
 
@@ -65,7 +65,7 @@ const deleteOneOfManyReducer = ( state, action ) => {
             const { namespace, index } = action.payload;
             const _items = state[ namespace ];
 
-            _items[ index ]._uiux.process = { isResponseOk: true };
+            _items[ index ]._uiux.status = { isResponseOk: true };
 
             return { ...state, [ namespace ]: _items };
 
@@ -81,7 +81,7 @@ const deleteOneOfManyReducer = ( state, action ) => {
             const { namespace, index, error } = action.payload;
             const _items = state[ namespace ];
 
-            _items[ index ]._uiux.process = { isResponseError: true }
+            _items[ index ]._uiux.status = { isResponseError: true }
             _items[ index ]._uiux.error = error;
 
             return { ...state, [ namespace ]: _items };
@@ -90,7 +90,7 @@ const deleteOneOfManyReducer = ( state, action ) => {
             const { namespace, index } = action.payload;
             const _items = state[ namespace ];
 
-            _items[ index ]._uiux.process = { isResponseErrorAfter: true }
+            _items[ index ]._uiux.status = { isResponseErrorAfter: true }
 
             return { ...state, [ namespace ]: _items };
 

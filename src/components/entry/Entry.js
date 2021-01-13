@@ -59,7 +59,7 @@ const Entry = ( { index } ) => {
 
     let draggable, onDragStart, onDragOver, onDrop;
 
-    if ( ! _uiux.form.isOpen && ! _uiux.process.isResponseError ) {
+    if ( ! _uiux.form.isOpen && ! _uiux.status.isResponseError ) {
 
         if ( entry.id ) {  // no drag empty rows
 
@@ -150,14 +150,14 @@ const Entry = ( { index } ) => {
 
                 <RowMenu>
                     { 
-                    _uiux.process.isValidation || 
-                    _uiux.process.isRequestBefore ||
-                    _uiux.process.isRequest ||
-                    _uiux.process.isResponseWaiting ||
-                    _uiux.process.isResponseOk ?
+                    _uiux.status.isValidation || 
+                    _uiux.status.isRequestBefore ||
+                    _uiux.status.isRequest ||
+                    _uiux.status.isResponseWaiting ||
+                    _uiux.status.isResponseOk ?
                         <ToolBox><Loader /></ToolBox>
-                    : _uiux.process.isResponseError ||
-                      _uiux.process.isResponseErrorAfter ?
+                    : _uiux.status.isResponseError ||
+                      _uiux.status.isResponseErrorAfter ?
           
                         <ToolBox><FontAwesomeIcon icon={ faBan } className="icon" /></ToolBox>
                     : 

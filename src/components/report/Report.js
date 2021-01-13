@@ -24,9 +24,9 @@ function Report( { index } ) {
     const dataToDB = parseReportToDB( report );
 
     useEffect( () => {
-        if ( _uiux.process.isResponseWaiting ) {
+        if ( _uiux.status.isResponseWaiting ) {
             paymentsPDF( [] );
-            report.uiux.process = {};
+            report.uiux.status = {};
         }
     } );
 
@@ -42,7 +42,7 @@ function Report( { index } ) {
         >
 
             <RetrieveManyRequest 
-                process={ _uiux.process }
+                status={ _uiux.status }
                 url={ `/.netlify/functions/report` +
                     `?type=${dataToDB.type}` +
                     `&dateFrom=${dataToDB.dateFrom}` +
@@ -57,7 +57,7 @@ function Report( { index } ) {
                 </RowValue>
 
                 <RowMenu>
-                    <CoreMenu process={ _uiux.process } >
+                    <CoreMenu status={ _uiux.status } >
                         <RetrieveManyMenuOption />
                     </CoreMenu>
                 </RowMenu>

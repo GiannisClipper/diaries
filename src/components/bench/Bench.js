@@ -57,7 +57,7 @@ const Bench = ( { diary_id } ) => {
     const { schema } = customization;
 
     if ( state.diary_id !== diary_id ) {
-        _uiux.process = { isInitBefore: true };
+        _uiux.status = { isInitBefore: true };
         actions.updateState( { data: { ...schema, diary_id, _uiux } } );
     }
 
@@ -109,8 +109,8 @@ const Bench = ( { diary_id } ) => {
             <FundsInit />
 
             <BenchInit
-                process={ _uiux.process }
                 mode={ _uiux.mode }
+                status={ _uiux.status }
             />
 
             <PrevButton reference={ prev } />

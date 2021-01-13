@@ -3,7 +3,7 @@ import { OkCancelForm } from '../libs/Forms';
 import texts from '../../storage/texts';
 
 function InputValidation( { 
-    process, 
+    status, 
     validationRules,
     validationOk,
     validationError,
@@ -12,7 +12,7 @@ function InputValidation( {
 
     useEffect( () => {
     
-        if ( process.isValidation ) {
+        if ( status.isValidation ) {
             const { data, errors } = validationRules();
 
             if ( errors === '' ) {
@@ -23,7 +23,7 @@ function InputValidation( {
                 validationError();
             }
 
-        } else if ( process.isValidationOk ) {
+        } else if ( status.isValidationOk ) {
             request();
         }
     } );
@@ -38,7 +38,7 @@ function CoreForm( { Context, index, validationRules, children } ) {
     const _item = state[ namespace ][ index ];
 
     const { _uiux } = _item;
-    const { process, mode } = _uiux;
+    const { status, mode } = _uiux;
 
     const validation = payload => actions.validation( { index, ...payload } );
     const validationOk = payload => actions.validationOk( { index, ...payload } );
@@ -82,11 +82,11 @@ function CoreForm( { Context, index, validationRules, children } ) {
             cancelLabel={ cancelLabel }
             onClickOk={ ! validation || mode.isDelete ? request : validation }
             onClickCancel={ closeForm }
-            isRequest={ process.isRequest }
+            isRequest={ status.isRequest }
             isDelete={ mode.isDelete }
         >
             <InputValidation
-                process={ process }
+                status={ status }
                 validationRules={ validationRules }
                 validationOk={ validationOk }
                 validationError={ validationError }

@@ -19,14 +19,14 @@ function RetrieveManyResponseOkAfter() {
 
     useEffect( () => {
 
-        const process1 = genres_uiux.process;
-        const process2 = funds_uiux.process;
+        const status1 = genres_uiux.status;
+        const status2 = funds_uiux.status;
 
-        if ( process1.isResponseOkAfter && process2.isResponseOkAfter ) {
+        if ( status1.isResponseOkAfter && status2.isResponseOkAfter ) {
             const payload = { genres, funds };
             actions.retrieveManyResponseOkAfter( payload );
 
-        } else if ( process1.isResponseError || process2.isResponseError ) {
+        } else if ( status1.isResponseError || status2.isResponseError ) {
             actions.retrieveManyResponseError();
         }
     } );
@@ -44,7 +44,7 @@ function DatesInit() {
     const dateFrom = dateToYYYYMMDD( dates[ 0 ].date );
     const dateTill = dateToYYYYMMDD( dates[ dates.length - 1 ].date );
 
-    if ( Object.keys( _uiux.process ).length === 0 ) {
+    if ( Object.keys( _uiux.status ).length === 0 ) {
         actions.retrieveManyRequestBefore();
     }
 
@@ -56,7 +56,7 @@ function DatesInit() {
     } else {
 
         return (
-            _uiux.process.isResponseOk
+            _uiux.status.isResponseOk
             ?
                 <RetrieveManyResponseOkAfter />
             :

@@ -6,7 +6,7 @@ const backupReducer = ( state, action ) => {
 
     case 'RETRIEVE_RESPONSE_OK_AFTER': {
         const backup = backupSchema();
-        backup._uiux.process = { isResponseOkAfter: true };
+        backup._uiux.status = { isResponseOkAfter: true };
 
         return { ...state, backup };
 

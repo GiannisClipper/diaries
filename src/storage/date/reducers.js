@@ -9,24 +9,24 @@ const datesReducer = ( state, action ) => {
 
         // case 'RETRIEVE_MANY_REQUEST_BEFORE': {
         //     const { dates, _uiux } = state;
-        //     dates.forEach( x => x._uiux.process = { isRequestBefore: true } );
-        //     _uiux.process = { isRequestBefore: true };
+        //     dates.forEach( x => x._uiux.status = { isRequestBefore: true } );
+        //     _uiux.status = { isRequestBefore: true };
 
         //     return { ...state, _uiux };
 
         // } case 'RETRIEVE_MANY_REQUEST': {
         //     const { dates, _uiux } = state;
         //     dates.forEach( x => x._uiux.mode = { isRetrieveMany: true } );
-        //     dates.forEach( x => x._uiux.process = { isRequest: true } );
+        //     dates.forEach( x => x._uiux.status = { isRequest: true } );
         //     _uiux.mode = { isRetrieveMany: true };
-        //     _uiux.process = { isRequest: true };
+        //     _uiux.status = { isRequest: true };
 
         //     return { ...state, dates, _uiux };
 
         // } case 'RETRIEVE_MANY_RESPONSE_WAITING': {
         //     const { dates, _uiux } = state;
-        //     dates.forEach( x => x._uiux.process = { isResponseWaiting: true } );
-        //     _uiux.process = { isResponseWaiting: true };
+        //     dates.forEach( x => x._uiux.status = { isResponseWaiting: true } );
+        //     _uiux.status = { isResponseWaiting: true };
 
         //     return { ...state, dates, _uiux };
 
@@ -34,8 +34,8 @@ const datesReducer = ( state, action ) => {
             const { dataFromDB } = action.payload;
             const { dates } = state;
             let _uiux = { ...state._uiux };
-            dates.forEach( x => x._uiux.process = { isResponseWaiting: true } );
-            _uiux.process = { isResponseOk: true };
+            dates.forEach( x => x._uiux.status = { isResponseWaiting: true } );
+            _uiux.status = { isResponseOk: true };
             _uiux.dataFromDB = dataFromDB;
 
             return { ...state, dates, _uiux };
@@ -44,10 +44,10 @@ const datesReducer = ( state, action ) => {
             const { error } = action.payload;
             const { dates, _uiux } = state;
             dates.forEach( date => { 
-                date.entries.forEach( entry => entry._uiux.process = { isResponseErrorAfter: true } );
-                date._uiux.process = { isResponseError: true };
+                date.entries.forEach( entry => entry._uiux.status = { isResponseErrorAfter: true } );
+                date._uiux.status = { isResponseError: true };
             } );
-            _uiux.process = { isResponseError: true };
+            _uiux.status = { isResponseError: true };
             _uiux.error = error;
 
             //_uiux._error = action.payload.error;
@@ -77,13 +77,13 @@ const datesReducer = ( state, action ) => {
                         dataFromDB: partFromDB, 
                         genres, 
                         funds,
-                        process: { isResponseOk: true }
+                        status: { isResponseOk: true }
                     };
 
                     dates[ i ]._uiux = _uiux;
                 }
 
-                _uiux.process = { isResponseOkAfter: true };
+                _uiux.status = { isResponseOkAfter: true };
                 delete _uiux.dataFromDB;
 
                 console.log( dates )
@@ -95,10 +95,10 @@ const datesReducer = ( state, action ) => {
         } case 'RETRIEVE_MANY_RESPONSE_ERROR_AFTER': {
             const { dates, _uiux } = state;
             dates.forEach( date => { 
-                date._uiux.process = { isResponseErrorAfter: true };
-                date.entries.forEach( entry => entry._uiux.process = { isResponseErrorAfter: true } );
+                date._uiux.status = { isResponseErrorAfter: true };
+                date.entries.forEach( entry => entry._uiux.status = { isResponseErrorAfter: true } );
             } );
-            _uiux.process = { isResponseError: true };
+            _uiux.status = { isResponseError: true };
 
             //_uiux._error = action.payload.error;
 

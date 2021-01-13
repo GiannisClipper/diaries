@@ -5,8 +5,9 @@ function EntriesInit() {
 
     const { state, actions } = useContext( EntriesContext );
     const { _uiux } = state; 
+    const { status } = _uiux;
     
-    if ( _uiux.process.isResponseOk ) {
+    if ( status.isResponseOk ) {
         actions.retrieveManyResponseOkAfter();
     }
 

@@ -43,7 +43,7 @@ function Settings() {
         >
     
             <UpdateRequest 
-                process={ _uiux.process }
+                status={ _uiux.status }
                 url={ `/.netlify/functions/settings` }
                 dataToDB={ dataToDB }
                 body={ JSON.stringify( { data: dataToDB } ) }
@@ -59,7 +59,7 @@ function Settings() {
                 </RowValue>
 
                 <RowMenu>
-                    <CoreMenu process={ _uiux.process } >
+                    <CoreMenu status={ _uiux.status } >
                         <UpdateMenuOption />
                     </CoreMenu>
                 </RowMenu>

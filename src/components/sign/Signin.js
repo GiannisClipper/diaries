@@ -18,7 +18,7 @@ function Signin() {
             />
 
             <SigninForm
-                process={ _uiux.process }
+                status={ _uiux.status }
             / >
         </>
     );

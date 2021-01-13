@@ -12,7 +12,7 @@ const signinSchema = () => ( {
     password: '',
     user_id: null,
     _uiux: {
-        process: {},  // isRequest, isResponseWaiting, isResponseError, isValidation, isValidationOk
+        status: {},  // isRequest, isResponseWaiting, isResponseError, isValidation, isValidationOk
         error: {},
     },
 } );
@@ -23,7 +23,7 @@ const settingsSchema = () => ( {
     _uiux: {
         form: {},  // isOpen
         mode: {},  // isUpdate
-        process: {},  // isRequest, isResponseWaiting, isResponseError, isValidation, isValidationOk
+        status: {},  // isRequest, isResponseWaiting, isResponseError, isValidation, isValidationOk
         error: {},
     },
 } );
@@ -31,7 +31,7 @@ const settingsSchema = () => ( {
 const backupSchema = () => ( {
     _uiux: {
         form: {},  // isOpen
-        process: {},  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
+        status: {},  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
         error: {},
     },
 } );
@@ -39,7 +39,7 @@ const backupSchema = () => ( {
 const usersSchema = () => ( {
     users: [],
     _uiux: { 
-        process: {},  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
+        status: {},  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
         error: {},
     },
 } );
@@ -55,7 +55,7 @@ const userSchema = () => ( {
     _uiux: {
         form: {},  // isOpen
         mode: {},  // isCreate, isUpdate, isDelete
-        process: {},  // isRequest, isResponseWaiting, isResponseError, isValidation, isValidationOk
+        status: {},  // isRequest, isResponseWaiting, isResponseError, isValidation, isValidationOk
         error: {},
     },
 } );
@@ -64,7 +64,7 @@ const diariesSchema = () => ( {
     user_id: null,
     diaries: [],
     _uiux: { 
-        process: {},  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
+        status: {},  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
         error: {},
     },
 } );
@@ -77,7 +77,7 @@ const diarySchema = () => ( {
     _uiux: {
         form: {},  // isOpen
         mode: {},  // isCreate, isUpdate, isDelete
-        process: {},  // isRequest, isResponseWaiting, isResponseError, isValidation, isValidationOk
+        status: {},  // isRequest, isResponseWaiting, isResponseError, isValidation, isValidationOk
         error: {},
     },
 } );
@@ -86,7 +86,7 @@ const benchSchema = () => ( {
     diary_id: null,
     periods: [],
     _uiux: {
-        process: {},  // isInitBefore, isInit
+        status: {},  // isInitBefore, isInit
         mode: {},  // isInitStart, isInitPrev, isInitNext
         error: {},
     },
@@ -95,7 +95,7 @@ const benchSchema = () => ( {
 const datesSchema = () => ( {
     dates: [],
     _uiux: {
-        process: {}, // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
+        status: {}, // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
         error: {},
     },
 } );
@@ -119,7 +119,7 @@ const entrySchema = () => ( {
         form: {},  // isOpen
         type: {},  // isNote, isPayment
         mode: {},  // isCreate, isUpdate, isDelete, isRetrieveMany
-        process: {},  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError
+        status: {},  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError
         error: {},
     }
 } );
@@ -142,7 +142,7 @@ const paymentGenresSchema = () => ( {
     diary_id: null,
     genres: [],
     _uiux: { 
-        process: {},  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
+        status: {},  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
         error: {},
     },
 } );
@@ -157,7 +157,7 @@ const paymentGenreSchema = () => ( {
     _uiux: {
         form: {},  // isOpen
         mode: {},  // isCreate, isUpdate, isDelete
-        process: {},  // isRequest, isResponseWaiting, isResponseError, isValidation, isValidationOk
+        status: {},  // isRequest, isResponseWaiting, isResponseError, isValidation, isValidationOk
         error: {},
     }
 } );
@@ -166,7 +166,7 @@ const paymentFundsSchema = () => ( {
     diary_id: null,
     funds: [],
     _uiux: { 
-        process: {},  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
+        status: {},  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
         error: {},
     },
 } );
@@ -179,14 +179,14 @@ const paymentFundSchema = () => ( {
     _uiux: {
         form: {},  // isOpen
         mode: {},  // isCreate, isUpdate, isDelete
-        process: {},  // isRequest, isResponseWaiting, isResponseError, isValidation, isValidationOk
+        status: {},  // isRequest, isResponseWaiting, isResponseError, isValidation, isValidationOk
     }
 } );
 
 const reportsSchema = () => ( {
     reports: [],
     _uiux: { 
-        process: {},
+        status: {},
         error: {},
     },
 } );
@@ -198,7 +198,7 @@ const reportSchema = () => ( {
     dateTill: '',
     _uiux: {
         form: {},  // isOpen
-        process: {},  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError
+        status: {},  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError
         error: {},
     }
 } );

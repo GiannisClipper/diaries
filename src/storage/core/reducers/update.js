@@ -6,7 +6,7 @@ const updateOneReducer = ( state, action ) => {
             const { namespace } = action.payload;
             const _item = state[ namespace ];
 
-            _item._uiux.process = { isRequest: true };
+            _item._uiux.status = { isRequest: true };
 
             return { ...state, [ namespace ]: _item };
 
@@ -15,7 +15,7 @@ const updateOneReducer = ( state, action ) => {
             let _item = state[ namespace ];
             console.log( 'UPDATE_RESPONSE_OK')
             _item = { ..._item, ...parseFromDB( dataFromDB ) };
-            _item._uiux.process = { isResponseOk: true };
+            _item._uiux.status = { isResponseOk: true };
 
             return { ...state, [ namespace ]: _item };
 
@@ -25,7 +25,7 @@ const updateOneReducer = ( state, action ) => {
 
             _item._uiux.mode = {};
             _item._uiux.form = {};
-            _item._uiux.process = { isResponseOkAfter: true };
+            _item._uiux.status = { isResponseOkAfter: true };
 
             return { ...state, [ namespace ]: _item };
 
@@ -33,7 +33,7 @@ const updateOneReducer = ( state, action ) => {
             const { namespace, error } = action.payload;
             const _item = state[ namespace ];
 
-            _item._uiux.process = { isResponseError: true };
+            _item._uiux.status = { isResponseError: true };
             _item._uiux.error = error;
 
             return { ...state, [ namespace ]: _item };
@@ -44,7 +44,7 @@ const updateOneReducer = ( state, action ) => {
 
             const { _saved } = _item._uiux;
             _item = { ..._item, ..._saved };
-            _item._uiux.process = { isResponseErrorAfter: true };
+            _item._uiux.status = { isResponseErrorAfter: true };
 
             return { ...state, [ namespace ]: _item };
 
@@ -62,7 +62,7 @@ const updateOneOfManyReducer = ( state, action ) => {
             const { namespace, index } = action.payload;
             const _items = state[ namespace ];
 
-            _items[ index ]._uiux.process = { isRequest: true };
+            _items[ index ]._uiux.status = { isRequest: true };
 
             return { ...state, [ namespace ]: _items };
 
@@ -71,7 +71,7 @@ const updateOneOfManyReducer = ( state, action ) => {
             const _items = state[ namespace ];
 
             _items[ index ] = { ..._items[ index ], ...parseFromDB( dataFromDB ) };
-            _items[ index ]._uiux.process = { isResponseOk: true };
+            _items[ index ]._uiux.status = { isResponseOk: true };
 
             return { ...state, [ namespace ]: _items };
 
@@ -81,7 +81,7 @@ const updateOneOfManyReducer = ( state, action ) => {
 
             _items[ index ]._uiux.mode = {};
             _items[ index ]._uiux.form = {};
-            _items[ index ]._uiux.process = { isResponseOkAfter: true };
+            _items[ index ]._uiux.status = { isResponseOkAfter: true };
 
             if ( sort ) {
                 _items.pop();
@@ -95,7 +95,7 @@ const updateOneOfManyReducer = ( state, action ) => {
             const { namespace, index, error } = action.payload;
             const _items = state[ namespace ];
 
-            _items[ index ]._uiux.process = { isResponseError: true }
+            _items[ index ]._uiux.status = { isResponseError: true }
             _items[ index ]._uiux.error = error;
 
             return { ...state, [ namespace ]: _items };
@@ -106,7 +106,7 @@ const updateOneOfManyReducer = ( state, action ) => {
 
             const { _saved } = _items[ index ]._uiux;
             _items[ index ] = { ..._items[ index ], ..._saved };
-            _items[ index ]._uiux.process = { isResponseErrorAfter: true }
+            _items[ index ]._uiux.status = { isResponseErrorAfter: true }
 
             return { ...state, [ namespace ]: _items };
 

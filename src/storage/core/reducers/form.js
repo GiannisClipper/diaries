@@ -18,7 +18,7 @@ const formOneReducer = ( state, action ) => {
             const { namespace } = action.payload;
             const _item = state[ namespace ];
 
-            _item._uiux.process = {};
+            _item._uiux.status = {};
             _item._uiux.form = {};
             _item._uiux.mode = {};
             delete _item._saved;
@@ -51,7 +51,7 @@ const formOneOfManyReducer = ( state, action ) => {
             const { namespace, index } = action.payload;
             const _items = state[ namespace ];
 
-            _items[ index ]._uiux.process = {};
+            _items[ index ]._uiux.status = {};
             _items[ index ]._uiux.form = {};
             _items[ index ]._uiux.mode = {};
             delete _items[ index ]._saved;

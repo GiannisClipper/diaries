@@ -48,11 +48,11 @@ function Fund( { index } ) {
             <RowMenu>
                 { ! fund.id 
                 ?
-                <CoreMenu process={ _uiux.process } >
+                <CoreMenu status={ _uiux.status } >
                     <CreateMenuOption openForm={ openForm } />
                 </CoreMenu>
                 :
-                <CoreMenu process={ _uiux.process } >
+                <CoreMenu status={ _uiux.status } >
                     <UpdateMenuOption openForm={ openForm } />
                     <DeleteMenuOption openForm={ openForm } />
                 </CoreMenu>

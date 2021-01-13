@@ -13,7 +13,7 @@ const calcStartDate = startDate => {
     return startDate;
 }
 
-function BenchInit( { mode, process } ) {
+function BenchInit( { mode, status } ) {
 
     const { state, dispatch } = useContext( BenchContext );
 
@@ -23,11 +23,11 @@ function BenchInit( { mode, process } ) {
 
     useEffect( () => {
 
-        if ( process.isInitBefore ) {
+        if ( status.isInitBefore ) {
             const payload = { mode: { isInitStart: true } };
             dispatch( { type: 'DO_INIT', payload } );
 
-        } else if ( process.isInit ) {
+        } else if ( status.isInit ) {
 
             if ( mode.isInitStart ) {
                 const payload = { startDate, days };

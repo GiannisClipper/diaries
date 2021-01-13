@@ -23,7 +23,7 @@ const initDates = dates => {
         date._uiux.isStartDate = central && date.date.getTime() === central.getTime() ? true : false;
 
         const entry = entrySchema();
-        entry._uiux.process = { isResponseWaiting: true };
+        entry._uiux.status = { isResponseWaiting: true };
         date.entries.push( entry );
 
         return date;
@@ -38,7 +38,7 @@ const benchReducer = ( state, action ) => {
             const { _uiux } = state;
             const { mode } = action.payload;
             _uiux.mode = mode;
-            _uiux.process = { isInit: true };
+            _uiux.status = { isInit: true };
 
             return { ...state, _uiux };
 
@@ -56,7 +56,7 @@ const benchReducer = ( state, action ) => {
             period.dates = dates;
 
             const periods = [ period ];
-            _uiux.process = {};
+            _uiux.status = {};
 
             return { ...state, periods, _uiux };
 
@@ -70,7 +70,7 @@ const benchReducer = ( state, action ) => {
             const period = datesSchema();
             period.dates = dates;
             periods = [ period, ...periods ];
-            _uiux.process = {};
+            _uiux.status = {};
 
             return { ...state, periods, _uiux };
 
@@ -84,7 +84,7 @@ const benchReducer = ( state, action ) => {
             const period = datesSchema();
             period.dates = dates;
             periods = [ ...periods, period ];
-            _uiux.process = {};
+            _uiux.status = {};
 
             return { ...state, periods, _uiux };
 

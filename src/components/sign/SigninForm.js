@@ -19,7 +19,7 @@ const SignList = styled( ListBox )`
     ${ props => props.theme.AppHeader && props.theme.AppHeader };
 `;
 
-function SignForm( { process } ) {
+function SignForm( { status } ) {
 
     const { state, actions, customization } = useContext( AppContext );
 
@@ -59,7 +59,7 @@ function SignForm( { process } ) {
             </HeadBox>
 
             <InputValidation
-                process={ process }
+                status={ status }
                 validationRules={ validationRules }
                 validationOk={ validationOk }
                 validationError={ validationError }
@@ -97,7 +97,7 @@ function SignForm( { process } ) {
                     <OkButton 
                         label={ okLabel } 
                         onClick={ onClickOk } 
-                        isRequest={ process.isRequest } 
+                        isRequest={ status.isRequest } 
                     />
                 </ButtonValue>
             </ButtonBox>

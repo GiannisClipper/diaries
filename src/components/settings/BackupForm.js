@@ -22,7 +22,7 @@ function BackupForm() {
             <CoreForm
                 headLabel={ heads.backup }
                 mode={ { isRetrieve: true } }
-                process={ _uiux.process }
+                status={ _uiux.status }
             >
 
                 <InputBox>

@@ -24,7 +24,7 @@ function Backup() {
     };
 
     useEffect( () => {
-        if ( _uiux.process.isResponseOk ) {
+        if ( _uiux.status.isResponseOk ) {
             delete backup._uiux;
             const content = JSON.stringify( backup, null, 2 );  // spacing = 2
             backup._uiux = _uiux;
@@ -44,7 +44,7 @@ function Backup() {
         >
 
             <RetrieveRequest 
-                process={ _uiux.process }
+                status={ _uiux.status }
                 url={ `/.netlify/functions/backup` }
                 error={ _uiux.error }
             />
@@ -55,7 +55,7 @@ function Backup() {
                 </RowValue>
 
                 <RowMenu>
-                    <CoreMenu process={ _uiux.process } >
+                    <CoreMenu status={ _uiux.status } >
                         <RetrieveMenuOption />
                     </CoreMenu>
                 </RowMenu>

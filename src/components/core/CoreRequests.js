@@ -13,13 +13,13 @@ function SigninRequest( { Context, url }) {
     const _item = state[ namespace ];
 
     const { _uiux } = _item;
-    const { process } = _uiux;
+    const { status } = _uiux;
 
     const dataToDB = parseToDB( _item );
     const body = JSON.stringify( { data: { ...dataToDB } } );
 
     useEffect( () => {
-        if ( process.isRequest ) {
+        if ( status.isRequest ) {
             const args = { method: 'PUT', body };
             const onDone = signinResponseOk;
             const onError = signinResponseError;
@@ -45,23 +45,23 @@ function CreateRequest( { Context, index, url } ) {
     const _item = state[ namespace ][ index ];
 
     const { _uiux } = _item;
-    const { process, error } = _uiux;
+    const { status, error } = _uiux;
 
     const dataToDB = parseToDB( _item );
     const body = JSON.stringify( { data: { ...dataToDB } } );
 
     useEffect( () => {
-        if ( process.isRequest ) {
+        if ( status.isRequest ) {
             const args = { method: 'POST', body };
             const onDone = createResponseOk;
             const onError = createResponseError;
             const dataFromDB = res => ( { ...dataToDB, _id: res.insertedId } );
             doFetch( url, args, onDone, onError, dataFromDB );
 
-        } else if ( process.isResponseOk ) {
+        } else if ( status.isResponseOk ) {
             createResponseOkAfter();
 
-        } else if ( process.isResponseError ) {
+        } else if ( status.isResponseError ) {
             handleError( { error } );
             createResponseErrorAfter();
         }
@@ -84,10 +84,10 @@ function RetrieveRequest( { Context, index, url } ) {
     const _item = state[ namespace ][ index ];
 
     const { _uiux } = _item;
-    const { process, error } = _uiux;
+    const { status, error } = _uiux;
 
     useEffect( () => {
-        if ( process.isRequest ) {
+        if ( status.isRequest ) {
             const args = { method: 'GET' };
             const onDone = retrieveResponseOk;
             const onError = retrieveResponseError;
@@ -95,10 +95,10 @@ function RetrieveRequest( { Context, index, url } ) {
             //typeof res === 'object' && res !== null
             doFetch( url, args, onDone, onError, dataFromDB );
 
-        } else if ( process.isResponseOk ) {
+        } else if ( status.isResponseOk ) {
             retrieveResponseOkAfter();
 
-        } else if ( process.isResponseError ) {
+        } else if ( status.isResponseError ) {
             handleError( { error } );
             retrieveResponseErrorAfter();
         }
@@ -121,24 +121,24 @@ function UpdateRequest( { Context, index, url } ) {
     const _item = state[ namespace ][ index ];
 
     const { _uiux } = _item;
-    const { process, error } = _uiux;
+    const { status, error } = _uiux;
 
     const dataToDB = parseToDB( _item );
     const body = JSON.stringify( { data: { ...dataToDB } } );
     const id = _item.id;
 
     useEffect( () => {
-        if ( process.isRequest ) {
+        if ( status.isRequest ) {
             const args = { method: 'PUT', body };
             const onDone = updateResponseOk;
             const onError = updateResponseError;
             const dataFromDB = () => ( { ...dataToDB, _id: id } );
             doFetch( url, args, onDone, onError, dataFromDB );
 
-        } else if ( process.isResponseOk ) {
+        } else if ( status.isResponseOk ) {
             updateResponseOkAfter();
 
-        } else if ( process.isResponseError ) {
+        } else if ( status.isResponseError ) {
             handleError( { error } );
             updateResponseErrorAfter();
         }
@@ -161,24 +161,24 @@ function DeleteRequest( { Context, index, url } ) {
     const _item = state[ namespace ][ index ];
 
     const { _uiux } = _item;
-    const { process, error } = _uiux;
+    const { status, error } = _uiux;
 
     const dataToDB = parseToDB( _item );
     const body = JSON.stringify( { data: { ...dataToDB } } );
     const id = _item.id;
 
     useEffect( () => {
-        if ( process.isRequest ) {
+        if ( status.isRequest ) {
             const args = { method: 'DELETE', body };
             const onDone = deleteResponseOk;
             const onError = deleteResponseError;
             const dataFromDB = () => ( { ...dataToDB, _id: id } );
             doFetch( url, args, onDone, onError, dataFromDB );
 
-        } else if ( process.isResponseOk ) {
+        } else if ( status.isResponseOk ) {
             deleteResponseOkAfter();
 
-        } else if ( process.isResponseError ) {
+        } else if ( status.isResponseError ) {
             handleError( { error } );
             deleteResponseErrorAfter();
         }
@@ -202,13 +202,13 @@ function RetrieveManyRequest( { Context, url } ) {
     } = actions;
 
     const { _uiux } = state;
-    const { process, error } = _uiux;
+    const { status, error } = _uiux;
 
     useEffect( () => {
-        if ( process.isRequestBefore ) {
+        if ( status.isRequestBefore ) {
             retrieveManyRequest();
 
-        } else if ( process.isRequest ) {
+        } else if ( status.isRequest ) {
             const args = { method: 'GET' };
             const onDone = retrieveManyResponseOk;
             const onError = retrieveManyResponseError;
@@ -216,13 +216,13 @@ function RetrieveManyRequest( { Context, url } ) {
             doFetch( url, args, onDone, onError, dataFromDB );
             retrieveManyResponseWaiting();
 
-        } else if ( process.isResponseWaiting ) {
+        } else if ( status.isResponseWaiting ) {
             // do nothing here
 
-        } else if ( process.isResponseOk ) {
+        } else if ( status.isResponseOk ) {
             retrieveManyResponseOkAfter();
 
-        } else if ( process.isResponseError ) {
+        } else if ( status.isResponseError ) {
             handleError( { error } );
             retrieveManyResponseErrorAfter();
 

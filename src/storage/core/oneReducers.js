@@ -41,7 +41,7 @@ const oneFormReducer = ( state, action ) => {
             const { _namespace } = action.payload;
             const _item = state[ _namespace ];
 
-            _item._uiux.process = {};
+            _item._uiux.status = {};
             _item._uiux.form = {};
             _item._uiux.mode = {};
 
@@ -61,7 +61,7 @@ const oneValidationReducer = ( state, action ) => {
             const { _namespace } = action.payload;
             const _item = state[ _namespace ];
 
-            _item._uiux.process = { isValidation: true };
+            _item._uiux.status = { isValidation: true };
 
             return { ...state, [ _namespace ]: _item };
 
@@ -70,7 +70,7 @@ const oneValidationReducer = ( state, action ) => {
             let _item = state[ _namespace ];
 
             _item = { ..._item, ...data };
-            _item._uiux.process = { isValidationOk: true };
+            _item._uiux.status = { isValidationOk: true };
 
             return { ...state, [ _namespace ]: _item };
 
@@ -78,7 +78,7 @@ const oneValidationReducer = ( state, action ) => {
             const { _namespace } = action.payload;
             const _item = state[ _namespace ];
 
-            _item._uiux.process = {};
+            _item._uiux.status = {};
 
             return { ...state, [ _namespace ]: _item };
 
@@ -96,7 +96,7 @@ const oneRequestReducer = ( state, action ) => {
             const { _namespace } = action.payload;
             const _item = state[ _namespace ];
 
-            _item._uiux.process = { isRequest: true };
+            _item._uiux.status = { isRequest: true };
 
             return { ...state, [ _namespace ]: _item };
 
@@ -105,7 +105,7 @@ const oneRequestReducer = ( state, action ) => {
             let _item = state[ _namespace ];
 
             _item = { ..._item, ..._parseFromDB( dataFromDB ) };
-            _item._uiux.process = { isResponseOk: true };
+            _item._uiux.status = { isResponseOk: true };
 
             return { ...state, [ _namespace ]: _item };
 
@@ -115,7 +115,7 @@ const oneRequestReducer = ( state, action ) => {
 
             _item._uiux.mode = {};
             _item._uiux.form = {};
-            _item._uiux.process = { isResponseOkAfter: true };
+            _item._uiux.status = { isResponseOkAfter: true };
 
             return { ...state, [ _namespace ]: _item };
 
@@ -123,7 +123,7 @@ const oneRequestReducer = ( state, action ) => {
             const { _namespace, error } = action.payload;
             const _item = state[ _namespace ];
 
-            _item._uiux.process = { isResponseError: true };
+            _item._uiux.status = { isResponseError: true };
             _item._uiux.error = error;
 
             return { ...state, [ _namespace ]: _item };
@@ -132,7 +132,7 @@ const oneRequestReducer = ( state, action ) => {
             const { _namespace,_schema } = action.payload;
             const _item = _schema();
 
-            _item._uiux.process = { isResponseErrorAfter: true };
+            _item._uiux.status = { isResponseErrorAfter: true };
 
             return { ...state, [ _namespace ]: _item };
 
@@ -142,7 +142,7 @@ const oneRequestReducer = ( state, action ) => {
             _parseFromDB = _parseFromDB || ( data => data );
 
             _item = { ..._item, ..._parseFromDB( dataFromDB ) };
-            _item._uiux.process = { isResponseOk: true };
+            _item._uiux.status = { isResponseOk: true };
 
             return { ...state, [ _namespace ]: _item };
 
@@ -152,7 +152,7 @@ const oneRequestReducer = ( state, action ) => {
 
             _item._uiux.mode = {};
             _item._uiux.form = {};
-            _item._uiux.process = { isResponseOkAfter: true };
+            _item._uiux.status = { isResponseOkAfter: true };
 
             return { ...state, [ _namespace ]: _item };
 
@@ -160,7 +160,7 @@ const oneRequestReducer = ( state, action ) => {
             const { _namespace, error } = action.payload;
             let _item = state[ _namespace ];
 
-            _item._uiux.process = { isResponseError: true };
+            _item._uiux.status = { isResponseError: true };
             _item._uiux.error = error;
 
             return { ...state, [ _namespace ]: _item };
@@ -169,7 +169,7 @@ const oneRequestReducer = ( state, action ) => {
             const { _namespace } = action.payload;
             const _item = state[ _namespace ];
 
-            _item._uiux.process = { isResponseErrorAfter: true };
+            _item._uiux.status = { isResponseErrorAfter: true };
 
             return { ...state, [ _namespace ]: _item };
 
@@ -178,7 +178,7 @@ const oneRequestReducer = ( state, action ) => {
             let _item = state[ _namespace ];
             console.log( 'UPDATE_RESPONSE_OK')
             _item = { ..._item, ..._parseFromDB( dataFromDB ) };
-            _item._uiux.process = { isResponseOk: true };
+            _item._uiux.status = { isResponseOk: true };
 
             return { ...state, [ _namespace ]: _item };
 
@@ -188,7 +188,7 @@ const oneRequestReducer = ( state, action ) => {
 
             _item._uiux.mode = {};
             _item._uiux.form = {};
-            _item._uiux.process = { isResponseOkAfter: true };
+            _item._uiux.status = { isResponseOkAfter: true };
 
             return { ...state, [ _namespace ]: _item };
 
@@ -196,7 +196,7 @@ const oneRequestReducer = ( state, action ) => {
             const { _namespace, error } = action.payload;
             const _item = state[ _namespace ];
 
-            _item._uiux.process = { isResponseError: true };
+            _item._uiux.status = { isResponseError: true };
             _item._uiux.error = error;
 
             return { ...state, [ _namespace ]: _item };
@@ -206,7 +206,7 @@ const oneRequestReducer = ( state, action ) => {
             let _item = state[ _namespace ];
 
             _item = { ..._item, ..._saved };
-            _item._uiux.process = { isResponseErrorAfter: true };
+            _item._uiux.status = { isResponseErrorAfter: true };
 
             return { ...state, [ _namespace ]: _item };
 
@@ -214,7 +214,7 @@ const oneRequestReducer = ( state, action ) => {
             const { _namespace } = action.payload;
             const _item = state[ _namespace ];
 
-            _item._uiux.process = { isResponseOk: true };
+            _item._uiux.status = { isResponseOk: true };
 
             return { ...state, [ _namespace ]: _item };
 
@@ -222,7 +222,7 @@ const oneRequestReducer = ( state, action ) => {
             const { _namespace } = action.payload;
             const _item = state[ _namespace ];
 
-            _item._uiux.process = { isResponseOkAfter: true };
+            _item._uiux.status = { isResponseOkAfter: true };
 
             return { ...state, [ _namespace ]: _item };
 
@@ -230,7 +230,7 @@ const oneRequestReducer = ( state, action ) => {
             const { _namespace, error } = action.payload;
             const _item = state[ _namespace ];
 
-            _item._uiux.process = { isResponseError: true };
+            _item._uiux.status = { isResponseError: true };
             _item._uiux.error = error;
 
             return { ...state, [ _namespace ]: _item };
@@ -239,7 +239,7 @@ const oneRequestReducer = ( state, action ) => {
             const { _namespace, _schema } = action.payload;
             const _item = _schema();
 
-            _item._uiux.process = { isResponseErrorAfter: true };
+            _item._uiux.status = { isResponseErrorAfter: true };
 
             return { ...state, [ _namespace ]: _item };
 

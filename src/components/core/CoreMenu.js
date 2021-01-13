@@ -4,21 +4,21 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBan, faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { MenuOptionBox } from '../libs/MenuBox';
 
-function CoreMenu( { process, children } ) {
+function CoreMenu( { status, children } ) {
 
-    process = process || {};
+    status = status || {};
 
     return ( 
-        process.isValidation ||
-        process.isRequestBefore ||
-        process.isRequest ||
-        process.isResponseWaiting ?
+        status.isValidation ||
+        status.isRequestBefore ||
+        status.isRequest ||
+        status.isResponseWaiting ?
             <MenuOptionBox>
                 <Loader />
             </MenuOptionBox>
 
-        : process.isResponseError ||
-          process.isResponseErrorAfter ?
+        : status.isResponseError ||
+          status.isResponseErrorAfter ?
             <MenuOptionBox>
                 <FontAwesomeIcon icon={ faBan } className="icon" />
             </MenuOptionBox>

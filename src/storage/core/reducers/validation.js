@@ -6,7 +6,7 @@ const validationOneReducer = ( state, action ) => {
             const { namespace } = action.payload;
             const _item = state[ namespace ];
 
-            _item._uiux.process = { isValidation: true };
+            _item._uiux.status = { isValidation: true };
 
             return { ...state, [ namespace ]: _item };
 
@@ -15,7 +15,7 @@ const validationOneReducer = ( state, action ) => {
             let _item = state[ namespace ];
 
             _item = { ..._item, ...data };
-            _item._uiux.process = { isValidationOk: true };
+            _item._uiux.status = { isValidationOk: true };
 
             return { ...state, [ namespace ]: _item };
 
@@ -23,7 +23,7 @@ const validationOneReducer = ( state, action ) => {
             const { namespace } = action.payload;
             const _item = state[ namespace ];
 
-            _item._uiux.process = {};
+            _item._uiux.status = {};
 
             return { ...state, [ namespace ]: _item };
 
@@ -41,7 +41,7 @@ const validationOneOfManyReducer = ( state, action ) => {
             const { namespace, index } = action.payload;
             const _items = state[ namespace];
 
-            _items[ index ]._uiux.process = { isValidation: true };
+            _items[ index ]._uiux.status = { isValidation: true };
 
             return { ...state, [ namespace ]: _items };
 
@@ -50,7 +50,7 @@ const validationOneOfManyReducer = ( state, action ) => {
             const _items = state[ namespace];
 
             _items[ index ] = { ..._items[ index ], ...data };
-            _items[ index ]._uiux.process = { isValidationOk: true };
+            _items[ index ]._uiux.status = { isValidationOk: true };
 
             return { ...state, [ namespace ]: _items };
 
@@ -58,7 +58,7 @@ const validationOneOfManyReducer = ( state, action ) => {
             const { namespace, index } = action.payload;
             const _items = state[ namespace];
 
-            _items[ index ]._uiux.process = {};
+            _items[ index ]._uiux.status = {};
 
             return { ...state, [ namespace ]: _items };
 

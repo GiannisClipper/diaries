@@ -28,7 +28,7 @@ const entriesReducer = ( state, action ) => {
         // } case 'CLOSE_FORM': {
         //     const { entries } = state;
         //     const { index } = action.payload;
-        //     entries[ index ]._uiux.process = {};
+        //     entries[ index ]._uiux.status = {};
         //     entries[ index ]._uiux.form = {};
         //     entries[ index ]._uiux.type = {};
         //     entries[ index ]._uiux.mode = {};
@@ -40,7 +40,7 @@ const entriesReducer = ( state, action ) => {
         // } case 'DO_REQUEST': {
         //     const { entries } = state;
         //     const { index } = action.payload;
-        //     entries[ index ]._uiux.process = { isRequest: true };
+        //     entries[ index ]._uiux.status = { isRequest: true };
 
         //     return { ...state, entries };
 
@@ -62,7 +62,7 @@ const entriesReducer = ( state, action ) => {
         //         entries.push( entrySchema() );
         //     }
 
-        //     entries.forEach( x => x._uiux.process = {} );
+        //     entries.forEach( x => x._uiux.status = {} );
 
         //     return { ...state, entries };
 
@@ -71,7 +71,7 @@ const entriesReducer = ( state, action ) => {
         //     const { index } = action.payload;
         //     const { _uiux } = entries[ index ];
         //     entries[ index ] = { ...entrySchema(), _uiux };
-        //     entries.forEach( x => x._uiux.process = {} );
+        //     entries.forEach( x => x._uiux.status = {} );
 
         //     return { ...state, entries };
 
@@ -89,7 +89,7 @@ const entriesReducer = ( state, action ) => {
         //         ? { ...parsePaymentFromDB( dataFromDB ), _uiux }
         //         : { ...parseNoteFromDB( dataFromDB ), _uiux };
 
-        //     entries.forEach( x => x._uiux.process = {} );
+        //     entries.forEach( x => x._uiux.status = {} );
 
         //     return { ...state, entries };
 
@@ -98,7 +98,7 @@ const entriesReducer = ( state, action ) => {
         //     const { index } = action.payload;
         //     const { _uiux, _saved } = entries[ index ];
         //     entries[ index ] = { ..._saved, _uiux };
-        //     entries.forEach( x => x._uiux.process = {} );
+        //     entries.forEach( x => x._uiux.status = {} );
 
         //     return { ...state, entries };
 
@@ -106,7 +106,7 @@ const entriesReducer = ( state, action ) => {
         //     const entries = [ ...state.entries ];
         //     const { index } = action.payload;
         //     entries.splice( index, 1 );
-        //     entries.forEach( x => x._uiux.process = {} );
+        //     entries.forEach( x => x._uiux.status = {} );
 
         //     return { ...state, entries };
 
@@ -115,7 +115,7 @@ const entriesReducer = ( state, action ) => {
         //     const { index } = action.payload;
         //     entries[ index ]._uiux.mode = {};
         //     entries[ index ]._uiux.form = {};
-        //     entries.forEach( x => x._uiux.process = {} );
+        //     entries.forEach( x => x._uiux.status = {} );
 
         //     return { ...state, entries };
 
@@ -135,7 +135,7 @@ const entriesReducer = ( state, action ) => {
             }
             entries.push( schema() );
 
-            _uiux.process = { isResponseOkAfter: true };
+            _uiux.status = { isResponseOkAfter: true };
             // delete _uiux.dataFromDB;
             // delete _uiux.genres;
             // delete _uiux.funds;

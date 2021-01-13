@@ -38,7 +38,7 @@ function SettingsForm( { index } ) {
             <CoreForm
                 headLabel={ heads.settings }
                 mode={ _uiux.mode }
-                process={ _uiux.process }
+                status={ _uiux.status }
                 validation={ validation }
             >
 

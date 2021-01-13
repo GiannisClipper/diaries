@@ -8,12 +8,12 @@ const settingsReducer = ( state, action ) => {
 
             delete settings._uiux;
             localStorage.setItem( 'settings', JSON.stringify( settings ) );
-            _uiux.process = {};
+            _uiux.status = {};
             settings._uiux = _uiux;
 
             settings._uiux.mode = {};
             settings._uiux.form = {};
-            settings._uiux.process = { isResponseOkAfter: true };
+            settings._uiux.status = { isResponseOkAfter: true };
 
             return { ...state, settings };
 

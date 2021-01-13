@@ -7,7 +7,7 @@ function ReportsInit() {
     const { _uiux } = state;
 
     useEffect( () => {
-        if ( Object.keys( _uiux.process ).length === 0 ) {  // process === {}
+        if ( Object.keys( _uiux.status ).length === 0 ) {  // status === {}
             dispatch( { 
                 type: 'DO_INIT', 
                 payload: {}

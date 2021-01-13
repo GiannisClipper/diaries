@@ -31,7 +31,7 @@ function ReportForm( { report } ) {
             <CoreForm
                 headLabel={ heads.reports }
                 mode={ { isRetrieveMany: true } }
-                process={ _uiux.process }
+                status={ _uiux.status }
                 validation={ validation }
             >
                 <InputBox>
