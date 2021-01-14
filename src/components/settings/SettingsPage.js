@@ -13,7 +13,7 @@ import Backup from './Backup';
 
 function SettingsPage() {
 
-    //useEffect( () => console.log( 'Has rendered. ', 'SettingsPage' ) );
+    // useEffect( () => console.log( 'Has rendered. ', 'SettingsPage' ) );
 
     return (
         <>

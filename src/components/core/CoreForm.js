@@ -31,18 +31,23 @@ function InputValidation( {
     return null;
 }
 
-function CoreForm( { Context, index, validationRules, children } ) {
+function CoreForm( { Context, assets, index, validationRules, children } ) {
 
-    const { state, actions, assets } = useContext( Context );
+    const context = useContext( Context );
+    const { state, actions } = context;
+    assets = assets || context.assets;
     const { namespace } = assets;
-    const _item = state[ namespace ][ index ];
+
+    const _item = index !== undefined 
+        ? state[ namespace ][ index ]
+        : state[ namespace ];
 
     const { _uiux } = _item;
     const { status, mode } = _uiux;
 
-    const validation = payload => actions.validation( { index, ...payload } );
-    const validationOk = payload => actions.validationOk( { index, ...payload } );
-    const validationError = payload => actions.validationError( { index, ...payload } );
+    const validation = payload => actions.validation( { ...payload, index, assets } );
+    const validationOk = payload => actions.validationOk( { ...payload, index, assets } );
+    const validationError = payload => actions.validationError( { ...payload, index, assets } );
 
     const rawRequest = (
         mode.isCreate ?
@@ -56,8 +61,8 @@ function CoreForm( { Context, index, validationRules, children } ) {
         null
     );
 
-    const request = payload => rawRequest( { index, ...payload } );
-    const closeForm = payload => actions.closeForm( { index, ...payload } );
+    const request = payload => rawRequest( { ...payload, index, assets } );
+    const closeForm = payload => actions.closeForm( { ...payload, index, assets } );
 
     const headLabel = texts.heads[ namespace ];
 

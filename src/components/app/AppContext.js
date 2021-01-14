@@ -6,9 +6,10 @@ import { parseSettingsToDB, parseSettingsFromDB } from '../../storage/settings/p
 
 import { appReducer } from '../../storage/app/reducers';
 
+import formActionTypes from '../../storage/core/actions/form';
 import validationActionTypes from '../../storage/core/actions/validation';
 import signActionTypes from '../../storage/core/actions/sign';
-import updateActionTypes from '../../storage/core/actions/create';
+import updateActionTypes from '../../storage/core/actions/update';
 import errorActionTypes from '../../storage/core/actions/error';
 
 import createActions from '../../helpers/createActions';
@@ -31,10 +32,16 @@ const assets = {
         schema: settingsSchema,
         parseToDB: parseSettingsToDB,
         parseFromDB: parseSettingsFromDB,
-    }
+    },
+
+    backup: {
+        namespace: 'backup',
+    },
+
 }
 
 const actionTypes = { 
+    ...formActionTypes,
     ...validationActionTypes,
     ...signActionTypes, 
     ...updateActionTypes,

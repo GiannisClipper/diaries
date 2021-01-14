@@ -1,28 +1,21 @@
 import React, { useState, useContext } from 'react';
-
 import { AppContext } from '../app/AppContext';
-import { CoreContext } from "../core/CoreContext";
-import CoreForm from "../core/CoreForm";
-
 import { Modal } from '../libs/Modal';
-import { heads } from '../../storage/texts';
+import CoreForm from "../core/CoreForm";
 import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
 
 function BackupForm() {
 
-    const { state } = useContext( AppContext );
-    const { backup } = state;
-    const { _uiux } = backup;
+    const { actions, assets } = useContext( AppContext );
 
-    const { closeForm } = useContext( CoreContext );
+    const closeForm = payload => actions.closeForm( { ...payload, assets: assets.backup } );
 
     return (
         <Modal onClick={ closeForm } centeredness>
 
             <CoreForm
-                headLabel={ heads.backup }
-                mode={ { isRetrieve: true } }
-                status={ _uiux.status }
+                Context={ AppContext }
+                assets={ assets.backup }
             >
 
                 <InputBox>

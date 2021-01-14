@@ -1,27 +1,20 @@
 import React, { useContext, useEffect  } from 'react';
 
-import { CoreContextProvider } from '../core/CoreContext';
-import actions from '../../storage/core/actions';
+import { AppContext } from '../app/AppContext';
 import { RetrieveRequest } from '../core/CoreRequests';
 import { CoreMenu, RetrieveMenuOption } from '../core/CoreMenu';
-
-import { AppContext } from '../app/AppContext';
-
 import { RowBox, RowValue, RowMenu } from '../libs/RowBox';
 
 import BackupForm from './BackupForm';
-
 import saveAsTextFile from '../../helpers/saveAsTextFile';
 
 function Backup() {
 
-    const { state, dispatch } = useContext( AppContext );
+    const { state, actions, assets } = useContext( AppContext );
     const { backup } = state;
     const { _uiux } = backup;
 
-    const payload = {
-        _namespace: 'backup',
-    };
+    const openForm = payload => actions.openForm( { ...payload, assets: assets.backup } );
 
     useEffect( () => {
         if ( _uiux.status.isResponseOk ) {
@@ -33,20 +26,11 @@ function Backup() {
     }, [ _uiux, backup ] );
 
     return (
-        <CoreContextProvider 
-            actions={ [ 
-                actions.form,
-                actions.retrieveOne,
-            ] }
-            dispatch={ dispatch }
-            namespace={ 'backup' }
-            payload={ payload }
-        >
-
+        <>
             <RetrieveRequest 
-                status={ _uiux.status }
+                Context={ AppContext }
+                assets={ assets.backup }
                 url={ `/.netlify/functions/backup` }
-                error={ _uiux.error }
             />
 
             <RowBox>
@@ -56,7 +40,7 @@ function Backup() {
 
                 <RowMenu>
                     <CoreMenu status={ _uiux.status } >
-                        <RetrieveMenuOption />
+                        <RetrieveMenuOption openForm={ openForm } />
                     </CoreMenu>
                 </RowMenu>
             </RowBox>
@@ -65,7 +49,7 @@ function Backup() {
                 <BackupForm />
             : null }
 
-        </CoreContextProvider>
+        </>
     );
 }
 

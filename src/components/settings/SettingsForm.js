@@ -1,26 +1,24 @@
 import React, { useState, useContext } from 'react';
 
 import { AppContext } from '../app/AppContext';
-import { CoreContext } from "../core/CoreContext";
 import CoreForm from "../core/CoreForm";
 
 import { Modal } from '../libs/Modal';
-import { heads } from '../../storage/texts';
 import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
 import { InputFromList } from '../libs/InputFromList';
 import { isBlank } from '../../helpers/validation';
 
-function SettingsForm( { index } ) {
+function SettingsForm() {
 
-    const { state } = useContext( AppContext );
+    const { state, actions, assets } = useContext( AppContext );
+
+    const closeForm = payload => actions.closeForm( { ...payload, assets: assets.settings } );
+
     const { settings } = state;
-    const { _uiux } = settings;
-
-    const { closeForm } = useContext( CoreContext );
 
     const [ data, setData ] = useState( { ...settings } );
 
-    const validation = () => {
+    const validationRules = () => {
         let errors = '';
 
         errors += isBlank( data.theme ) 
@@ -36,10 +34,9 @@ function SettingsForm( { index } ) {
         <Modal onClick={ closeForm } centeredness>
 
             <CoreForm
-                headLabel={ heads.settings }
-                mode={ _uiux.mode }
-                status={ _uiux.status }
-                validation={ validation }
+                Context={ AppContext }
+                assets={ assets.settings }
+                validationRules={ validationRules }
             >
 
                 <InputBox>

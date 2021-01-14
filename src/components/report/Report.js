@@ -1,13 +1,8 @@
 import React, { useContext, useEffect } from 'react';
 
-import { CoreContextProvider } from '../core/CoreContext';
-import actions from '../../storage/core/actions';
+import { ReportsContext } from './ReportsContext';
 import { RetrieveManyRequest } from '../core/CoreRequests';
 import { CoreMenu, RetrieveManyMenuOption } from '../core/CoreMenu';
-
-import { ReportsContext } from './ReportsContext';
-import { parseReportToDB } from '../../storage/report/parsers';
-
 import { RowBox, RowValue, RowMenu } from '../libs/RowBox';
 
 import ReportForm from './ReportForm';
@@ -15,40 +10,31 @@ import { paymentsPDF } from '../../storage/reportPDF';
 
 function Report( { index } ) {
 
-    const { state, dispatch } = useContext( ReportsContext );
+    const { state, actions, assets } = useContext( ReportsContext );
     const { reports } = state;
     const report = reports[ index ];
     const { _uiux } = report;
+    const { parseToDB } = assets;
+    const dataToDB = parseToDB( report );
 
-    const payload = { index };
-    const dataToDB = parseReportToDB( report );
+    const openForm = payload => actions.openForm( { index, ...payload } );
 
     useEffect( () => {
         if ( _uiux.status.isResponseWaiting ) {
             paymentsPDF( [] );
-            report.uiux.status = {};
+            _uiux.status = {};
         }
     } );
 
     return (
-        <CoreContextProvider 
-            actions={ [ 
-                actions.form, 
-                actions.validation, 
-                actions.retrieveMany,
-            ] }
-            dispatch={ dispatch }
-            payload={ payload }
-        >
-
+        <>
             <RetrieveManyRequest 
-                status={ _uiux.status }
+                Context={ ReportsContext }
                 url={ `/.netlify/functions/report` +
-                    `?type=${dataToDB.type}` +
-                    `&dateFrom=${dataToDB.dateFrom}` +
-                    `&dateTill=${dataToDB.dateTill} `
+                    `?type=${ dataToDB.type }` +
+                    `&dateFrom=${ dataToDB.dateFrom }` +
+                    `&dateTill=${ dataToDB.dateTill } `
                 }
-                error={ _uiux.error }
             />
 
             <RowBox key={ index }>
@@ -58,18 +44,18 @@ function Report( { index } ) {
 
                 <RowMenu>
                     <CoreMenu status={ _uiux.status } >
-                        <RetrieveManyMenuOption />
+                        <RetrieveManyMenuOption openForm={ openForm } />
                     </CoreMenu>
                 </RowMenu>
             </RowBox> 
 
             { _uiux.form.isOpen ?
                 <ReportForm
-                    report={ report }
+                    index={ index }
                 /> 
             : null }
 
-        </CoreContextProvider>
+        </>
     );
 }
 

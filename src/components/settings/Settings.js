@@ -1,66 +1,37 @@
-import React, { useContext, useEffect  } from 'react';
-
-import { CoreContextProvider } from '../core/CoreContext';
-import actions from '../../storage/core/actions';
-import { settingsSchema } from '../../storage/schemas';
-import { parseSettingsFromDB } from '../../storage/settings/parsers';
-import { UpdateRequest } from '../core/CoreRequests';
-import { CoreMenu, UpdateMenuOption } from '../core/CoreMenu';
-
+import React, { useContext } from 'react';
 import { AppContext } from '../app/AppContext';
-import { parseSettingsToDB } from '../../storage/settings/parsers';
-
+import { UpdateRequest } from '../core/CoreRequests';
 import { RowBox, RowValue, RowMenu } from '../libs/RowBox';
-
+import { CoreMenu, UpdateMenuOption } from '../core/CoreMenu';
 import SettingsForm from './SettingsForm';
 
 function Settings() {
 
-    const { state, dispatch } = useContext( AppContext );
+    const { state, actions, assets } = useContext( AppContext );
     const { settings } = state;
     const { _uiux } = settings;
 
-    const payload = { 
-        _namespace: 'settings', 
-        _saved: settings,
-        _schema: settingsSchema,
-        _parseFromDB: parseSettingsFromDB,
-        _sort: null,
-    };
-
-    const dataToDB = parseSettingsToDB( settings );
+    const openForm = payload => actions.openForm( { ...payload, assets: assets.settings } );
 
     return (
-        <CoreContextProvider 
-            actions={ [ 
-                actions.form,
-                actions.validation,
-                actions.updateOne,
-            ] }
-            dispatch={ dispatch }
-            namespace={ 'settings' }
-            payload={ payload }
-        >
-    
+        <>
             <UpdateRequest 
-                status={ _uiux.status }
+                Context={ AppContext }
+                assets={ assets.settings }
                 url={ `/.netlify/functions/settings` }
-                dataToDB={ dataToDB }
-                body={ JSON.stringify( { data: dataToDB } ) }
-                error={ _uiux.error }
             />
 
             <RowBox>
-                <RowValue title={ `${settings.id}` }>
-                    <div>{ `Επιλογή θέματος: ${settings.theme}` }</div>
+                <RowValue title={ `${ settings.id }` }>
+                    <div>{ `Επιλογή θέματος: ${ settings.theme }` }</div>
                     <br />
-                    <div>{ `Επιλογή γλώσσας: ${settings.language}` }</div>
+                    <div>{ `Επιλογή γλώσσας: ${ settings.language }` }</div>
                     <br />
                 </RowValue>
 
                 <RowMenu>
                     <CoreMenu status={ _uiux.status } >
-                        <UpdateMenuOption />
+                        <UpdateMenuOption openForm={ openForm } />
                     </CoreMenu>
                 </RowMenu>
             </RowBox> 
@@ -69,7 +40,7 @@ function Settings() {
                 <SettingsForm /> 
             : null }
 
-        </CoreContextProvider>
+        </>
     );
 }
 

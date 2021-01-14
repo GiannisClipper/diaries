@@ -31,18 +31,22 @@ function SigninRequest( { Context, url }) {
     return null;
 }
 
-function CreateRequest( { Context, index, url } ) {
+function CreateRequest( { Context, assets, index, url } ) {
 
-    const { state, actions, assets } = useContext( Context );
+    const context = useContext( Context );
+    const { state, actions } = context;
+    assets = assets || context.assets;
+    const { namespace, parseToDB } = assets;
 
-    const createResponseOk = payload => actions.createResponseOk( { index, ...payload } );
-    const createResponseError = payload => actions.createResponseError( { index, ...payload } );
-    const createResponseOkAfter = payload => actions.createResponseOkAfter( { index, ...payload } );
-    const createResponseErrorAfter = payload => actions.createResponseErrorAfter( { index, ...payload } );
+    const createResponseOk = payload => actions.createResponseOk( { ...payload, index, assets } );
+    const createResponseError = payload => actions.createResponseError( { ...payload, index, assets } );
+    const createResponseOkAfter = payload => actions.createResponseOkAfter( { ...payload, index, assets } );
+    const createResponseErrorAfter = payload => actions.createResponseErrorAfter( { ...payload, index, assets } );
     const handleError = actions.handleError;
 
-    const { namespace, parseToDB } = assets;
-    const _item = state[ namespace ][ index ];
+    const _item = index !== undefined 
+        ? state[ namespace ][ index ]
+        : state[ namespace ];
 
     const { _uiux } = _item;
     const { status, error } = _uiux;
@@ -70,18 +74,22 @@ function CreateRequest( { Context, index, url } ) {
     return null;
 }
 
-function RetrieveRequest( { Context, index, url } ) {
+function RetrieveRequest( { Context, assets, index, url } ) {
 
-    const { state, actions, assets } = useContext( Context );
+    const context = useContext( Context );
+    const { state, actions } = context;
+    assets = assets || context.assets;
+    const { namespace } = assets;
 
-    const retrieveResponseOk = payload => actions.retrieveResponseOk( { index, ...payload } );
-    const retrieveResponseError = payload => actions.retrieveResponseError( { index, ...payload } );
-    const retrieveResponseOkAfter = payload => actions.retrieveResponseOkAfter( { index, ...payload } );
-    const retrieveResponseErrorAfter = payload => actions.retrieveResponseErrorAfter( { index, ...payload } );
+    const retrieveResponseOk = payload => actions.retrieveResponseOk( { ...payload, index, assets } );
+    const retrieveResponseError = payload => actions.retrieveResponseError( { ...payload, index, assets } );
+    const retrieveResponseOkAfter = payload => actions.retrieveResponseOkAfter( { ...payload, index, assets } );
+    const retrieveResponseErrorAfter = payload => actions.retrieveResponseErrorAfter( { ...payload, index, assets } );
     const handleError = actions.handleError;
 
-    const { namespace } = assets;
-    const _item = state[ namespace ][ index ];
+    const _item = index !== undefined 
+        ? state[ namespace ][ index ]
+        : state[ namespace ];
 
     const { _uiux } = _item;
     const { status, error } = _uiux;
@@ -107,18 +115,22 @@ function RetrieveRequest( { Context, index, url } ) {
     return null;
 }
 
-function UpdateRequest( { Context, index, url } ) {
+function UpdateRequest( { Context, assets, index, url } ) {
 
-    const { state, actions, assets } = useContext( Context );
+    const context = useContext( Context );
+    const { state, actions } = context;
+    assets = assets || context.assets;
+    const { namespace, parseToDB } = assets;
 
-    const updateResponseOk = payload => actions.updateResponseOk( { index, ...payload } );
-    const updateResponseError = payload => actions.updateResponseError( { index, ...payload } );
-    const updateResponseOkAfter = payload => actions.updateResponseOkAfter( { index, ...payload } );
-    const updateResponseErrorAfter = payload => actions.updateResponseErrorAfter( { index, ...payload } );
+    const updateResponseOk = payload => actions.updateResponseOk( { ...payload, index, assets } );
+    const updateResponseError = payload => actions.updateResponseError( { ...payload, index, assets } );
+    const updateResponseOkAfter = payload => actions.updateResponseOkAfter( { ...payload, index, assets } );
+    const updateResponseErrorAfter = payload => actions.updateResponseErrorAfter( { ...payload, index, assets } );
     const handleError = actions.handleError;
 
-    const { namespace, parseToDB } = assets;
-    const _item = state[ namespace ][ index ];
+    const _item = index !== undefined 
+        ? state[ namespace ][ index ]
+        : state[ namespace ];
 
     const { _uiux } = _item;
     const { status, error } = _uiux;
@@ -147,18 +159,22 @@ function UpdateRequest( { Context, index, url } ) {
     return null;
 }
 
-function DeleteRequest( { Context, index, url } ) {
+function DeleteRequest( { Context, assets, index, url } ) {
 
-    const { state, actions, assets } = useContext( Context );
+    const context = useContext( Context );
+    const { state, actions } = context;
+    assets = assets || context.assets;
+    const { namespace, parseToDB } = assets;
 
-    const deleteResponseOk = payload => actions.deleteResponseOk( { index, ...payload } );
-    const deleteResponseError = payload => actions.deleteResponseError( { index, ...payload } );
-    const deleteResponseOkAfter = payload => actions.deleteResponseOkAfter( { index, ...payload } );
-    const deleteResponseErrorAfter = payload => actions.deleteResponseErrorAfter( { index, ...payload } );
+    const deleteResponseOk = payload => actions.deleteResponseOk( { ...payload, index, assets } );
+    const deleteResponseError = payload => actions.deleteResponseError( { ...payload, index, assets } );
+    const deleteResponseOkAfter = payload => actions.deleteResponseOkAfter( { ...payload, index, assets } );
+    const deleteResponseErrorAfter = payload => actions.deleteResponseErrorAfter( { ...payload, index, assets } );
     const handleError = actions.handleError;
 
-    const { namespace, parseToDB } = assets;
-    const _item = state[ namespace ][ index ];
+    const _item = index !== undefined 
+        ? state[ namespace ][ index ]
+        : state[ namespace ];
 
     const { _uiux } = _item;
     const { status, error } = _uiux;

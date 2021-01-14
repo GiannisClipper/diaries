@@ -1,19 +1,20 @@
 import React, { useContext, useState } from 'react';
 
-import { CoreContext } from "../core/CoreContext";
-import CoreForm from "../core/CoreForm";
-
+import { ReportsContext } from './ReportsContext';
 import { Modal } from '../libs/Modal';
+import CoreForm from "../core/CoreForm";
 import { heads } from '../../storage/texts';
 import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
 import { InputDate } from '../libs/InputDate';
 import { shiftDate, YYYYMMDDToRepr, dateToYYYYMMDD } from '../../helpers/dates';
 
-function ReportForm( { report } ) {
+function ReportForm( { index } ) {
 
-    const { _uiux } = report;
+    const { state, actions } = useContext( ReportsContext );
+    const { reports } = state;
+    const report = reports[ index ];
 
-    const { closeForm } = useContext( CoreContext );
+    const closeForm = payload => actions.closeForm( { index, ...payload } );
 
     const [ data, setData ] = useState( { 
         ...report,
@@ -21,7 +22,7 @@ function ReportForm( { report } ) {
         dateTill: YYYYMMDDToRepr( dateToYYYYMMDD( new Date() ) ),
     } );
 
-    const validation = () => {
+    const validationRules = () => {
         let errors = '';
         return { data, errors };
     }
@@ -29,10 +30,9 @@ function ReportForm( { report } ) {
     return (
         <Modal onClick={ closeForm } centeredness>
             <CoreForm
-                headLabel={ heads.reports }
-                mode={ { isRetrieveMany: true } }
-                status={ _uiux.status }
-                validation={ validation }
+                Context={ ReportsContext }
+                index={ index }
+                validationRules={ validationRules }
             >
                 <InputBox>
                     <InputLabel>
