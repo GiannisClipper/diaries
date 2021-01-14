@@ -3,12 +3,12 @@ import { doFetch } from '../../helpers/customFetch';
 
 function SigninRequest( { Context, url }) {
 
-    const { state, actions, customization } = useContext( Context );
+    const { state, actions, assets } = useContext( Context );
 
-    const { namespace, parseToDB } = customization.signin;
+    const { namespace, parseToDB } = assets.signin;
 
-    const signinResponseOk = payload => actions.signinResponseOk( { namespace, ...payload } );
-    const signinResponseError = payload => actions.signinResponseError( { namespace, ...payload } );
+    const signinResponseOk = payload => actions.signinResponseOk( { ...payload, assets: assets.signin } );
+    const signinResponseError = payload => actions.signinResponseError( { ...payload, assets: assets.signin } );
 
     const _item = state[ namespace ];
 
@@ -33,7 +33,7 @@ function SigninRequest( { Context, url }) {
 
 function CreateRequest( { Context, index, url } ) {
 
-    const { state, actions, customization } = useContext( Context );
+    const { state, actions, assets } = useContext( Context );
 
     const createResponseOk = payload => actions.createResponseOk( { index, ...payload } );
     const createResponseError = payload => actions.createResponseError( { index, ...payload } );
@@ -41,7 +41,7 @@ function CreateRequest( { Context, index, url } ) {
     const createResponseErrorAfter = payload => actions.createResponseErrorAfter( { index, ...payload } );
     const handleError = actions.handleError;
 
-    const { namespace, parseToDB } = customization;
+    const { namespace, parseToDB } = assets;
     const _item = state[ namespace ][ index ];
 
     const { _uiux } = _item;
@@ -72,7 +72,7 @@ function CreateRequest( { Context, index, url } ) {
 
 function RetrieveRequest( { Context, index, url } ) {
 
-    const { state, actions, customization } = useContext( Context );
+    const { state, actions, assets } = useContext( Context );
 
     const retrieveResponseOk = payload => actions.retrieveResponseOk( { index, ...payload } );
     const retrieveResponseError = payload => actions.retrieveResponseError( { index, ...payload } );
@@ -80,7 +80,7 @@ function RetrieveRequest( { Context, index, url } ) {
     const retrieveResponseErrorAfter = payload => actions.retrieveResponseErrorAfter( { index, ...payload } );
     const handleError = actions.handleError;
 
-    const { namespace } = customization;
+    const { namespace } = assets;
     const _item = state[ namespace ][ index ];
 
     const { _uiux } = _item;
@@ -109,7 +109,7 @@ function RetrieveRequest( { Context, index, url } ) {
 
 function UpdateRequest( { Context, index, url } ) {
 
-    const { state, actions, customization } = useContext( Context );
+    const { state, actions, assets } = useContext( Context );
 
     const updateResponseOk = payload => actions.updateResponseOk( { index, ...payload } );
     const updateResponseError = payload => actions.updateResponseError( { index, ...payload } );
@@ -117,7 +117,7 @@ function UpdateRequest( { Context, index, url } ) {
     const updateResponseErrorAfter = payload => actions.updateResponseErrorAfter( { index, ...payload } );
     const handleError = actions.handleError;
 
-    const { namespace, parseToDB } = customization;
+    const { namespace, parseToDB } = assets;
     const _item = state[ namespace ][ index ];
 
     const { _uiux } = _item;
@@ -149,7 +149,7 @@ function UpdateRequest( { Context, index, url } ) {
 
 function DeleteRequest( { Context, index, url } ) {
 
-    const { state, actions, customization } = useContext( Context );
+    const { state, actions, assets } = useContext( Context );
 
     const deleteResponseOk = payload => actions.deleteResponseOk( { index, ...payload } );
     const deleteResponseError = payload => actions.deleteResponseError( { index, ...payload } );
@@ -157,7 +157,7 @@ function DeleteRequest( { Context, index, url } ) {
     const deleteResponseErrorAfter = payload => actions.deleteResponseErrorAfter( { index, ...payload } );
     const handleError = actions.handleError;
 
-    const { namespace, parseToDB } = customization;
+    const { namespace, parseToDB } = assets;
     const _item = state[ namespace ][ index ];
 
     const { _uiux } = _item;

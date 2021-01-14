@@ -3,7 +3,9 @@ const updateOneReducer = ( state, action ) => {
     switch ( action.type ) {
             
         case 'UPDATE_REQUEST': {
-            const { namespace } = action.payload;
+            const { assets } = action.payload;
+            const { namespace } = assets;
+
             const _item = state[ namespace ];
 
             _item._uiux.status = { isRequest: true };
@@ -11,16 +13,20 @@ const updateOneReducer = ( state, action ) => {
             return { ...state, [ namespace ]: _item };
 
         } case 'UPDATE_RESPONSE_OK': {
-            const { namespace, dataFromDB, parseFromDB } = action.payload;
+            const { dataFromDB, assets } = action.payload;
+            const { namespace, parseFromDB } = assets;
+
             let _item = state[ namespace ];
-            console.log( 'UPDATE_RESPONSE_OK')
+
             _item = { ..._item, ...parseFromDB( dataFromDB ) };
             _item._uiux.status = { isResponseOk: true };
 
             return { ...state, [ namespace ]: _item };
 
         } case 'UPDATE_RESPONSE_OK_AFTER': {
-            const { namespace } = action.payload;
+            const { assets } = action.payload;
+            const { namespace } = assets;
+
             const _item = state[ namespace ];
 
             _item._uiux.mode = {};
@@ -30,7 +36,9 @@ const updateOneReducer = ( state, action ) => {
             return { ...state, [ namespace ]: _item };
 
         } case 'UPDATE_RESPONSE_ERROR': {
-            const { namespace, error } = action.payload;
+            const { error, assets } = action.payload;
+            const { namespace } = assets;
+
             const _item = state[ namespace ];
 
             _item._uiux.status = { isResponseError: true };
@@ -39,7 +47,9 @@ const updateOneReducer = ( state, action ) => {
             return { ...state, [ namespace ]: _item };
 
         } case 'UPDATE_RESPONSE_ERROR_AFTER': {
-            const { namespace } = action.payload;
+            const { assets } = action.payload;
+            const { namespace } = assets;
+
             let _item = state[ namespace ];
 
             const { _saved } = _item._uiux;
@@ -59,7 +69,9 @@ const updateOneOfManyReducer = ( state, action ) => {
     switch ( action.type ) {
             
         case 'UPDATE_REQUEST': {
-            const { namespace, index } = action.payload;
+            const { index, assets } = action.payload;
+            const { namespace } = assets;
+
             const _items = state[ namespace ];
 
             _items[ index ]._uiux.status = { isRequest: true };
@@ -67,7 +79,9 @@ const updateOneOfManyReducer = ( state, action ) => {
             return { ...state, [ namespace ]: _items };
 
         } case 'UPDATE_RESPONSE_OK': {
-            const { namespace, index, dataFromDB, parseFromDB } = action.payload;
+            const { index, dataFromDB, assets } = action.payload;
+            const { namespace, parseFromDB } = assets;
+
             const _items = state[ namespace ];
 
             _items[ index ] = { ..._items[ index ], ...parseFromDB( dataFromDB ) };
@@ -76,7 +90,9 @@ const updateOneOfManyReducer = ( state, action ) => {
             return { ...state, [ namespace ]: _items };
 
         } case 'UPDATE_RESPONSE_OK_AFTER': {
-            const { namespace, index, schema, sort } = action.payload;
+            const { index, assets } = action.payload;
+            const { namespace, schema, sort } = assets;
+
             const _items = [ ...state[ namespace ] ];
 
             _items[ index ]._uiux.mode = {};
@@ -92,7 +108,9 @@ const updateOneOfManyReducer = ( state, action ) => {
             return { ...state, [ namespace ]: _items };
 
         } case 'UPDATE_RESPONSE_ERROR': {
-            const { namespace, index, error } = action.payload;
+            const { index, error, assets } = action.payload;
+            const { namespace } = assets;
+
             const _items = state[ namespace ];
 
             _items[ index ]._uiux.status = { isResponseError: true }
@@ -101,7 +119,9 @@ const updateOneOfManyReducer = ( state, action ) => {
             return { ...state, [ namespace ]: _items };
 
         } case 'UPDATE_RESPONSE_ERROR_AFTER': {
-            const { namespace, index } = action.payload;
+            const { index, assets } = action.payload;
+            const { namespace } = assets;
+
             const _items = state[ namespace ];
 
             const { _saved } = _items[ index ]._uiux;

@@ -21,14 +21,12 @@ const SignList = styled( ListBox )`
 
 function SignForm( { status } ) {
 
-    const { state, actions, customization } = useContext( AppContext );
+    const { state, actions, assets } = useContext( AppContext );
 
-    const { namespace } = customization.signin;
-
-    const validation = payload => actions.validation( { namespace, ...payload } );
-    const validationOk = payload => actions.validationOk( { namespace, ...payload } );
-    const validationError = payload => actions.validationError( { namespace, ...payload } );
-    const signinRequest = payload => actions.signinRequest( { namespace, ...payload } );
+    const validation = payload => actions.validation( { ...payload, assets: assets.signin } );
+    const validationOk = payload => actions.validationOk( { ...payload, assets: assets.signin } );
+    const validationError = payload => actions.validationError( { ...payload, assets: assets.signin } );
+    const signinRequest = payload => actions.signinRequest( { ...payload, assets: assets.signin } );
 
     const { signin } = state;
 

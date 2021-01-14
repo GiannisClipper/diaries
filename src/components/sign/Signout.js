@@ -3,11 +3,11 @@ import { AppContext } from '../app/AppContext';
 
 function Signout() {
 
-    const { state, actions, customization } = useContext( AppContext );
+    const { state, actions, assets } = useContext( AppContext );
     const { signin } = state;
     const { token } = signin;
 
-    const { namespace } = customization.signout;
+    const { namespace } = assets.signout;
     const signoutProcess = payload => actions.signoutProcess( { namespace, ...payload } );
 
     useEffect( () => {

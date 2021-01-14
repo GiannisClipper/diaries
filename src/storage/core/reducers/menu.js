@@ -3,7 +3,9 @@ const menuOneReducer = ( state, action ) => {
     switch ( action.type ) {
 
         case 'OPEN_MENU': {
-            const { namespace } = action.payload;
+            const { assets } = action.payload;
+            const { namespace } = assets;
+
             const _item = state[ namespace ];
 
             _item._uiux.menu = { isOpen: true };
@@ -11,7 +13,9 @@ const menuOneReducer = ( state, action ) => {
             return { ...state, [ namespace ]: _item };
 
         } case 'CLOSE_MENU': {
-            const { namespace } = action.payload;
+            const { assets } = action.payload;
+            const { namespace } = assets;
+
             const _item = state[ namespace ];
 
             _item._uiux.menu = {};
@@ -29,7 +33,9 @@ const menuOneOfManyReducer = ( state, action ) => {
     switch ( action.type ) {
 
         case 'OPEN_MENU': {
-            const { namespace, index } = action.payload;
+            const { index, assets } = action.payload;
+            const { namespace } = assets;
+
             const _items = state[ namespace ];
 
             _items[ index ]._uiux.menu = { isOpen: true };
@@ -37,11 +43,13 @@ const menuOneOfManyReducer = ( state, action ) => {
             return { ...state, [ namespace ]: _items };
 
         } case 'CLOSE_MENU': {
-            const { namespace, index } = action.payload;
+            const { index, assets } = action.payload;
+            const { namespace } = assets;
+
             const _items = state[ namespace ];
 
             console.log( namespace, index, _items )
-            if ( index === undefined ) return state;
+            if ( index === undefined ) return state; // temporary to skip a bug
 
             _items[ index ]._uiux.menu = {};
 

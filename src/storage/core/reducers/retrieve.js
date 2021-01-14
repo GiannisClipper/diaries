@@ -3,7 +3,9 @@ const retrieveManyReducer = ( state, action ) => {
     switch ( action.type ) {
 
         case 'RETRIEVE_MANY_REQUEST_BEFORE': {
-            const { namespace } = action.payload; 
+            const { assets } = action.payload;
+            const { namespace } = assets;
+
             const _items = state[ namespace ];
             _items.forEach( x => x._uiux.status = { isRequestBefore: true } );
 
@@ -13,7 +15,9 @@ const retrieveManyReducer = ( state, action ) => {
             return { ...state, [ namespace ]: _items, _uiux };
 
         } case 'RETRIEVE_MANY_REQUEST': {
-            const { namespace } = action.payload; 
+            const { assets } = action.payload;
+            const { namespace } = assets;
+
             const _items = state[ namespace ];
             _items.forEach( x => x._uiux.mode = { isRetrieveMany: true } );
             _items.forEach( x => x._uiux.status = { isRequest: true } );
@@ -25,7 +29,9 @@ const retrieveManyReducer = ( state, action ) => {
             return { ...state, [ namespace ]: _items, _uiux };
 
         } case 'RETRIEVE_MANY_RESPONSE_WAITING': {
-            const { namespace } = action.payload; 
+            const { assets } = action.payload;
+            const { namespace } = assets;
+
             const _items = state[ namespace ];
             _items.forEach( x => x._uiux.status = { isResponseWaiting: true } );
 
@@ -35,7 +41,9 @@ const retrieveManyReducer = ( state, action ) => {
             return { ...state, [ namespace ]: _items, _uiux };
 
         } case 'RETRIEVE_MANY_RESPONSE_OK': {
-            const { namespace, schema, parseFromDB, sort, dataFromDB } = action.payload;
+            const { dataFromDB, assets } = action.payload;
+            const { namespace, schema, parseFromDB, sort } = assets;
+
             const _items = [];
             dataFromDB.forEach( x => _items.push( { ...schema(), ...parseFromDB( x ) } ) );
             if ( sort ) _items.sort( sort );
@@ -48,7 +56,9 @@ const retrieveManyReducer = ( state, action ) => {
             return { ...state, [ namespace ]: _items, _uiux };
 
         } case 'RETRIEVE_MANY_RESPONSE_OK_AFTER': {
-            const { namespace } = action.payload; 
+            const { assets } = action.payload;
+            const { namespace } = assets;
+
             const _items = state[ namespace ];
             _items.forEach( x => x._uiux.status = { isResponseOkAfter: true } );
 
@@ -58,7 +68,9 @@ const retrieveManyReducer = ( state, action ) => {
             return { ...state, [ namespace ]: _items, _uiux };
 
         } case 'RETRIEVE_MANY_RESPONSE_ERROR': {
-            const { namespace, error } = action.payload;
+            const { error, assets } = action.payload;
+            const { namespace } = assets;
+
             const _items = state[ namespace ];
             _items.forEach( x => x._uiux.status = { isResponseError: true } );
 
@@ -69,7 +81,9 @@ const retrieveManyReducer = ( state, action ) => {
             return { ...state, [ namespace ]: _items, _uiux };
 
         } case 'RETRIEVE_MANY_RESPONSE_ERROR_AFTER': {
-            const { namespace } = action.payload; 
+            const { assets } = action.payload;
+            const { namespace } = assets;
+
             const _items = state[ namespace ];
             _items.forEach( x => x._uiux.status = { isResponseErrorAfter: true } );
     

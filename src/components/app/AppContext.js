@@ -14,7 +14,7 @@ import errorActionTypes from '../../storage/core/actions/error';
 import createActions from '../../helpers/createActions';
 const AppContext = createContext();
 
-const customization = {
+const assets = {
     signin: {
         namespace: 'signin',
         schema: signinSchema,
@@ -52,12 +52,12 @@ const AppContextProvider = props => {
 
     window.state = state;
 
-    const actions = createActions( { dispatch, actionTypes, customization } );
+    const actions = createActions( { dispatch, actionTypes, assets } );
 
     useEffect( () => console.log( 'Has rendered. ', 'AppContextProvider' ) );
 
     return (
-        <AppContext.Provider value={ { state, dispatch, actions, customization } }>
+        <AppContext.Provider value={ { state, dispatch, actions, assets } }>
             { props.children }
         </AppContext.Provider>
     )

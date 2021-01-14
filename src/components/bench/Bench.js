@@ -52,9 +52,9 @@ function NextButton( { reference } ) {
 
 const Bench = ( { diary_id } ) => {
 
-    const { state, dispatch, actions, customization } = useContext( BenchContext );
+    const { state, dispatch, actions, assets } = useContext( BenchContext );
     const { periods, _uiux } = state;
-    const { schema } = customization;
+    const { schema } = assets;
 
     if ( state.diary_id !== diary_id ) {
         _uiux.status = { isInitBefore: true };

@@ -50,8 +50,6 @@ const datesReducer = ( state, action ) => {
             _uiux.status = { isResponseError: true };
             _uiux.error = error;
 
-            //_uiux._error = action.payload.error;
-
             return { ...state, dates, _uiux };
 
          } case 'RETRIEVE_MANY_RESPONSE_OK_AFTER': {
@@ -99,8 +97,6 @@ const datesReducer = ( state, action ) => {
                 date.entries.forEach( entry => entry._uiux.status = { isResponseErrorAfter: true } );
             } );
             _uiux.status = { isResponseError: true };
-
-            //_uiux._error = action.payload.error;
 
             return { ...state, dates, _uiux };
 

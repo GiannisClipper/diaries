@@ -34,7 +34,7 @@ const reducers = [
     retrieveManyReducer,
 ];
 
-const customization = {
+const assets = {
     namespace: 'funds',
     schema: paymentFundSchema,
     parseToDB: parseFundToDB,
@@ -60,16 +60,16 @@ const FundsContextProvider = props => {
 
     const { diary_id } = useContext( BenchContext ).state;
 
-    customization.schema = () => ( { ...paymentFundSchema(), diary_id } );
+    assets.schema = () => ( { ...paymentFundSchema(), diary_id } );
 
-    const actions = createActions( { dispatch, actionTypes, customization } );
+    const actions = createActions( { dispatch, actionTypes, assets } );
     
     actions.handleError = useContext( AppContext ).actions.handleError;
 
     //useEffect( () => console.log( 'Has rendered. ', 'FundsContextProvider' ) );
 
     return (
-        <FundsContext.Provider value={ { state, dispatch, actions, customization } }>
+        <FundsContext.Provider value={ { state, dispatch, actions, assets } }>
             { props.children }
         </FundsContext.Provider>
     )

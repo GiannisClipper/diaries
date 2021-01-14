@@ -8,8 +8,8 @@ function FundsInit() {
 
     const { diary_id } = useContext( BenchContext ).state;
 
-    const { state, actions, customization } = useContext( FundsContext );
-    const { schema } = customization;
+    const { state, actions, assets } = useContext( FundsContext );
+    const { schema } = assets;
 
     if ( state.diary_id !== diary_id ) {
         actions.updateState( { data: {

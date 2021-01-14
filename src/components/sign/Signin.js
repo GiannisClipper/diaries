@@ -8,7 +8,6 @@ function Signin() {
     const { state } = useContext( AppContext );
     const { signin } = state;
     const { _uiux } = signin;
-    console.log( state )
 
     return (
         <>

@@ -8,8 +8,8 @@ function DiariesInit() {
 
     const { user_id } = useContext( AppContext ).state.signin;
 
-    const { state, actions, customization } = useContext( DiariesContext );
-    const { schema } = customization;
+    const { state, actions, assets } = useContext( DiariesContext );
+    const { schema } = assets;
 
     if ( state.user_id !== user_id ) {
 

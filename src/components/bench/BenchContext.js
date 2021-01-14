@@ -15,7 +15,7 @@ const reducers = [
     stateReducer,
 ];
 
-const customization = {};
+const assets = {};
 
 const actionTypes = {
     ...stateActionTypes
@@ -27,12 +27,12 @@ const BenchContextProvider = props => {
 
     const [ state, dispatch ] = useReducer( comboReducer( ...reducers ), benchSchema() );
 
-    const actions = createActions( { dispatch, actionTypes, customization } );
+    const actions = createActions( { dispatch, actionTypes, assets } );
 
     useEffect( () => console.log( 'Has rendered. ', 'BenchContextProvider' ) );
 
     return (
-        <BenchContext.Provider value={ { state, dispatch, actions, customization } }>
+        <BenchContext.Provider value={ { state, dispatch, actions, assets } }>
             { props.children }
         </BenchContext.Provider>
     )

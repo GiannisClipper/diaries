@@ -33,7 +33,7 @@ const reducers = [
     retrieveManyReducer,
 ];
 
-const customization = {
+const assets = {
     namespace: 'diaries',
     schema: diarySchema,
     parseToDB: parseDiaryToDB,
@@ -59,16 +59,16 @@ const DiariesContextProvider = props => {
 
     const { user_id } = useContext( AppContext ).state.signin;
 
-    customization.schema = () => ( { ...diarySchema(), user_id } );
+    assets.schema = () => ( { ...diarySchema(), user_id } );
 
-    const actions = createActions( { dispatch, actionTypes, customization } );
+    const actions = createActions( { dispatch, actionTypes, assets } );
     
     actions.handleError = useContext( AppContext ).actions.handleError;
 
     useEffect( () => console.log( 'Has rendered. ', 'DiariesContextProvider' ) );
 
     return (
-        <DiariesContext.Provider value={ { state, dispatch, actions, customization } }>
+        <DiariesContext.Provider value={ { state, dispatch, actions, assets } }>
             { props.children }
         </DiariesContext.Provider>
     )

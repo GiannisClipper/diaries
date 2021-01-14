@@ -16,7 +16,7 @@ const reducers = [
     retrieveManyReducer
 ];
 
-const customization = {
+const assets = {
     namespace: 'dates',
 };
 
@@ -32,14 +32,14 @@ const DatesContextProvider = props => {
 
     const [ state, dispatch ] = useReducer( comboReducer( ...reducers ), schema );
 
-    const actions = createActions( { dispatch, actionTypes, customization } );
+    const actions = createActions( { dispatch, actionTypes, assets } );
     
     actions.handleError = useContext( AppContext ).actions.handleError;
 
     // useEffect( () => console.log( 'Has rendered. ', 'DatesContext' ) );
 
     return (
-        <DatesContext.Provider value={{ state, dispatch, actions, customization }}>
+        <DatesContext.Provider value={{ state, dispatch, actions, assets }}>
             {props.children}
         </DatesContext.Provider>
     )

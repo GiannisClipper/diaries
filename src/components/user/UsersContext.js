@@ -33,7 +33,7 @@ const reducers = [
     retrieveManyReducer,
 ];
 
-const customization = {
+const assets = {
     namespace: 'users',
     schema: userSchema,
     parseToDB: parseUserToDB,
@@ -57,14 +57,14 @@ const UsersContextProvider = props => {
 
     const [ state, dispatch ] = useReducer( comboReducer( ...reducers ), usersSchema() );
 
-    const actions = createActions( { dispatch, actionTypes, customization } );
+    const actions = createActions( { dispatch, actionTypes, assets } );
     
     actions.handleError = useContext( AppContext ).actions.handleError;
     
     useEffect( () => console.log( 'Has rendered. ', 'UsersContextProvider' ) );
 
     return (
-        <UsersContext.Provider value={ { state, dispatch, actions, customization } }>
+        <UsersContext.Provider value={ { state, dispatch, actions, assets } }>
             { props.children }
         </UsersContext.Provider>
     )

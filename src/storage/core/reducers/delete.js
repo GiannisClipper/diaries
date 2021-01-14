@@ -3,7 +3,9 @@ const deleteOneReducer = ( state, action ) => {
     switch ( action.type ) {
             
         case 'DELETE_REQUEST': {
-            const { namespace } = action.payload;
+            const { assets } = action.payload;
+            const { namespace } = assets;
+
             const _item = state[ namespace ];
 
             _item._uiux.status = { isRequest: true };
@@ -11,7 +13,9 @@ const deleteOneReducer = ( state, action ) => {
             return { ...state, [ namespace ]: _item };
 
         } case 'DELETE_RESPONSE_OK': {
-            const { namespace } = action.payload;
+            const { assets } = action.payload;
+            const { namespace } = assets;
+
             const _item = state[ namespace ];
 
             _item._uiux.status = { isResponseOk: true };
@@ -19,7 +23,9 @@ const deleteOneReducer = ( state, action ) => {
             return { ...state, [ namespace ]: _item };
 
         } case 'DELETE_RESPONSE_OK_AFTER': {
-            const { namespace } = action.payload;
+            const { assets } = action.payload;
+            const { namespace } = assets;
+
             const _item = state[ namespace ];
 
             _item._uiux.status = { isResponseOkAfter: true };
@@ -27,7 +33,9 @@ const deleteOneReducer = ( state, action ) => {
             return { ...state, [ namespace ]: _item };
 
         } case 'DELETE_RESPONSE_ERROR': {
-            const { namespace, error } = action.payload;
+            const { error, assets } = action.payload;
+            const { namespace } = assets;
+
             const _item = state[ namespace ];
 
             _item._uiux.status = { isResponseError: true };
@@ -36,8 +44,10 @@ const deleteOneReducer = ( state, action ) => {
             return { ...state, [ namespace ]: _item };
 
         } case 'DELETE_RESPONSE_ERROR_AFTER': {
-            const { namespace, pahema } = action.payload;
-            const _item = pahema();
+            const { assets } = action.payload;
+            const { namespace, schema } = assets;
+
+            const _item = schema();
 
             _item._uiux.status = { isResponseErrorAfter: true };
 
@@ -54,7 +64,9 @@ const deleteOneOfManyReducer = ( state, action ) => {
     switch ( action.type ) {
 
         case 'DELETE_REQUEST': {
-            const { namespace, index } = action.payload;
+            const { index, assets } = action.payload;
+            const { namespace } = assets;
+
             const _items = state[ namespace ];
 
             _items[ index ]._uiux.status = { isRequest: true };
@@ -62,7 +74,9 @@ const deleteOneOfManyReducer = ( state, action ) => {
             return { ...state, [ namespace ]: _items };
 
         } case 'DELETE_RESPONSE_OK': {
-            const { namespace, index } = action.payload;
+            const { index, assets } = action.payload;
+            const { namespace } = assets;
+
             const _items = state[ namespace ];
 
             _items[ index ]._uiux.status = { isResponseOk: true };
@@ -70,7 +84,9 @@ const deleteOneOfManyReducer = ( state, action ) => {
             return { ...state, [ namespace ]: _items };
 
         } case 'DELETE_RESPONSE_OK_AFTER': {
-            const { namespace, index } = action.payload;
+            const { index, assets } = action.payload;
+            const { namespace } = assets;
+
             const _items = [ ...state[ namespace ] ];
 
             _items.splice( index, 1 );
@@ -78,7 +94,9 @@ const deleteOneOfManyReducer = ( state, action ) => {
             return { ...state, [ namespace ]: _items };
 
         } case 'DELETE_RESPONSE_ERROR': {
-            const { namespace, index, error } = action.payload;
+            const { index, error, assets } = action.payload;
+            const { namespace } = assets;
+
             const _items = state[ namespace ];
 
             _items[ index ]._uiux.status = { isResponseError: true }
@@ -87,7 +105,9 @@ const deleteOneOfManyReducer = ( state, action ) => {
             return { ...state, [ namespace ]: _items };
 
         } case 'DELETE_RESPONSE_ERROR_AFTER': {
-            const { namespace, index } = action.payload;
+            const { index, assets } = action.payload;
+            const { namespace } = assets;
+
             const _items = state[ namespace ];
 
             _items[ index ]._uiux.status = { isResponseErrorAfter: true }

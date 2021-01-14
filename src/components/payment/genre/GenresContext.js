@@ -34,7 +34,7 @@ const reducers = [
     retrieveManyReducer,
 ];
 
-const customization = {
+const assets = {
     namespace: 'genres',
     schema: paymentGenreSchema,
     parseToDB: parseGenreToDB,
@@ -60,16 +60,16 @@ const GenresContextProvider = props => {
 
     const { diary_id } = useContext( BenchContext ).state;
 
-    customization.schema = () => ( { ...paymentGenreSchema(), diary_id } );
+    assets.schema = () => ( { ...paymentGenreSchema(), diary_id } );
 
-    const actions = createActions( { dispatch, actionTypes, customization } );
+    const actions = createActions( { dispatch, actionTypes, assets } );
     
     actions.handleError = useContext( AppContext ).actions.handleError;
 
     //useEffect( () => console.log( 'Has rendered. ', 'GenresContextProvider' ) );
 
     return (
-        <GenresContext.Provider value={ { state, dispatch, actions, customization } }>
+        <GenresContext.Provider value={ { state, dispatch, actions, assets } }>
             { props.children }
         </GenresContext.Provider>
     )

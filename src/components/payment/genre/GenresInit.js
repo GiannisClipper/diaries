@@ -8,8 +8,8 @@ function GenresInit() {
 
     const { diary_id } = useContext( BenchContext ).state;
 
-    const { state, actions, customization } = useContext( GenresContext );
-    const { schema } = customization;
+    const { state, actions, assets } = useContext( GenresContext );
+    const { schema } = assets;
 
     if ( state.diary_id !== diary_id ) {
         actions.updateState( { data: {

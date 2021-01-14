@@ -36,7 +36,7 @@ const reducers = [
     deleteOneOfManyReducer,
 ];
 
-const customization = {
+const assets = {
     namespace: 'entries',
     schema: entrySchema(),
 
@@ -72,16 +72,16 @@ const EntriesContextProvider = props => {
 
     const { diary_id } = useContext( BenchContext ).state;
 
-    customization.schema = () => ( { ...entrySchema(), diary_id, date: dateToYYYYMMDD( props.state.date ) } );
+    assets.schema = () => ( { ...entrySchema(), diary_id, date: dateToYYYYMMDD( props.state.date ) } );
 
-    const actions = createActions( { dispatch, actionTypes, customization } );
+    const actions = createActions( { dispatch, actionTypes, assets } );
     
     actions.handleError = useContext( AppContext ).actions.handleError;
 
     //useEffect( () => console.log( 'Has rendered. ', 'EntriesContextProvider' ) );
 
     return (
-        <EntriesContext.Provider value={{ state, dispatch, actions, customization }}>
+        <EntriesContext.Provider value={{ state, dispatch, actions, assets }}>
             { props.children }
         </EntriesContext.Provider>
     )

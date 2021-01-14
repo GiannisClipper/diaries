@@ -3,7 +3,9 @@ const createOneReducer = ( state, action ) => {
     switch ( action.type ) {
             
         case 'CREATE_REQUEST': {
-            const { namespace } = action.payload;
+            const { assets } = action.payload;
+            const { namespace } = assets;
+
             const _item = state[ namespace ];
 
             _item._uiux.status = { isRequest: true };
@@ -11,7 +13,9 @@ const createOneReducer = ( state, action ) => {
             return { ...state, [ namespace ]: _item };
 
         } case 'CREATE_RESPONSE_OK': {
-            const { namespace, dataFromDB, parseFromDB } = action.payload;
+            const { dataFromDB, assets } = action.payload;
+            const { namespace, parseFromDB } = assets;
+
             let _item = state[ namespace ];
 
             _item = { ..._item, ...parseFromDB( dataFromDB ) };
@@ -20,7 +24,9 @@ const createOneReducer = ( state, action ) => {
             return { ...state, [ namespace ]: _item };
 
         } case 'CREATE_RESPONSE_OK_AFTER': {
-            const { namespace } = action.payload;
+            const { assets } = action.payload;
+            const { namespace } = assets;
+
             const _item = state[ namespace ];
 
             _item._uiux.mode = {};
@@ -30,7 +36,9 @@ const createOneReducer = ( state, action ) => {
             return { ...state, [ namespace ]: _item };
 
         } case 'CREATE_RESPONSE_ERROR': {
-            const { namespace, error } = action.payload;
+            const { error, assets } = action.payload;
+            const { namespace } = assets;
+
             const _item = state[ namespace ];
 
             _item._uiux.status = { isResponseError: true };
@@ -39,7 +47,9 @@ const createOneReducer = ( state, action ) => {
             return { ...state, [ namespace ]: _item };
 
         } case 'CREATE_RESPONSE_ERROR_AFTER': {
-            const { namespace, schema } = action.payload;
+            const { assets } = action.payload;
+            const { namespace, schema } = assets;
+
             const _item = schema();
 
             _item._uiux.status = { isResponseErrorAfter: true };
@@ -57,7 +67,9 @@ const createOneOfManyReducer = ( state, action ) => {
     switch ( action.type ) {
             
         case 'CREATE_REQUEST': {
-            const { namespace, index } = action.payload;
+            const { index, assets } = action.payload;
+            const { namespace } = assets;
+
             const _items = state[ namespace ];
 
             _items[ index ]._uiux.status = { isRequest: true };
@@ -65,7 +77,9 @@ const createOneOfManyReducer = ( state, action ) => {
             return { ...state, [ namespace ]: _items };
 
         } case 'CREATE_RESPONSE_OK': {
-            const { namespace, index, dataFromDB, parseFromDB } = action.payload;
+            const { index, dataFromDB, assets } = action.payload;
+            const { namespace, parseFromDB } = assets;
+
             const _items = state[ namespace ];
 
             _items[ index ] = { ..._items[ index ], ...parseFromDB( dataFromDB ) };
@@ -74,7 +88,9 @@ const createOneOfManyReducer = ( state, action ) => {
             return { ...state, [ namespace ]: _items };
 
         } case 'CREATE_RESPONSE_OK_AFTER': {
-            const { namespace, index, schema, sort } = action.payload;
+            const { index, assets } = action.payload;
+            const { namespace, schema, sort } = assets;
+
             const _items = [ ...state[ namespace ] ];
 
             _items[ index ]._uiux.mode = {};
@@ -87,7 +103,9 @@ const createOneOfManyReducer = ( state, action ) => {
             return { ...state, [ namespace ]: _items };
 
         } case 'CREATE_RESPONSE_ERROR': {
-            const { namespace, index, error } = action.payload;
+            const { index, error, assets } = action.payload;
+            const { namespace } = assets;
+
             const _items = state[ namespace ];
 
             _items[ index ]._uiux.error = error;
@@ -96,7 +114,9 @@ const createOneOfManyReducer = ( state, action ) => {
             return { ...state, [ namespace ]: _items };
 
         } case 'CREATE_RESPONSE_ERROR_AFTER': {
-            const { namespace, index, schema } = action.payload;
+            const { index, assets } = action.payload;
+            const { namespace, schema } = assets;
+
             const _items = state[ namespace ];
 
             const { _uiux } = _items[ index ];

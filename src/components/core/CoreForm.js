@@ -33,8 +33,8 @@ function InputValidation( {
 
 function CoreForm( { Context, index, validationRules, children } ) {
 
-    const { state, actions, customization } = useContext( Context );
-    const { namespace } = customization;
+    const { state, actions, assets } = useContext( Context );
+    const { namespace } = assets;
     const _item = state[ namespace ][ index ];
 
     const { _uiux } = _item;

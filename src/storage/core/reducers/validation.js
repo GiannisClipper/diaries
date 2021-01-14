@@ -3,7 +3,9 @@ const validationOneReducer = ( state, action ) => {
     switch ( action.type ) {
 
         case 'VALIDATION': {
-            const { namespace } = action.payload;
+            const { assets } = action.payload;
+            const { namespace } = assets;
+
             const _item = state[ namespace ];
 
             _item._uiux.status = { isValidation: true };
@@ -11,7 +13,9 @@ const validationOneReducer = ( state, action ) => {
             return { ...state, [ namespace ]: _item };
 
         } case 'VALIDATION_OK': {
-            const { namespace, data } = action.payload;
+            const { data, assets } = action.payload;
+            const { namespace } = assets;
+
             let _item = state[ namespace ];
 
             _item = { ..._item, ...data };
@@ -20,7 +24,9 @@ const validationOneReducer = ( state, action ) => {
             return { ...state, [ namespace ]: _item };
 
         } case 'VALIDATION_ERROR': {
-            const { namespace } = action.payload;
+            const { assets } = action.payload;
+            const { namespace } = assets;
+
             const _item = state[ namespace ];
 
             _item._uiux.status = {};
@@ -38,7 +44,9 @@ const validationOneOfManyReducer = ( state, action ) => {
     switch ( action.type ) {
 
         case 'VALIDATION': {
-            const { namespace, index } = action.payload;
+            const { index, assets } = action.payload;
+            const { namespace } = assets;
+
             const _items = state[ namespace];
 
             _items[ index ]._uiux.status = { isValidation: true };
@@ -46,7 +54,9 @@ const validationOneOfManyReducer = ( state, action ) => {
             return { ...state, [ namespace ]: _items };
 
         } case 'VALIDATION_OK': {
-            const { namespace, index, data } = action.payload;
+            const { index, data, assets } = action.payload;
+            const { namespace } = assets;
+
             const _items = state[ namespace];
 
             _items[ index ] = { ..._items[ index ], ...data };
@@ -55,7 +65,9 @@ const validationOneOfManyReducer = ( state, action ) => {
             return { ...state, [ namespace ]: _items };
 
         } case 'VALIDATION_ERROR': {
-            const { namespace, index } = action.payload;
+            const { index, assets } = action.payload;
+            const { namespace } = assets;
+
             const _items = state[ namespace];
 
             _items[ index ]._uiux.status = {};

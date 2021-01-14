@@ -5,9 +5,9 @@ import { usersSchema } from '../../storage/schemas';
 
 function UsersInit() {
 
-    const { state, actions, customization } = useContext( UsersContext );
+    const { state, actions, assets } = useContext( UsersContext );
     const { _uiux } = state;
-    const { schema } = customization;
+    const { schema } = assets;
 
     if ( Object.keys( _uiux.status ).length === 0 ) {
         actions.updateState( { data: {

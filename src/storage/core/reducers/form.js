@@ -3,7 +3,9 @@ const formOneReducer = ( state, action ) => {
     switch ( action.type ) {
 
         case 'OPEN_FORM': {
-            const { namespace, mode } = action.payload;
+            const { mode, assets } = action.payload;
+            const { namespace } = assets;
+
             const _item = state[ namespace ];
 
             const _saved = { ..._item };
@@ -15,7 +17,9 @@ const formOneReducer = ( state, action ) => {
             return { ...state, [ namespace ]: _item };
 
         } case 'CLOSE_FORM': {
-            const { namespace } = action.payload;
+            const { assets } = action.payload;
+            const { namespace } = assets;
+
             const _item = state[ namespace ];
 
             _item._uiux.status = {};
@@ -36,7 +40,9 @@ const formOneOfManyReducer = ( state, action ) => {
     switch ( action.type ) {
 
         case 'OPEN_FORM': {
-            const { namespace, index, mode } = action.payload;
+            const { index, mode, assets } = action.payload;
+            const { namespace } = assets;
+
             const _items = state[ namespace ];
 
             const _saved = { ..._items[ index ] };
@@ -48,7 +54,9 @@ const formOneOfManyReducer = ( state, action ) => {
             return { ...state, [ namespace ]: _items };
 
         } case 'CLOSE_FORM': {
-            const { namespace, index } = action.payload;
+            const { index, assets } = action.payload;
+            const { namespace } = assets;
+
             const _items = state[ namespace ];
 
             _items[ index ]._uiux.status = {};
