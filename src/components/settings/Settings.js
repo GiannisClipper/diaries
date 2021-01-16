@@ -1,10 +1,14 @@
 import React, { useContext } from 'react';
-import { AppContext } from '../app/AppContext';
-import assets from './assets/assets';
-import equipAction from '../core/helpers/equipAction';
-import { UpdateRequest } from '../core/CoreRequests';
+
 import { RowBox, RowValue, RowMenu } from '../libs/RowBox';
+
+import { UpdateRequest } from '../core/CoreRequests';
 import { CoreMenu, UpdateMenuOption } from '../core/CoreMenu';
+import prepayAction from '../core/helpers/prepayAction';
+
+import { AppContext } from '../app/AppContext';
+
+import assets from './assets/assets';
 import SettingsForm from './SettingsForm';
 
 function Settings() {
@@ -13,7 +17,7 @@ function Settings() {
     const { settings } = state;
     const { _uiux } = settings;
 
-    const openForm = equipAction( actions.openForm, { assets } );
+    const openForm = prepayAction( actions.openForm, { assets } );
 
     return (
         <>
@@ -39,7 +43,11 @@ function Settings() {
             </RowBox> 
 
             { _uiux.form.isOpen ?
-                <SettingsForm /> 
+                <SettingsForm
+                    settings={ settings }
+                    actions={ actions }
+                    assets={ assets }
+                /> 
             : null }
 
         </>

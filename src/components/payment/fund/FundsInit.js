@@ -1,28 +1,26 @@
 import React, { useContext, useEffect  } from 'react';
+
 import { RetrieveManyRequest } from '../../core/CoreRequests';
-import { BenchContext } from '../../bench/BenchContext';
+
 import { FundsContext } from './FundsContext';
+import assets from './assets/assets';
 import { fundsSchema } from './assets/schemas';
 
-function FundsInit() {
+function FundsInit( { diary_id } ) {
 
-    const { diary_id } = useContext( BenchContext ).state;
-
-    const { state, actions, assets } = useContext( FundsContext );
+    const { state, actions } = useContext( FundsContext );
     const { schema } = assets;
+    assets.schema = () => ( { ...schema(), diary_id } );
 
-    if ( state.diary_id !== diary_id ) {
+    if ( diary_id !== state.diary_id ) {
+
         actions.updateState( { data: {
             ...fundsSchema(),
             diary_id,
-            funds: [ schema() ],
+            funds: [ assets.schema() ],
         } } );
-        actions.retrieveManyRequestBefore();
-    }
 
-    if ( state.diary_id !== diary_id ) {
-        actions.updateState( { data: { ...schema, diary_id } } );
-        actions.retrieveManyRequestBefore();
+        actions.retrieveManyRequestBefore( { assets, index: 0 } );
     }
 
     // useEffect( () => console.log( 'Has rendered. ', 'payment/FundsInit' ) );
@@ -34,7 +32,8 @@ function FundsInit() {
         return (
             <RetrieveManyRequest 
                 Context={ FundsContext }
-                url={ `/.netlify/functions/payment-fund?diary_id=${diary_id}` }
+                assets={ assets }
+                url={ `/.netlify/functions/payment-fund?diary_id=${ diary_id }` }
             />
         );
     }

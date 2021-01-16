@@ -1,7 +1,5 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
 
-import { reportsSchema } from './assets/schemas';
-
 import comboReducer from '../core/helpers/comboReducer';
 import { stateReducer } from '../core/assets/reducers/state';
 import { formOneOfManyReducer } from '../core/assets/reducers/form';
@@ -11,15 +9,19 @@ import { reportsReducer } from './assets/reducers';
 
 import chargeActions from '../core/helpers/chargeActions';
 import stateActionTypes from '../core/assets/actions/state';
+import pageActionTypes from '../core/assets/actions/page';
 import formActionTypes from '../core/assets/actions/form';
 import validationActionTypes from '../core/assets/actions/validation';
 import retrieveManyActionTypes from '../core/assets/actions/retrieveMany';
 
 import { AppContext } from '../app/AppContext';
 
+import { reportsSchema } from './assets/schemas';
+
 const reducers = [ 
     reportsReducer,
     stateReducer,
+    pageActionTypes,
     formOneOfManyReducer,
     validationOneOfManyReducer,
     retrieveManyReducer,

@@ -1,17 +1,18 @@
 import React, { useContext, useEffect } from 'react';
 
-import { UsersContext } from './UsersContext';
-import { heads } from '../app/assets/texts';
-
 import { ListBox } from '../libs/ListBox';
 import { BlockBox, BlockLabel, BlockValue } from '../libs/BlockBox';
 
+import { heads } from '../app/assets/texts';
+
+import { UsersContext } from './UsersContext';
+import assets from './assets/assets'; 
 import UsersInit from './UsersInit';
 import User from './User';
 
 function Users() {
 
-    const { state } = useContext( UsersContext );
+    const { state, actions } = useContext( UsersContext );
     const { users } = state;
 
     // useEffect( () => console.log( 'Has rendered. ', 'Users' ) );
@@ -20,7 +21,11 @@ function Users() {
 
     return (
         <ListBox>
-            <UsersInit />
+            <UsersInit 
+                state={ state }
+                actions={ actions }
+                assets={ assets }
+            />
 
             <BlockBox>
                 <BlockLabel>
@@ -31,7 +36,10 @@ function Users() {
                     <ul>
                         { users.map( user => (
                             <User
+                                users={ users}
                                 index={ index++ }
+                                actions={ actions }
+                                assets={ assets }                
                                 key={ index } 
                             />
                         ) ) }

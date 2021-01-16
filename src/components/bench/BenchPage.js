@@ -1,6 +1,8 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
+
 import { AppBox, AppNav, AppInfo } from '../app/AppPage';
 import { LinkHome, LinkDiaries, LinkBench, LinkReports, LinkBenchSettings, LinkSignout } from '../app/AppLinks';
+
 import Bench from './Bench';
 
 function BenchPage( { diary_id } ) {

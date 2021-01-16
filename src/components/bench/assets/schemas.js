@@ -2,8 +2,7 @@ const benchSchema = () => ( {
     diary_id: null,
     periods: [],
     _uiux: {
-        status: {},  // isInitBefore, isInit
-        mode: {},  // isInitStart, isInitPrev, isInitNext
+        page: {},  // isOpen, isStart, isPrev, isNext
         error: {},
     },
 } );

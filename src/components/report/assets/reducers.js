@@ -1,20 +1,16 @@
-import { reportSchema } from '../schemas';
-
-const data = [
-    { descr: 'Κατάσταση σημειωμάτων', type: 'note' },
-    { descr: 'Κατάσταση οικονομικών κινήσεων', type: 'payment' }
-];
-
 const reportsReducer = ( state, action ) => {
 
     switch ( action.type ) {
 
-        case 'DO_INIT': {
+        case 'OPEN_PAGE': {
+            const { assets, data } = action.payload;
+            const { namespace, schema } = assets;
             const { _uiux } = state;
-            const reports = data.map( x => ( { ...reportSchema(), ...x } ) );
-            _uiux.status = { isResponseOk: true };
 
-            return { ...state, reports, _uiux };
+            const _items = data.map( x => ( { ...schema(), ...x } ) );
+            _uiux.page = { isOpen: true };
+
+            return { ...state, [ namespace ]: _items, _uiux };
         
         } default: {
             return undefined;

@@ -1,6 +1,5 @@
 import React, { useContext, useRef, useEffect } from 'react';
 
-import { BenchContext } from '../bench/BenchContext';
 import { GenresContext } from '../payment/genre/GenresContext';
 import { FundsContext } from '../payment/fund/FundsContext';
 import { EntriesContext } from '../entry/EntriesContext';
@@ -38,24 +37,11 @@ const RowMenu = styled( StyledRow.RowMenu )`
     width: 2em;
 `;
 
-const Entry = ( { index } ) => {
+const Entry = ( { diary_id, state, index, actions, assets } ) => {
 
-    const { diary_id } = useContext( BenchContext ).state;
-
-    const { state } = useContext( EntriesContext );
     const { date, entries } = state;
     const entry = entries[ index ];
     const { _uiux } = entry;
-
-    // if ( ! entry.id ) {
-    //     entry.diary_id = diary_id;
-    //     entry.date = dateToYYYYMMDD( date );
-    // }
-    assets.schema = () => ( { 
-        ...assets.schema(), 
-        diary_id, 
-        date: dateToYYYYMMDD( date ) 
-    } );
 
     entry.index = index;
     entry.genres = useContext( GenresContext ).state.genres;

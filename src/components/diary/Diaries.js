@@ -45,7 +45,7 @@ function Diaries() {
                                 index={ index++ }
                                 actions={ actions }
                                 assets={ assets }
-                                key={ index } 
+                                key={ index }
                             />
                         ) ) }
                     </ul>

@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 
-import texts from '../app/assets/texts';
-
 import { ListBox } from '../libs/ListBox';
 import { BlockBox, BlockLabel, BlockValue } from '../libs/BlockBox';
 
 import { AppBox, AppNav, AppInfo } from '../app/AppPage';
 import { LinkHome, LinkDiaries, LinkBench, LinkUsers, LinkSettings, LinkSignout } from '../app/AppLinks';
+import texts from '../app/assets/texts';
 
 import Settings from './Settings';
-import Backup from './Backup';
+import Backup from '../backup/Backup';
 
 function SettingsPage() {
 

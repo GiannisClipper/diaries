@@ -1,6 +1,8 @@
 import React, { useContext, useEffect } from 'react';
-import { EntriesContext } from '../entry/EntriesContext';
 import styled from 'styled-components';
+
+import { EntriesContext } from './EntriesContext';
+import assets from './assets/assets';
 import EntriesInit from './EntriesInit';
 import Entry from './Entry';
 
@@ -10,9 +12,9 @@ const List = styled.ul`
     width: 100%;
 `;
 
-function Entries() {
+function Entries( { diary_id } ) {
 
-    const { state } = useContext( EntriesContext );
+    const { state, actions } = useContext( EntriesContext );
     const { entries } = state;
 
     // useEffect( () => console.log( 'Has rendered. ', 'Entries' ) );
@@ -21,11 +23,20 @@ function Entries() {
 
     return (
         <List>
-            <EntriesInit />
+            <EntriesInit 
+                diary_id={ diary_id }
+                state={ state }
+                actions={ actions }
+                assets={ assets }
+            />
 
             { entries.map( entry =>
                 <Entry
+                    diary_id={ diary_id }
+                    state={ state }
                     index={ index++ }
+                    actions={ actions }
+                    assets={ assets }
                     key={ index }
                 />
             ) }

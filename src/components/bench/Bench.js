@@ -1,21 +1,25 @@
 import React, { useEffect, useRef, useContext, useState } from 'react';
-
-import { BenchContext } from './BenchContext';
-import { BenchInit } from './BenchInit';
-import { Periods } from '../period/Periods';
-import { REFContext } from '../REFContext';
-
-import { buttons } from '../app/assets/texts';
+import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBackward, faForward } from '@fortawesome/free-solid-svg-icons';
 
+import StyledList from '../libs/ListBox';
 import { CopyPasteContextProvider } from '../libs/CopyPaste';
 import { Scroll } from '../libs/Scroll';
+import { REFContext } from '../REFContext';
+
+import { buttons } from '../app/assets/texts';
+
+import { BenchContext } from './BenchContext';
+import assets from './assets/assets';
+import { BenchInit } from './BenchInit';
+
 import GenresInit from '../payment/genre/GenresInit';
+
 import FundsInit from '../payment/fund/FundsInit';
 
-import styled from 'styled-components';
-import StyledList from '../libs/ListBox';
+import { DatesContextProvider } from '../date/DatesContext';
+import { Dates } from '../date/Dates';
 
 const ListBox = styled( StyledList.ListBox )`
     display: block;
@@ -52,14 +56,8 @@ function NextButton( { reference } ) {
 
 const Bench = ( { diary_id } ) => {
 
-    const { state, dispatch, actions, assets } = useContext( BenchContext );
-    const { periods, _uiux } = state;
-    const { schema } = assets;
-
-    if ( state.diary_id !== diary_id ) {
-        _uiux.status = { isInitBefore: true };
-        actions.updateState( { data: { ...schema, diary_id, _uiux } } );
-    }
+    const { state, actions } = useContext( BenchContext );
+    const { periods } = state;
 
     const REF = useContext( REFContext );
 
@@ -100,17 +98,23 @@ const Bench = ( { diary_id } ) => {
                 inner={ inner.current }
                 prev={ prev.current }
                 next={ next.current }
-                doScrollUp={ () => dispatch( { type: 'DO_INIT', payload: { mode: { isInitPrev: true } } } ) }
-                doScrollDown={ () => dispatch( { type: 'DO_INIT', payload: { mode: { isInitNext: true } } } ) }
+                doScrollUp={ () => actions.prevPage( { assets } ) }
+                doScrollDown={ () => actions.nextPage( { assets } ) }
             />
 
-            <GenresInit />
+            <GenresInit 
+                diary_id={ diary_id }
+            />
 
-            <FundsInit />
+            <FundsInit 
+                diary_id={ diary_id }
+            />
 
             <BenchInit
-                mode={ _uiux.mode }
-                status={ _uiux.status }
+                diary_id={ diary_id }
+                state={ state }
+                actions={ actions }
+                assets={ assets }
             />
 
             <PrevButton reference={ prev } />
@@ -120,8 +124,9 @@ const Bench = ( { diary_id } ) => {
                 // doCopyPaste={payload => dispatch( { namespace: 'entries', type: 'COPY_ENTRY', payload } )}
             >
                 <Periods
+                    diary_id={ diary_id }
                     periods={ periods }
-                    startDate={ startDate } 
+                    startDate={ startDate }
                 />
             </CopyPasteContextProvider>
 
@@ -130,6 +135,39 @@ const Bench = ( { diary_id } ) => {
         </ListBox>
     );
 }
+
+const Periods = ( { diary_id, periods, startDate } ) => {
+
+    // useEffect( () => console.log( 'Has rendered. ', 'Periods' ) );
+
+    return (
+        <ul>
+            { periods.map( period => (
+                <Period 
+                    diary_id={ diary_id }
+                    period={ period }
+                    startDate={ startDate }
+                    key={ period.dates[ 0 ].date }
+                />
+            ) ) }
+        </ul>
+    );
+}
+
+const Period = React.memo( ( { diary_id, period, startDate } ) => {
+
+    useEffect( () => console.log( 'Has rendered. ', 'Period' ) );
+
+    return (
+        <DatesContextProvider state={ period }>
+            <Dates
+                diary_id={ diary_id }
+                startDate={ startDate }
+            />
+        </DatesContextProvider>
+    );
+} );
+
 
 export default Bench;
 export { Bench };

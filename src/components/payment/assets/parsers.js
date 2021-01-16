@@ -1,4 +1,4 @@
-import { getFromList } from '../core/helpers/getFromList';
+import { getFromList } from '../../core/helpers/getFromList';
 
 const parsePaymentFromDB = ( data ) => ( {
     id: data._id,

@@ -1,18 +1,20 @@
 import React, { useState, useContext } from 'react';
-import { GenresContext } from './GenresContext';
+
 import { Modal } from '../../libs/Modal';
-import CoreForm from "../../core/CoreForm";
 import { InputBox, InputLabel, InputValue } from '../../libs/InputBox';
 import { InputCheck } from '../../libs/InputCheck';
+
+import CoreForm from "../../core/CoreForm";
 import { isBlank, isFound } from '../../core/helpers/validation';
+import prepayAction from '../../core/helpers/prepayAction';
 
-function GenreForm( { index } ) {
-    
-    const { state, actions } = useContext( GenresContext );
-    const { genres } = state;
+import { GenresContext } from './GenresContext';
+
+function GenreForm( { genres, index, actions, assets } ) {
+
+    const closeForm = prepayAction( actions.closeForm, { assets, index } );
+
     const genre = genres[ index ];
-
-    const closeForm = payload => actions.closeForm( { index, ...payload } );
 
     const [ data, setData ] = useState( { ...genre } );
 
@@ -36,6 +38,7 @@ function GenreForm( { index } ) {
 
             <CoreForm
                 Context={ GenresContext }
+                assets={ assets }
                 index={ index }
                 validationRules={ validationRules }
             >

@@ -1,19 +1,20 @@
 import React, { useContext, useState } from 'react';
 
-import { ReportsContext } from './ReportsContext';
 import { Modal } from '../libs/Modal';
-import CoreForm from "../core/CoreForm";
 import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
 import { InputDate } from '../libs/InputDate';
+
+import CoreForm from "../core/CoreForm";
 import { shiftDate, YYYYMMDDToRepr, dateToYYYYMMDD } from '../core/helpers/dates';
+import prepayAction from '../core/helpers/prepayAction';
 
-function ReportForm( { index } ) {
+import { ReportsContext } from './ReportsContext';
 
-    const { state, actions } = useContext( ReportsContext );
-    const { reports } = state;
+function ReportForm( { reports, index, actions, assets } ) {
+
+    const closeForm = prepayAction( actions.closeForm, { assets, index } );
+
     const report = reports[ index ];
-
-    const closeForm = payload => actions.closeForm( { index, ...payload } );
 
     const [ data, setData ] = useState( { 
         ...report,
@@ -30,6 +31,7 @@ function ReportForm( { index } ) {
         <Modal onClick={ closeForm } centeredness>
             <CoreForm
                 Context={ ReportsContext }
+                assets={ assets }
                 index={ index }
                 validationRules={ validationRules }
             >

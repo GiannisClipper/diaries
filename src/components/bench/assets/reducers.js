@@ -36,17 +36,17 @@ const benchReducer = ( state, action ) => {
 
     switch ( action.type ) {
 
-        case 'DO_INIT': {
+        case 'OPEN_PAGE': {
             const { _uiux } = state;
-            const { mode } = action.payload;
-            _uiux.mode = mode;
-            _uiux.status = { isInit: true };
+            _uiux.page = { isOpen: true };
 
             return { ...state, _uiux };
 
-        } case 'INIT_START_PERIOD': {
+        } case 'START_PAGE': {
+            const { assets } = action.payload;
+            const { startDate, days } = assets;
+
             const { _uiux } = state;
-            const { startDate, days } = action.payload;
             const prevDates = calcDates( startDate, -days );
             const nextDates = calcDates( startDate, days );
             const dates = [
@@ -58,35 +58,41 @@ const benchReducer = ( state, action ) => {
             period.dates = dates;
 
             const periods = [ period ];
-            _uiux.status = {};
+            _uiux.page = { isStart: true };
 
             return { ...state, periods, _uiux };
 
-        } case 'INIT_PREV_PERIOD': {
+        } case 'PREV_PAGE': {
+            const { assets } = action.payload;
+            const { days } = assets;
+
             let { periods, _uiux } = state;
-            const { days } = action.payload;
             const firstPeriod = periods[ 0 ];
             const firstDate = firstPeriod.dates[ 0 ].date;
             const prevDates = calcDates( firstDate, -days );
             const dates = [ ...initDates( prevDates ) ];
             const period = datesSchema();
             period.dates = dates;
+
             periods = [ period, ...periods ];
-            _uiux.status = {};
+            _uiux.page = { isPrev: true };
 
             return { ...state, periods, _uiux };
 
-        } case 'INIT_NEXT_PERIOD': {
+        } case 'NEXT_PAGE': {
+            const { assets } = action.payload;
+            const { days } = assets;
+
             let { periods, _uiux } = state;
-            const { days } = action.payload;
             const lastPeriod = periods[ periods.length -1 ];
             const lastDate = lastPeriod.dates[ lastPeriod.dates.length - 1 ].date;
             const nextDates = calcDates( lastDate, days );
             const dates = [ ...initDates( nextDates ) ];
             const period = datesSchema();
             period.dates = dates;
+
             periods = [ ...periods, period ];
-            _uiux.status = {};
+            _uiux.status = { isNext: true };
 
             return { ...state, periods, _uiux };
 

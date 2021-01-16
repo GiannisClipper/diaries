@@ -1,29 +1,28 @@
 import React, { useContext, useEffect } from 'react';
-import { BenchContext } from '../../bench/BenchContext';
-import { FundsContext } from './FundsContext';
+
+import { RowBox, RowValue, RowMenu } from '../../libs/RowBox';
+
 import { CreateRequest, UpdateRequest, DeleteRequest } from '../../core/CoreRequests';
 import { CoreMenu, CreateMenuOption, UpdateMenuOption, DeleteMenuOption } from '../../core/CoreMenu';
-import { RowBox, RowValue, RowMenu } from '../../libs/RowBox';
+import prepayAction from '../../core/helpers/prepayAction';
+
+import { FundsContext } from './FundsContext';
 import FundForm from './FundForm';
 
-function Fund( { index } ) {
+function Fund( { funds, index, actions, assets } ) {
 
-    // const { diary_id } = useContext( BenchContext ).state;
-    // assets.schema = () => ( { ...fundSchema(), diary_id } );
-
-    const { state, actions } = useContext( FundsContext );
-    const { funds } = state;
     const fund = funds[ index ];
     const { _uiux } = fund;
 
-    const openForm = payload => actions.openForm( { index, ...payload } );
+    const openForm = prepayAction( actions.openForm, { assets, index } );
 
     return (
-        <RowBox key={ index }>
+        <RowBox>
 
             { _uiux.mode.isCreate ?
                 <CreateRequest
                     Context={ FundsContext }
+                    assets={ assets }
                     index={ index }
                     url={ `/.netlify/functions/payment-fund` }
                 />
@@ -31,21 +30,23 @@ function Fund( { index } ) {
             : _uiux.mode.isUpdate ?
                 <UpdateRequest 
                     Context={ FundsContext }
+                    assets={ assets }
                     index={ index }
-                    url={ `/.netlify/functions/payment-fund?id=${fund.id}` }
+                    url={ `/.netlify/functions/payment-fund?id=${ fund.id }` }
                 />
 
             : _uiux.mode.isDelete ?
                 <DeleteRequest 
                     Context={ FundsContext }
+                    assets={ assets }
                     index={ index }
-                    url={ `/.netlify/functions/payment-fund?id=${fund.id}` }
+                    url={ `/.netlify/functions/payment-fund?id=${ fund.id }` }
                 />
 
             : null }
 
-            <RowValue title={ `${fund.diary_id}.${fund.id}` }>
-                <span style={ { fontFamily: 'monospace' } } >{ `${fund.code} ` }</span>
+            <RowValue title={ `${ fund.diary_id }.${ fund.id }` }>
+                <span style={ { fontFamily: 'monospace' } } >{ `${ fund.code } ` }</span>
                 <span>{ fund.name }</span>
             </RowValue>
 
@@ -64,7 +65,12 @@ function Fund( { index } ) {
             </RowMenu>
 
             { _uiux.form.isOpen ?
-                <FundForm index={ index } /> 
+                <FundForm 
+                    funds={ funds }
+                    index={ index }
+                    actions={ actions }
+                    assets={ assets }
+            /> 
             : null }
 
         </RowBox>

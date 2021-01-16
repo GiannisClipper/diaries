@@ -1,20 +1,23 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
+
 import { RetrieveManyRequest } from '../core/CoreRequests';
+
 import { UsersContext } from './UsersContext';
-import { usersSchema } from './schemas';
+import { usersSchema } from './assets/schemas';
 
-function UsersInit() {
+function UsersInit( { state, actions, assets } ) {
 
-    const { state, actions, assets } = useContext( UsersContext );
     const { _uiux } = state;
     const { schema } = assets;
 
     if ( Object.keys( _uiux.status ).length === 0 ) {
+
         actions.updateState( { data: {
                 ...usersSchema(),
                 users: [ schema() ],
         } } );
-        actions.retrieveManyRequestBefore();
+
+        actions.retrieveManyRequestBefore( { assets, index: 0 } );
     }
 
     // useEffect( () => console.log( 'Has rendered. ', 'UsersInit' ) );
@@ -22,6 +25,7 @@ function UsersInit() {
     return (
         <RetrieveManyRequest
             Context={ UsersContext }
+            assets={ assets }
             url={ `/.netlify/functions/user` }
         />
     );

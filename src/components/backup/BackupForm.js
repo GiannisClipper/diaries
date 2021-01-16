@@ -1,21 +1,23 @@
-import React, { useState, useContext } from 'react';
-import { AppContext } from '../app/AppContext';
+import React from 'react';
+
 import { Modal } from '../libs/Modal';
-import CoreForm from "../core/CoreForm";
 import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
 
-function BackupForm() {
+import CoreForm from "../core/CoreForm";
+import prepayAction from '../core/helpers/prepayAction';
 
-    const { actions, assets } = useContext( AppContext );
+import { AppContext } from '../app/AppContext';
 
-    const closeForm = payload => actions.closeForm( { ...payload, assets: assets.backup } );
+function BackupForm( { backup, actions, assets } ) {
+
+    const closeForm = prepayAction( actions.closeForm, { assets } );
 
     return (
         <Modal onClick={ closeForm } centeredness>
 
             <CoreForm
                 Context={ AppContext }
-                assets={ assets.backup }
+                assets={ assets }
             >
 
                 <InputBox>

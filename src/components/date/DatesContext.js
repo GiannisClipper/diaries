@@ -1,7 +1,5 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
 
-import { datesSchema } from './assets/schemas';
-
 import comboReducer from '../core/helpers/comboReducer';
 import { datesReducer } from './assets/reducers';
 import { retrieveManyReducer } from '../core/assets/reducers/retrieve';
@@ -10,6 +8,8 @@ import chargeActions from '../core/helpers/chargeActions';
 import retrieveManyActionTypes from '../core/assets/actions/retrieveMany';
 
 import { AppContext } from '../app/AppContext';
+
+import { datesSchema } from './assets/schemas';
 
 const reducers = [ 
     datesReducer,

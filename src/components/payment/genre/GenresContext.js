@@ -1,7 +1,5 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
 
-import { genresSchema } from './assets/schemas';
-
 import comboReducer from '../../core/helpers/comboReducer';
 import { stateReducer } from '../../core/assets/reducers/state';
 import { formOneOfManyReducer } from '../../core/assets/reducers/form';
@@ -21,6 +19,8 @@ import deleteActionTypes from '../../core/assets/actions/delete';
 import retrieveManyActionTypes from '../../core/assets/actions/retrieveMany';
 
 import { AppContext } from '../../app/AppContext';
+
+import { genresSchema } from './assets/schemas';
 
 const reducers = [ 
     stateReducer,

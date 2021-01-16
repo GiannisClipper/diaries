@@ -12,6 +12,7 @@ const reportSchema = () => ( {
     dateFrom: '',
     dateTill: '',
     _uiux: {
+        page: {}, // isOpen
         form: {},  // isOpen
         status: {},  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError
         error: {},

@@ -1,5 +1,6 @@
 const assets = {
-    namespace: 'dates',
+    startDate: null,
+    days: 7,
 };
 
 export default assets;

@@ -1,4 +1,4 @@
-import { reprToYYYYMMDD } from '../core/helpers/dates.js'
+import { reprToYYYYMMDD } from '../../core/helpers/dates.js'
 
 const parseReportToDB = ( data ) => ( {
     type: data.type,

@@ -1,21 +1,20 @@
 import React, { useContext, useEffect } from 'react';
-import { BenchContext } from '../../bench/BenchContext';
-import { GenresContext } from './GenresContext';
+
+import { RowBox, RowValue, RowMenu } from '../../libs/RowBox';
+
 import { CreateRequest, UpdateRequest, DeleteRequest } from '../../core/CoreRequests';
 import { CoreMenu, CreateMenuOption, UpdateMenuOption, DeleteMenuOption } from '../../core/CoreMenu';
-import { RowBox, RowValue, RowMenu } from '../../libs/RowBox';
+import prepayAction from '../../core/helpers/prepayAction';
+
+import { GenresContext } from './GenresContext';
 import GenreForm from './GenreForm';
 
-function Genre( { index } ) {
-    // const { diary_id } = useContext( BenchContext ).state;
-    // assets.schema = () => ( { ...paymentGenreSchema(), diary_id } );
+function Genre( { genres, index, actions, assets } ) {
 
-    const { state, actions } = useContext( GenresContext );
-    const { genres } = state;
     const genre = genres[ index ];
     const { _uiux } = genre;
 
-    const openForm = payload => actions.openForm( { index, ...payload } );
+    const openForm = prepayAction( actions.openForm, { assets, index } );
 
     const typeInfo = _uiux.mode.isCreate
         ? ''
@@ -28,11 +27,12 @@ function Genre( { index } ) {
         : '-';
 
     return (
-        <RowBox key={ index }>
+        <RowBox>
 
             { _uiux.mode.isCreate ?
                 <CreateRequest
                     Context={ GenresContext }
+                    assets={ assets }
                     index={ index }
                     url={ `/.netlify/functions/payment-genre` }
                 />
@@ -40,6 +40,7 @@ function Genre( { index } ) {
             : _uiux.mode.isUpdate ?
                 <UpdateRequest 
                     Context={ GenresContext }
+                    assets={ assets }
                     index={ index }
                     url={ `/.netlify/functions/payment-genre?id=${genre.id}` }
                 />
@@ -47,14 +48,15 @@ function Genre( { index } ) {
             : _uiux.mode.isDelete ?
                 <DeleteRequest 
                     Context={ GenresContext }
+                    assets={ assets }
                     index={ index }
                     url={ `/.netlify/functions/payment-genre?id=${genre.id}` }
                 />
 
             : null }
 
-            <RowValue title={ `${genre.diary_id}.${genre.id}` }>
-                <span style={ { fontFamily: 'monospace' } } >{ `${typeInfo} ${genre.code} ` }</span>
+            <RowValue title={ `${ genre.diary_id }.${ genre.id }` }>
+                <span style={ { fontFamily: 'monospace' } } >{ `${ typeInfo } ${ genre.code } ` }</span>
                 <span>{ genre.name }</span>
             </RowValue>
 
@@ -73,7 +75,12 @@ function Genre( { index } ) {
             </RowMenu>
 
             { _uiux.form.isOpen ? 
-                <GenreForm index={ index } /> 
+                <GenreForm
+                    genres={ genres }
+                    index={ index }
+                    actions={ actions }
+                    assets={ assets }
+                /> 
             : null }
 
         </RowBox> 

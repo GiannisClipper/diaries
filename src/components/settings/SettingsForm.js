@@ -1,20 +1,18 @@
-import React, { useState, useContext } from 'react';
-
-import { AppContext } from '../app/AppContext';
-import CoreForm from "../core/CoreForm";
+import React, { useState } from 'react';
 
 import { Modal } from '../libs/Modal';
 import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
 import { InputFromList } from '../libs/InputFromList';
+
+import CoreForm from "../core/CoreForm";
+import prepayAction from '../core/helpers/prepayAction';
 import { isBlank } from '../core/helpers/validation';
 
-function SettingsForm() {
+import { AppContext } from '../app/AppContext';
 
-    const { state, actions, assets } = useContext( AppContext );
+function SettingsForm( { settings, actions, assets } ) {
 
-    const closeForm = payload => actions.closeForm( { ...payload, assets: assets.settings } );
-
-    const { settings } = state;
+    const closeForm = prepayAction( actions.closeForm, { assets } );
 
     const [ data, setData ] = useState( { ...settings } );
 
@@ -35,7 +33,7 @@ function SettingsForm() {
 
             <CoreForm
                 Context={ AppContext }
-                assets={ assets.settings }
+                assets={ assets }
                 validationRules={ validationRules }
             >
 

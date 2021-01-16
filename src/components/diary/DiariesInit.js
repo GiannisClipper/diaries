@@ -5,17 +5,20 @@ import { RetrieveManyRequest } from '../core/CoreRequests';
 import { DiariesContext } from './DiariesContext';
 import { diariesSchema } from './assets/schemas';
 
-function DiariesInit( { actions, assets, state } ) {
+function DiariesInit( { state, actions, assets } ) {
 
-    const user_id = assets.schema().user_id;
+    const { schema } = assets;
+    const user_id = schema().user_id;
 
     if ( user_id !== state.user_id ) {
 
-        actions.updateState( { data: {
+        actions.updateState( { 
+            data: {
                 ...diariesSchema(),
                 user_id,
-                diaries: [ assets.schema() ],
-        } } );
+                diaries: [ schema() ],
+            } 
+        } );
 
         actions.retrieveManyRequestBefore( { assets, index: 0 } );
     }

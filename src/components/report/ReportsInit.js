@@ -1,17 +1,17 @@
-import { useEffect, useContext } from 'react';
-import { ReportsContext } from './ReportsContext';
+import { useEffect } from 'react';
 
-function ReportsInit() {
+const data = [
+    { descr: 'Κατάσταση σημειωμάτων', type: 'note' },
+    { descr: 'Κατάσταση οικονομικών κινήσεων', type: 'payment' }
+];
 
-    const { state, dispatch } = useContext( ReportsContext );
+function ReportsInit( { actions, assets, state } ) {
+
     const { _uiux } = state;
 
     useEffect( () => {
-        if ( Object.keys( _uiux.status ).length === 0 ) {  // status === {}
-            dispatch( { 
-                type: 'DO_INIT', 
-                payload: {}
-            } );
+        if ( ! _uiux.page.isOpen ) {
+            actions.openPage( { assets, data } );
         }
     } );
 

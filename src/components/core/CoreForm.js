@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 
 import { OkCancelForm } from '../libs/Forms';
 
-import equipAction from './helpers/equipAction';
+import prepayAction from './helpers/prepayAction';
 
 import texts from '../app/assets/texts';
 
@@ -47,9 +47,9 @@ function CoreForm( { Context, assets, index, validationRules, children } ) {
     const { _uiux } = _item;
     const { status, mode } = _uiux;
 
-    const validation = equipAction( actions.validation, { assets, index } );
-    const validationOk = equipAction( actions.validationOk, { assets, index } );
-    const validationError = equipAction( actions.validationError, { assets, index } );
+    const validation = prepayAction( actions.validation, { assets, index } );
+    const validationOk = prepayAction( actions.validationOk, { assets, index } );
+    const validationError = prepayAction( actions.validationError, { assets, index } );
 
     const rawRequest = (
         mode.isCreate ?
@@ -63,8 +63,8 @@ function CoreForm( { Context, assets, index, validationRules, children } ) {
         null
     );
 
-    const request = equipAction( rawRequest, { assets, index } );
-    const closeForm = equipAction( actions.closeForm, { assets, index } );
+    const request = prepayAction( rawRequest, { assets, index } );
+    const closeForm = prepayAction( actions.closeForm, { assets, index } );
 
     const headLabel = texts.heads[ namespace ];
 

@@ -6,13 +6,13 @@ import { InputDate } from '../libs/InputDate';
 
 import CoreForm from "../core/CoreForm";
 import { isBlank, isFound } from '../core/helpers/validation';
-import equipAction from '../core/helpers/equipAction';
+import prepayAction from '../core/helpers/prepayAction';
 
 import { DiariesContext } from './DiariesContext';
 
 function DiaryForm( { diaries, index, actions, assets } ) {
 
-    const closeForm = equipAction( actions.closeForm, { assets, index } );
+    const closeForm = prepayAction( actions.closeForm, { assets, index } );
 
     const diary = diaries[ index ];
 

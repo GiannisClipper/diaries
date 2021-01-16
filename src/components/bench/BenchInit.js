@@ -1,7 +1,8 @@
 import { useEffect, useContext } from 'react';
 
 import { YYYYMMDDToDate, reprToYYYYMMDD } from '../core/helpers/dates';
-import { BenchContext } from './BenchContext'; 
+
+import { benchSchema } from './assets/schemas';
 
 const calcStartDate = startDate => {
     startDate = YYYYMMDDToDate( reprToYYYYMMDD( startDate ) ) || new Date();
@@ -13,36 +14,34 @@ const calcStartDate = startDate => {
     return startDate;
 }
 
-function BenchInit( { mode, status } ) {
+function BenchInit( { diary_id, state, actions, assets } ) {
 
-    const { state, dispatch } = useContext( BenchContext );
+    const { _uiux } = state;
 
-    const startDate = calcStartDate( state.startDate );
+    if ( 
+        Object.keys( _uiux.page ).length === 0 || 
+        diary_id !== state.diary_id 
+    ) {
 
-    const days = 7;
+        actions.updateState( { 
+            data: { 
+                ...benchSchema(),
+                diary_id, 
+                _uiux,
+            } 
+        } );
+
+        actions.openPage();
+    }
+
+    assets.startDate = calcStartDate( state.startDate );
 
     useEffect( () => {
 
-        if ( status.isInitBefore ) {
-            const payload = { mode: { isInitStart: true } };
-            dispatch( { type: 'DO_INIT', payload } );
+        if ( _uiux.page.isOpen ) {
+            actions.startPage( { assets } );
+        } 
 
-        } else if ( status.isInit ) {
-
-            if ( mode.isInitStart ) {
-                const payload = { startDate, days };
-                dispatch( { type: 'INIT_START_PERIOD', payload } );
-
-            } else if ( mode.isInitPrev ) {
-                const payload = { days };
-                dispatch( { type: 'INIT_PREV_PERIOD', payload } );
-
-            } else if ( mode.isInitNext ) {
-                const payload = { days };
-                dispatch( { type: 'INIT_NEXT_PERIOD', payload } );
-
-            }
-        }
     } );
 
     useEffect( () => console.log( 'Has rendered. ', 'BenchInit' ) );

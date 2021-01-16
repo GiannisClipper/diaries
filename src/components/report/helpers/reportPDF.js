@@ -15,15 +15,15 @@ doc.addFont("MyFont.ttf", "MyFont", "normal");
 
 import { jsPDF } from "jspdf";
 
-import addCourierNewNormal from './fonts/courierNewNormal';
-import addCourierNewBold from './fonts/courierNewBold';
-import addCourierNewItalic from './fonts/courierNewItalic';
-import addCourierNewBoldItalic from './fonts/courierNewBoldItalic';
+import addCourierNewNormal from '../../core/assets/fonts/courierNewNormal';
+import addCourierNewBold from '../../core/assets/fonts/courierNewBold';
+import addCourierNewItalic from '../../core/assets/fonts/courierNewItalic';
+import addCourierNewBoldItalic from '../../core/assets/fonts/courierNewBoldItalic';
 
-import addTrebuchetMSNormal from './fonts/trebuchetMSNormal';
-import addTrebuchetMSBold from './fonts/trebuchetMSBold';
-import addTrebuchetMSItalic from './fonts/trebuchetMSItalic';
-import addTrebuchetMSBoldItalic from './fonts/trebuchetMSBoldItalic';
+import addTrebuchetMSNormal from '../../core/assets/fonts/trebuchetMSNormal';
+import addTrebuchetMSBold from '../../core/assets/fonts/trebuchetMSBold';
+import addTrebuchetMSItalic from '../../core/assets/fonts/trebuchetMSItalic';
+import addTrebuchetMSBoldItalic from '../../core/assets/fonts/trebuchetMSBoldItalic';
 
 jsPDF.API.events.push( [ 'addFonts', addCourierNewNormal ] );
 jsPDF.API.events.push( [ 'addFonts', addCourierNewBold ] );

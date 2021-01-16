@@ -1,7 +1,5 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
 
-import { diariesSchema } from './assets/schemas';
-
 import comboReducer from '../core/helpers/comboReducer';
 import { stateReducer } from '../core/assets/reducers/state';
 import { formOneOfManyReducer } from '../core/assets/reducers/form';
@@ -13,6 +11,7 @@ import { retrieveManyReducer } from '../core/assets/reducers/retrieve';
 
 import chargeActions from '../core/helpers/chargeActions';
 import stateActionTypes from '../core/assets/actions/state';
+import pageActionTypes from '../core/assets/actions/page';
 import formActionTypes from '../core/assets/actions/form';
 import validationActionTypes from '../core/assets/actions/validation';
 import createActionTypes from '../core/assets/actions/create';
@@ -21,6 +20,8 @@ import deleteActionTypes from '../core/assets/actions/delete';
 import retrieveManyActionTypes from '../core/assets/actions/retrieveMany';
 
 import { AppContext } from '../app/AppContext';
+
+import { diariesSchema } from './assets/schemas';
 
 const reducers = [ 
     stateReducer,
@@ -34,6 +35,7 @@ const reducers = [
 
 const rawActions = {
     ...stateActionTypes,
+    ...pageActionTypes,
     ...formActionTypes,
     ...validationActionTypes,
     ...createActionTypes,

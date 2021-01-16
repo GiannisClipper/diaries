@@ -1,22 +1,15 @@
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 
-import { BenchContext } from '../bench/BenchContext';
-import { EntriesContext } from './EntriesContext';
-import assets from './assets/assets'; 
 import { dateToYYYYMMDD } from '../core/helpers/dates';
 
-function EntriesInit() {
+function EntriesInit( { diary_id, state, actions, assets }) {
 
-    const { diary_id } = useContext( BenchContext ).state;
-
-    const { state, actions } = useContext( EntriesContext );
     const { date, _uiux } = state; 
     const { status } = _uiux;
 
+    const schema = assets.schema;
     assets.schema = () => ( { 
-        ...assets.schema(), 
-        diary_id, 
-        date: dateToYYYYMMDD( date ) 
+        ...schema(), diary_id, date: dateToYYYYMMDD( date ) 
     } );
 
     if ( status.isResponseOk ) {

@@ -4,7 +4,7 @@ import { parseNoteToDB, parseNoteFromDB } from '../../note/assets/parsers';
 
 const assets = {
     namespace: 'entries',
-    schema: entrySchema(),
+    schema: entrySchema,
 
     parseToDB: data => data.type === 'payment'
         ? parsePaymentToDB( data )

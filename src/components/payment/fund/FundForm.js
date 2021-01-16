@@ -1,17 +1,19 @@
 import React, { useState, useContext } from 'react';
-import { FundsContext } from './FundsContext';
+
 import { Modal } from '../../libs/Modal';
-import CoreForm from "../../core/CoreForm";
 import { InputBox, InputLabel, InputValue } from '../../libs/InputBox';
+
+import CoreForm from "../../core/CoreForm";
 import { isBlank, isFound } from '../../core/helpers/validation';
+import prepayAction from '../../core/helpers/prepayAction';
 
-function FundForm( { index } ) {
-    
-    const { state, actions } = useContext( FundsContext );
-    const { funds } = state;
+import { FundsContext } from './FundsContext';
+
+function FundForm( { funds, index, actions, assets } ) {
+
+    const closeForm = prepayAction( actions.closeForm, { assets, index } );
+
     const fund = funds[ index ];
-
-    const closeForm = payload => actions.closeForm( { index, ...payload } );
 
     const [ data, setData ] = useState( { ...fund } );
 
@@ -35,6 +37,7 @@ function FundForm( { index } ) {
 
             <CoreForm
                 Context={ FundsContext }
+                assets={ assets }
                 index={ index }
                 validationRules={ validationRules }
             >

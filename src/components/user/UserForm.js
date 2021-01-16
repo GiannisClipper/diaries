@@ -1,20 +1,22 @@
-import React, { useState, useContext } from 'react';
-import { UsersContext } from './UsersContext';
+import React, { useState } from 'react';
+
 import { Modal } from '../libs/Modal';
-import CoreForm from "../core/CoreForm";
 import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
 import { InputEmail } from '../libs/InputEmail';
 import { InputCheck } from '../libs/InputCheck';
+
+import CoreForm from "../core/CoreForm";
 import { isBlank, isFound } from '../core/helpers/validation';
+import prepayAction from '../core/helpers/prepayAction';
 
-function UserForm( { index } ) {
+import { UsersContext } from './UsersContext';
 
-    const { state, actions } = useContext( UsersContext );
-    const { users } = state;
+function UserForm( { users, index, actions, assets } ) {
+
+    const closeForm = prepayAction( actions.closeForm, { assets, index } );
+
     const user = users[ index ];
     const { _uiux } = user;
-
-    const closeForm = payload => actions.closeForm( { index, ...payload } );
 
     const [ data, setData ] = useState( { ...user } );
 
@@ -24,7 +26,7 @@ function UserForm( { index } ) {
         errors += isBlank( data.username ) 
             ? 'Το Όνομα χρήστη δεν μπορεί να είναι κενό.\n' : '';
  
-        errors += !isBlank( data.username ) && isFound( users.map( x=> x.username ), data.username, index ) 
+        errors += !isBlank( data.username ) && isFound( users.map( x => x.username ), data.username, index ) 
             ? 'Το Όνομα xρήστη υπάρχει ήδη.\n' : '';
  
         errors += isBlank( data.password ) && _uiux.mode.isCreate 
@@ -41,6 +43,7 @@ function UserForm( { index } ) {
 
             <CoreForm
                 Context={ UsersContext }
+                assets={ assets }
                 index={ index }
                 validationRules={ validationRules }
             >

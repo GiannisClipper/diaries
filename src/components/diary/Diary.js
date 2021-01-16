@@ -1,11 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { RowBox, RowValue, RowMenu } from '../libs/RowBox';
-import { LinkBench } from '../app/AppLinks';
 
 import { CreateRequest, UpdateRequest, DeleteRequest } from '../core/CoreRequests';
 import { CoreMenu, CreateMenuOption, UpdateMenuOption, DeleteMenuOption } from '../core/CoreMenu';
-import equipAction from '../core/helpers/equipAction';
+import prepayAction from '../core/helpers/prepayAction';
+
+import { LinkBench } from '../app/AppLinks';
 
 import { DiariesContext } from './DiariesContext';
 import DiaryForm from './DiaryForm';
@@ -15,7 +16,7 @@ function Diary( { diaries, index, actions, assets } ) {
     const diary = diaries[ index ];
     const { _uiux } = diary;
 
-    const openForm = equipAction( actions.openForm, { assets, index } );
+    const openForm = prepayAction( actions.openForm, { assets, index } );
 
     return (
             <RowBox>
