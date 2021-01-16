@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 
-import { heads } from '../../storage/texts';
+import { heads } from '../app/assets/texts';
 
 import { BenchContext } from '../bench/BenchContext';
 
@@ -17,7 +17,7 @@ function SettingsPage() {
 
     const { diary_id } = useContext( BenchContext ).state;
 
-    //useEffect( () => console.log( 'Has rendered. ', 'BenchSettingsPage' ) );
+    // useEffect( () => console.log( 'Has rendered. ', 'BenchSettingsPage' ) );
 
     return (
         <>

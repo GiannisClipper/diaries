@@ -1,25 +1,23 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
+
 import { RetrieveManyRequest } from '../core/CoreRequests';
-import { AppContext } from '../app/AppContext';
+
 import { DiariesContext } from './DiariesContext';
-import { diariesSchema } from '../../storage/schemas';
+import { diariesSchema } from './assets/schemas';
 
-function DiariesInit() {
+function DiariesInit( { actions, assets, state } ) {
 
-    const { user_id } = useContext( AppContext ).state.signin;
+    const user_id = assets.schema().user_id;
 
-    const { state, actions, assets } = useContext( DiariesContext );
-    const { schema } = assets;
-
-    if ( state.user_id !== user_id ) {
+    if ( user_id !== state.user_id ) {
 
         actions.updateState( { data: {
                 ...diariesSchema(),
                 user_id,
-                diaries: [ schema() ],
+                diaries: [ assets.schema() ],
         } } );
 
-        actions.retrieveManyRequestBefore();
+        actions.retrieveManyRequestBefore( { assets, index: 0 } );
     }
 
     // useEffect( () => console.log( 'Has rendered. ', 'DiariesInit' ) );
@@ -27,6 +25,7 @@ function DiariesInit() {
     return (
         <RetrieveManyRequest
             Context={ DiariesContext }
+            assets={ assets }
             url={ `/.netlify/functions/diary?user_id=${ user_id }` }
         />
     );

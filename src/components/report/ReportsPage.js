@@ -6,7 +6,7 @@ import Reports from './Reports';
 
 function ReportsPage() {
 
-    //useEffect( () => console.log( 'Has rendered. ', 'ReportsPage' ) );
+    // useEffect( () => console.log( 'Has rendered. ', 'ReportsPage' ) );
 
     return (
         <ReportsContextProvider>

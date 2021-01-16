@@ -1,5 +1,5 @@
 import React from 'react';
-import { dayNames, monthNames } from '../../helpers/dates';
+import { dayNames, monthNames } from '../core/helpers/dates';
 import styled from 'styled-components';
 
 const StyledDateRepr = styled.div`

@@ -1,6 +1,10 @@
 import React, { useContext, useEffect } from 'react';
+
 import { OkCancelForm } from '../libs/Forms';
-import texts from '../../storage/texts';
+
+import equipAction from './helpers/equipAction';
+
+import texts from '../app/assets/texts';
 
 function InputValidation( { 
     status, 
@@ -33,9 +37,7 @@ function InputValidation( {
 
 function CoreForm( { Context, assets, index, validationRules, children } ) {
 
-    const context = useContext( Context );
-    const { state, actions } = context;
-    assets = assets || context.assets;
+    const { state, actions } = useContext( Context );
     const { namespace } = assets;
 
     const _item = index !== undefined 
@@ -45,9 +47,9 @@ function CoreForm( { Context, assets, index, validationRules, children } ) {
     const { _uiux } = _item;
     const { status, mode } = _uiux;
 
-    const validation = payload => actions.validation( { ...payload, index, assets } );
-    const validationOk = payload => actions.validationOk( { ...payload, index, assets } );
-    const validationError = payload => actions.validationError( { ...payload, index, assets } );
+    const validation = equipAction( actions.validation, { assets, index } );
+    const validationOk = equipAction( actions.validationOk, { assets, index } );
+    const validationError = equipAction( actions.validationError, { assets, index } );
 
     const rawRequest = (
         mode.isCreate ?
@@ -61,8 +63,8 @@ function CoreForm( { Context, assets, index, validationRules, children } ) {
         null
     );
 
-    const request = payload => rawRequest( { ...payload, index, assets } );
-    const closeForm = payload => actions.closeForm( { ...payload, index, assets } );
+    const request = equipAction( rawRequest, { assets, index } );
+    const closeForm = equipAction( actions.closeForm, { assets, index } );
 
     const headLabel = texts.heads[ namespace ];
 

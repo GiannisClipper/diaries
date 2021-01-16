@@ -11,7 +11,7 @@ import AppRoutes from './AppRoutes';
 
 function App() {
 
-    //useEffect( () => console.log( 'Has rendered. ', 'App' ) );
+    // useEffect( () => console.log( 'Has rendered. ', 'App' ) );
 
     return (
         <REFContextProvider>

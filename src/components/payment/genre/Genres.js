@@ -10,7 +10,7 @@ function Genres() {
     const { state } = useContext( GenresContext );
     const { genres } = state;
 
-    //useEffect( () => console.log( 'Has rendered. ', 'payment/Genres' ) );
+    // useEffect( () => console.log( 'Has rendered. ', 'payment/Genres' ) );
 
     let index = 0;
 

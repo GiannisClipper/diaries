@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 
 import { UsersContext } from './UsersContext';
-import { heads } from '../../storage/texts';
+import { heads } from '../app/assets/texts';
 
 import { ListBox } from '../libs/ListBox';
 import { BlockBox, BlockLabel, BlockValue } from '../libs/BlockBox';

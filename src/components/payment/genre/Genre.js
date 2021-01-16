@@ -1,4 +1,5 @@
 import React, { useContext, useEffect } from 'react';
+import { BenchContext } from '../../bench/BenchContext';
 import { GenresContext } from './GenresContext';
 import { CreateRequest, UpdateRequest, DeleteRequest } from '../../core/CoreRequests';
 import { CoreMenu, CreateMenuOption, UpdateMenuOption, DeleteMenuOption } from '../../core/CoreMenu';
@@ -6,6 +7,8 @@ import { RowBox, RowValue, RowMenu } from '../../libs/RowBox';
 import GenreForm from './GenreForm';
 
 function Genre( { index } ) {
+    // const { diary_id } = useContext( BenchContext ).state;
+    // assets.schema = () => ( { ...paymentGenreSchema(), diary_id } );
 
     const { state, actions } = useContext( GenresContext );
     const { genres } = state;

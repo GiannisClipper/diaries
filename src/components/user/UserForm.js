@@ -5,7 +5,7 @@ import CoreForm from "../core/CoreForm";
 import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
 import { InputEmail } from '../libs/InputEmail';
 import { InputCheck } from '../libs/InputCheck';
-import { isBlank, isFound } from '../../helpers/validation';
+import { isBlank, isFound } from '../core/helpers/validation';
 
 function UserForm( { index } ) {
 

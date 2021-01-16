@@ -5,7 +5,7 @@ import Bench from './Bench';
 
 function BenchPage( { diary_id } ) {
 
-    //useEffect( () => console.log( 'Has rendered. ', 'BenchPage' ) );
+    // useEffect( () => console.log( 'Has rendered. ', 'BenchPage' ) );
 
     return (
         <>

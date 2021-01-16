@@ -10,7 +10,7 @@ function Funds() {
     const { state } = useContext( FundsContext );
     const { funds } = state;
 
-    //useEffect( () => console.log( 'Has rendered. ', 'payment/Funds' ) );
+    // useEffect( () => console.log( 'Has rendered. ', 'payment/Funds' ) );
 
     let index = 0;
 

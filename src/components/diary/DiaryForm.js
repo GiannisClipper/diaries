@@ -1,18 +1,20 @@
-import React, { useState, useContext } from 'react';
-import { DiariesContext } from './DiariesContext';
+import React, { useState } from 'react';
+
 import { Modal } from '../libs/Modal';
-import CoreForm from "../core/CoreForm";
 import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
 import { InputDate } from '../libs/InputDate';
-import { isBlank, isFound } from '../../helpers/validation';
 
-function DiaryForm( { index } ) {
+import CoreForm from "../core/CoreForm";
+import { isBlank, isFound } from '../core/helpers/validation';
+import equipAction from '../core/helpers/equipAction';
 
-    const { state, actions } = useContext( DiariesContext );
-    const { diaries } = state;
+import { DiariesContext } from './DiariesContext';
+
+function DiaryForm( { diaries, index, actions, assets } ) {
+
+    const closeForm = equipAction( actions.closeForm, { assets, index } );
+
     const diary = diaries[ index ];
-
-    const closeForm = payload => actions.closeForm( { index, ...payload } );
 
     const [ data, setData ] = useState( { ...diary } );
 
@@ -36,6 +38,7 @@ function DiaryForm( { index } ) {
 
             <CoreForm
                 Context={ DiariesContext }
+                assets={ assets }
                 index={ index }
                 validationRules={ validationRules }
             >

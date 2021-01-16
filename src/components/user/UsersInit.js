@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { RetrieveManyRequest } from '../core/CoreRequests';
 import { UsersContext } from './UsersContext';
-import { usersSchema } from '../../storage/schemas';
+import { usersSchema } from './schemas';
 
 function UsersInit() {
 
@@ -17,7 +17,7 @@ function UsersInit() {
         actions.retrieveManyRequestBefore();
     }
 
-    //useEffect( () => console.log( 'Has rendered. ', 'UsersInit' ) );
+    // useEffect( () => console.log( 'Has rendered. ', 'UsersInit' ) );
 
     return (
         <RetrieveManyRequest

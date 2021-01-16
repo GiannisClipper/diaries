@@ -2,7 +2,7 @@ import React, { useContext, useEffect  } from 'react';
 import { RetrieveManyRequest } from '../../core/CoreRequests';
 import { BenchContext } from '../../bench/BenchContext';
 import { FundsContext } from './FundsContext';
-import { paymentFundsSchema } from '../../../storage/schemas';
+import { fundsSchema } from './assets/schemas';
 
 function FundsInit() {
 
@@ -13,7 +13,7 @@ function FundsInit() {
 
     if ( state.diary_id !== diary_id ) {
         actions.updateState( { data: {
-            ...paymentFundsSchema(),
+            ...fundsSchema(),
             diary_id,
             funds: [ schema() ],
         } } );
@@ -25,7 +25,7 @@ function FundsInit() {
         actions.retrieveManyRequestBefore();
     }
 
-    //useEffect( () => console.log( 'Has rendered. ', 'payment/FundsInit' ) );
+    // useEffect( () => console.log( 'Has rendered. ', 'payment/FundsInit' ) );
 
     if ( ! diary_id ) {
         return null;

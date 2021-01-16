@@ -4,7 +4,7 @@ import { Modal } from '../../libs/Modal';
 import CoreForm from "../../core/CoreForm";
 import { InputBox, InputLabel, InputValue } from '../../libs/InputBox';
 import { InputCheck } from '../../libs/InputCheck';
-import { isBlank, isFound } from '../../../helpers/validation';
+import { isBlank, isFound } from '../../core/helpers/validation';
 
 function GenreForm( { index } ) {
     

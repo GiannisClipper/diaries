@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import texts from '../../storage/texts';
+import texts from '../app/assets/texts';
 
 import { ListBox } from '../libs/ListBox';
 import { BlockBox, BlockLabel, BlockValue } from '../libs/BlockBox';

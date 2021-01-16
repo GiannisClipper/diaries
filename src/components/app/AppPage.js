@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { centeredness } from '../libs/InitStyle';
-import texts from '../../storage/texts';
+import texts from './assets/texts';
 import { LinkHome, LinkBench, LinkDiaries, LinkUsers, LinkSettings, LinkSignout } from './AppLinks';
 import { AppContext } from './AppContext';
 
@@ -59,7 +59,7 @@ const AppPage = props => {
     const { signin } = state;
     const { username } = signin;
 
-    //useEffect( () => console.log( 'Has rendered. ', 'AppPage' ) );
+    // useEffect( () => console.log( 'Has rendered. ', 'AppPage' ) );
 
     return (
         <>

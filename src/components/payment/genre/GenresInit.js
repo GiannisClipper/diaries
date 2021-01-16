@@ -2,7 +2,7 @@ import React, { useContext, useEffect  } from 'react';
 import { RetrieveManyRequest } from '../../core/CoreRequests';
 import { BenchContext } from '../../bench/BenchContext';
 import { GenresContext } from './GenresContext';
-import { paymentGenresSchema } from '../../../storage/schemas';
+import { genresSchema } from '../assets/schemas';
 
 function GenresInit() {
 
@@ -13,14 +13,14 @@ function GenresInit() {
 
     if ( state.diary_id !== diary_id ) {
         actions.updateState( { data: {
-            ...paymentGenresSchema(),
+            ...genresSchema(),
             diary_id,
             genres: [ schema() ],
         } } );
         actions.retrieveManyRequestBefore();
     }
 
-    //useEffect( () => console.log( 'Has rendered. ', 'payment/GenresInit' ) );
+    // useEffect( () => console.log( 'Has rendered. ', 'payment/GenresInit' ) );
 
     if ( ! diary_id ) {
         return null;

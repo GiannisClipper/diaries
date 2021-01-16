@@ -1,17 +1,23 @@
 import React, { useContext, useEffect } from 'react';
 
-import { DiariesContext } from './DiariesContext';
-import { heads } from '../../storage/texts';
-
 import { ListBox } from '../libs/ListBox';
 import { BlockBox, BlockLabel, BlockValue } from '../libs/BlockBox';
 
+import { AppContext } from '../app/AppContext';
+import { heads } from '../app/assets/texts';
+
+import { DiariesContext } from './DiariesContext';
+import assets from './assets/assets'; 
 import DiariesInit from './DiariesInit';
 import Diary from './Diary';
 
 function Diaries() {
 
-    const { state } = useContext( DiariesContext );
+    const { user_id } = useContext( AppContext ).state.signin;
+    const { schema } = assets;
+    assets.schema = () => ( { ...schema(), user_id } );
+
+    const { state, actions } = useContext( DiariesContext );
     const { diaries } = state;
 
     // useEffect( () => console.log( 'Has rendered. ', 'Diaries' ) );
@@ -20,7 +26,11 @@ function Diaries() {
 
     return (
         <ListBox>
-            <DiariesInit />
+            <DiariesInit 
+                state={ state }
+                actions={ actions }
+                assets={ assets }
+            />
 
             <BlockBox>
                 <BlockLabel>
@@ -31,7 +41,10 @@ function Diaries() {
                     <ul>
                         { diaries.map( diary => (
                             <Diary
+                                diaries={ diaries }
                                 index={ index++ }
+                                actions={ actions }
+                                assets={ assets }
                                 key={ index } 
                             />
                         ) ) }

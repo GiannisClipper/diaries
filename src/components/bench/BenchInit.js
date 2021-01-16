@@ -1,6 +1,6 @@
 import { useEffect, useContext } from 'react';
 
-import { YYYYMMDDToDate, reprToYYYYMMDD } from '../../helpers/dates';
+import { YYYYMMDDToDate, reprToYYYYMMDD } from '../core/helpers/dates';
 import { BenchContext } from './BenchContext'; 
 
 const calcStartDate = startDate => {

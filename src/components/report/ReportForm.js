@@ -3,10 +3,9 @@ import React, { useContext, useState } from 'react';
 import { ReportsContext } from './ReportsContext';
 import { Modal } from '../libs/Modal';
 import CoreForm from "../core/CoreForm";
-import { heads } from '../../storage/texts';
 import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
 import { InputDate } from '../libs/InputDate';
-import { shiftDate, YYYYMMDDToRepr, dateToYYYYMMDD } from '../../helpers/dates';
+import { shiftDate, YYYYMMDDToRepr, dateToYYYYMMDD } from '../core/helpers/dates';
 
 function ReportForm( { index } ) {
 

@@ -15,7 +15,7 @@ function Entries() {
     const { state } = useContext( EntriesContext );
     const { entries } = state;
 
-    //useEffect( () => console.log( 'Has rendered. ', 'Entries' ) );
+    // useEffect( () => console.log( 'Has rendered. ', 'Entries' ) );
 
     let index = 0;
 

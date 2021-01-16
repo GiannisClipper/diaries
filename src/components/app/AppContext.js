@@ -1,52 +1,33 @@
 import React, { createContext, useReducer, useEffect } from 'react';
 
-import { appSchema, signinSchema, settingsSchema, backupSchema } from '../../storage/schemas';
-import { parseSigninToDB, parseSigninFromDB } from '../../storage/sign/parsers';
-import { parseSettingsToDB, parseSettingsFromDB } from '../../storage/settings/parsers';
+import { appSchema } from './assets/schemas';
+import { signinSchema } from '../signin/assets/schemas';
+import { settingsSchema } from '../settings/assets/schemas';
+import { backupSchema } from '../backup/assets/schemas';
 
-import { appReducer } from '../../storage/app/reducers';
+import comboReducer from '../core/helpers/comboReducer';
+import { appReducer } from './assets/reducers';
 
-import formActionTypes from '../../storage/core/actions/form';
-import validationActionTypes from '../../storage/core/actions/validation';
-import signActionTypes from '../../storage/core/actions/sign';
-import updateActionTypes from '../../storage/core/actions/update';
-import errorActionTypes from '../../storage/core/actions/error';
+import chargeActions from '../core/helpers/chargeActions';
+import formActionTypes from '../core/assets/actions/form';
+import validationActionTypes from '../core/assets/actions/validation';
+import signActionTypes from '../core/assets/actions/signin';
+import updateActionTypes from '../core/assets/actions/update';
+import errorActionTypes from '../core/assets/actions/error';
 
-import createActions from '../../helpers/createActions';
-const AppContext = createContext();
+const reducers = [
+    appReducer
+];
 
-const assets = {
-    signin: {
-        namespace: 'signin',
-        schema: signinSchema,
-        parseToDB: parseSigninToDB,
-        parseFromDB: parseSigninFromDB,
-    },
-
-    signout: {
-        namespace: 'signout',
-    },
-
-    settings: {
-        namespace: 'settings',
-        schema: settingsSchema,
-        parseToDB: parseSettingsToDB,
-        parseFromDB: parseSettingsFromDB,
-    },
-
-    backup: {
-        namespace: 'backup',
-    },
-
-}
-
-const actionTypes = { 
+const rawActions = { 
     ...formActionTypes,
     ...validationActionTypes,
     ...signActionTypes, 
     ...updateActionTypes,
     ...errorActionTypes
 };
+
+const AppContext = createContext();
 
 const AppContextProvider = props => {
 
@@ -55,16 +36,16 @@ const AppContextProvider = props => {
     schema.settings = { ...settingsSchema(), ...JSON.parse( localStorage.getItem( 'settings' ) || '{}' ) };
     schema.backup = backupSchema();
 
-    const [ state, dispatch ] = useReducer( appReducer, schema );
+    const [ state, dispatch ] = useReducer( comboReducer( ...reducers ), schema );
 
-    window.state = state;
+    window.state = state;  // for debugging purposes
 
-    const actions = createActions( { dispatch, actionTypes, assets } );
+    const actions = chargeActions( { dispatch, rawActions } );
 
     useEffect( () => console.log( 'Has rendered. ', 'AppContextProvider' ) );
 
     return (
-        <AppContext.Provider value={ { state, dispatch, actions, assets } }>
+        <AppContext.Provider value={ { state, dispatch, actions } }>
             { props.children }
         </AppContext.Provider>
     )

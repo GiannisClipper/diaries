@@ -1,12 +1,13 @@
 import React, { useContext, useEffect  } from 'react';
 
-import { RetrieveManyRequest } from '../core/CoreRequests';
-
 import { BenchContext } from '../bench/BenchContext';
 import { DatesContext } from '../date/DatesContext';
 import { GenresContext } from '../payment/genre/GenresContext';
 import { FundsContext } from '../payment/fund/FundsContext';
-import { dateToYYYYMMDD } from '../../helpers/dates';
+import { dateToYYYYMMDD } from '../core/helpers/dates';
+
+import assets from './assets/assets';
+import { RetrieveManyRequest } from '../core/CoreRequests';
 
 function RetrieveManyResponseOkAfter() {
 
@@ -23,11 +24,12 @@ function RetrieveManyResponseOkAfter() {
         const status2 = funds_uiux.status;
 
         if ( status1.isResponseOkAfter && status2.isResponseOkAfter ) {
-            const payload = { genres, funds };
+            const payload = { genres, funds, assets };
             actions.retrieveManyResponseOkAfter( payload );
 
         } else if ( status1.isResponseError || status2.isResponseError ) {
-            actions.retrieveManyResponseError();
+            const payload = { genres, funds, assets };
+            actions.retrieveManyResponseError( payload );
         }
     } );
 
@@ -45,7 +47,7 @@ function DatesInit() {
     const dateTill = dateToYYYYMMDD( dates[ dates.length - 1 ].date );
 
     if ( Object.keys( _uiux.status ).length === 0 ) {
-        actions.retrieveManyRequestBefore();
+        actions.retrieveManyRequestBefore( { assets } );
     }
 
     // useEffect( () => console.log( 'Has rendered. ', 'DatesInit' ) );
@@ -62,6 +64,7 @@ function DatesInit() {
             :
                 <RetrieveManyRequest 
                     Context={ DatesContext }
+                    assets = { assets }
                     url={ `/.netlify/functions/entry?diary_id=${ diary_id }&range=${ dateFrom }-${ dateTill }` }
                 />
         );

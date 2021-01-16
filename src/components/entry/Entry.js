@@ -4,9 +4,10 @@ import { BenchContext } from '../bench/BenchContext';
 import { GenresContext } from '../payment/genre/GenresContext';
 import { FundsContext } from '../payment/fund/FundsContext';
 import { EntriesContext } from '../entry/EntriesContext';
-import { CreateRequest, UpdateRequest, DeleteRequest } from '../core/CoreRequests';
-import { dateToYYYYMMDD } from '../../helpers/dates';
 
+import assets from './assets/assets'; 
+import { CreateRequest, UpdateRequest, DeleteRequest } from '../core/CoreRequests';
+import { dateToYYYYMMDD } from '../core/helpers/dates';
 
 import { ToolBox } from '../libs/ToolBox';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -46,10 +47,15 @@ const Entry = ( { index } ) => {
     const entry = entries[ index ];
     const { _uiux } = entry;
 
-    if ( ! entry.id ) {
-        entry.diary_id = diary_id;
-        entry.date = dateToYYYYMMDD( date );
-    }
+    // if ( ! entry.id ) {
+    //     entry.diary_id = diary_id;
+    //     entry.date = dateToYYYYMMDD( date );
+    // }
+    assets.schema = () => ( { 
+        ...assets.schema(), 
+        diary_id, 
+        date: dateToYYYYMMDD( date ) 
+    } );
 
     entry.index = index;
     entry.genres = useContext( GenresContext ).state.genres;
@@ -103,7 +109,7 @@ const Entry = ( { index } ) => {
     //     data: parseDataToDB(),
     // } );
 
-    //useEffect( () =>  console.log( 'Has rendered. ', 'Entry' ) );
+    // useEffect( () =>  console.log( 'Has rendered. ', 'Entry' ) );
 
     if ( ! diary_id ) {
         return null;
@@ -121,6 +127,7 @@ const Entry = ( { index } ) => {
                 { _uiux.mode.isCreate ?
                     <CreateRequest
                         Context={ EntriesContext }
+                        assets={ assets }
                         index={ index }
                         url={ `/.netlify/functions/entry` }
                     />
@@ -128,6 +135,7 @@ const Entry = ( { index } ) => {
                 : _uiux.mode.isUpdate ?
                     <UpdateRequest 
                         Context={ EntriesContext }
+                        assets={ assets }
                         index={ index }
                         url={ `/.netlify/functions/entry?id=${entry.id}` }
                     />
@@ -135,6 +143,7 @@ const Entry = ( { index } ) => {
                 : _uiux.mode.isDelete ?
                     <DeleteRequest
                         Context={ EntriesContext }
+                        assets={ assets }
                         index={ index }
                         url={ `/.netlify/functions/entry?id=${entry.id}` }
                     />

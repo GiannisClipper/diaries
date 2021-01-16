@@ -2,12 +2,12 @@ import React, { useContext, useState, useEffect } from 'react';
 import { GenresContext } from '../payment/genre/GenresContext';
 import { FundsContext } from '../payment/fund/FundsContext';
 import EntryForm from '../entry/EntryForm';
-import { heads } from '../../storage/texts';
+import { heads } from '../app/assets/texts';
 import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
 import { InputNumber } from '../libs/InputNumber';
 import { InputFromList } from '../libs/InputFromList';
-import { isBlank } from '../../helpers/validation';
-import { getFromList } from '../../helpers/getFromList';
+import { isBlank } from '../core/helpers/validation';
+import { getFromList } from '../core/helpers/getFromList';
 
 function PaymentForm( { date, entry } ) {
 

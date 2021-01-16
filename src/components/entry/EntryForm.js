@@ -4,14 +4,14 @@ import { EntriesContext } from "../entry/EntriesContext";
 import { Modal } from '../libs/Modal';
 import CoreForm from "../core/CoreForm";
 import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
-import { dayNames, YYYYMMDDToRepr, dateToYYYYMMDD } from '../../helpers/dates';
+import { dayNames, YYYYMMDDToRepr, dateToYYYYMMDD } from '../core/helpers/dates';
 import { InputFromList } from '../libs/InputFromList';
 import { InputNumber } from '../libs/InputNumber';
-import { isBlank } from '../../helpers/validation';
+import { isBlank } from '../core/helpers/validation';
 
 import { GenresContext } from '../payment/genre/GenresContext';
 import { FundsContext } from '../payment/fund/FundsContext';
-import { getFromList } from '../../helpers/getFromList';
+import { getFromList } from '../core/helpers/getFromList';
 
 function EntryForm( { date, index } ) {
 

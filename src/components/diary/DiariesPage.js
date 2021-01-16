@@ -6,7 +6,7 @@ import Diaries from './Diaries';
 
 function DiariesPage() {
 
-    //useEffect( () => console.log( 'Has rendered. ', 'DiariesPage' ) );
+    // useEffect( () => console.log( 'Has rendered. ', 'DiariesPage' ) );
 
     return (
         <>

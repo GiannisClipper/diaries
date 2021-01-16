@@ -6,7 +6,7 @@ import { CoreMenu, RetrieveManyMenuOption } from '../core/CoreMenu';
 import { RowBox, RowValue, RowMenu } from '../libs/RowBox';
 
 import ReportForm from './ReportForm';
-import { paymentsPDF } from '../../storage/reportPDF';
+import { paymentsPDF } from './assets/reportPDF';
 
 function Report( { index } ) {
 

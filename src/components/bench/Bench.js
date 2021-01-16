@@ -5,7 +5,7 @@ import { BenchInit } from './BenchInit';
 import { Periods } from '../period/Periods';
 import { REFContext } from '../REFContext';
 
-import { buttons } from '../../storage/texts';
+import { buttons } from '../app/assets/texts';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBackward, faForward } from '@fortawesome/free-solid-svg-icons';
 

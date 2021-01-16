@@ -1,26 +1,22 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
 
-import { datesSchema } from '../../storage/schemas';
+import { datesSchema } from './assets/schemas';
 
-import comboReducer from '../../helpers/comboReducer';
-import { datesReducer } from '../../storage/date/reducers';
-import { retrieveManyReducer } from '../../storage/core/reducers/retrieve';
+import comboReducer from '../core/helpers/comboReducer';
+import { datesReducer } from './assets/reducers';
+import { retrieveManyReducer } from '../core/assets/reducers/retrieve';
 
-import retrieveManyActionTypes from '../../storage/core/actions/retrieveMany';
+import chargeActions from '../core/helpers/chargeActions';
+import retrieveManyActionTypes from '../core/assets/actions/retrieveMany';
 
 import { AppContext } from '../app/AppContext';
-import createActions from '../../helpers/createActions';
 
 const reducers = [ 
     datesReducer,
     retrieveManyReducer
 ];
 
-const assets = {
-    namespace: 'dates',
-};
-
-const actionTypes = {
+const rawActions = {
     ...retrieveManyActionTypes
 };
 
@@ -32,15 +28,15 @@ const DatesContextProvider = props => {
 
     const [ state, dispatch ] = useReducer( comboReducer( ...reducers ), schema );
 
-    const actions = createActions( { dispatch, actionTypes, assets } );
+    const actions = chargeActions( { dispatch, rawActions } );
     
     actions.handleError = useContext( AppContext ).actions.handleError;
 
     // useEffect( () => console.log( 'Has rendered. ', 'DatesContext' ) );
 
     return (
-        <DatesContext.Provider value={{ state, dispatch, actions, assets }}>
-            {props.children}
+        <DatesContext.Provider value={ { state, dispatch, actions } }>
+            { props.children }
         </DatesContext.Provider>
     )
 }

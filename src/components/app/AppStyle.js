@@ -3,7 +3,7 @@ import { AppContext } from '../app/AppContext';
 
 import { ThemeProvider } from 'styled-components';
 import { InitStyle } from '../libs/InitStyle';
-import { light, dark } from '../../storage/themes';
+import { light, dark } from './assets/themes';
 
 const AppStyle = props => {
 
@@ -11,7 +11,7 @@ const AppStyle = props => {
     const { settings } = state;
     const { theme } = settings;
 
-    //useEffect( () => console.log( 'Has rendered. ', 'AppStyle' ) );
+    // useEffect( () => console.log( 'Has rendered. ', 'AppStyle' ) );
 
     return (
         <ThemeProvider theme={ theme === 'dark' ? dark : light }>

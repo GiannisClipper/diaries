@@ -1,14 +1,14 @@
 import { useContext, useEffect } from 'react';
-import { doFetch } from '../../helpers/customFetch';
+import equipAction from './helpers/equipAction';
+import { doFetch } from './helpers/customFetch';
 
-function SigninRequest( { Context, url }) {
+function SigninRequest( { Context, assets, url }) {
 
-    const { state, actions, assets } = useContext( Context );
+    const { state, actions } = useContext( Context );
+    const { namespace, parseToDB } = assets;
 
-    const { namespace, parseToDB } = assets.signin;
-
-    const signinResponseOk = payload => actions.signinResponseOk( { ...payload, assets: assets.signin } );
-    const signinResponseError = payload => actions.signinResponseError( { ...payload, assets: assets.signin } );
+    const signinResponseOk = equipAction( actions.signinResponseOk, { assets } );
+    const signinResponseError = equipAction( actions.signinResponseError, { assets } );
 
     const _item = state[ namespace ];
 
@@ -33,15 +33,13 @@ function SigninRequest( { Context, url }) {
 
 function CreateRequest( { Context, assets, index, url } ) {
 
-    const context = useContext( Context );
-    const { state, actions } = context;
-    assets = assets || context.assets;
+    const { state, actions } = useContext( Context );
     const { namespace, parseToDB } = assets;
 
-    const createResponseOk = payload => actions.createResponseOk( { ...payload, index, assets } );
-    const createResponseError = payload => actions.createResponseError( { ...payload, index, assets } );
-    const createResponseOkAfter = payload => actions.createResponseOkAfter( { ...payload, index, assets } );
-    const createResponseErrorAfter = payload => actions.createResponseErrorAfter( { ...payload, index, assets } );
+    const createResponseOk = equipAction( actions.createResponseOk, { assets, index } );
+    const createResponseError = equipAction( actions.createResponseError, { assets, index } );
+    const createResponseOkAfter = equipAction( actions.createResponseOkAfter, { assets, index } );
+    const createResponseErrorAfter = equipAction( actions.createResponseErrorAfter, { assets, index } );
     const handleError = actions.handleError;
 
     const _item = index !== undefined 
@@ -76,15 +74,13 @@ function CreateRequest( { Context, assets, index, url } ) {
 
 function RetrieveRequest( { Context, assets, index, url } ) {
 
-    const context = useContext( Context );
-    const { state, actions } = context;
-    assets = assets || context.assets;
+    const { state, actions } = useContext( Context );
     const { namespace } = assets;
 
-    const retrieveResponseOk = payload => actions.retrieveResponseOk( { ...payload, index, assets } );
-    const retrieveResponseError = payload => actions.retrieveResponseError( { ...payload, index, assets } );
-    const retrieveResponseOkAfter = payload => actions.retrieveResponseOkAfter( { ...payload, index, assets } );
-    const retrieveResponseErrorAfter = payload => actions.retrieveResponseErrorAfter( { ...payload, index, assets } );
+    const retrieveResponseOk = equipAction( actions.retrieveResponseOk, { assets, index } );
+    const retrieveResponseError = equipAction( actions.retrieveResponseError, { assets, index } );
+    const retrieveResponseOkAfter = equipAction( actions.retrieveResponseOkAfter, { assets, index } );
+    const retrieveResponseErrorAfter = equipAction( actions.retrieveResponseErrorAfter, { assets, index } );
     const handleError = actions.handleError;
 
     const _item = index !== undefined 
@@ -117,15 +113,13 @@ function RetrieveRequest( { Context, assets, index, url } ) {
 
 function UpdateRequest( { Context, assets, index, url } ) {
 
-    const context = useContext( Context );
-    const { state, actions } = context;
-    assets = assets || context.assets;
+    const { state, actions } = useContext( Context );
     const { namespace, parseToDB } = assets;
 
-    const updateResponseOk = payload => actions.updateResponseOk( { ...payload, index, assets } );
-    const updateResponseError = payload => actions.updateResponseError( { ...payload, index, assets } );
-    const updateResponseOkAfter = payload => actions.updateResponseOkAfter( { ...payload, index, assets } );
-    const updateResponseErrorAfter = payload => actions.updateResponseErrorAfter( { ...payload, index, assets } );
+    const updateResponseOk = equipAction( actions.updateResponseOk, { assets, index } );
+    const updateResponseError = equipAction( actions.updateResponseError, { assets, index } );
+    const updateResponseOkAfter = equipAction( actions.updateResponseOkAfter, { assets, index } );
+    const updateResponseErrorAfter = equipAction( actions.updateResponseErrorAfter, { assets, index } );
     const handleError = actions.handleError;
 
     const _item = index !== undefined 
@@ -161,15 +155,13 @@ function UpdateRequest( { Context, assets, index, url } ) {
 
 function DeleteRequest( { Context, assets, index, url } ) {
 
-    const context = useContext( Context );
-    const { state, actions } = context;
-    assets = assets || context.assets;
+    const { state, actions } = useContext( Context );
     const { namespace, parseToDB } = assets;
 
-    const deleteResponseOk = payload => actions.deleteResponseOk( { ...payload, index, assets } );
-    const deleteResponseError = payload => actions.deleteResponseError( { ...payload, index, assets } );
-    const deleteResponseOkAfter = payload => actions.deleteResponseOkAfter( { ...payload, index, assets } );
-    const deleteResponseErrorAfter = payload => actions.deleteResponseErrorAfter( { ...payload, index, assets } );
+    const deleteResponseOk = equipAction( actions.deleteResponseOk, { assets, index } );
+    const deleteResponseError = equipAction( actions.deleteResponseError, { assets, index } );
+    const deleteResponseOkAfter = equipAction( actions.deleteResponseOkAfter, { assets, index } );
+    const deleteResponseErrorAfter = equipAction( actions.deleteResponseErrorAfter, { assets, index } );
     const handleError = actions.handleError;
 
     const _item = index !== undefined 
@@ -203,19 +195,17 @@ function DeleteRequest( { Context, assets, index, url } ) {
     return null;
 }
 
-function RetrieveManyRequest( { Context, url } ) {
+function RetrieveManyRequest( { Context, assets, url } ) {
 
     const { state, actions } = useContext( Context );
 
-    const { 
-        retrieveManyRequest,
-        retrieveManyResponseWaiting,
-        retrieveManyResponseOk,
-        retrieveManyResponseError,
-        retrieveManyResponseOkAfter,
-        retrieveManyResponseErrorAfter,
-        handleError
-    } = actions;
+    const retrieveManyRequest = equipAction( actions.retrieveManyRequest, { assets } );
+    const retrieveManyResponseWaiting = equipAction( actions.retrieveManyResponseWaiting, { assets } );
+    const retrieveManyResponseOk = equipAction( actions.retrieveManyResponseOk, { assets } );
+    const retrieveManyResponseError = equipAction( actions.retrieveManyResponseError, { assets } );
+    const retrieveManyResponseOkAfter = equipAction( actions.retrieveManyResponseOkAfter, { assets } );
+    const retrieveManyResponseErrorAfter = equipAction( actions.retrieveManyResponseErrorAfter, { assets } );
+    const handleError = actions.handleError;
 
     const { _uiux } = state;
     const { status, error } = _uiux;

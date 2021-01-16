@@ -1,21 +1,20 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
 
-import { reportsSchema, reportSchema } from '../../storage/schemas';
-import { parseReportToDB } from '../../storage/report/parsers';
+import { reportsSchema } from './assets/schemas';
 
-import comboReducer from '../../helpers/comboReducer';
-import { stateReducer } from '../../storage/core/reducers/state';
-import { formOneOfManyReducer } from '../../storage/core/reducers/form';
-import { validationOneOfManyReducer } from '../../storage/core/reducers/validation';
-import { retrieveManyReducer } from '../../storage/core/reducers/retrieve';
-import { reportsReducer } from '../../storage/report/reducers';
+import comboReducer from '../core/helpers/comboReducer';
+import { stateReducer } from '../core/assets/reducers/state';
+import { formOneOfManyReducer } from '../core/assets/reducers/form';
+import { validationOneOfManyReducer } from '../core/assets/reducers/validation';
+import { retrieveManyReducer } from '../core/assets/reducers/retrieve';
+import { reportsReducer } from './assets/reducers';
 
-import stateActionTypes from '../../storage/core/actions/state';
-import formActionTypes from '../../storage/core/actions/form';
-import validationActionTypes from '../../storage/core/actions/validation';
-import retrieveManyActionTypes from '../../storage/core/actions/retrieveMany';
+import chargeActions from '../core/helpers/chargeActions';
+import stateActionTypes from '../core/assets/actions/state';
+import formActionTypes from '../core/assets/actions/form';
+import validationActionTypes from '../core/assets/actions/validation';
+import retrieveManyActionTypes from '../core/assets/actions/retrieveMany';
 
-import createActions from '../../helpers/createActions';
 import { AppContext } from '../app/AppContext';
 
 const reducers = [ 
@@ -26,13 +25,7 @@ const reducers = [
     retrieveManyReducer,
 ];
 
-const assets = {
-    namespace: 'reports',
-    schema: reportSchema,
-    parseToDB: parseReportToDB,
-};
-
-const actionTypes = {
+const rawActions = {
     ...stateActionTypes,
     ...formActionTypes,
     ...validationActionTypes,
@@ -45,14 +38,14 @@ const ReportsContextProvider = props => {
 
     const [ state, dispatch ] = useReducer( comboReducer( ...reducers ), reportsSchema() );
 
-    const actions = createActions( { dispatch, actionTypes, assets } );
+    const actions = chargeActions( { dispatch, rawActions } );
     
     actions.handleError = useContext( AppContext ).actions.handleError;
 
     useEffect( () => console.log( 'Has rendered. ', 'ReportsContextProvider' ) );
 
     return (
-        <ReportsContext.Provider value={ { state, dispatch, actions, assets } }>
+        <ReportsContext.Provider value={ { state, dispatch, actions } }>
             { props.children }
         </ReportsContext.Provider>
     )

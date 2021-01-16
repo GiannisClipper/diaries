@@ -6,7 +6,7 @@ import CoreForm from "../core/CoreForm";
 import { Modal } from '../libs/Modal';
 import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
 import { InputFromList } from '../libs/InputFromList';
-import { isBlank } from '../../helpers/validation';
+import { isBlank } from '../core/helpers/validation';
 
 function SettingsForm() {
 

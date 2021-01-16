@@ -1,4 +1,5 @@
 import React, { useContext, useEffect } from 'react';
+import { BenchContext } from '../../bench/BenchContext';
 import { FundsContext } from './FundsContext';
 import { CreateRequest, UpdateRequest, DeleteRequest } from '../../core/CoreRequests';
 import { CoreMenu, CreateMenuOption, UpdateMenuOption, DeleteMenuOption } from '../../core/CoreMenu';
@@ -6,6 +7,9 @@ import { RowBox, RowValue, RowMenu } from '../../libs/RowBox';
 import FundForm from './FundForm';
 
 function Fund( { index } ) {
+
+    // const { diary_id } = useContext( BenchContext ).state;
+    // assets.schema = () => ( { ...fundSchema(), diary_id } );
 
     const { state, actions } = useContext( FundsContext );
     const { funds } = state;
