@@ -6,7 +6,7 @@ import { InputFromList } from '../libs/InputFromList';
 
 import CoreForm from "../core/CoreForm";
 import prepayAction from '../core/helpers/prepayAction';
-import { isBlank } from '../core/helpers/validation';
+import { isBlank } from '../core/assets/validators';
 
 import { AppContext } from '../app/AppContext';
 
@@ -16,14 +16,13 @@ function SettingsForm( { settings, actions, assets } ) {
 
     const [ data, setData ] = useState( { ...settings } );
 
-    const validationRules = () => {
-        let errors = '';
+    const validators = () => {
+        let errors = [];
 
-        errors += isBlank( data.theme ) 
-            ? 'Το Θέμα δεν μπορεί να είναι κενό.\n' : '';
+        errors.push( isBlank( 'Θέμα', data.theme ) );
+        errors.push( isBlank( 'Γλώσσα', data.language ) );
 
-        errors += isBlank( data.language ) 
-            ? 'Η Γλώσσα δεν μπορεί να είναι κενή.\n' : '';
+        errors = errors.filter( x => x !== null );
 
         return { data, errors };
     }
@@ -34,7 +33,7 @@ function SettingsForm( { settings, actions, assets } ) {
             <CoreForm
                 Context={ AppContext }
                 assets={ assets }
-                validationRules={ validationRules }
+                validators={ validators }
             >
 
                 <InputBox>

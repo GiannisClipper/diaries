@@ -22,8 +22,8 @@ function ReportForm( { reports, index, actions, assets } ) {
         dateTill: YYYYMMDDToRepr( dateToYYYYMMDD( new Date() ) ),
     } );
 
-    const validationRules = () => {
-        let errors = '';
+    const validators = () => {
+        let errors = [];
         return { data, errors };
     }
 
@@ -33,7 +33,7 @@ function ReportForm( { reports, index, actions, assets } ) {
                 Context={ ReportsContext }
                 assets={ assets }
                 index={ index }
-                validationRules={ validationRules }
+                validators={ validators }
             >
                 <InputBox>
                     <InputLabel>

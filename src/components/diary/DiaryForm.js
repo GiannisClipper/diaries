@@ -5,7 +5,7 @@ import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
 import { InputDate } from '../libs/InputDate';
 
 import CoreForm from "../core/CoreForm";
-import { isBlank, isFound } from '../core/helpers/validation';
+import { isBlank, isFound } from '../core/assets/validators';
 import prepayAction from '../core/helpers/prepayAction';
 
 import { DiariesContext } from './DiariesContext';
@@ -18,18 +18,15 @@ function DiaryForm( { diaries, index, actions, assets } ) {
 
     const [ data, setData ] = useState( { ...diary } );
 
-    const validationRules = () => {
-        let errors = '';
+    const validators = () => {
+        let errors = [];
 
-        errors += isBlank( data.user_id ) 
-            ? 'Ο Κωδικός χρήστη δεν μπορεί να είναι κενός.\n' : '';
+        errors.push( isBlank( 'Κωδικός χρήστη', data.user_id ) );
+        errors.push( isBlank( 'Τίτλος', data.title ) );
+        errors.push( isFound( 'Τίτλος', diaries.map( x=> x.title ), data.title, index ) );
 
-        errors += isBlank( data.title ) 
-            ? 'Ο Τίτλος ημερολογίου δεν μπορεί να είναι κενός.\n' : '';
- 
-        errors += !isBlank( data.title ) && isFound( diaries.map( x=> x.title ), data.title, index ) 
-            ? 'Ο Τίτλος ημερολογίου υπάρχει ήδη.\n' : '';
- 
+        errors = errors.filter( x => x !== null );
+
         return { data, errors };
     }
 
@@ -40,7 +37,7 @@ function DiaryForm( { diaries, index, actions, assets } ) {
                 Context={ DiariesContext }
                 assets={ assets }
                 index={ index }
-                validationRules={ validationRules }
+                validators={ validators }
             >
                 <InputBox>
                     <InputLabel>

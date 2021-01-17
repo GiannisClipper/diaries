@@ -1,3 +1,5 @@
+import { dateToYYYYMMDD } from '../../core/helpers/dates'; 
+
 const entriesReducer = ( state, action ) => {
 
     switch ( action.type ) {
@@ -5,6 +7,7 @@ const entriesReducer = ( state, action ) => {
         case 'RETRIEVE_MANY_RESPONSE_OK_AFTER': {
             const { schema, parseFromDB, sorter } = action.payload.assets;
             
+            const { date } = state;
             let _uiux = { ...state._uiux };
             const { dataFromDB, genres, funds } = _uiux;
             dataFromDB.sort( sorter );
@@ -16,7 +19,7 @@ const entriesReducer = ( state, action ) => {
                 const entry = parseFromDB( entryFromDB );
                 entries.push( { ...schema(), ...entry } );
             }
-            entries.push( schema() );
+            entries.push( { ...schema(), date: dateToYYYYMMDD( date ) } );
 
             _uiux.status = { isResponseOkAfter: true };
             // delete _uiux.dataFromDB;

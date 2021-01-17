@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBackward, faForward } from '@fortawesome/free-solid-svg-icons';
 
 import StyledList from '../libs/ListBox';
-import { CopyPasteContextProvider } from '../libs/CopyPaste';
+import { CopyPasteContextProvider } from '../core/CopyPaste';
 import { Scroll } from '../libs/Scroll';
 import { REFContext } from '../REFContext';
 

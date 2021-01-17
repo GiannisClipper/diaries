@@ -15,7 +15,7 @@ const List = styled.ul`
 function Entries( { diary_id } ) {
 
     const { state, actions } = useContext( EntriesContext );
-    const { entries } = state;
+    const { date, entries } = state;
 
     // useEffect( () => console.log( 'Has rendered. ', 'Entries' ) );
 
@@ -33,7 +33,8 @@ function Entries( { diary_id } ) {
             { entries.map( entry =>
                 <Entry
                     diary_id={ diary_id }
-                    state={ state }
+                    date={ date }
+                    entries={ entries }
                     index={ index++ }
                     actions={ actions }
                     assets={ assets }

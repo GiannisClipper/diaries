@@ -1,16 +1,25 @@
 import React, { useContext, useRef } from 'react';
-import { EntriesContext } from '../entry/EntriesContext';
-import { REFContext } from '../REFContext';
-import { CopyPasteContext } from '../libs/CopyPaste';
+
 import { Modal } from '../libs/Modal';
 import { MenuBox } from '../libs/MenuBox';
-import { MenuTool, EditTool, AddNoteTool, AddPaymentTool, DeleteTool, CutTool, CopyTool, PasteTool, CloseTool } from '../libs/Tools';
+import { 
+    MenuTool, 
+    EditTool, 
+    DeleteTool, 
+    CutTool, 
+    CopyTool, 
+    PasteTool, 
+    CloseTool
+} from '../libs/Tools';
 
-function EntryMenuTool( { index } ) {
+import { CopyPasteContext } from '../core/CopyPaste';
+import prepayAction from '../core/helpers/prepayAction';
 
-    const { actions } = useContext( EntriesContext );
+import { REFContext } from '../REFContext';
 
-    const openMenu = payload => actions.openMenu( { index, ...payload } );
+function EntryMenuTool( { index, actions, assets } ) {
+
+    const openMenu = prepayAction( actions.openMenu, { assets, index } );
 
     const REF = useContext( REFContext );
 
@@ -27,17 +36,15 @@ function EntryMenuTool( { index } ) {
     );
 }
 
-function EntryMenu( { index, children } ) {
+function EntryMenu( { index, actions, assets, children } ) {
 
-    const { actions } = useContext( EntriesContext );
-
-    const closeMenu = payload => actions.closeMenu( { index, ...payload } );
+    const closeMenu = prepayAction( actions.closeMenu, { assets, index } );
 
     const REF = useContext( REFContext );
 
     let { top, left } = REF.current.menuTool.getBoundingClientRect();
-    top = `${top}px`;
-    left = `calc( ${left}px - ${children.length * 2}em )`;
+    top = `${ top }px`;
+    left = `calc( ${ left }px - ${ children.length * 2 }em )`;
     const style = { top, left };
 
     return (
@@ -49,26 +56,25 @@ function EntryMenu( { index, children } ) {
     );
 }
 
-function BlankEntryMenu( { date, entry, index } ) {
+function BlankEntryMenu( { date, entries, index, actions, assets } ) {
 
     const { doPaste, isAbleToPaste } = useContext( CopyPasteContext );
 
-    const { actions } = useContext( EntriesContext );
+    const entry = entries[ index ];
 
-    const closeMenu = payload => actions.closeMenu( { index, ...payload } );
+    const closeMenu = prepayAction( actions.closeMenu, { assets, index } );
 
-    const openForm = payload => actions.openForm( { index, ...payload } );
+    const openForm = prepayAction( actions.openForm, { assets, index } );
 
     return (
-        <EntryMenu>
-            <AddNoteTool onClick={ event => {
-                openForm( { type: { isNote: true }, mode: { isCreate: true } } );
-                closeMenu();
-            } } />
-
-            <AddPaymentTool onClick={ event => {
-                openForm( { type: { isPayment: true }, mode: { isCreate: true } } );
-                closeMenu();
+        <EntryMenu
+            index={ index }
+            actions={ actions }
+            assets={ assets }
+        >
+            <EditTool onClick={ event => {
+                openForm( { mode: { isCreate: true } } );
+                closeMenu( event, date, index );
             } } />
 
             <PasteTool onClick={ event => {
@@ -83,29 +89,29 @@ function BlankEntryMenu( { date, entry, index } ) {
     );
 }
 
-function ExistsEntryMenu( { date, entry, index } ) {
+function ExistsEntryMenu( { date, entries, index, actions, assets } ) {
 
     const { doCut, doCopy, doPaste, isAbleToPaste } = useContext( CopyPasteContext );
 
-    const { actions } = useContext( EntriesContext );
+    const entry = entries[ index ];
 
-    const closeMenu = payload => actions.closeMenu( { index, ...payload } );
+    const closeMenu = prepayAction( actions.closeMenu, { assets, index } );
 
-    const openForm = payload => actions.openForm( { index, ...payload } );
-
-    const type = entry.type === 'payment'
-        ? { isPayment: true }
-        : { isNote: true };
+    const openForm = prepayAction( actions.openForm, { assets, index } );
 
     return (
-        <EntryMenu>
+        <EntryMenu
+            index={ index }
+            actions={ actions }
+            assets={ assets }
+        >
             <EditTool onClick={ event => {
-                openForm( { type, mode: { isUpdate: true } } );
+                openForm( { mode: { isUpdate: true } } );
                 closeMenu( event, date, index );
             } } />
 
             <DeleteTool onClick={ event => {
-                openForm( { type, mode: { isDelete: true } } );
+                openForm( { mode: { isDelete: true } } );
                 closeMenu();
             } } />
 

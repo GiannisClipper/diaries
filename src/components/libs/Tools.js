@@ -1,79 +1,109 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsisH, faEdit, faFont, faEuroSign, faTrashAlt, faCut, faCamera, faClone, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { 
+    faEllipsisH, 
+    faEdit, 
+    faFont, 
+    faEuroSign, 
+    faTrashAlt, 
+    faCut, 
+    faCamera, 
+    faClone, 
+    faTimes, 
+    faBan 
+} from '@fortawesome/free-solid-svg-icons';
+
 import { ToolBox } from './ToolBox';
 
 function Tool( { icon, title, onClick, reference } ) {
     return (
-        <ToolBox onClick={onClick} ref={reference}>
-            <FontAwesomeIcon icon={icon} className="icon" title={title} />
+        <ToolBox onClick={ onClick } ref={ reference }>
+            <FontAwesomeIcon icon={ icon } className="icon" title={ title } />
         </ToolBox>
     )
 }
 
 const MenuTool = ( { onClick, reference } ) => 
     <Tool 
-        icon={faEllipsisH} 
+        icon={ faEllipsisH } 
         title='Menu'
-        onClick={onClick}
-        reference={reference}
+        onClick={ onClick }
+        reference={ reference }
     />
 
 const AddNoteTool = ( { onClick } ) => 
     <Tool 
-        icon={faFont} 
+        icon={ faFont } 
         title='Νέο σημείωμα'
-        onClick={onClick}
+        onClick={ onClick }
     />
 
 const AddPaymentTool = ( { onClick } ) => 
     <Tool 
-        icon={faEuroSign} 
+        icon={ faEuroSign } 
         title='Νέα πληρωμή'
-        onClick={onClick}
+        onClick={ onClick }
     />
 
 const EditTool = ( { onClick } ) => 
     <Tool 
-        icon={faEdit} 
+        icon={ faEdit } 
         title='Επεξεργασία'
-        onClick={onClick}
+        onClick={ onClick }
     />
 
 const DeleteTool = ( { onClick } ) => 
     <Tool 
-        icon={faTrashAlt} 
+        icon={ faTrashAlt } 
         title='Διαγραφή'
-        onClick={onClick}
+        onClick={ onClick }
     />
 
 const CutTool = ( { onClick } ) => 
     <Tool 
-        icon={faCut} 
+        icon={ faCut } 
         title='Αποκοπή'
-        onClick={onClick}
+        onClick={ onClick }
     />
 
 const CopyTool = ( { onClick } ) => 
     <Tool 
-        icon={faCamera} 
+        icon={ faCamera } 
         title='Αντιγραφή'
-        onClick={onClick}
+        onClick={ onClick }
     />
 
 const PasteTool = ( { onClick, disabled } ) => 
     <Tool 
-        icon={faClone} 
+        icon={ faClone } 
         title='Επικόλληση'
-        onClick={onClick}
-        disabled={disabled}
+        onClick={ onClick }
+        disabled={ disabled }
     />
 
 const CloseTool = ( { onClick } ) => 
     <Tool 
-        icon={faTimes} 
+        icon={ faTimes } 
         title='Κλείσιμο'
-        onClick={onClick}
+        onClick={ onClick }
     />
 
-export { Tool, MenuTool, AddNoteTool, AddPaymentTool, EditTool, DeleteTool, CutTool, CopyTool, PasteTool, CloseTool };
+const SuspendedTool = () => 
+    <Tool 
+        icon={ faBan } 
+        disabled={ true }
+    />
+
+export { 
+    Tool, 
+    MenuTool, 
+    AddNoteTool, 
+    AddPaymentTool, 
+    EditTool, 
+    DeleteTool, 
+    CutTool, 
+    CopyTool, 
+    PasteTool, 
+    CloseTool, 
+    SuspendedTool 
+};

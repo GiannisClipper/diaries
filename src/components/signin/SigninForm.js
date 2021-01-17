@@ -8,7 +8,7 @@ import { ButtonBox, ButtonLabel, ButtonValue } from '../libs/ButtonBox';
 import { OkButton } from '../libs/Buttons';
 
 import { InputValidation } from '../core/CoreForm';
-import { isBlank } from '../core/helpers/validation';
+import { isBlank } from '../core/assets/validators';
 import prepayAction from '../core/helpers/prepayAction';
 
 import texts from '../app/assets/texts';
@@ -31,23 +31,22 @@ function SignForm( { signin, actions, assets } ) {
 
     const { status } = signin._uiux;
 
-    const validationRules = () => {
-        let errors = '';
- 
-        errors += isBlank( data.username )
-            ? 'Το Όνομα χρήστη δεν μπορεί να είναι κενό.\n' : '';
- 
-        errors += isBlank( data.password )
-            ? 'Ο Κωδικός εισόδου δεν μπορεί να είναι κενός.\n' : '';
-  
+    const validators = () => {
+        let errors = [];
+
+        errors.push( isBlank( 'Όνομα', data.username ) );
+        errors.push( isBlank( 'Κωδικός', data.password ) );
+
+        errors = errors.filter( x => x !== null );
+
         return { data, errors };
-    }
+     }
 
     const headLabel = texts.heads.app;
 
     const okLabel = texts.buttons.signin;
 
-    const onClickOk = ! validationRules ? signinRequest : validation;
+    const onClickOk = validators ? validation : signinRequest;
 
     return (
         <SignList>
@@ -57,7 +56,7 @@ function SignForm( { signin, actions, assets } ) {
 
             <InputValidation
                 status={ status }
-                validationRules={ validationRules }
+                validators={ validators }
                 validationOk={ validationOk }
                 validationError={ validationError }
                 request={ signinRequest }

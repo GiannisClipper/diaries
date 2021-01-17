@@ -1,8 +1,10 @@
 import React from 'react';
-import { Loader } from '../libs/Loader';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBan, faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+
 import { MenuOptionBox } from '../libs/MenuBox';
+import { SuspendedTool } from '../libs/Tools';
+import { Loader } from '../libs/Loader';
 
 function CoreMenu( { status, children } ) {
 
@@ -12,17 +14,18 @@ function CoreMenu( { status, children } ) {
         status.isValidation ||
         status.isRequestBefore ||
         status.isRequest ||
-        status.isResponseWaiting ?
+        status.isResponseWaiting 
+        ?
             <MenuOptionBox>
                 <Loader />
             </MenuOptionBox>
-
-        : status.isResponseError ||
-          status.isResponseErrorAfter ?
+        : 
+        status.isResponseError ||
+        status.isResponseErrorAfter 
+        ?
             <MenuOptionBox>
-                <FontAwesomeIcon icon={ faBan } className="icon" />
+                <SuspendedTool />
             </MenuOptionBox>
-
         : 
             <>{ children }</>
     );

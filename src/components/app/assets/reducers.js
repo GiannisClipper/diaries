@@ -9,7 +9,10 @@ import { signinSchema } from '../../signin/assets/schemas';
 
 const appReducer = ( state, action ) => {
 
-    switch ( action.payload.assets.namespace ) {
+    const { assets } = action.payload;
+    const namespace = assets ? assets.namespace : undefined;
+
+    switch ( namespace ) {
 
         case 'signin': {
             return comboReducer( 

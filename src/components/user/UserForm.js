@@ -6,7 +6,7 @@ import { InputEmail } from '../libs/InputEmail';
 import { InputCheck } from '../libs/InputCheck';
 
 import CoreForm from "../core/CoreForm";
-import { isBlank, isFound } from '../core/helpers/validation';
+import { isBlank, isFound, isNotFound } from '../core/assets/validators';
 import prepayAction from '../core/helpers/prepayAction';
 
 import { UsersContext } from './UsersContext';
@@ -20,21 +20,22 @@ function UserForm( { users, index, actions, assets } ) {
 
     const [ data, setData ] = useState( { ...user } );
 
-    const validationRules = () => {
-        let errors = '';
- 
-        errors += isBlank( data.username ) 
-            ? 'Το Όνομα χρήστη δεν μπορεί να είναι κενό.\n' : '';
- 
-        errors += !isBlank( data.username ) && isFound( users.map( x => x.username ), data.username, index ) 
-            ? 'Το Όνομα xρήστη υπάρχει ήδη.\n' : '';
- 
-        errors += isBlank( data.password ) && _uiux.mode.isCreate 
-            ? 'Ο Κωδικός εισόδου δεν μπορεί να είναι κενός.\n' : '';
- 
-        errors += !isBlank( data.password ) && data.password !== data.password2 
-            ? 'Διαφορά στην πληκτρολόγηση του Κωδικού εισόδου.\n' : '';
- 
+    const validators = () => {
+        let errors = [];
+
+        errors.push( isBlank( 'Όνομα', data.username ) );
+        errors.push( isFound( 'Όνομα', users.map( x=> x.title ), data.username, index ) );
+
+        if ( _uiux.mode.isCreate ) {
+            errors.push( isBlank( 'Κωδικός εισόδου', data.password ) );
+        }
+
+        if ( data.password ) {
+            errors.push( isNotFound( 'Επανάληψη', [ data.password ], data.password2 ) );
+        }
+
+        errors = errors.filter( x => x !== null );
+
         return { data, errors };
     }
 
@@ -45,7 +46,7 @@ function UserForm( { users, index, actions, assets } ) {
                 Context={ UsersContext }
                 assets={ assets }
                 index={ index }
-                validationRules={ validationRules }
+                validators={ validators }
             >
                 <InputBox>
                     <InputLabel>

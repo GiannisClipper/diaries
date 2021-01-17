@@ -8,22 +8,22 @@ import texts from '../app/assets/texts';
 
 function InputValidation( { 
     status, 
-    validationRules,
+    validators,
     validationOk,
     validationError,
-    request,     
+    request,
 } ) {
 
     useEffect( () => {
     
         if ( status.isValidation ) {
-            const { data, errors } = validationRules();
+            const { data, errors } = validators();
 
-            if ( errors === '' ) {
+            if ( errors.length === 0 ) {
                 validationOk( { data } )
 
             } else {
-                alert( errors );
+                alert( errors.join( '\n' ) );
                 validationError();
             }
 
@@ -35,7 +35,7 @@ function InputValidation( {
     return null;
 }
 
-function CoreForm( { Context, assets, index, validationRules, children } ) {
+function CoreForm( { Context, assets, index, validators, children } ) {
 
     const { state, actions } = useContext( Context );
     const { namespace } = assets;
@@ -94,7 +94,7 @@ function CoreForm( { Context, assets, index, validationRules, children } ) {
         >
             <InputValidation
                 status={ status }
-                validationRules={ validationRules }
+                validators={ validators }
                 validationOk={ validationOk }
                 validationError={ validationError }
                 request={ request }

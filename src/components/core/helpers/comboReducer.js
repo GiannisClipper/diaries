@@ -11,7 +11,7 @@ const comboReducer = ( ...reducers ) => {
             }
         }
 
-        console.log( 'Unknown type:', action.type )
+        console.log( 'undefined type:', action.type )
 
         return state;
     }

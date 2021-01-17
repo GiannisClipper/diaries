@@ -4,7 +4,7 @@ import { Modal } from '../../libs/Modal';
 import { InputBox, InputLabel, InputValue } from '../../libs/InputBox';
 
 import CoreForm from "../../core/CoreForm";
-import { isBlank, isFound } from '../../core/helpers/validation';
+import { isBlank, isFound } from '../../core/assets/validators';
 import prepayAction from '../../core/helpers/prepayAction';
 
 import { FundsContext } from './FundsContext';
@@ -17,17 +17,14 @@ function FundForm( { funds, index, actions, assets } ) {
 
     const [ data, setData ] = useState( { ...fund } );
 
-    const validationRules = () => {
-        let errors = '';
+    const validators = () => {
+        let errors = [];
 
-        errors += isBlank( data.name ) 
-            ? 'Η Ονομασία δεν μπορεί να είναι κενή.\n' : '';
+        errors.push( isBlank( 'Ονομασία', data.name ) );
+        errors.push( isFound( 'Ονομασία', funds.map( x=> x.name ), data.name, index ) );
+        errors.push( isFound( 'Λογιστικός κωδικός', funds.map( x=> x.code ), data.code, index ) );
 
-        errors += !isBlank( data.name ) && isFound( funds.map( x=> x.name), data.name, index ) 
-            ? 'Η Ονομασία υπάρχει ήδη.\n' : '';
-
-        errors += !isBlank( data.code ) && isFound( funds.map( x=> x.code), data.code, index ) 
-            ? 'Ο Λογιστικός Κωδικός υπάρχει ήδη.\n' : '';
+        errors = errors.filter( x => x !== null );
 
         return { data, errors };
     }
@@ -39,7 +36,7 @@ function FundForm( { funds, index, actions, assets } ) {
                 Context={ FundsContext }
                 assets={ assets }
                 index={ index }
-                validationRules={ validationRules }
+                validators={ validators }
             >
                 <InputBox>
                     <InputLabel>

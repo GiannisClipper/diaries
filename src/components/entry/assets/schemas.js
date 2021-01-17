@@ -15,7 +15,6 @@ const entrySchema = () => ( {
     _uiux: {
         menu: {},  // isOpen
         form: {},  // isOpen
-        type: {},  // isNote, isPayment
         mode: {},  // isCreate, isUpdate, isDelete, isRetrieveMany
         status: {},  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError
         error: {},

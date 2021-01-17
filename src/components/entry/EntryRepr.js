@@ -1,22 +1,21 @@
 import React from 'react';
 
+import NoteRepr from '../note/NoteRepr';
+import PaymentRepr from '../payment/PaymentRepr';
+
 const EntryRepr = ( { entry } ) => {
 
-    let { type, note, incoming, outgoing, fund_name, genre_name, remark } = entry;
+    let { type } = entry;
 
-    let repr = '';
+    return (
+        type === 'note'
+            ? <NoteRepr entry={ entry } /> :
 
-    if ( type === 'note' ) {
-        repr += note;
+        type === 'payment'
+            ? <PaymentRepr entry={ entry } /> :
 
-    } else if ( type === 'payment' ) {
-        repr += incoming ? `Είσπραξη ${incoming} ` : '';
-        repr += outgoing ? `Πληρωμή ${outgoing} ` : '';
-        repr += `(${fund_name}) ${genre_name}`;
-        repr += remark ? `-${remark}` : '';
-    }
-
-    return <>{repr}</>
+        null
+    ); 
 }
 
 export default EntryRepr;

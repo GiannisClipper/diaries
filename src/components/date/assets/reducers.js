@@ -1,34 +1,8 @@
-// import { entrySchema } from '../schemas';
-// import { parseNoteFromDB } from '../note/parsers';
-// import { parsePaymentFromDB } from '../payment/parsers';
 import { daysBetween, shiftDate, dateToYYYYMMDD } from '../../core/helpers/dates'; 
 
 const datesReducer = ( state, action ) => {
 
     switch ( action.type ) {
-
-        // case 'RETRIEVE_MANY_REQUEST_BEFORE': {
-        //     const { dates, _uiux } = state;
-        //     dates.forEach( x => x._uiux.status = { isRequestBefore: true } );
-        //     _uiux.status = { isRequestBefore: true };
-
-        //     return { ...state, _uiux };
-
-        // } case 'RETRIEVE_MANY_REQUEST': {
-        //     const { dates, _uiux } = state;
-        //     dates.forEach( x => x._uiux.mode = { isRetrieveMany: true } );
-        //     dates.forEach( x => x._uiux.status = { isRequest: true } );
-        //     _uiux.mode = { isRetrieveMany: true };
-        //     _uiux.status = { isRequest: true };
-
-        //     return { ...state, dates, _uiux };
-
-        // } case 'RETRIEVE_MANY_RESPONSE_WAITING': {
-        //     const { dates, _uiux } = state;
-        //     dates.forEach( x => x._uiux.status = { isResponseWaiting: true } );
-        //     _uiux.status = { isResponseWaiting: true };
-
-        //     return { ...state, dates, _uiux };
 
         case 'RETRIEVE_MANY_RESPONSE_OK': {
             const { dataFromDB } = action.payload;
@@ -72,7 +46,7 @@ const datesReducer = ( state, action ) => {
 
                     const _uiux = { 
                         ...dates[ i ]._uiux, 
-                        dataFromDB: partFromDB, 
+                        dataFromDB: partFromDB,
                         genres, 
                         funds,
                         status: { isResponseOk: true }

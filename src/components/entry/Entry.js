@@ -1,25 +1,21 @@
-import React, { useContext, useRef, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
+import styled, { css } from 'styled-components';
+
+import StyledRow from '../libs/RowBox';
+import { ToolBox } from '../libs/ToolBox';
+import { Loader } from '../libs/Loader';
+import { SuspendedTool } from '../libs/Tools';
+
+import { CopyPasteContext } from '../core/CopyPaste';
+import { CreateRequest, UpdateRequest, DeleteRequest } from '../core/CoreRequests';
+
+import { EntriesContext } from './EntriesContext';
+import EntryRepr from './EntryRepr';
+import { EntryMenuTool, BlankEntryMenu, ExistsEntryMenu } from './EntryMenu';
+import EntryForm from './EntryForm';
 
 import { GenresContext } from '../payment/genre/GenresContext';
 import { FundsContext } from '../payment/fund/FundsContext';
-import { EntriesContext } from '../entry/EntriesContext';
-
-import assets from './assets/assets'; 
-import { CreateRequest, UpdateRequest, DeleteRequest } from '../core/CoreRequests';
-import { dateToYYYYMMDD } from '../core/helpers/dates';
-
-import { ToolBox } from '../libs/ToolBox';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBan } from '@fortawesome/free-solid-svg-icons';
-
-import { Loader } from '../libs/Loader';
-import { EntryMenuTool, BlankEntryMenu, ExistsEntryMenu } from './EntryMenu';
-import EntryRepr from './EntryRepr';
-import EntryForm from './EntryForm';
-
-import styled, { css } from 'styled-components';
-import StyledRow from '../libs/RowBox';
-import { CopyPasteContext } from '../libs/CopyPaste';
 
 const RowBox = StyledRow.RowBox;
 
@@ -37,9 +33,8 @@ const RowMenu = styled( StyledRow.RowMenu )`
     width: 2em;
 `;
 
-const Entry = ( { diary_id, state, index, actions, assets } ) => {
+const Entry = ( { diary_id, date, entries, index, actions, assets } ) => {
 
-    const { date, entries } = state;
     const entry = entries[ index ];
     const { _uiux } = entry;
 
@@ -131,14 +126,14 @@ const Entry = ( { diary_id, state, index, actions, assets } ) => {
                         Context={ EntriesContext }
                         assets={ assets }
                         index={ index }
-                        url={ `/.netlify/functions/entry?id=${entry.id}` }
+                        url={ `/.netlify/functions/entry?id=${ entry.id }` }
                     />
 
                 : null }
 
                 <RowValue
                     draggable={ draggable }
-                    title={ `${entry.diary_id}.${entry.id}.${entry.date}.${entry.index}.${index}.` }
+                    title={ `${ entry.diary_id }.${ entry.id }.${ entry.date }.${ entry.index }.${ index }.` }
                 >
                     <EntryRepr entry={ entry } />
                 </RowValue>
@@ -150,13 +145,19 @@ const Entry = ( { diary_id, state, index, actions, assets } ) => {
                     _uiux.status.isRequest ||
                     _uiux.status.isResponseWaiting ||
                     _uiux.status.isResponseOk ?
+
                         <ToolBox><Loader /></ToolBox>
+
                     : _uiux.status.isResponseError ||
-                      _uiux.status.isResponseErrorAfter ?
-          
-                        <ToolBox><FontAwesomeIcon icon={ faBan } className="icon" /></ToolBox>
+                    _uiux.status.isResponseErrorAfter ?
+
+                        <SuspendedTool />
                     : 
-                        <EntryMenuTool index={ index } />
+                        <EntryMenuTool 
+                            index={ index } 
+                            actions={ actions }
+                            assets={ assets }
+                        />
                     }
                 </RowMenu>
 
@@ -165,32 +166,30 @@ const Entry = ( { diary_id, state, index, actions, assets } ) => {
                 : ! entry.id ? 
                     <BlankEntryMenu 
                         date={ date }
-                        entry={ entry }
+                        entries={ entries }
                         index={ index }
+                        actions={ actions }
+                        assets={ assets }
                     />
                 : 
                     <ExistsEntryMenu 
                         date={ date }
-                        entry={ entry }
+                        entries={ entries }
                         index={ index }
+                        actions={ actions }
+                        assets={ assets }
                     />
                 }
 
-                { ! _uiux.form.isOpen ?
-                    null
-                : ! _uiux.type.isPayment ?
+                { _uiux.form.isOpen ?
                     <EntryForm 
                         date={ date }
-                        entry={ entry } 
+                        entries={ entries }
                         index={ index }
+                        actions={ actions }
+                        assets={ assets }
                     /> 
-                :
-                    <EntryForm 
-                        date={ date }
-                        entry={ entry } 
-                        index={ index } 
-                    /> 
-                }
+                : null }
 
             </RowBox> 
         );
