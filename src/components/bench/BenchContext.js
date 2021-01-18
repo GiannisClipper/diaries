@@ -1,23 +1,21 @@
 import React, { createContext, useReducer, useEffect } from 'react';
 
 import comboReducer from '../core/helpers/comboReducer';
-import { stateReducer } from '../core/assets/reducers/state';
+import { pageReducer } from '../core/assets/reducers/page';
 import { benchReducer } from './assets/reducers';
 
 import chargeActions from '../core/helpers/chargeActions';
-import stateActionTypes from '../core/assets/actions/state';
-import pageActionTypes from '../core/assets/actions/page';
+import pageTypes from '../core/assets/actions/page';
 
 import { benchSchema } from './assets/schemas';
 
 const reducers = [ 
     benchReducer,
-    stateReducer,
+    pageReducer,
 ];
 
 const rawActions = {
-    ...stateActionTypes,
-    ...pageActionTypes
+    ...pageTypes
 };
 
 const BenchContext = createContext();
@@ -26,7 +24,7 @@ const BenchContextProvider = props => {
 
     const [ state, dispatch ] = useReducer( comboReducer( ...reducers ), benchSchema() );
 
-    const actions = chargeActions( { dispatch, rawActions } );
+    const actions = chargeActions( dispatch, rawActions );
 
     useEffect( () => console.log( 'Has rendered. ', 'BenchContextProvider' ) );
 

@@ -9,12 +9,16 @@ import { fundsSchema } from './assets/schemas';
 function FundsInit( { diary_id } ) {
 
     const { state, actions } = useContext( FundsContext );
+    const { _uiux } = state;
     const { schema } = assets;
     assets.schema = () => ( { ...schema(), diary_id } );
 
-    if ( diary_id !== state.diary_id ) {
+    if ( 
+        ! _uiux.page.isOpen ||
+        diary_id !== state.diary_id
+    ) {
 
-        actions.updateState( { data: {
+        actions.openPage( { data: {
             ...fundsSchema(),
             diary_id,
             funds: [ assets.schema() ],

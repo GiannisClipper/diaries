@@ -10,6 +10,7 @@ import { AppContext } from '../app/AppContext';
 
 function BackupForm( { backup, actions, assets } ) {
 
+    console.log(actions)
     const closeForm = prepayAction( actions.closeForm, { assets } );
 
     return (

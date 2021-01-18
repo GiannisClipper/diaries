@@ -1,3 +1,10 @@
+import { 
+    SIGNIN_REQUEST,
+    SIGNIN_RESPONSE_OK,
+    SIGNIN_RESPONSE_ERROR,
+    SIGNOUT,
+} from '../../core/assets/types/signin';
+
 import { signinSchema } from './schemas';
 import { parseSigninFromDB } from './parsers';
 
@@ -8,13 +15,13 @@ const signinReducer = ( state, action ) => {
 
     switch ( action.type ) {
 
-        case 'SIGNIN_REQUEST': {
+        case SIGNIN_REQUEST: {
             const { signin } = state;
             signin._uiux.status = { isRequest: true };
 
             return { ...state, signin };
 
-        } case 'SIGNIN_RESPONSE_OK': {
+        } case SIGNIN_RESPONSE_OK: {
             const { dataFromDB } = action.payload;
             const signin = { ...signinSchema(), ...parseSigninFromDB( dataFromDB ) };
             const settings = { ...settingsSchema(), ...parseSettingsFromDB( dataFromDB ) };
@@ -34,7 +41,7 @@ const signinReducer = ( state, action ) => {
 
             return { ...state, signin, settings };
 
-        } case 'SIGNIN_RESPONSE_ERROR': {
+        } case SIGNIN_RESPONSE_ERROR: {
             localStorage.removeItem( 'settings' );
             const settings = settingsSchema();
 
@@ -43,7 +50,7 @@ const signinReducer = ( state, action ) => {
 
             return { ...state, signin, settings };
 
-        } case 'SIGNOUT': {
+        } case SIGNOUT: {
             // localStorage.removeItem( 'settings' );
             // const settings = settingsSchema();
 

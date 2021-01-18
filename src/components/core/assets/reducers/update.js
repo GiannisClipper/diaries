@@ -1,8 +1,16 @@
+import {
+    UPDATE_REQUEST,
+    UPDATE_RESPONSE_OK,
+    UPDATE_RESPONSE_ERROR,
+    UPDATE_RESPONSE_OK_AFTER, 
+    UPDATE_RESPONSE_ERROR_AFTER, 
+} from '../types/update';
+
 const updateOneReducer = ( state, action ) => {
 
     switch ( action.type ) {
             
-        case 'UPDATE_REQUEST': {
+        case UPDATE_REQUEST: {
             const { assets } = action.payload;
             const { namespace } = assets;
 
@@ -12,7 +20,7 @@ const updateOneReducer = ( state, action ) => {
 
             return { ...state, [ namespace ]: _item };
 
-        } case 'UPDATE_RESPONSE_OK': {
+        } case UPDATE_RESPONSE_OK: {
             const { dataFromDB, assets } = action.payload;
             const { namespace, parseFromDB } = assets;
 
@@ -23,7 +31,7 @@ const updateOneReducer = ( state, action ) => {
 
             return { ...state, [ namespace ]: _item };
 
-        } case 'UPDATE_RESPONSE_OK_AFTER': {
+        } case UPDATE_RESPONSE_OK_AFTER: {
             const { assets } = action.payload;
             const { namespace } = assets;
 
@@ -35,7 +43,7 @@ const updateOneReducer = ( state, action ) => {
 
             return { ...state, [ namespace ]: _item };
 
-        } case 'UPDATE_RESPONSE_ERROR': {
+        } case UPDATE_RESPONSE_ERROR: {
             const { error, assets } = action.payload;
             const { namespace } = assets;
 
@@ -46,7 +54,7 @@ const updateOneReducer = ( state, action ) => {
 
             return { ...state, [ namespace ]: _item };
 
-        } case 'UPDATE_RESPONSE_ERROR_AFTER': {
+        } case UPDATE_RESPONSE_ERROR_AFTER: {
             const { assets } = action.payload;
             const { namespace } = assets;
 
@@ -68,7 +76,7 @@ const updateOneOfManyReducer = ( state, action ) => {
 
     switch ( action.type ) {
             
-        case 'UPDATE_REQUEST': {
+        case UPDATE_REQUEST: {
             const { index, assets } = action.payload;
             const { namespace } = assets;
 
@@ -78,7 +86,7 @@ const updateOneOfManyReducer = ( state, action ) => {
 
             return { ...state, [ namespace ]: _items };
 
-        } case 'UPDATE_RESPONSE_OK': {
+        } case UPDATE_RESPONSE_OK: {
             const { index, dataFromDB, assets } = action.payload;
             const { namespace, parseFromDB } = assets;
 
@@ -89,7 +97,7 @@ const updateOneOfManyReducer = ( state, action ) => {
 
             return { ...state, [ namespace ]: _items };
 
-        } case 'UPDATE_RESPONSE_OK_AFTER': {
+        } case UPDATE_RESPONSE_OK_AFTER: {
             const { index, assets } = action.payload;
             const { namespace, schema, sorter } = assets;
 
@@ -107,7 +115,7 @@ const updateOneOfManyReducer = ( state, action ) => {
 
             return { ...state, [ namespace ]: _items };
 
-        } case 'UPDATE_RESPONSE_ERROR': {
+        } case UPDATE_RESPONSE_ERROR: {
             const { index, error, assets } = action.payload;
             const { namespace } = assets;
 
@@ -118,7 +126,7 @@ const updateOneOfManyReducer = ( state, action ) => {
 
             return { ...state, [ namespace ]: _items };
 
-        } case 'UPDATE_RESPONSE_ERROR_AFTER': {
+        } case UPDATE_RESPONSE_ERROR_AFTER: {
             const { index, assets } = action.payload;
             const { namespace } = assets;
 

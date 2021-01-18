@@ -1,4 +1,4 @@
-import { useEffect, useContext } from 'react';
+import { useEffect } from 'react';
 
 import { YYYYMMDDToDate, reprToYYYYMMDD } from '../core/helpers/dates';
 
@@ -23,7 +23,7 @@ function BenchInit( { diary_id, state, actions, assets } ) {
         diary_id !== state.diary_id 
     ) {
 
-        actions.updateState( { 
+        actions.openPage( { 
             data: { 
                 ...benchSchema(),
                 diary_id, 
@@ -31,7 +31,6 @@ function BenchInit( { diary_id, state, actions, assets } ) {
             } 
         } );
 
-        actions.openPage();
     }
 
     assets.startDate = calcStartDate( state.startDate );

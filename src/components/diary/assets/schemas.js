@@ -2,6 +2,7 @@ const diariesSchema = () => ( {
     user_id: null,
     diaries: [],
     _uiux: { 
+        page: {}, // isOpen
         status: {},  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
         error: {},
     },

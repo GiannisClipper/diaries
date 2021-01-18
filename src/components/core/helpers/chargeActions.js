@@ -1,10 +1,9 @@
-const chargeActions = ( { dispatch, rawActions } ) => {
+const chargeActions = ( dispatch, rawActions ) => {
 
     const actions = {};
 
-    Object.keys( rawActions ).forEach( type => 
-        actions[ type ] = payload => 
-            dispatch( { type: rawActions[ type ], payload } )
+    Object.keys( rawActions ).forEach( key => 
+        actions[ key ] = payload => dispatch( { ...rawActions[ key ], payload } )
     );
 
     return actions;

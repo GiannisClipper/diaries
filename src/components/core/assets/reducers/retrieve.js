@@ -1,101 +1,70 @@
-const retrieveManyReducer = ( state, action ) => {
+import {
+    RETRIEVE_REQUEST,
+    RETRIEVE_RESPONSE_OK,
+    RETRIEVE_RESPONSE_ERROR,
+    RETRIEVE_RESPONSE_OK_AFTER, 
+    RETRIEVE_RESPONSE_ERROR_AFTER, 
+} from '../types/retrieve';
+
+const retrieveOneReducer = ( state, action ) => {
 
     switch ( action.type ) {
 
-        case 'RETRIEVE_MANY_REQUEST_BEFORE': {
+        case RETRIEVE_REQUEST: {
             const { assets } = action.payload;
             const { namespace } = assets;
 
-            const _items = state[ namespace ];
-            _items.forEach( x => x._uiux.status = { isRequestBefore: true } );
+            const _item = state[ namespace ];
 
-            const { _uiux } = state;
-            _uiux.status = { isRequestBefore: true };
+            _item._uiux.status = { isRequest: true };
 
-            return { ...state, [ namespace ]: _items, _uiux };
+            return { ...state, [ namespace ]: _item };
 
-        } case 'RETRIEVE_MANY_REQUEST': {
-            const { assets } = action.payload;
+        } case RETRIEVE_RESPONSE_OK: {
+            const { assets, dataFromDB } = action.payload;
             const { namespace } = assets;
 
-            const _items = state[ namespace ];
-            _items.forEach( x => x._uiux.mode = { isRetrieveMany: true } );
-            _items.forEach( x => x._uiux.status = { isRequest: true } );
-
-            const { _uiux } = state;
-            _uiux.mode = { isRetrieveMany: true };
-            _uiux.status = { isRequest: true };
-
-            return { ...state, [ namespace ]: _items, _uiux };
-
-        } case 'RETRIEVE_MANY_RESPONSE_WAITING': {
-            const { assets } = action.payload;
-            const { namespace } = assets;
-
-            const _items = state[ namespace ];
-            _items.forEach( x => x._uiux.status = { isResponseWaiting: true } );
-
-            const { _uiux } = state;
-            _uiux.status = { isResponseWaiting: true };
-
-            return { ...state, [ namespace ]: _items, _uiux };
-
-        } case 'RETRIEVE_MANY_RESPONSE_OK': {
-            const { dataFromDB, assets } = action.payload;
-            const { namespace, schema, parseFromDB, sorter } = assets;
-
-            const _items = [];
-            dataFromDB.forEach( x => _items.push( { ...schema(), ...parseFromDB( x ) } ) );
-            if ( sorter ) _items.sort( sorter );
-            _items.push( schema() );
-            _items.forEach( x => x._uiux.status = { isResponseOk: true } );
-
-            const { _uiux } = state;
+            const { _uiux } = state[ namespace ];
             _uiux.status = { isResponseOk: true };
+            const _item = { ...dataFromDB, _uiux };
 
-            return { ...state, [ namespace ]: _items, _uiux };
+            return { ...state, [ namespace ]: _item };
 
-        } case 'RETRIEVE_MANY_RESPONSE_OK_AFTER': {
+        } case RETRIEVE_RESPONSE_OK_AFTER: {
             const { assets } = action.payload;
             const { namespace } = assets;
 
-            const _items = state[ namespace ];
-            _items.forEach( x => x._uiux.status = { isResponseOkAfter: true } );
+            const _item = state[ namespace ];
 
-            const { _uiux } = state;
-            _uiux.status = { isResponseOkAfter: true };
+            _item._uiux.status = { isResponseOkAfter: true };
 
-            return { ...state, [ namespace ]: _items, _uiux };
+            return { ...state, [ namespace ]: _item };
 
-        } case 'RETRIEVE_MANY_RESPONSE_ERROR': {
+        } case RETRIEVE_RESPONSE_ERROR: {
             const { error, assets } = action.payload;
             const { namespace } = assets;
 
-            const _items = state[ namespace ];
-            _items.forEach( x => x._uiux.status = { isResponseError: true } );
+            const _item = state[ namespace ];
 
-            const { _uiux } = state;
-            _uiux.status = { isResponseError: true };
-            _uiux.error = error;
+            _item._uiux.status = { isResponseError: true };
+            _item._uiux.error = error;
 
-            return { ...state, [ namespace ]: _items, _uiux };
+            return { ...state, [ namespace ]: _item };
 
-        } case 'RETRIEVE_MANY_RESPONSE_ERROR_AFTER': {
+        } case RETRIEVE_RESPONSE_ERROR_AFTER: {
             const { assets } = action.payload;
-            const { namespace } = assets;
+            const { namespace, schema } = assets;
 
-            const _items = state[ namespace ];
-            _items.forEach( x => x._uiux.status = { isResponseErrorAfter: true } );
-    
-            const { _uiux } = state;
-            _uiux.status = { isResponseErrorAfter: true };
+            const _item = schema();
 
-            return { ...state, [ namespace ]: _items, _uiux };
+            _item._uiux.status = { isResponseErrorAfter: true };
+
+            return { ...state, [ namespace ]: _item };
 
         } default: {
             return undefined;
-        }    
+        }
     }
 }
 
-export { retrieveManyReducer }; 
+export { retrieveOneReducer };

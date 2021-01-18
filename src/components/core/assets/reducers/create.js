@@ -1,8 +1,16 @@
+import {
+    CREATE_REQUEST,
+    CREATE_RESPONSE_OK,
+    CREATE_RESPONSE_ERROR,
+    CREATE_RESPONSE_OK_AFTER, 
+    CREATE_RESPONSE_ERROR_AFTER, 
+} from '../types/create';
+
 const createOneReducer = ( state, action ) => {
 
     switch ( action.type ) {
             
-        case 'CREATE_REQUEST': {
+        case CREATE_REQUEST: {
             const { assets } = action.payload;
             const { namespace } = assets;
 
@@ -12,7 +20,7 @@ const createOneReducer = ( state, action ) => {
 
             return { ...state, [ namespace ]: _item };
 
-        } case 'CREATE_RESPONSE_OK': {
+        } case CREATE_RESPONSE_OK: {
             const { dataFromDB, assets } = action.payload;
             const { namespace, parseFromDB } = assets;
 
@@ -23,7 +31,7 @@ const createOneReducer = ( state, action ) => {
 
             return { ...state, [ namespace ]: _item };
 
-        } case 'CREATE_RESPONSE_OK_AFTER': {
+        } case CREATE_RESPONSE_OK_AFTER: {
             const { assets } = action.payload;
             const { namespace } = assets;
 
@@ -35,7 +43,7 @@ const createOneReducer = ( state, action ) => {
 
             return { ...state, [ namespace ]: _item };
 
-        } case 'CREATE_RESPONSE_ERROR': {
+        } case CREATE_RESPONSE_ERROR: {
             const { error, assets } = action.payload;
             const { namespace } = assets;
 
@@ -46,7 +54,7 @@ const createOneReducer = ( state, action ) => {
 
             return { ...state, [ namespace ]: _item };
 
-        } case 'CREATE_RESPONSE_ERROR_AFTER': {
+        } case CREATE_RESPONSE_ERROR_AFTER: {
             const { assets } = action.payload;
             const { namespace, schema } = assets;
 
@@ -66,7 +74,7 @@ const createOneOfManyReducer = ( state, action ) => {
 
     switch ( action.type ) {
             
-        case 'CREATE_REQUEST': {
+        case CREATE_REQUEST: {
             const { index, assets } = action.payload;
             const { namespace } = assets;
 
@@ -76,7 +84,7 @@ const createOneOfManyReducer = ( state, action ) => {
 
             return { ...state, [ namespace ]: _items };
 
-        } case 'CREATE_RESPONSE_OK': {
+        } case CREATE_RESPONSE_OK: {
             const { index, dataFromDB, assets } = action.payload;
             const { namespace, parseFromDB } = assets;
 
@@ -87,7 +95,7 @@ const createOneOfManyReducer = ( state, action ) => {
 
             return { ...state, [ namespace ]: _items };
 
-        } case 'CREATE_RESPONSE_OK_AFTER': {
+        } case CREATE_RESPONSE_OK_AFTER: {
             const { index, assets } = action.payload;
             const { namespace, schema, sorter } = assets;
 
@@ -102,7 +110,7 @@ const createOneOfManyReducer = ( state, action ) => {
 
             return { ...state, [ namespace ]: _items };
 
-        } case 'CREATE_RESPONSE_ERROR': {
+        } case CREATE_RESPONSE_ERROR: {
             const { index, error, assets } = action.payload;
             const { namespace } = assets;
 
@@ -113,7 +121,7 @@ const createOneOfManyReducer = ( state, action ) => {
 
             return { ...state, [ namespace ]: _items };
 
-        } case 'CREATE_RESPONSE_ERROR_AFTER': {
+        } case CREATE_RESPONSE_ERROR_AFTER: {
             const { index, assets } = action.payload;
             const { namespace, schema } = assets;
 

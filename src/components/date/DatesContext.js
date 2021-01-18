@@ -2,10 +2,10 @@ import React, { createContext, useContext, useReducer, useEffect } from 'react';
 
 import comboReducer from '../core/helpers/comboReducer';
 import { datesReducer } from './assets/reducers';
-import { retrieveManyReducer } from '../core/assets/reducers/retrieve';
+import { retrieveManyReducer } from '../core/assets/reducers/retrieveMany';
 
 import chargeActions from '../core/helpers/chargeActions';
-import retrieveManyActionTypes from '../core/assets/actions/retrieveMany';
+import retrieveManyTypes from '../core/assets/actions/retrieveMany';
 
 import { AppContext } from '../app/AppContext';
 
@@ -17,7 +17,7 @@ const reducers = [
 ];
 
 const rawActions = {
-    ...retrieveManyActionTypes
+    ...retrieveManyTypes
 };
 
 const DatesContext = createContext();
@@ -28,7 +28,7 @@ const DatesContextProvider = props => {
 
     const [ state, dispatch ] = useReducer( comboReducer( ...reducers ), schema );
 
-    const actions = chargeActions( { dispatch, rawActions } );
+    const actions = chargeActions( dispatch, rawActions );
     
     actions.handleError = useContext( AppContext ).actions.handleError;
 

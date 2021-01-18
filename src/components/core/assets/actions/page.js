@@ -1,7 +1,13 @@
-const openPage = 'OPEN_PAGE'; 
-const startPage = 'START_PAGE'; 
-const prevPage = 'PREV_PAGE'; 
-const nextPage = 'NEXT_PAGE'; 
-const closePage = 'CLOSE_PAGE'; 
+import { 
+    OPEN_PAGE,
+    START_PAGE,
+    PREV_PAGE,
+    NEXT_PAGE,
+} from '../types/page';
 
-export default { openPage, startPage, prevPage, nextPage, closePage };
+const openPage = { type: OPEN_PAGE, payload: {} };
+const startPage = { type: START_PAGE, payload: {} };
+const prevPage = { type: PREV_PAGE, payload: {} };
+const nextPage = { type: NEXT_PAGE, payload: {} };
+
+export default { openPage, startPage, prevPage, nextPage };

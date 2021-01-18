@@ -7,12 +7,16 @@ import { diariesSchema } from './assets/schemas';
 
 function DiariesInit( { state, actions, assets } ) {
 
+    const { _uiux } = state;
     const { schema } = assets;
     const user_id = schema().user_id;
 
-    if ( user_id !== state.user_id ) {
+    if ( 
+        ! _uiux.page.isOpen ||
+        user_id !== state.user_id
+    ) {
 
-        actions.updateState( { 
+        actions.openPage( { 
             data: {
                 ...diariesSchema(),
                 user_id,

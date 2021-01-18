@@ -1,8 +1,10 @@
+import { UPDATE_RESPONSE_OK_AFTER } from '../../core/assets/types/update';
+
 const settingsReducer = ( state, action ) => {
 
     switch ( action.type ) {
 
-        case 'UPDATE_RESPONSE_OK_AFTER': {
+        case UPDATE_RESPONSE_OK_AFTER: {
             const { settings } = state;
             const { _uiux } = settings;
 

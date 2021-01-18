@@ -1,8 +1,10 @@
+import { OPEN_PAGE } from '../../core/assets/types/page';
+
 const reportsReducer = ( state, action ) => {
 
     switch ( action.type ) {
 
-        case 'OPEN_PAGE': {
+        case OPEN_PAGE: {
             const { assets, data } = action.payload;
             const { namespace, schema } = assets;
             const { _uiux } = state;

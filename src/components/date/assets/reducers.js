@@ -1,10 +1,17 @@
+import { 
+    RETRIEVE_MANY_RESPONSE_OK,
+    RETRIEVE_MANY_RESPONSE_ERROR, 
+    RETRIEVE_MANY_RESPONSE_OK_AFTER,
+    RETRIEVE_MANY_RESPONSE_ERROR_AFTER, 
+} from '../../core/assets/types/retrieveMany';
+
 import { daysBetween, shiftDate, dateToYYYYMMDD } from '../../core/helpers/dates'; 
 
 const datesReducer = ( state, action ) => {
 
     switch ( action.type ) {
 
-        case 'RETRIEVE_MANY_RESPONSE_OK': {
+        case RETRIEVE_MANY_RESPONSE_OK: {
             const { dataFromDB } = action.payload;
             const { dates } = state;
             let _uiux = { ...state._uiux };
@@ -14,7 +21,7 @@ const datesReducer = ( state, action ) => {
 
             return { ...state, dates, _uiux };
 
-        } case 'RETRIEVE_MANY_RESPONSE_ERROR': {
+        } case RETRIEVE_MANY_RESPONSE_ERROR: {
             const { error } = action.payload;
             const { dates, _uiux } = state;
             dates.forEach( date => { 
@@ -26,7 +33,7 @@ const datesReducer = ( state, action ) => {
 
             return { ...state, dates, _uiux };
 
-         } case 'RETRIEVE_MANY_RESPONSE_OK_AFTER': {
+         } case RETRIEVE_MANY_RESPONSE_OK_AFTER: {
 
             const { genres, funds } = action.payload;
 
@@ -64,7 +71,7 @@ const datesReducer = ( state, action ) => {
 
             return state;
 
-        } case 'RETRIEVE_MANY_RESPONSE_ERROR_AFTER': {
+        } case RETRIEVE_MANY_RESPONSE_ERROR_AFTER: {
             const { dates, _uiux } = state;
             dates.forEach( date => { 
                 date._uiux.status = { isResponseErrorAfter: true };

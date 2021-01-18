@@ -10,9 +10,9 @@ function UsersInit( { state, actions, assets } ) {
     const { _uiux } = state;
     const { schema } = assets;
 
-    if ( Object.keys( _uiux.status ).length === 0 ) {
+    if ( ! _uiux.page.isOpen ) {
 
-        actions.updateState( { data: {
+        actions.openPage( { data: {
                 ...usersSchema(),
                 users: [ schema() ],
         } } );

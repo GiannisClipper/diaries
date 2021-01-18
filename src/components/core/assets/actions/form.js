@@ -1,5 +1,9 @@
+import {
+    OPEN_FORM,
+    CLOSE_FORM,
+} from '../types/form';
 
-const openForm = 'OPEN_FORM'; 
-const closeForm = 'CLOSE_FORM'; 
+const openForm = { type: OPEN_FORM, payload: {} };
+const closeForm = { type: CLOSE_FORM, payload: {} };
 
 export default { openForm, closeForm };

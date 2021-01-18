@@ -1,6 +1,8 @@
+import { HANDLE_ERROR } from '../../core/assets/types/error';
 import comboReducer from '../../core/helpers/comboReducer';
 import { formOneReducer } from '../../core/assets/reducers/form';
 import { validationOneReducer } from '../../core/assets/reducers/validation';
+import { retrieveOneReducer } from '../../core/assets/reducers/retrieve';
 import { updateOneReducer } from '../../core/assets/reducers/update';
 import { signinReducer } from '../../signin/assets/reducers';
 import { settingsReducer } from '../../settings/assets/reducers';
@@ -30,19 +32,17 @@ const appReducer = ( state, action ) => {
 
         } case 'backup': {
             return comboReducer( 
-                formOneReducer, 
-                backupReducer, 
-                updateOneReducer 
+                formOneReducer,
+                backupReducer,
+                retrieveOneReducer,
             )( state, action );
 
         } default: {
 
             switch ( action.type ) {
     
-                case 'HANDLE_ERROR': {
+                case HANDLE_ERROR: {
                     const { error } = action.payload;
-
-                    // alert( JSON.stringify( error ) );
 
                     let { signin } = state;
 

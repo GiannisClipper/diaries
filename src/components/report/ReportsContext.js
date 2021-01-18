@@ -1,18 +1,16 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
 
 import comboReducer from '../core/helpers/comboReducer';
-import { stateReducer } from '../core/assets/reducers/state';
 import { formOneOfManyReducer } from '../core/assets/reducers/form';
 import { validationOneOfManyReducer } from '../core/assets/reducers/validation';
-import { retrieveManyReducer } from '../core/assets/reducers/retrieve';
+import { retrieveManyReducer } from '../core/assets/reducers/retrieveMany';
 import { reportsReducer } from './assets/reducers';
 
 import chargeActions from '../core/helpers/chargeActions';
-import stateActionTypes from '../core/assets/actions/state';
-import pageActionTypes from '../core/assets/actions/page';
-import formActionTypes from '../core/assets/actions/form';
-import validationActionTypes from '../core/assets/actions/validation';
-import retrieveManyActionTypes from '../core/assets/actions/retrieveMany';
+import pageTypes from '../core/assets/actions/page';
+import formTypes from '../core/assets/actions/form';
+import validationTypes from '../core/assets/actions/validation';
+import retrieveManyTypes from '../core/assets/actions/retrieveMany';
 
 import { AppContext } from '../app/AppContext';
 
@@ -20,18 +18,16 @@ import { reportsSchema } from './assets/schemas';
 
 const reducers = [ 
     reportsReducer,
-    stateReducer,
-    pageActionTypes,
     formOneOfManyReducer,
     validationOneOfManyReducer,
     retrieveManyReducer,
 ];
 
 const rawActions = {
-    ...stateActionTypes,
-    ...formActionTypes,
-    ...validationActionTypes,
-    ...retrieveManyActionTypes
+    ...pageTypes,
+    ...formTypes,
+    ...validationTypes,
+    ...retrieveManyTypes
 };
 
 const ReportsContext = createContext();
@@ -40,7 +36,7 @@ const ReportsContextProvider = props => {
 
     const [ state, dispatch ] = useReducer( comboReducer( ...reducers ), reportsSchema() );
 
-    const actions = chargeActions( { dispatch, rawActions } );
+    const actions = chargeActions( dispatch, rawActions );
     
     actions.handleError = useContext( AppContext ).actions.handleError;
 

@@ -1,8 +1,14 @@
+import { 
+    VALIDATION,
+    VALIDATION_OK,
+    VALIDATION_ERROR,
+} from '../types/validation';
+
 const validationOneReducer = ( state, action ) => {
 
     switch ( action.type ) {
 
-        case 'VALIDATION': {
+        case VALIDATION: {
             const { assets } = action.payload;
             const { namespace } = assets;
 
@@ -12,7 +18,7 @@ const validationOneReducer = ( state, action ) => {
 
             return { ...state, [ namespace ]: _item };
 
-        } case 'VALIDATION_OK': {
+        } case VALIDATION_OK: {
             const { data, assets } = action.payload;
             const { namespace } = assets;
 
@@ -23,7 +29,7 @@ const validationOneReducer = ( state, action ) => {
 
             return { ...state, [ namespace ]: _item };
 
-        } case 'VALIDATION_ERROR': {
+        } case VALIDATION_ERROR: {
             const { assets } = action.payload;
             const { namespace } = assets;
 
@@ -43,7 +49,7 @@ const validationOneOfManyReducer = ( state, action ) => {
 
     switch ( action.type ) {
 
-        case 'VALIDATION': {
+        case VALIDATION: {
             const { index, assets } = action.payload;
             const { namespace } = assets;
 
@@ -53,7 +59,7 @@ const validationOneOfManyReducer = ( state, action ) => {
 
             return { ...state, [ namespace ]: _items };
 
-        } case 'VALIDATION_OK': {
+        } case VALIDATION_OK: {
             const { index, data, assets } = action.payload;
             const { namespace } = assets;
 
@@ -64,7 +70,7 @@ const validationOneOfManyReducer = ( state, action ) => {
 
             return { ...state, [ namespace ]: _items };
 
-        } case 'VALIDATION_ERROR': {
+        } case VALIDATION_ERROR: {
             const { index, assets } = action.payload;
             const { namespace } = assets;
 

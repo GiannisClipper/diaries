@@ -1,29 +1,29 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
 
 import comboReducer from '../../core/helpers/comboReducer';
-import { stateReducer } from '../../core/assets/reducers/state';
+import { pageReducer } from '../../core/assets/reducers/page';
 import { formOneOfManyReducer } from '../../core/assets/reducers/form';
 import { validationOneOfManyReducer } from '../../core/assets/reducers/validation';
 import { createOneOfManyReducer } from '../../core/assets/reducers/create';
 import { updateOneOfManyReducer } from '../../core/assets/reducers/update';
 import { deleteOneOfManyReducer } from '../../core/assets/reducers/delete';
-import { retrieveManyReducer } from '../../core/assets/reducers/retrieve';
+import { retrieveManyReducer } from '../../core/assets/reducers/retrieveMany';
 
 import chargeActions from '../../core/helpers/chargeActions';
-import stateActionTypes from '../../core/assets/actions/state';
-import formActionTypes from '../../core/assets/actions/form';
-import validationActionTypes from '../../core/assets/actions/validation';
-import createActionTypes from '../../core/assets/actions/create';
-import updateActionTypes from '../../core/assets/actions/update';
-import deleteActionTypes from '../../core/assets/actions/delete';
-import retrieveManyActionTypes from '../../core/assets/actions/retrieveMany';
+import pageTypes from '../../core/assets/actions/page';
+import formTypes from '../../core/assets/actions/form';
+import validationTypes from '../../core/assets/actions/validation';
+import createTypes from '../../core/assets/actions/create';
+import updateTypes from '../../core/assets/actions/update';
+import deleteTypes from '../../core/assets/actions/delete';
+import retrieveManyTypes from '../../core/assets/actions/retrieveMany';
 
 import { AppContext } from '../../app/AppContext';
 
 import { genresSchema } from './assets/schemas';
 
 const reducers = [ 
-    stateReducer,
+    pageReducer,
     formOneOfManyReducer,
     validationOneOfManyReducer,
     createOneOfManyReducer,
@@ -33,13 +33,13 @@ const reducers = [
 ];
 
 const rawActions = {
-    ...stateActionTypes,
-    ...formActionTypes,
-    ...validationActionTypes,
-    ...createActionTypes,
-    ...updateActionTypes,
-    ...deleteActionTypes,
-    ...retrieveManyActionTypes
+    ...pageTypes,
+    ...formTypes,
+    ...validationTypes,
+    ...createTypes,
+    ...updateTypes,
+    ...deleteTypes,
+    ...retrieveManyTypes
 };
 
 const GenresContext = createContext();
@@ -48,7 +48,7 @@ const GenresContextProvider = props => {
 
     const [ state, dispatch ] = useReducer( comboReducer( ...reducers ), genresSchema() );
 
-    const actions = chargeActions( { dispatch, rawActions } );
+    const actions = chargeActions( dispatch, rawActions );
     
     actions.handleError = useContext( AppContext ).actions.handleError;
 

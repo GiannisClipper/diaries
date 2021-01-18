@@ -10,13 +10,13 @@ import { updateOneOfManyReducer } from '../core/assets/reducers/update';
 import { deleteOneOfManyReducer } from '../core/assets/reducers/delete';
 
 import chargeActions from '../core/helpers/chargeActions';
-import menuActionTypes from '../core/assets/actions/menu';
-import formActionTypes from '../core/assets/actions/form';
-import validationActionTypes from '../core/assets/actions/validation';
-import createActionTypes from '../core/assets/actions/create';
-import updateActionTypes from '../core/assets/actions/update';
-import deleteActionTypes from '../core/assets/actions/delete';
-import retrieveManyActionTypes from '../core/assets/actions/retrieveMany';
+import menuTypes from '../core/assets/actions/menu';
+import formTypes from '../core/assets/actions/form';
+import validationTypes from '../core/assets/actions/validation';
+import createTypes from '../core/assets/actions/create';
+import updateTypes from '../core/assets/actions/update';
+import deleteTypes from '../core/assets/actions/delete';
+import retrieveManyTypes from '../core/assets/actions/retrieveMany';
 
 import { AppContext } from '../app/AppContext';
 
@@ -31,13 +31,13 @@ const reducers = [
 ];
 
 const rawActions = {
-    ...menuActionTypes,
-    ...formActionTypes,
-    ...validationActionTypes,
-    ...createActionTypes,
-    ...updateActionTypes,
-    ...deleteActionTypes,
-    ...retrieveManyActionTypes,
+    ...menuTypes,
+    ...formTypes,
+    ...validationTypes,
+    ...createTypes,
+    ...updateTypes,
+    ...deleteTypes,
+    ...retrieveManyTypes,
 };
 
 const EntriesContext = createContext();
@@ -49,7 +49,7 @@ const EntriesContextProvider = props => {
 
     const [ state, dispatch ] = useReducer( comboReducer( ...reducers ), schema );
 
-    const actions = chargeActions( { dispatch, rawActions } );
+    const actions = chargeActions( dispatch, rawActions );
     
     actions.handleError = useContext( AppContext ).actions.handleError;
 

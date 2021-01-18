@@ -1,10 +1,12 @@
+import { RETRIEVE_MANY_RESPONSE_OK_AFTER } from '../../core/assets/types/retrieveMany';
+
 import { dateToYYYYMMDD } from '../../core/helpers/dates'; 
 
 const entriesReducer = ( state, action ) => {
 
     switch ( action.type ) {
 
-        case 'RETRIEVE_MANY_RESPONSE_OK_AFTER': {
+        case RETRIEVE_MANY_RESPONSE_OK_AFTER: {
             const { schema, parseFromDB, sorter } = action.payload.assets;
             
             const { date } = state;

@@ -1,3 +1,9 @@
+import { 
+    START_PAGE,
+    PREV_PAGE,
+    NEXT_PAGE,
+} from '../../core/assets/types/page';
+
 import { datesSchema } from '../../date/assets/schemas';
 import { entriesSchema, entrySchema } from '../../entry/assets/schemas';
 
@@ -36,13 +42,7 @@ const benchReducer = ( state, action ) => {
 
     switch ( action.type ) {
 
-        case 'OPEN_PAGE': {
-            const { _uiux } = state;
-            _uiux.page = { isOpen: true };
-
-            return { ...state, _uiux };
-
-        } case 'START_PAGE': {
+        case START_PAGE: {
             const { assets } = action.payload;
             const { startDate, days } = assets;
 
@@ -62,7 +62,7 @@ const benchReducer = ( state, action ) => {
 
             return { ...state, periods, _uiux };
 
-        } case 'PREV_PAGE': {
+        } case PREV_PAGE: {
             const { assets } = action.payload;
             const { days } = assets;
 
@@ -79,7 +79,7 @@ const benchReducer = ( state, action ) => {
 
             return { ...state, periods, _uiux };
 
-        } case 'NEXT_PAGE': {
+        } case NEXT_PAGE: {
             const { assets } = action.payload;
             const { days } = assets;
 

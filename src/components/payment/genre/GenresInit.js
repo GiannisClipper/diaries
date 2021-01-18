@@ -9,12 +9,16 @@ import { genresSchema } from './assets/schemas';
 function GenresInit( { diary_id } ) {
 
     const { state, actions } = useContext( GenresContext );
+    const { _uiux } = state;
     const { schema } = assets;
     assets.schema = () => ( { ...schema(), diary_id } );
 
-    if ( diary_id !== state.diary_id ) {
+    if ( 
+        ! _uiux.page.isOpen ||
+        diary_id !== state.diary_id
+    ) {
 
-        actions.updateState( { data: {
+        actions.openPage( { data: {
             ...genresSchema(),
             diary_id,
             genres: [ schema() ],

@@ -9,22 +9,24 @@ import comboReducer from '../core/helpers/comboReducer';
 import { appReducer } from './assets/reducers';
 
 import chargeActions from '../core/helpers/chargeActions';
-import formActionTypes from '../core/assets/actions/form';
-import validationActionTypes from '../core/assets/actions/validation';
-import signActionTypes from '../core/assets/actions/signin';
-import updateActionTypes from '../core/assets/actions/update';
-import errorActionTypes from '../core/assets/actions/error';
+import formTypes from '../core/assets/actions/form';
+import validationTypes from '../core/assets/actions/validation';
+import signinTypes from '../core/assets/actions/signin';
+import retrieveTypes from '../core/assets/actions/retrieve';
+import updateTypes from '../core/assets/actions/update';
+import errorTypes from '../core/assets/actions/error';
 
 const reducers = [
     appReducer
 ];
 
 const rawActions = { 
-    ...formActionTypes,
-    ...validationActionTypes,
-    ...signActionTypes, 
-    ...updateActionTypes,
-    ...errorActionTypes
+    ...formTypes,
+    ...validationTypes,
+    ...signinTypes, 
+    ...retrieveTypes,
+    ...updateTypes,
+    ...errorTypes
 };
 
 const AppContext = createContext();
@@ -40,7 +42,7 @@ const AppContextProvider = props => {
 
     window.state = state;  // for debugging purposes
 
-    const actions = chargeActions( { dispatch, rawActions } );
+    const actions = chargeActions( dispatch, rawActions );
 
     useEffect( () => console.log( 'Has rendered. ', 'AppContextProvider' ) );
 

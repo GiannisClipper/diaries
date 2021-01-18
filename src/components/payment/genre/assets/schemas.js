@@ -2,6 +2,7 @@ const genresSchema = () => ( {
     diary_id: null,
     genres: [],
     _uiux: { 
+        page: {}, // isOpen
         status: {},  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
         error: {},
     },

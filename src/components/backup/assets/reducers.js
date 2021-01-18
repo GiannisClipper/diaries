@@ -1,3 +1,5 @@
+import { RETRIEVE_RESPONSE_OK_AFTER } from '../../core/assets/reducers/retrieve';
+
 import { backupSchema } from './schemas';
 
 const backupReducer = ( state, action ) => {

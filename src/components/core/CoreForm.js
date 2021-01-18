@@ -47,13 +47,15 @@ function CoreForm( { Context, assets, index, validators, children } ) {
     const { _uiux } = _item;
     const { status, mode } = _uiux;
 
-    const validation = prepayAction( actions.validation, { assets, index } );
-    const validationOk = prepayAction( actions.validationOk, { assets, index } );
-    const validationError = prepayAction( actions.validationError, { assets, index } );
+    const validation = validators ? prepayAction( actions.validation, { assets, index } ) : null;
+    const validationOk = validators ? prepayAction( actions.validationOk, { assets, index } ) : null;
+    const validationError = validators ? prepayAction( actions.validationError, { assets, index } ) : null;
 
     const rawRequest = (
         mode.isCreate ?
             actions.createRequest :
+        mode.isRetrieve ?
+            actions.retrieveRequest :
         mode.isUpdate ?
             actions.updateRequest :
         mode.isDelete ?
@@ -82,12 +84,15 @@ function CoreForm( { Context, assets, index, validators, children } ) {
 
     const cancelLabel = texts.buttons.cancel;
 
+    validators = mode.isDelete ? null : validators;
+    const onClickOk = validators ? validation : request;
+
     return (
         <OkCancelForm
             headLabel={ headLabel }
             okLabel={ okLabel }
             cancelLabel={ cancelLabel }
-            onClickOk={ ! validation || mode.isDelete ? request : validation }
+            onClickOk={ onClickOk }
             onClickCancel={ closeForm }
             isRequest={ status.isRequest }
             isDelete={ mode.isDelete }

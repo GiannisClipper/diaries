@@ -1,8 +1,16 @@
+import {
+    DELETE_REQUEST,
+    DELETE_RESPONSE_OK,
+    DELETE_RESPONSE_ERROR,
+    DELETE_RESPONSE_OK_AFTER, 
+    DELETE_RESPONSE_ERROR_AFTER, 
+} from '../types/delete';
+
 const deleteOneReducer = ( state, action ) => {
 
     switch ( action.type ) {
             
-        case 'DELETE_REQUEST': {
+        case DELETE_REQUEST: {
             const { assets } = action.payload;
             const { namespace } = assets;
 
@@ -12,7 +20,7 @@ const deleteOneReducer = ( state, action ) => {
 
             return { ...state, [ namespace ]: _item };
 
-        } case 'DELETE_RESPONSE_OK': {
+        } case DELETE_RESPONSE_OK: {
             const { assets } = action.payload;
             const { namespace } = assets;
 
@@ -22,7 +30,7 @@ const deleteOneReducer = ( state, action ) => {
 
             return { ...state, [ namespace ]: _item };
 
-        } case 'DELETE_RESPONSE_OK_AFTER': {
+        } case DELETE_RESPONSE_OK_AFTER: {
             const { assets } = action.payload;
             const { namespace } = assets;
 
@@ -32,7 +40,7 @@ const deleteOneReducer = ( state, action ) => {
 
             return { ...state, [ namespace ]: _item };
 
-        } case 'DELETE_RESPONSE_ERROR': {
+        } case DELETE_RESPONSE_ERROR: {
             const { error, assets } = action.payload;
             const { namespace } = assets;
 
@@ -43,7 +51,7 @@ const deleteOneReducer = ( state, action ) => {
 
             return { ...state, [ namespace ]: _item };
 
-        } case 'DELETE_RESPONSE_ERROR_AFTER': {
+        } case DELETE_RESPONSE_ERROR_AFTER: {
             const { assets } = action.payload;
             const { namespace, schema } = assets;
 
@@ -63,7 +71,7 @@ const deleteOneOfManyReducer = ( state, action ) => {
 
     switch ( action.type ) {
 
-        case 'DELETE_REQUEST': {
+        case DELETE_REQUEST: {
             const { index, assets } = action.payload;
             const { namespace } = assets;
 
@@ -73,7 +81,7 @@ const deleteOneOfManyReducer = ( state, action ) => {
 
             return { ...state, [ namespace ]: _items };
 
-        } case 'DELETE_RESPONSE_OK': {
+        } case DELETE_RESPONSE_OK: {
             const { index, assets } = action.payload;
             const { namespace } = assets;
 
@@ -83,7 +91,7 @@ const deleteOneOfManyReducer = ( state, action ) => {
 
             return { ...state, [ namespace ]: _items };
 
-        } case 'DELETE_RESPONSE_OK_AFTER': {
+        } case DELETE_RESPONSE_OK_AFTER: {
             const { index, assets } = action.payload;
             const { namespace } = assets;
 
@@ -93,7 +101,7 @@ const deleteOneOfManyReducer = ( state, action ) => {
 
             return { ...state, [ namespace ]: _items };
 
-        } case 'DELETE_RESPONSE_ERROR': {
+        } case DELETE_RESPONSE_ERROR: {
             const { index, error, assets } = action.payload;
             const { namespace } = assets;
 
@@ -104,7 +112,7 @@ const deleteOneOfManyReducer = ( state, action ) => {
 
             return { ...state, [ namespace ]: _items };
 
-        } case 'DELETE_RESPONSE_ERROR_AFTER': {
+        } case DELETE_RESPONSE_ERROR_AFTER: {
             const { index, assets } = action.payload;
             const { namespace } = assets;
 

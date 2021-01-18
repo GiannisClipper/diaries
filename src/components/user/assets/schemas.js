@@ -1,6 +1,7 @@
 const usersSchema = () => ( {
     users: [],
     _uiux: { 
+        page: {}, // isOpen
         status: {},  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
         error: {},
     },

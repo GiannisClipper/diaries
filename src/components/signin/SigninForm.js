@@ -46,7 +46,7 @@ function SignForm( { signin, actions, assets } ) {
 
     const okLabel = texts.buttons.signin;
 
-    const onClickOk = validators ? validation : signinRequest;
+    const onClickOk = validation;
 
     return (
         <SignList>

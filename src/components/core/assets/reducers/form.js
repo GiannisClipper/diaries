@@ -1,8 +1,13 @@
+import {
+    OPEN_FORM,
+    CLOSE_FORM,
+} from '../types/form';
+
 const formOneReducer = ( state, action ) => {
 
     switch ( action.type ) {
 
-        case 'OPEN_FORM': {
+        case OPEN_FORM: {
             const { assets, mode } = action.payload;
             const { namespace } = assets;
 
@@ -16,7 +21,7 @@ const formOneReducer = ( state, action ) => {
 
             return { ...state, [ namespace ]: _item };
 
-        } case 'CLOSE_FORM': {
+        } case CLOSE_FORM: {
             const { assets } = action.payload;
             const { namespace } = assets;
 
@@ -39,7 +44,7 @@ const formOneOfManyReducer = ( state, action ) => {
 
     switch ( action.type ) {
 
-        case 'OPEN_FORM': {
+        case OPEN_FORM: {
             const { assets, index, mode } = action.payload;
             const { namespace } = assets;
 
@@ -54,7 +59,7 @@ const formOneOfManyReducer = ( state, action ) => {
 
             return { ...state, [ namespace ]: _items };
 
-        } case 'CLOSE_FORM': {
+        } case CLOSE_FORM: {
             const { assets, index } = action.payload;
             const { namespace } = assets;
 

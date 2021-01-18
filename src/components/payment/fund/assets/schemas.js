@@ -2,6 +2,7 @@ const fundsSchema = () => ( {
     diary_id: null,
     funds: [],
     _uiux: { 
+        page: {}, // isOpen
         status: {},  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
         error: {},
     },
