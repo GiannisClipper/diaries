@@ -14,9 +14,6 @@ import EntryRepr from './EntryRepr';
 import { EntryMenuTool, BlankEntryMenu, ExistsEntryMenu } from './EntryMenu';
 import EntryForm from './EntryForm';
 
-import { GenresContext } from '../payment/genre/GenresContext';
-import { FundsContext } from '../payment/fund/FundsContext';
-
 const RowBox = StyledRow.RowBox;
 
 const RowValue = styled( StyledRow.RowValue )`
@@ -37,10 +34,6 @@ const Entry = ( { diary_id, date, entries, index, actions, assets } ) => {
 
     const entry = entries[ index ];
     const { _uiux } = entry;
-
-    entry.index = index;
-    entry.genres = useContext( GenresContext ).state.genres;
-    entry.funds = useContext( FundsContext ).state.funds;
 
     const { doCut, doPaste } = useContext( CopyPasteContext );
 
@@ -67,30 +60,6 @@ const Entry = ( { diary_id, date, entries, index, actions, assets } ) => {
             doPaste( { date, entry, index } );
         }
     }
-
-    // const _saved = useRef( { date, index } );
-
-    // const addDiaryId = () => _uiux.mode.isCreate ? { diary_id } : undefined;
-
-    // const parseDataToDB = _uiux.type.isPayment 
-    //     ? 
-    //     () => parsePaymentToDB(
-    //             { ...entry, date: dateToYYYYMMDD( date ), index, ...addDiaryId() },
-    //             genres, 
-    //             funds 
-    //     )
-    //     : 
-    //     () => parseNoteToDB( 
-    //             { ...entry, date: dateToYYYYMMDD( date ), index, ...addDiaryId() },
-    //     );
-
-    // const body = () => JSON.stringify( {
-    //     old: { date: dateToYYYYMMDD( _saved.current.date ), index: _saved.current.index },
-    //     new: { date: dateToYYYYMMDD( date ), index },
-    //     data: parseDataToDB(),
-    // } );
-
-    // useEffect( () =>  console.log( 'Has rendered. ', 'Entry' ) );
 
     if ( ! diary_id ) {
         return null;

@@ -1,10 +1,10 @@
 const paymentSchema = () => ( {
     type: 'payment',
-    genre_name: '',
+    genre_id: '',
     incoming: null,
     outgoing: null,
     remark: '',
-    fund_name: '',
+    fund_id: '',
 } );
 
 export { paymentSchema };

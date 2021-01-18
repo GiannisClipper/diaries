@@ -35,9 +35,9 @@ const datesReducer = ( state, action ) => {
 
          } case RETRIEVE_MANY_RESPONSE_OK_AFTER: {
 
-            const { genres, funds } = action.payload;
+            // const { genres, funds } = action.payload;
 
-            if ( genres && funds ) {
+//            if ( genres && funds ) {
                 let dates = [ ...state.dates ];
                 let _uiux = { ...state._uiux };
                 const { dataFromDB } = _uiux;
@@ -54,8 +54,8 @@ const datesReducer = ( state, action ) => {
                     const _uiux = { 
                         ...dates[ i ]._uiux, 
                         dataFromDB: partFromDB,
-                        genres, 
-                        funds,
+                        // genres, 
+                        // funds,
                         status: { isResponseOk: true }
                     };
 
@@ -67,9 +67,9 @@ const datesReducer = ( state, action ) => {
 
                 console.log( dates )
                 return { ...state, dates, _uiux };
-            }
+//            }
 
-            return state;
+//            return state;
 
         } case RETRIEVE_MANY_RESPONSE_ERROR_AFTER: {
             const { dates, _uiux } = state;

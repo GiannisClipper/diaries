@@ -1,16 +1,14 @@
-import { getFromList } from '../../core/helpers/getFromList';
-
 const parsePaymentFromDB = ( data ) => ( {
     id: data._id,
     diary_id: data.diary_id,
     date: data.date,
     index: data.index,
     type: data.type,
-    genre_name: getFromList( data.genres, 'id', data.genre_id ).name,
+    genre_id: data.genre_id,
     incoming: data.incoming,
     outgoing: data.outgoing,
     remark: data.remark,
-    fund_name: getFromList( data.funds, 'id', data.fund_id ).name,
+    fund_id: data.fund_id,
 } )
 
 const parsePaymentToDB = ( data ) => ( {
@@ -18,11 +16,11 @@ const parsePaymentToDB = ( data ) => ( {
     date: data.date,
     index: data.index,
     type: data.type,
-    genre_id: getFromList( data.genres, 'name', data.genre_name ).id,
+    genre_id: data.genre_id,
     incoming: data.incoming,
     outgoing: data.outgoing,
     remark: data.remark,
-    fund_id: getFromList( data.funds, 'name', data.fund_name ).id,
+    fund_id: data.fund_id,
 } )
 
 export { 
