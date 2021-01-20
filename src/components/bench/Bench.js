@@ -8,8 +8,6 @@ import StyledList from '../libs/ListBox';
 import { CoreScroll } from '../core/CoreScroll';
 import { CopyPasteContextProvider } from '../core/CopyPaste';
 
-import { REFContext } from '../REFContext';
-
 import texts from '../app/assets/texts';
 
 import { BenchContext } from './BenchContext';
@@ -61,33 +59,28 @@ const Bench = ( { diary_id } ) => {
     const { state, actions } = useContext( BenchContext );
     const { periods } = state;
 
-    const REF = useContext( REFContext );
-
     // to pass component references to `Scroll` component
     const outer = useRef( null );
     const inner = useRef( null );
     const prev = useRef( null );
     const next = useRef( null );
+
     const startDate = useRef( null );
 
-    // to update `Scroll` component with other component references
-    const [ scrollUpdated, setScrollUpdated ] = useState( false );
-
-    useEffect( () => setScrollUpdated( true ), [] );
-
     // to control that auto scrolling to central date happens once
-    const hasScrolledToCentralDate = useRef( false );
+    const hasScrolledToStartDate = useRef( false );
+
+    const scrollToStartDate = outer => {
+        outer = outer || document.documentElement;
+        outer.scrollTop = startDate.current.offsetTop;  // - ( outer.clientHeight * 0.10 );
+    }
 
     useEffect( () => {
-        if ( !hasScrolledToCentralDate.current && startDate.current ) {   
-            REF.current.scrollToCentralDate();
-            hasScrolledToCentralDate.current = true;
+        if ( ! hasScrolledToStartDate.current && startDate.current ) {   
+            scrollToStartDate( outer.current );
+            hasScrolledToStartDate.current = true;
         }
     } );
-
-    REF.current.scrollToCentralDate = () => {
-        //outer.current.scrollTop = startDate.current.offsetTop - ( outer.current.clientHeight * 0.10 );
-    }
 
     // useEffect( () => console.log( 'Has rendered. ', 'Bench' ) );
 
@@ -95,7 +88,6 @@ const Bench = ( { diary_id } ) => {
         <ListBox ref={ inner }>
 
             <CoreScroll
-                updated={ scrollUpdated }
                 outer={ outer.current }
                 inner={ inner.current }
                 prev={ prev.current }

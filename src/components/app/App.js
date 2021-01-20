@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { REFContextProvider } from '../REFContext';
 import { AppContextProvider } from './AppContext';
 import { UsersContextProvider } from '../user/UsersContext';
 import { DiariesContextProvider } from '../diary/DiariesContext';
@@ -14,7 +13,6 @@ function App() {
     // useEffect( () => console.log( 'Has rendered. ', 'App' ) );
 
     return (
-        <REFContextProvider>
         <AppContextProvider>
         <UsersContextProvider>
         <DiariesContextProvider>
@@ -30,7 +28,6 @@ function App() {
         </DiariesContextProvider>
         </UsersContextProvider>
         </AppContextProvider>
-        </REFContextProvider>
     );
 }
 

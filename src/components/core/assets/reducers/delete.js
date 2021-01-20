@@ -107,7 +107,7 @@ const deleteOneOfManyReducer = ( state, action ) => {
 
             const _items = state[ namespace ];
 
-            _items[ index ]._uiux.status = { isResponseError: true }
+            _items[ index ]._uiux.status = { isResponseError: true };
             _items[ index ]._uiux.error = error;
 
             return { ...state, [ namespace ]: _items };
@@ -118,7 +118,7 @@ const deleteOneOfManyReducer = ( state, action ) => {
 
             const _items = state[ namespace ];
 
-            _items[ index ]._uiux.status = { isResponseErrorAfter: true }
+            _items[ index ]._uiux.status = { isResponseErrorAfter: true };
 
             return { ...state, [ namespace ]: _items };
 

@@ -6,28 +6,11 @@ function CoreScroll( { outer, inner, prev, next, doScrollUp, doScrollDown } ) {
 
     const scrollRef = useRef( {
         direction: {},  // isUp, isDown
-        scrollTop: 0,  // `outer` element: how many pixels have scrolled vertically 
-        offsetHeight: 0,  // `inner` element: the total height -including padding, border
+        scrollTop: 0,  // `outer` element attr: how many pixels already scrolled vertically 
+        offsetHeight: 0,  // `inner` element attr: the total height -including padding, border
     } );
 
     const scrollMem = scrollRef.current;
-
-    const scroll = event => {
-        // console.log( 
-        //     outer.scrollTop, 
-        //     prev.getBoundingClientRect().top, 
-        //     prev.getBoundingClientRect().height, 
-        //     outer.clientHeight,
-        //     next.getBoundingClientRect().bottom,
-        //     next.getBoundingClientRect().height,
-        //     inner.scrollHeight 
-        // )
-        // event.stopPropagation();
-
-        outer.scrollTop < scrollMem.scrollTop
-            ? scrollUp( event )
-            : scrollDown( event );
-    }
 
     const scrollUp = event => {
         scrollMem.direction = { isUp: true };
@@ -52,18 +35,35 @@ function CoreScroll( { outer, inner, prev, next, doScrollUp, doScrollDown } ) {
         }
     }
 
+    const scrollUpOrDown = event => {
+        // console.log( 
+        //     outer.scrollTop, 
+        //     prev.getBoundingClientRect().top, 
+        //     prev.getBoundingClientRect().height, 
+        //     outer.clientHeight,
+        //     next.getBoundingClientRect().bottom,
+        //     next.getBoundingClientRect().height,
+        //     inner.scrollHeight 
+        // )
+        // event.stopPropagation();
+
+        outer.scrollTop < scrollMem.scrollTop
+            ? scrollUp( event )
+            : scrollDown( event );
+    }
+
     const addEvents = () => {
         outer === document.documentElement
-            ? document.addEventListener( 'scroll', scroll )
-            : outer.addEventListener( 'scroll', scroll );
+            ? document.addEventListener( 'scroll', scrollUpOrDown )
+            : outer.addEventListener( 'scroll', scrollUpOrDown );
         prev.addEventListener( 'click', scrollUp );
         next.addEventListener( 'click', scrollDown );
     }
 
     const removeEvents = () => {
         outer === document.documentElement
-            ? document.removeEventListener( 'scroll', scroll )
-            : outer.removeEventListener( 'scroll', scroll );
+            ? document.removeEventListener( 'scroll', scrollUpOrDown )
+            : outer.removeEventListener( 'scroll', scrollUpOrDown );
         prev.removeEventListener( 'click', scrollUp );
         next.removeEventListener( 'click', scrollDown );
     }

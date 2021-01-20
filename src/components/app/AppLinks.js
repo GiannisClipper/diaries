@@ -2,9 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faUser, faEdit, faBookOpen, faCog, faCogs, faCompass, faMap, faDoorOpen, faDoorClosed } from '@fortawesome/free-solid-svg-icons';
-
-import { REFContext } from '../REFContext';
+import { faHome, faUser, faEdit, faBookOpen, faCog, faCogs, faMap, faDoorOpen, faDoorClosed } from '@fortawesome/free-solid-svg-icons';
 
 const LinkBoxStyle = styled.span`
     ${ props => props.theme.LinkBox && props.theme.LinkBox };
@@ -78,15 +76,6 @@ const LinkReports = LinkBox( {
     icon: faMap, 
     title: 'Καταστάσεις' 
 } );
-
-// const ScrollToCentralDate = () => {
-//     const REF = useContext( REFContext );
-//     return (
-//         <button onClick={ event => REF.current.scrollToCentralDate( event )}>
-//             <FontAwesomeIcon icon={ faCompass } className="icon" title="Μετακίνηση στην κεντρική ημ/νία" />
-//         </button>
-//     )
-// }
 
 export { 
     LinkHome,
