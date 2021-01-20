@@ -4,11 +4,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBackward, faForward } from '@fortawesome/free-solid-svg-icons';
 
 import StyledList from '../libs/ListBox';
+
+import { CoreScroll } from '../core/CoreScroll';
 import { CopyPasteContextProvider } from '../core/CopyPaste';
-import { Scroll } from '../libs/Scroll';
+
 import { REFContext } from '../REFContext';
 
-import { buttons } from '../app/assets/texts';
+import texts from '../app/assets/texts';
 
 import { BenchContext } from './BenchContext';
 import assets from './assets/assets';
@@ -35,7 +37,7 @@ function PrevButton( { reference } ) {
     return (
         <StyledPrevButton ref={reference}>
             <FontAwesomeIcon icon={ faBackward } className="icon" />
-            { buttons.prev }
+            { texts.buttons.prev }
         </StyledPrevButton>
     );
 }
@@ -48,7 +50,7 @@ const StyledNextButton = styled.button`
 function NextButton( { reference } ) {
     return (
         <StyledNextButton ref={ reference }>
-            { buttons.next }
+            { texts.buttons.next }
             <FontAwesomeIcon icon={ faForward } className="icon" />
         </StyledNextButton>
     );
@@ -92,7 +94,7 @@ const Bench = ( { diary_id } ) => {
     return (
         <ListBox ref={ inner }>
 
-            <Scroll
+            <CoreScroll
                 updated={ scrollUpdated }
                 outer={ outer.current }
                 inner={ inner.current }

@@ -35,41 +35,30 @@ const datesReducer = ( state, action ) => {
 
          } case RETRIEVE_MANY_RESPONSE_OK_AFTER: {
 
-            // const { genres, funds } = action.payload;
+            let dates = [ ...state.dates ];
+            let _uiux = { ...state._uiux };
+            const { dataFromDB } = _uiux;
 
-//            if ( genres && funds ) {
-                let dates = [ ...state.dates ];
-                let _uiux = { ...state._uiux };
-                const { dataFromDB } = _uiux;
+            const dateFrom = dates[ 0 ].date;
+            const dateTill = dates[ dates.length - 1 ].date;
+            const days = daysBetween( dateFrom, dateTill ) + 1;
 
-                const dateFrom = dates[ 0 ].date;
-                const dateTill = dates[ dates.length - 1 ].date;
-                const days = daysBetween( dateFrom, dateTill ) + 1;
+            for ( let i = 0; i < days; i++ ) { 
+                const date = shiftDate( dateFrom, i );
+                const dateStr = dateToYYYYMMDD( date );
+                const partFromDB = dataFromDB.filter( x => x.date === dateStr );
 
-                for ( let i = 0; i < days; i++ ) { 
-                    const date = shiftDate( dateFrom, i );
-                    const dateStr = dateToYYYYMMDD( date );
-                    const partFromDB = dataFromDB.filter( x => x.date === dateStr );
+                dates[ i ]._uiux = { 
+                    ...dates[ i ]._uiux, 
+                    dataFromDB: partFromDB,
+                    status: { isResponseOk: true }
+                };
+            }
 
-                    const _uiux = { 
-                        ...dates[ i ]._uiux, 
-                        dataFromDB: partFromDB,
-                        // genres, 
-                        // funds,
-                        status: { isResponseOk: true }
-                    };
+            _uiux.status = { isResponseOkAfter: true };
+            delete _uiux.dataFromDB;
 
-                    dates[ i ]._uiux = _uiux;
-                }
-
-                _uiux.status = { isResponseOkAfter: true };
-                delete _uiux.dataFromDB;
-
-                console.log( dates )
-                return { ...state, dates, _uiux };
-//            }
-
-//            return state;
+            return { ...state, dates, _uiux };
 
         } case RETRIEVE_MANY_RESPONSE_ERROR_AFTER: {
             const { dates, _uiux } = state;

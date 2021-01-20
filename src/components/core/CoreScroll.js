@@ -1,30 +1,16 @@
-import React, { useRef, createContext, useContext, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 
-const ScrollContext = createContext();
+function CoreScroll( { outer, inner, prev, next, doScrollUp, doScrollDown } ) {
 
-const ScrollContextProvider = props => {
+    outer = outer || document.documentElement;
 
-    const initRef = useRef( {
+    const scrollRef = useRef( {
         direction: {},  // isUp, isDown
         scrollTop: 0,  // `outer` element: how many pixels have scrolled vertically 
         offsetHeight: 0,  // `inner` element: the total height -including padding, border
     } );
 
-    // useEffect( () => console.log( 'Has rendered. ', 'ScrollContextProvider' ) );
-
-    return (
-        <ScrollContext.Provider value={ initRef }>
-            { props.children }
-        </ScrollContext.Provider>    
-    )
-};
-
-function ScrollHandler( { outer, inner, prev, next, doScrollUp, doScrollDown } ) {
-
-    outer = outer || document.documentElement;
-
-    const scrollContext = useContext( ScrollContext );
-    const scrollRef = scrollContext.current;
+    const scrollMem = scrollRef.current;
 
     const scroll = event => {
         // console.log( 
@@ -38,14 +24,14 @@ function ScrollHandler( { outer, inner, prev, next, doScrollUp, doScrollDown } )
         // )
         // event.stopPropagation();
 
-        outer.scrollTop < scrollRef.scrollTop
+        outer.scrollTop < scrollMem.scrollTop
             ? scrollUp( event )
             : scrollDown( event );
     }
 
     const scrollUp = event => {
-        scrollRef.direction = { isUp: true };
-        scrollRef.scrollTop = outer.scrollTop;
+        scrollMem.direction = { isUp: true };
+        scrollMem.scrollTop = outer.scrollTop;
 
         const { bottom, height } = prev.getBoundingClientRect();
 
@@ -55,8 +41,8 @@ function ScrollHandler( { outer, inner, prev, next, doScrollUp, doScrollDown } )
     }
 
     const scrollDown = event => {
-        scrollRef.direction = { isDown: true };
-        scrollRef.scrollTop = outer.scrollTop;
+        scrollMem.direction = { isDown: true };
+        scrollMem.scrollTop = outer.scrollTop;
 
         const clientHeight = outer.clientHeight;
         const { top, height } = next.getBoundingClientRect();
@@ -84,44 +70,28 @@ function ScrollHandler( { outer, inner, prev, next, doScrollUp, doScrollDown } )
 
     useEffect( () => {
         if ( inner ) {
-            const direction = scrollRef.direction;
+            const direction = scrollMem.direction;
 
             if ( direction.isUp ) {
-                const scrollTop = scrollRef.scrollTop;  
-                const offsetHeight = scrollRef.offsetHeight;
+                const scrollTop = scrollMem.scrollTop;  
+                const offsetHeight = scrollMem.offsetHeight;
                 const offsetDiff = inner.offsetHeight - offsetHeight;
                 outer.scrollTop = scrollTop + offsetDiff;
             }
 
-            scrollRef.direction = {};
-            scrollRef.scrollTop = outer.scrollTop;
-            scrollRef.offsetHeight = inner.offsetHeight;
+            scrollMem.direction = {};
+            scrollMem.scrollTop = outer.scrollTop;
+            scrollMem.offsetHeight = inner.offsetHeight;
     
             addEvents();
             return () => removeEvents();
         }
     } );
 
-    // useEffect( () => console.log( 'Has rendered. ', 'ScrollHandler' ) );
+    // useEffect( () => console.log( 'Has rendered. ', 'CoreScroll' ) );
 
     return null;
 }
 
-function Scroll( { outer, inner, prev, next, doScrollUp, doScrollDown, scrollRef } ) {
-    return (
-        <ScrollContextProvider>
-            <ScrollHandler
-                outer={outer}
-                inner={inner}
-                prev={prev}
-                next={next}
-                doScrollUp={doScrollUp}
-                doScrollDown={doScrollDown}
-                scrollRef={scrollRef}
-            />
-        </ScrollContextProvider>
-    );
-}
-
-export default Scroll;
-export { Scroll };
+export default CoreScroll;
+export { CoreScroll };
