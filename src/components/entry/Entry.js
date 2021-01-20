@@ -139,6 +139,7 @@ const Entry = ( { diary_id, date, entries, index, actions, assets } ) => {
                         index={ index }
                         actions={ actions }
                         assets={ assets }
+                        menuToolCoords={ _uiux.menuToolCoords }
                     />
                 : 
                     <ExistsEntryMenu 
@@ -147,6 +148,7 @@ const Entry = ( { diary_id, date, entries, index, actions, assets } ) => {
                         index={ index }
                         actions={ actions }
                         assets={ assets }
+                        menuToolCoords={ _uiux.menuToolCoords }
                     />
                 }
 

@@ -15,34 +15,29 @@ import {
 import { CopyPasteContext } from '../core/CopyPaste';
 import prepayAction from '../core/helpers/prepayAction';
 
-import { REFContext } from '../REFContext';
-
 function EntryMenuTool( { index, actions, assets } ) {
 
     const openMenu = prepayAction( actions.openMenu, { assets, index } );
-
-    const REF = useContext( REFContext );
 
     const menuToolRef = useRef( null );
 
     return ( 
         <MenuTool
-            onClick={event => {
-                REF.current.menuTool = menuToolRef.current;
-                openMenu();
+            reference={ menuToolRef }
+            onClick={ event => {
+                const { top, left } = menuToolRef.current.getBoundingClientRect();
+                const menuToolCoords = { top, left };
+                openMenu( { menuToolCoords } );
             }}
-            reference={menuToolRef}
         />
     );
 }
 
-function EntryMenu( { index, actions, assets, children } ) {
+function EntryMenu( { index, actions, assets, children, menuToolCoords } ) {
 
     const closeMenu = prepayAction( actions.closeMenu, { assets, index } );
 
-    const REF = useContext( REFContext );
-
-    let { top, left } = REF.current.menuTool.getBoundingClientRect();
+    let { top, left } = menuToolCoords;
     top = `${ top }px`;
     left = `calc( ${ left }px - ${ children.length * 2 }em )`;
     const style = { top, left };
@@ -56,7 +51,7 @@ function EntryMenu( { index, actions, assets, children } ) {
     );
 }
 
-function BlankEntryMenu( { date, entries, index, actions, assets } ) {
+function BlankEntryMenu( { date, entries, index, actions, assets, menuToolCoords } ) {
 
     const { doPaste, isAbleToPaste } = useContext( CopyPasteContext );
 
@@ -71,6 +66,7 @@ function BlankEntryMenu( { date, entries, index, actions, assets } ) {
             index={ index }
             actions={ actions }
             assets={ assets }
+            menuToolCoords={ menuToolCoords }
         >
             <EditTool onClick={ event => {
                 openForm( { mode: { isCreate: true } } );
@@ -89,7 +85,7 @@ function BlankEntryMenu( { date, entries, index, actions, assets } ) {
     );
 }
 
-function ExistsEntryMenu( { date, entries, index, actions, assets } ) {
+function ExistsEntryMenu( { date, entries, index, actions, assets, menuToolCoords } ) {
 
     const { doCut, doCopy, doPaste, isAbleToPaste } = useContext( CopyPasteContext );
 
@@ -104,6 +100,7 @@ function ExistsEntryMenu( { date, entries, index, actions, assets } ) {
             index={ index }
             actions={ actions }
             assets={ assets }
+            menuToolCoords={ menuToolCoords }
         >
             <EditTool onClick={ event => {
                 openForm( { mode: { isUpdate: true } } );
