@@ -53,13 +53,17 @@ function EntryMenu( { index, actions, assets, children, menuToolCoords } ) {
 
 function BlankEntryMenu( { date, entries, index, actions, assets, menuToolCoords } ) {
 
-    const { doPaste, isAbleToPaste } = useContext( CopyPasteContext );
+    const { doPaste, isPasteEnabled } = useContext( CopyPasteContext );
 
     const entry = entries[ index ];
 
-    const closeMenu = prepayAction( actions.closeMenu, { assets, index } );
+    const pasteProcess = prepayAction( actions.pasteProcess, { assets, index } );
 
+    const createRequest = prepayAction( actions.createRequest, { assets, index } );
+
+    const createMode = prepayAction( actions.createMode, { assets, index } );
     const openForm = prepayAction( actions.openForm, { assets, index } );
+    const closeMenu = prepayAction( actions.closeMenu, { assets, index } );
 
     return (
         <EntryMenu
@@ -69,14 +73,15 @@ function BlankEntryMenu( { date, entries, index, actions, assets, menuToolCoords
             menuToolCoords={ menuToolCoords }
         >
             <EditTool onClick={ event => {
-                openForm( { mode: { isCreate: true } } );
+                createMode();
+                openForm();
                 closeMenu( event, date, index );
             } } />
 
             <PasteTool onClick={ event => {
-                if ( isAbleToPaste() ) {
+                if ( isPasteEnabled() ) {
                     closeMenu();
-                    doPaste( { date, entry, index } );
+                    doPaste( { date, index, entry, pasteProcess } );
                 }
             } } />
 
@@ -87,13 +92,23 @@ function BlankEntryMenu( { date, entries, index, actions, assets, menuToolCoords
 
 function ExistsEntryMenu( { date, entries, index, actions, assets, menuToolCoords } ) {
 
-    const { doCut, doCopy, doPaste, isAbleToPaste } = useContext( CopyPasteContext );
+    const { doCut, doCopy, doPaste, isPasteEnabled } = useContext( CopyPasteContext );
 
     const entry = entries[ index ];
 
-    const closeMenu = prepayAction( actions.closeMenu, { assets, index } );
+    const cutProcess = prepayAction( actions.cutProcess, { assets, index } );
+    const pasteProcess = prepayAction( actions.pasteProcess, { assets, index } );
 
+    const createRequest = prepayAction( actions.createRequest, { assets, index } );
+
+    const updateRequest = prepayAction( actions.updateRequest, { assets, index } );
+
+    const deleteResponseOkAfter = prepayAction( actions.deleteResponseOkAfter, { assets, index } );
+
+    const updateMode = prepayAction( actions.updateMode, { assets, index } );
+    const deleteMode = prepayAction( actions.deleteMode, { assets, index } );
     const openForm = prepayAction( actions.openForm, { assets, index } );
+    const closeMenu = prepayAction( actions.closeMenu, { assets, index } );
 
     return (
         <EntryMenu
@@ -103,29 +118,33 @@ function ExistsEntryMenu( { date, entries, index, actions, assets, menuToolCoord
             menuToolCoords={ menuToolCoords }
         >
             <EditTool onClick={ event => {
-                openForm( { mode: { isUpdate: true } } );
+                updateMode();
+                openForm();
                 closeMenu( event, date, index );
             } } />
 
             <DeleteTool onClick={ event => {
-                openForm( { mode: { isDelete: true } } );
+                deleteMode();
+                openForm();
                 closeMenu();
             } } />
 
             <CutTool onClick={ event => {
-                doCut( { date, entry, index } );
+                doCut( { date, index, entry, cutProcess } );
+//                doCut( { date, index, entry, updateRequest, deleteResponseOkAfter } );
                 closeMenu();
             } } />
 
             <CopyTool onClick={ event => {
-                doCopy( { date, entry, index } );
+                doCopy( { date, index, entry } );
                 closeMenu();
             } } />
 
             <PasteTool onClick={ event => {
-                if ( isAbleToPaste() ) {
+                if ( isPasteEnabled() ) {
                     closeMenu();
-                    doPaste( { date, entry, index } );
+                    doPaste( { date, index, entry, pasteProcess } );
+//                    doPaste( { date, index, entry, createRequest } );
                 }
             } } />
 

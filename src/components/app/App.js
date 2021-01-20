@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { AppContextProvider } from './AppContext';
 import { UsersContextProvider } from '../user/UsersContext';
 import { DiariesContextProvider } from '../diary/DiariesContext';

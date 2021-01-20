@@ -16,6 +16,9 @@ function Diary( { diaries, index, actions, assets } ) {
     const diary = diaries[ index ];
     const { _uiux } = diary;
 
+    const createMode = prepayAction( actions.createMode, { assets, index } );
+    const updateMode = prepayAction( actions.updateMode, { assets, index } );
+    const deleteMode = prepayAction( actions.deleteMode, { assets, index } );
     const openForm = prepayAction( actions.openForm, { assets, index } );
 
     return (
@@ -58,12 +61,21 @@ function Diary( { diaries, index, actions, assets } ) {
                     { ! diary.id 
                     ?
                     <CoreMenu status={ _uiux.status } >
-                        <CreateMenuOption openForm={ openForm } />
+                        <CreateMenuOption 
+                            createMode={ createMode }
+                            openForm={ openForm } 
+                        />
                     </CoreMenu>
                     :
                     <CoreMenu status={ _uiux.status } >
-                        <UpdateMenuOption openForm={ openForm } />
-                        <DeleteMenuOption openForm={ openForm } />
+                        <UpdateMenuOption 
+                            updateMode={ updateMode }
+                            openForm={ openForm } 
+                        />
+                        <DeleteMenuOption 
+                            deleteMode={ deleteMode }
+                            openForm={ openForm } 
+                        />
                     </CoreMenu>
                     }
                 </RowMenu>

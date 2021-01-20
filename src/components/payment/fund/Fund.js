@@ -14,6 +14,9 @@ function Fund( { funds, index, actions, assets } ) {
     const fund = funds[ index ];
     const { _uiux } = fund;
 
+    const createMode = prepayAction( actions.createMode, { assets, index } );
+    const updateMode = prepayAction( actions.updateMode, { assets, index } );
+    const deleteMode = prepayAction( actions.deleteMode, { assets, index } );
     const openForm = prepayAction( actions.openForm, { assets, index } );
 
     return (
@@ -54,12 +57,21 @@ function Fund( { funds, index, actions, assets } ) {
                 { ! fund.id 
                 ?
                 <CoreMenu status={ _uiux.status } >
-                    <CreateMenuOption openForm={ openForm } />
+                    <CreateMenuOption 
+                        createMode={ createMode }
+                        openForm={ openForm } 
+                    />
                 </CoreMenu>
                 :
                 <CoreMenu status={ _uiux.status } >
-                    <UpdateMenuOption openForm={ openForm } />
-                    <DeleteMenuOption openForm={ openForm } />
+                    <UpdateMenuOption 
+                        updateMode={ updateMode }
+                        openForm={ openForm } 
+                    />
+                    <DeleteMenuOption 
+                        deleteMode={ deleteMode }
+                        openForm={ openForm } 
+                    />
                 </CoreMenu>
                 }
             </RowMenu>

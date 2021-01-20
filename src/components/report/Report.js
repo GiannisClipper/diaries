@@ -18,6 +18,7 @@ function Report( { reports, index, actions, assets } ) {
     const { parseToDB } = assets;
     const dataToDB = parseToDB( report );
 
+    const retrieveManyMode = prepayAction( actions.retrieveManyMode, { assets, index } );
     const openForm = prepayAction( actions.openForm, { assets, index } );
 
     useEffect( () => {
@@ -46,7 +47,10 @@ function Report( { reports, index, actions, assets } ) {
 
                 <RowMenu>
                     <CoreMenu status={ _uiux.status } >
-                        <RetrieveManyMenuOption openForm={ openForm } />
+                        <RetrieveManyMenuOption 
+                            retrieveManyMode={ retrieveManyMode }
+                            openForm={ openForm } 
+                        />
                     </CoreMenu>
                 </RowMenu>
             </RowBox> 

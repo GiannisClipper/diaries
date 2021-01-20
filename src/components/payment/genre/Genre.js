@@ -14,6 +14,9 @@ function Genre( { genres, index, actions, assets } ) {
     const genre = genres[ index ];
     const { _uiux } = genre;
 
+    const createMode = prepayAction( actions.createMode, { assets, index } );
+    const updateMode = prepayAction( actions.updateMode, { assets, index } );
+    const deleteMode = prepayAction( actions.deleteMode, { assets, index } );
     const openForm = prepayAction( actions.openForm, { assets, index } );
 
     const typeInfo = _uiux.mode.isCreate
@@ -64,12 +67,21 @@ function Genre( { genres, index, actions, assets } ) {
                 { ! genre.id 
                 ?
                 <CoreMenu status={ _uiux.status } >
-                    <CreateMenuOption openForm={ openForm } />
+                    <CreateMenuOption 
+                        createMode={ createMode }
+                        openForm={ openForm } 
+                    />
                 </CoreMenu>
                 :
                 <CoreMenu status={ _uiux.status } >
-                    <UpdateMenuOption openForm={ openForm } />
-                    <DeleteMenuOption openForm={ openForm } />
+                    <UpdateMenuOption 
+                        updateMode={ updateMode }
+                        openForm={ openForm } 
+                    />
+                    <DeleteMenuOption 
+                        deleteMode={ deleteMode }
+                        openForm={ openForm } 
+                    />
                 </CoreMenu>
                 }
             </RowMenu>

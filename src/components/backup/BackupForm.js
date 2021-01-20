@@ -10,11 +10,12 @@ import { AppContext } from '../app/AppContext';
 
 function BackupForm( { backup, actions, assets } ) {
 
-    console.log(actions)
     const closeForm = prepayAction( actions.closeForm, { assets } );
+    const noMode = prepayAction( actions.noMode, { assets } );
+    const onClickOut = () => { closeForm(); noMode() };
 
     return (
-        <Modal onClick={ closeForm } centeredness>
+        <Modal onClick={ onClickOut } centeredness>
 
             <CoreForm
                 Context={ AppContext }

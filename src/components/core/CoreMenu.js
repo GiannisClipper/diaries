@@ -31,12 +31,12 @@ function CoreMenu( { status, children } ) {
     );
 }
 
-function CreateMenuOption( { reference, openForm } ) {
+function CreateMenuOption( { reference, createMode, openForm } ) {
 
     return (
         <MenuOptionBox 
             ref={ reference }
-            onClick={ () => openForm( { mode: { isCreate: true } } ) }
+            onClick={ () => { createMode(); openForm(); } }
         >
             <FontAwesomeIcon 
                 className="icon" 
@@ -47,12 +47,12 @@ function CreateMenuOption( { reference, openForm } ) {
     )
 }
 
-function RetrieveMenuOption( { reference, openForm } ) {
+function RetrieveMenuOption( { reference, retrieveMode, openForm } ) {
 
     return (
         <MenuOptionBox 
             ref={ reference }
-            onClick={ () => openForm( { mode: { isRetrieve: true } } ) }
+            onClick={ () => { retrieveMode(); openForm(); } }
         >
             <FontAwesomeIcon 
                 className="icon" 
@@ -63,12 +63,12 @@ function RetrieveMenuOption( { reference, openForm } ) {
     )
 }
 
-function UpdateMenuOption( { reference, openForm } ) {
+function UpdateMenuOption( { reference, updateMode, openForm } ) {
 
     return (
         <MenuOptionBox 
             ref={ reference }
-            onClick={ () => openForm( { mode: { isUpdate: true } } ) }
+            onClick={ () => { updateMode(); openForm(); } }
         >
             <FontAwesomeIcon 
                 className="icon" 
@@ -79,12 +79,12 @@ function UpdateMenuOption( { reference, openForm } ) {
     )
 }
 
-function DeleteMenuOption( { reference, openForm } ) {
+function DeleteMenuOption( { reference, deleteMode, openForm } ) {
 
     return (
         <MenuOptionBox 
             ref={ reference }
-            onClick={ () => openForm( { mode: { isDelete: true } } ) }
+            onClick={ () => { deleteMode(); openForm(); } }
         >
             <FontAwesomeIcon 
                 className="icon" 
@@ -95,12 +95,12 @@ function DeleteMenuOption( { reference, openForm } ) {
     )
 }
 
-function RetrieveManyMenuOption( { reference, openForm } ) {
+function RetrieveManyMenuOption( { reference, retrieveManyMode, openForm } ) {
 
     return (
         <MenuOptionBox 
             ref={ reference }
-            onClick={ () => openForm( { mode: { isRetrieveMany: true } } ) }
+            onClick={ () => { retrieveManyMode(); openForm(); } }
         >
             <FontAwesomeIcon 
                 className="icon" 

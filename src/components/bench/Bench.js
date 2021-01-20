@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useContext, useState } from 'react';
+import React, { useEffect, useRef, useContext } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBackward, faForward } from '@fortawesome/free-solid-svg-icons';
@@ -20,6 +20,7 @@ import FundsInit from '../payment/fund/FundsInit';
 
 import { DatesContextProvider } from '../date/DatesContext';
 import { Dates } from '../date/Dates';
+import { dateToYYYYMMDD } from '../core/helpers/dates';
 
 const ListBox = styled( StyledList.ListBox )`
     display: block;
@@ -59,15 +60,17 @@ const Bench = ( { diary_id } ) => {
     const { state, actions } = useContext( BenchContext );
     const { periods } = state;
 
-    // to pass component references to `Scroll` component
+    // to support `scroll` feature
+
     const outer = useRef( null );
     const inner = useRef( null );
     const prev = useRef( null );
     const next = useRef( null );
 
-    const startDate = useRef( null );
+    // to support `scrollToStartDate` feature
 
-    // to control that auto scrolling to central date happens once
+    const startDate = useRef( null );  
+
     const hasScrolledToStartDate = useRef( false );
 
     const scrollToStartDate = outer => {
@@ -81,6 +84,17 @@ const Bench = ( { diary_id } ) => {
             hasScrolledToStartDate.current = true;
         }
     } );
+
+    // to support `copyPaste` feature
+
+    const doCutPaste = ( { cut, paste } ) => {
+        cut.cut();
+    }
+
+    const doCopyPaste = ( { copy, paste } ) => {
+        const date = dateToYYYYMMDD( paste.date );
+        paste.paste( { data: { ...copy.entry, date } } );
+    }
 
     // useEffect( () => console.log( 'Has rendered. ', 'Bench' ) );
 
@@ -114,8 +128,8 @@ const Bench = ( { diary_id } ) => {
             <PrevButton reference={ prev } />
 
             <CopyPasteContextProvider
-                // doCutPaste={payload => dispatch( { namespace: 'entries', type: 'MOVE_ENTRY', payload } )}
-                // doCopyPaste={payload => dispatch( { namespace: 'entries', type: 'COPY_ENTRY', payload } )}
+                doCutPaste={ doCutPaste }
+                doCopyPaste={ doCopyPaste }
             >
                 <Periods
                     diary_id={ diary_id }

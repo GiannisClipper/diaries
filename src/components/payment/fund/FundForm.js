@@ -12,6 +12,8 @@ import { FundsContext } from './FundsContext';
 function FundForm( { funds, index, actions, assets } ) {
 
     const closeForm = prepayAction( actions.closeForm, { assets, index } );
+    const noMode = prepayAction( actions.noMode, { assets, index } );
+    const onClickOut = () => { closeForm(); noMode() };
 
     const fund = funds[ index ];
 
@@ -30,7 +32,7 @@ function FundForm( { funds, index, actions, assets } ) {
     }
 
     return (
-        <Modal onClick={ closeForm } centeredness>
+        <Modal onClick={ onClickOut } centeredness>
 
             <CoreForm
                 Context={ FundsContext }

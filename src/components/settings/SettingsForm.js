@@ -13,6 +13,8 @@ import { AppContext } from '../app/AppContext';
 function SettingsForm( { settings, actions, assets } ) {
 
     const closeForm = prepayAction( actions.closeForm, { assets } );
+    const noMode = prepayAction( actions.noMode, { assets } );
+    const onClickOut = () => { closeForm(); noMode() };
 
     const [ data, setData ] = useState( { ...settings } );
 
@@ -28,7 +30,7 @@ function SettingsForm( { settings, actions, assets } ) {
     }
 
     return (
-        <Modal onClick={ closeForm } centeredness>
+        <Modal onClick={ onClickOut } centeredness>
 
             <CoreForm
                 Context={ AppContext }

@@ -17,6 +17,7 @@ function Settings() {
     const { settings } = state;
     const { _uiux } = settings;
 
+    const updateMode = prepayAction( actions.updateMode, { assets } );
     const openForm = prepayAction( actions.openForm, { assets } );
 
     return (
@@ -37,7 +38,10 @@ function Settings() {
 
                 <RowMenu>
                     <CoreMenu status={ _uiux.status } >
-                        <UpdateMenuOption openForm={ openForm } />
+                        <UpdateMenuOption 
+                            updateMode={ updateMode }
+                            openForm={ openForm }
+                        />
                     </CoreMenu>
                 </RowMenu>
             </RowBox> 

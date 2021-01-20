@@ -8,7 +8,8 @@ const CopyPasteContextProvider = ( { doCutPaste, doCopyPaste, children } ) => {
         cut: null,
         copy: null,
         paste: null,
-        saved: null,
+        doCutPaste: doCutPaste,
+        doCopyPaste: doCopyPaste,
     } );
 
     const copyPasteMem = copyPasteRef.current;
@@ -17,14 +18,16 @@ const CopyPasteContextProvider = ( { doCutPaste, doCopyPaste, children } ) => {
         copyPasteMem.cut = payload;
         copyPasteMem.copy = null;
         copyPasteMem.paste = null;
-        copyPasteMem.saved = payload;
     }
 
     const doCopy = payload => {
         copyPasteMem.cut = null;
         copyPasteMem.copy = payload;
         copyPasteMem.paste = null;
-        copyPasteMem.saved = payload;
+    }
+
+    const isPasteEnabled = () => {
+        return copyPasteMem.cut || copyPasteMem.copy;
     }
 
     const doPaste = payload => {
@@ -41,14 +44,10 @@ const CopyPasteContextProvider = ( { doCutPaste, doCopyPaste, children } ) => {
         }
     }
 
-    const isAbleToPaste = () => {
-        return copyPasteMem.cut || copyPasteMem.copy;
-    }
-
     // useEffect( () => console.log( 'Has rendered. ', 'CopyPasteContextProvider' ) );
 
     return (
-        <CopyPasteContext.Provider value={ { doCut, doCopy, doPaste, isAbleToPaste } }>
+        <CopyPasteContext.Provider value={ { doCut, doCopy, isPasteEnabled, doPaste } }>
             { children }
         </CopyPasteContext.Provider>    
     )

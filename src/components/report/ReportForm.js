@@ -13,6 +13,8 @@ import { ReportsContext } from './ReportsContext';
 function ReportForm( { reports, index, actions, assets } ) {
 
     const closeForm = prepayAction( actions.closeForm, { assets, index } );
+    const noMode = prepayAction( actions.noMode, { assets, index } );
+    const onClickOut = () => { closeForm(); noMode() };
 
     const report = reports[ index ];
 
@@ -28,7 +30,7 @@ function ReportForm( { reports, index, actions, assets } ) {
     }
 
     return (
-        <Modal onClick={ closeForm } centeredness>
+        <Modal onClick={ onClickOut } centeredness>
             <CoreForm
                 Context={ ReportsContext }
                 assets={ assets }

@@ -13,6 +13,8 @@ import { GenresContext } from './GenresContext';
 function GenreForm( { genres, index, actions, assets } ) {
 
     const closeForm = prepayAction( actions.closeForm, { assets, index } );
+    const noMode = prepayAction( actions.noMode, { assets, index } );
+    const onClickOut = () => { closeForm(); noMode() };
 
     const genre = genres[ index ];
 
@@ -31,7 +33,7 @@ function GenreForm( { genres, index, actions, assets } ) {
     }
 
     return (
-        <Modal onClick={closeForm} centeredness>
+        <Modal onClick={ onClickOut } centeredness>
 
             <CoreForm
                 Context={ GenresContext }

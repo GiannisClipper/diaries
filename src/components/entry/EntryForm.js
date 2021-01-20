@@ -17,6 +17,8 @@ import PaymentForm from '../payment/PaymentForm';
 function EntryForm( { date, entries, index, actions, assets } ) {
 
     const closeForm = prepayAction( actions.closeForm, { assets, index } );
+    const noMode = prepayAction( actions.noMode, { assets, index } );
+    const onClickOut = () => { closeForm(); noMode() };
 
     const entry = entries[ index ];
 
@@ -49,7 +51,7 @@ function EntryForm( { date, entries, index, actions, assets } ) {
             };
 
     return (
-        <Modal onClick={ closeForm } centeredness>
+        <Modal onClick={ onClickOut } centeredness>
             <CoreForm
                 Context={ EntriesContext }
                 assets={ assets }

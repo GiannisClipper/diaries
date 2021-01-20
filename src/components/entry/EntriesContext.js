@@ -3,6 +3,8 @@ import React, { createContext, useContext, useReducer, useEffect } from 'react';
 import comboReducer from '../core/helpers/comboReducer';
 import { entriesReducer } from './assets/reducers';
 import { menuOneOfManyReducer } from '../core/assets/reducers/menu';
+import { copyPasteReducer } from '../core/assets/reducers/copyPaste';
+import { modeOneOfManyReducer } from '../core/assets/reducers/mode';
 import { formOneOfManyReducer } from '../core/assets/reducers/form';
 import { validationOneOfManyReducer } from '../core/assets/reducers/validation';
 import { createOneOfManyReducer } from '../core/assets/reducers/create';
@@ -11,6 +13,8 @@ import { deleteOneOfManyReducer } from '../core/assets/reducers/delete';
 
 import chargeActions from '../core/helpers/chargeActions';
 import menuTypes from '../core/assets/actions/menu';
+import modeTypes from '../core/assets/actions/mode';
+import copyPasteTypes from '../core/assets/actions/copyPaste';
 import formTypes from '../core/assets/actions/form';
 import validationTypes from '../core/assets/actions/validation';
 import createTypes from '../core/assets/actions/create';
@@ -19,10 +23,13 @@ import deleteTypes from '../core/assets/actions/delete';
 import retrieveManyTypes from '../core/assets/actions/retrieveMany';
 
 import { AppContext } from '../app/AppContext';
+import mode from '../core/assets/actions/mode';
 
 const reducers = [ 
     entriesReducer,
     menuOneOfManyReducer,
+    copyPasteReducer,
+    modeOneOfManyReducer,
     formOneOfManyReducer,
     validationOneOfManyReducer,
     createOneOfManyReducer,
@@ -32,6 +39,8 @@ const reducers = [
 
 const rawActions = {
     ...menuTypes,
+    ...modeTypes,
+    ...copyPasteTypes,
     ...formTypes,
     ...validationTypes,
     ...createTypes,

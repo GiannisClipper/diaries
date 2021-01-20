@@ -14,6 +14,8 @@ import { UsersContext } from './UsersContext';
 function UserForm( { users, index, actions, assets } ) {
 
     const closeForm = prepayAction( actions.closeForm, { assets, index } );
+    const noMode = prepayAction( actions.noMode, { assets, index } );
+    const onClickOut = () => { closeForm(); noMode() };
 
     const user = users[ index ];
     const { _uiux } = user;
@@ -40,7 +42,7 @@ function UserForm( { users, index, actions, assets } ) {
     }
 
     return (
-        <Modal onClick={ closeForm } centeredness>
+        <Modal onClick={ onClickOut } centeredness>
 
             <CoreForm
                 Context={ UsersContext }

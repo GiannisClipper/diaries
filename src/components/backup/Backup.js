@@ -18,6 +18,7 @@ function Backup() {
     const { backup } = state;
     const { _uiux } = backup;
 
+    const retrieveMode = prepayAction( actions.retrieveMode, { assets } );
     const openForm = prepayAction( actions.openForm, { assets } );
 
     useEffect( () => {
@@ -47,7 +48,10 @@ function Backup() {
 
                 <RowMenu>
                     <CoreMenu status={ _uiux.status } >
-                        <RetrieveMenuOption openForm={ openForm } />
+                        <RetrieveMenuOption 
+                            retrieveMode={ retrieveMode }
+                            openForm={ openForm } 
+                        />
                     </CoreMenu>
                 </RowMenu>
             </RowBox>

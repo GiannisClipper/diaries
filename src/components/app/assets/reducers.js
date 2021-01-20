@@ -1,5 +1,6 @@
 import { HANDLE_ERROR } from '../../core/assets/types/error';
 import comboReducer from '../../core/helpers/comboReducer';
+import { modeOneReducer } from '../../core/assets/reducers/mode';
 import { formOneReducer } from '../../core/assets/reducers/form';
 import { validationOneReducer } from '../../core/assets/reducers/validation';
 import { retrieveOneReducer } from '../../core/assets/reducers/retrieve';
@@ -24,6 +25,7 @@ const appReducer = ( state, action ) => {
 
         } case 'settings': {
             return comboReducer( 
+                modeOneReducer,
                 formOneReducer, 
                 validationOneReducer, 
                 settingsReducer, 
@@ -32,6 +34,7 @@ const appReducer = ( state, action ) => {
 
         } case 'backup': {
             return comboReducer( 
+                modeOneReducer,
                 formOneReducer,
                 backupReducer,
                 retrieveOneReducer,

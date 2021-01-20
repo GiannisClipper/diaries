@@ -15,7 +15,7 @@ const entriesReducer = ( state, action ) => {
 
             _items[ index ]._uiux.menu = { isOpen: true };
             _items[ index ]._uiux.menuToolCoords = menuToolCoords;
-console.log('_items[ index ]._uiux', _items[ index ]._uiux)
+
             return { ...state, [ namespace ]: _items };
 
         } case RETRIEVE_MANY_RESPONSE_OK_AFTER: {

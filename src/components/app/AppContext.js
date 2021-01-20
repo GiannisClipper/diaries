@@ -9,6 +9,7 @@ import comboReducer from '../core/helpers/comboReducer';
 import { appReducer } from './assets/reducers';
 
 import chargeActions from '../core/helpers/chargeActions';
+import modeTypes from '../core/assets/actions/mode';
 import formTypes from '../core/assets/actions/form';
 import validationTypes from '../core/assets/actions/validation';
 import signinTypes from '../core/assets/actions/signin';
@@ -21,6 +22,7 @@ const reducers = [
 ];
 
 const rawActions = { 
+    ...modeTypes,
     ...formTypes,
     ...validationTypes,
     ...signinTypes, 

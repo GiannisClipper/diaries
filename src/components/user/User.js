@@ -14,6 +14,9 @@ function User( { users, index, actions, assets } ) {
     const user = users[ index ];
     const { _uiux } = user;
 
+    const createMode = prepayAction( actions.createMode, { assets, index } );
+    const updateMode = prepayAction( actions.updateMode, { assets, index } );
+    const deleteMode = prepayAction( actions.deleteMode, { assets, index } );
     const openForm = prepayAction( actions.openForm, { assets, index } );
 
     return (
@@ -52,15 +55,24 @@ function User( { users, index, actions, assets } ) {
 
             <RowMenu>
                 { ! user.id 
-                ?
-                <CoreMenu status={ _uiux.status }>
-                    <CreateMenuOption openForm={ openForm } />
-                </CoreMenu>
-                :
-                <CoreMenu status={ _uiux.status }>
-                    <UpdateMenuOption openForm={ openForm } />
-                    <DeleteMenuOption openForm={ openForm } />
-                </CoreMenu>
+                    ?
+                    <CoreMenu status={ _uiux.status } >
+                        <CreateMenuOption 
+                            createMode={ createMode }
+                            openForm={ openForm } 
+                        />
+                    </CoreMenu>
+                    :
+                    <CoreMenu status={ _uiux.status } >
+                        <UpdateMenuOption 
+                            updateMode={ updateMode }
+                            openForm={ openForm } 
+                        />
+                        <DeleteMenuOption 
+                            deleteMode={ deleteMode }
+                            openForm={ openForm } 
+                        />
+                    </CoreMenu>
                 }
             </RowMenu>
 
