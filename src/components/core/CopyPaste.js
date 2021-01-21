@@ -2,14 +2,12 @@ import React, { useRef, createContext, useEffect } from 'react';
 
 const CopyPasteContext = createContext();
 
-const CopyPasteContextProvider = ( { doCutPaste, doCopyPaste, children } ) => {
+const CopyPasteContextProvider = ( { children } ) => {
 
     const copyPasteRef = useRef( {
         cut: null,
         copy: null,
         paste: null,
-        doCutPaste: doCutPaste,
-        doCopyPaste: doCopyPaste,
     } );
 
     const copyPasteMem = copyPasteRef.current;
@@ -26,28 +24,61 @@ const CopyPasteContextProvider = ( { doCutPaste, doCopyPaste, children } ) => {
         copyPasteMem.paste = null;
     }
 
-    const isPasteEnabled = () => {
-        return copyPasteMem.cut || copyPasteMem.copy;
+    const isCut = () => {
+        return copyPasteMem.cut;
+    }
+
+    const isCopy = () => {
+        return copyPasteMem.copy;
     }
 
     const doPaste = payload => {
         copyPasteMem.paste = payload;
-        const { cut, copy, paste } = copyPasteMem;
+        const { paste } = copyPasteMem.paste
 
-        if ( cut ) {
-            doCutPaste( { cut, paste } );
-            copyPasteMem.copy = { ...cut };
+        if ( isCut() ) {
+            const data = { ...copyPasteMem.cut.data, ...copyPasteMem.paste.data };
+            const payload = { data };
+            paste( payload );
+
+        } else if ( isCopy() ) {
+            const data = { ...copyPasteMem.copy.data, ...copyPasteMem.paste.data };
+            const payload = { data };
+            paste( payload );
+        }
+    }
+
+    const doPasteOk = () => {
+        if ( isCut() ) {
+            const { cutOk } = copyPasteMem.cut;
+            const { pasteOk } = copyPasteMem.paste;
+            if ( cutOk ) cutOk();
+            if ( pasteOk ) pasteOk();
             copyPasteMem.cut = null;
 
-        } else if ( copy ) {
-            doCopyPaste( { copy, paste } );
+        } else if ( isCopy() ) {
+            const { pasteOk } = copyPasteMem.paste;
+            if ( pasteOk ) pasteOk();
         }
+    }
+
+    const doPasteError = () => {
+        const { pasteError } = copyPasteMem.paste;
+        if ( pasteError ) pasteError();
     }
 
     // useEffect( () => console.log( 'Has rendered. ', 'CopyPasteContextProvider' ) );
 
     return (
-        <CopyPasteContext.Provider value={ { doCut, doCopy, isPasteEnabled, doPaste } }>
+        <CopyPasteContext.Provider value={ { 
+            doCut, 
+            doCopy, 
+            isCut, 
+            isCopy, 
+            doPaste,
+            doPasteOk,
+            doPasteError
+        } }>
             { children }
         </CopyPasteContext.Provider>    
     )

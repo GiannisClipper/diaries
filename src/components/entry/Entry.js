@@ -8,6 +8,8 @@ import { SuspendedTool } from '../libs/Tools';
 
 import { CopyPasteContext } from '../core/CopyPaste';
 import { CreateRequest, UpdateRequest, DeleteRequest } from '../core/CoreRequests';
+import prepayAction from '../core/helpers/prepayAction';
+import { dateToYYYYMMDD } from '../core/helpers/dates';
 
 import { EntriesContext } from './EntriesContext';
 import EntryRepr from './EntryRepr';
@@ -35,7 +37,16 @@ const Entry = ( { diary_id, date, entries, index, actions, assets } ) => {
     const entry = entries[ index ];
     const { _uiux } = entry;
 
-    const { doCut, doPaste } = useContext( CopyPasteContext );
+    const { doCut, isCut, isCopy, doPaste, doPasteOk, doPasteError } = useContext( CopyPasteContext );
+
+    const cutOk = prepayAction( actions.cutOk, { assets, index } );
+    const paste = prepayAction( actions.paste, { assets, index } );
+    const pasteOk = prepayAction( actions.pasteOk, { assets, index } );
+    const pasteError = prepayAction( actions.pasteError, { assets, index } );    
+    const createMode = prepayAction( actions.createMode, { assets, index } );
+    const createRequest = prepayAction( actions.createRequest, { assets, index } );
+    const updateMode = prepayAction( actions.updateMode, { assets, index } );
+    const updateRequest = prepayAction( actions.updateRequest, { assets, index } );
 
     let draggable, onDragStart, onDragOver, onDrop;
 
@@ -46,8 +57,9 @@ const Entry = ( { diary_id, date, entries, index, actions, assets } ) => {
             draggable = 'true';
 
             onDragStart = event => {
-                event.dataTransfer.effectAllowed = 'move';
-                doCut( { date, entry, index } );
+                event.dataTransfer.effectAllowed = 'move';                
+                const data = { ...entry };
+                doCut( { data, cutOk } );
             }
         }
 
@@ -57,7 +69,29 @@ const Entry = ( { diary_id, date, entries, index, actions, assets } ) => {
 
         onDrop = event => {
             event.preventDefault();
-            doPaste( { date, entry, index } );
+            if ( isCut() ) {
+                const data = { date: dateToYYYYMMDD( date ), index };
+                doPaste( { data, paste, pasteOk, pasteError } );
+            } else if ( isCopy() ) {
+                const data = { date: dateToYYYYMMDD( date ), index, id: null };
+                doPaste( { data, paste, pasteOk, pasteError } );
+            }
+        }
+    }
+
+    if ( _uiux.mode.isPaste ) {
+        if ( Object.keys( _uiux.status ).length === 0 ) {
+            if ( isCut() ) {
+                updateMode();
+                updateRequest();
+            } else if ( isCopy() ) {
+                createMode();        
+                createRequest();
+            }
+        } else if ( _uiux.status.isResponseOk ) {
+            doPasteOk();
+        } else if ( _uiux.status.isResponseError ) {
+            doPasteError();
         }
     }
 
@@ -87,7 +121,7 @@ const Entry = ( { diary_id, date, entries, index, actions, assets } ) => {
                         Context={ EntriesContext }
                         assets={ assets }
                         index={ index }
-                        url={ `/.netlify/functions/entry?id=${entry.id}` }
+                        url={ `/.netlify/functions/entry?id=${ entry.id }` }
                     />
 
                 : _uiux.mode.isDelete ?

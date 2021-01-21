@@ -71,7 +71,7 @@ const Bench = ( { diary_id } ) => {
 
     const startDate = useRef( null );  
 
-    const hasScrolledToStartDate = useRef( false );
+    const alreadyScrolledToStartDate = useRef( false );
 
     const scrollToStartDate = outer => {
         outer = outer || document.documentElement;
@@ -79,22 +79,11 @@ const Bench = ( { diary_id } ) => {
     }
 
     useEffect( () => {
-        if ( ! hasScrolledToStartDate.current && startDate.current ) {   
+        if ( startDate.current && ! alreadyScrolledToStartDate.current ) {   
             scrollToStartDate( outer.current );
-            hasScrolledToStartDate.current = true;
+            alreadyScrolledToStartDate.current = true;
         }
     } );
-
-    // to support `copyPaste` feature
-
-    const doCutPaste = ( { cut, paste } ) => {
-        cut.cut();
-    }
-
-    const doCopyPaste = ( { copy, paste } ) => {
-        const date = dateToYYYYMMDD( paste.date );
-        paste.paste( { data: { ...copy.entry, date } } );
-    }
 
     // useEffect( () => console.log( 'Has rendered. ', 'Bench' ) );
 
@@ -127,10 +116,7 @@ const Bench = ( { diary_id } ) => {
 
             <PrevButton reference={ prev } />
 
-            <CopyPasteContextProvider
-                doCutPaste={ doCutPaste }
-                doCopyPaste={ doCopyPaste }
-            >
+            <CopyPasteContextProvider>
                 <Periods
                     diary_id={ diary_id }
                     periods={ periods }

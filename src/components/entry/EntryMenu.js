@@ -14,6 +14,7 @@ import {
 
 import { CopyPasteContext } from '../core/CopyPaste';
 import prepayAction from '../core/helpers/prepayAction';
+import { dateToYYYYMMDD } from '../core/helpers/dates';
 
 function EntryMenuTool( { index, actions, assets } ) {
 
@@ -53,13 +54,11 @@ function EntryMenu( { index, actions, assets, children, menuToolCoords } ) {
 
 function BlankEntryMenu( { date, entries, index, actions, assets, menuToolCoords } ) {
 
-    const { doPaste, isPasteEnabled } = useContext( CopyPasteContext );
+    const { isCut, isCopy, doPaste } = useContext( CopyPasteContext );
 
-    const entry = entries[ index ];
-
-    const pasteProcess = prepayAction( actions.pasteProcess, { assets, index } );
-
-    const createRequest = prepayAction( actions.createRequest, { assets, index } );
+    const paste = prepayAction( actions.paste, { assets, index } );
+    const pasteOk = prepayAction( actions.pasteOk, { assets, index } );
+    const pasteError = prepayAction( actions.pasteError, { assets, index } );    
 
     const createMode = prepayAction( actions.createMode, { assets, index } );
     const openForm = prepayAction( actions.openForm, { assets, index } );
@@ -79,10 +78,16 @@ function BlankEntryMenu( { date, entries, index, actions, assets, menuToolCoords
             } } />
 
             <PasteTool onClick={ event => {
-                if ( isPasteEnabled() ) {
+                if ( isCut() ) {
                     closeMenu();
-                    doPaste( { date, index, entry, pasteProcess } );
+                    const data = { date: dateToYYYYMMDD( date ), index };
+                    doPaste( { data, paste, pasteOk, pasteError } );
+                } else if ( isCopy() ) {
+                    closeMenu();
+                    const data = { date: dateToYYYYMMDD( date ), index, id: null };
+                    doPaste( { data, paste, pasteOk, pasteError } );
                 }
+
             } } />
 
             <CloseTool onClick={closeMenu} />
@@ -92,19 +97,15 @@ function BlankEntryMenu( { date, entries, index, actions, assets, menuToolCoords
 
 function ExistsEntryMenu( { date, entries, index, actions, assets, menuToolCoords } ) {
 
-    const { doCut, doCopy, doPaste, isPasteEnabled } = useContext( CopyPasteContext );
-
     const entry = entries[ index ];
 
-    const cutProcess = prepayAction( actions.cutProcess, { assets, index } );
-    const pasteProcess = prepayAction( actions.pasteProcess, { assets, index } );
+    const { doCut, doCopy, isCut, isCopy, doPaste } = useContext( CopyPasteContext );
 
-    const createRequest = prepayAction( actions.createRequest, { assets, index } );
-
-    const updateRequest = prepayAction( actions.updateRequest, { assets, index } );
-
-    const deleteResponseOkAfter = prepayAction( actions.deleteResponseOkAfter, { assets, index } );
-
+    const cutOk = prepayAction( actions.cutOk, { assets, index } );
+    const paste = prepayAction( actions.paste, { assets, index } );
+    const pasteOk = prepayAction( actions.pasteOk, { assets, index } );
+    const pasteError = prepayAction( actions.pasteError, { assets, index } );    
+    
     const updateMode = prepayAction( actions.updateMode, { assets, index } );
     const deleteMode = prepayAction( actions.deleteMode, { assets, index } );
     const openForm = prepayAction( actions.openForm, { assets, index } );
@@ -130,22 +131,28 @@ function ExistsEntryMenu( { date, entries, index, actions, assets, menuToolCoord
             } } />
 
             <CutTool onClick={ event => {
-                doCut( { date, index, entry, cutProcess } );
-//                doCut( { date, index, entry, updateRequest, deleteResponseOkAfter } );
+                const data = { ...entry };
+                doCut( { data, cutOk } );
                 closeMenu();
             } } />
 
             <CopyTool onClick={ event => {
-                doCopy( { date, index, entry } );
+                const data = { ...entry };
+                doCopy( { data } );
                 closeMenu();
             } } />
 
             <PasteTool onClick={ event => {
-                if ( isPasteEnabled() ) {
+                if ( isCut() ) {
                     closeMenu();
-                    doPaste( { date, index, entry, pasteProcess } );
-//                    doPaste( { date, index, entry, createRequest } );
+                    const data = { date: dateToYYYYMMDD( date ), index };
+                    doPaste( { data, paste, pasteOk, pasteError } );
+                } else if ( isCopy() ) {
+                    closeMenu();
+                    const data = { date: dateToYYYYMMDD( date ), index, id: null };
+                    doPaste( { data, paste, pasteOk, pasteError } );
                 }
+
             } } />
 
             <CloseTool onClick={ closeMenu } />
