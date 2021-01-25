@@ -53,8 +53,6 @@ const menuOneOfManyReducer = ( state, action ) => {
 
             const _items = state[ namespace ];
 
-            if ( index === undefined ) return state; // temporary to skip a bug
-
             _items[ index ]._uiux.menu = {};
 
             return { ...state, [ namespace ]: _items };

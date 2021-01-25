@@ -1,15 +1,16 @@
-import React, { useContext, useEffect } from 'react';
-import styled, { css } from 'styled-components';
+import React, { useContext, useRef, useEffect } from 'react';
+import styled from 'styled-components';
 
 import StyledRow from '../libs/RowBox';
 import { ToolBox } from '../libs/ToolBox';
 import { Loader } from '../libs/Loader';
 import { SuspendedTool } from '../libs/Tools';
 
-import { CopyPasteContext } from '../core/CopyPaste';
+import { CorePasteContext } from '../core/CorePaste';
 import { CreateRequest, UpdateRequest, DeleteRequest } from '../core/CoreRequests';
 import prepayAction from '../core/helpers/prepayAction';
 import { dateToYYYYMMDD } from '../core/helpers/dates';
+import { dragFeature, dropFeature } from '../core/features/dragNDrop';
 
 import { EntriesContext } from './EntriesContext';
 import EntryRepr from './EntryRepr';
@@ -20,12 +21,6 @@ const RowBox = StyledRow.RowBox;
 
 const RowValue = styled( StyledRow.RowValue )`
     width: calc( 100% - 2em );
-
-    ${props => props.draggable && css`
-        cursor: grab;
-        cursor: -moz-grab;
-        cursor: -webkit-grab;
-    `}
 `;
 
 const RowMenu = styled( StyledRow.RowMenu )`
@@ -37,63 +32,96 @@ const Entry = ( { diary_id, date, entries, index, actions, assets } ) => {
     const entry = entries[ index ];
     const { _uiux } = entry;
 
-    const { doCut, isCut, isCopy, doPaste, doPasteOk, doPasteError } = useContext( CopyPasteContext );
+    const { doCut, isCut, isCopy, doPaste, doPasteOk, doPasteError } = useContext( CorePasteContext );
 
     const cutOk = prepayAction( actions.cutOk, { assets, index } );
+    const cutError = prepayAction( actions.cutError, { assets, index } );
     const paste = prepayAction( actions.paste, { assets, index } );
     const pasteOk = prepayAction( actions.pasteOk, { assets, index } );
-    const pasteError = prepayAction( actions.pasteError, { assets, index } );    
+    const pasteError = prepayAction( actions.pasteError, { assets, index } );
     const createMode = prepayAction( actions.createMode, { assets, index } );
     const createRequest = prepayAction( actions.createRequest, { assets, index } );
     const updateMode = prepayAction( actions.updateMode, { assets, index } );
     const updateRequest = prepayAction( actions.updateRequest, { assets, index } );
 
-    let draggable, onDragStart, onDragOver, onDrop;
+    const onDrag = event => {
+        const data = { ...entry };
+        doCut( { data, cutOk, cutError } );
+    }
 
-    if ( ! _uiux.form.isOpen && ! _uiux.status.isResponseError ) {
-
-        if ( entry.id ) {  // no drag empty rows
-
-            draggable = 'true';
-
-            onDragStart = event => {
-                event.dataTransfer.effectAllowed = 'move';                
-                const data = { ...entry };
-                doCut( { data, cutOk } );
-            }
-        }
-
-        onDragOver = event => {  // allowDrop
-            event.preventDefault();
-        }
-
-        onDrop = event => {
-            event.preventDefault();
-            if ( isCut() ) {
-                const data = { date: dateToYYYYMMDD( date ), index };
-                doPaste( { data, paste, pasteOk, pasteError } );
-            } else if ( isCopy() ) {
-                const data = { date: dateToYYYYMMDD( date ), index, id: null };
-                doPaste( { data, paste, pasteOk, pasteError } );
-            }
+    const onDrop = event => {
+        if ( isCut() ) {
+            const data = { date: dateToYYYYMMDD( date ), index };
+            doPaste( { data, paste, pasteOk, pasteError } );
+        } else if ( isCopy() ) {
+            const data = { date: dateToYYYYMMDD( date ), index, id: null };
+            doPaste( { data, paste, pasteOk, pasteError } );
         }
     }
 
-    if ( _uiux.mode.isPaste ) {
+    // let draggable, onDragStart, onDragOver, onDrop;
+
+    // if ( ! _uiux.form.isOpen && ! _uiux.status.isResponseError ) {
+
+    //     if ( entry.id ) {  // no drag empty rows
+
+    //         draggable = 'true';
+
+    //         onDragStart = event => {
+    //             event.dataTransfer.effectAllowed = 'move';                
+    //             const data = { ...entry };
+    //             doCut( { data, cutOk, cutError } );
+    //         }
+    //     }
+
+    //     onDragOver = event => {  // allowDrop
+    //         event.preventDefault();
+    //     }
+
+    //     onDrop = event => {
+    //         event.preventDefault();
+    //         if ( isCut() ) {
+    //             const data = { date: dateToYYYYMMDD( date ), index };
+    //             doPaste( { data, paste, pasteOk, pasteError } );
+    //         } else if ( isCopy() ) {
+    //             const data = { date: dateToYYYYMMDD( date ), index, id: null };
+    //             doPaste( { data, paste, pasteOk, pasteError } );
+    //         }
+    //     }
+    // }
+
+    if ( _uiux.paste.isPaste ) {
         if ( Object.keys( _uiux.status ).length === 0 ) {
             if ( isCut() ) {
                 updateMode();
                 updateRequest();
+
             } else if ( isCopy() ) {
-                createMode();        
+                createMode();
                 createRequest();
             }
-        } else if ( _uiux.status.isResponseOk ) {
+
+        } else if ( _uiux.status.isResponseOkAfter ) {
             doPasteOk();
-        } else if ( _uiux.status.isResponseError ) {
+
+        } else if ( _uiux.status.isResponseErrorAfter ) {
+            console.log('doPasteError')
             doPasteError();
         }
     }
+
+    // drag-n-drop feature
+
+    const elemRef = useRef();
+
+    useEffect( () => {
+        if ( ! _uiux.form.isOpen &&  ! _uiux.status.isResponseError ) {
+            if ( entry.id ) {
+                dragFeature( { elemRef, onDrag } );
+            }
+            dropFeature( { elemRef, onDrop } );
+        }
+    } );
 
     if ( ! diary_id ) {
         return null;
@@ -102,10 +130,7 @@ const Entry = ( { diary_id, date, entries, index, actions, assets } ) => {
         return (
             <RowBox
                 key={ index }
-                draggable={ draggable }
-                onDragStart={ onDragStart }
-                onDragOver={ onDragOver }
-                onDrop={ onDrop }
+                ref={ elemRef }
             >
 
                 { _uiux.mode.isCreate ?
@@ -135,7 +160,6 @@ const Entry = ( { diary_id, date, entries, index, actions, assets } ) => {
                 : null }
 
                 <RowValue
-                    draggable={ draggable }
                     title={ `${ entry.diary_id }.${ entry.id }.${ entry.date }.${ entry.index }.${ index }.` }
                 >
                     <EntryRepr entry={ entry } />

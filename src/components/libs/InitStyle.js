@@ -18,6 +18,12 @@ const InitStyle = createGlobalStyle`
         list-style-type: none;
     }
 
+    [ draggable ] {
+        cursor: grab;
+        cursor: -moz-grab;
+        cursor: -webkit-grab;
+    }
+
     button {
         cursor: pointer;
     }

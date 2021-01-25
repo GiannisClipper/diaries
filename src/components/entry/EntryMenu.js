@@ -12,7 +12,7 @@ import {
     CloseTool
 } from '../libs/Tools';
 
-import { CopyPasteContext } from '../core/CopyPaste';
+import { CorePasteContext } from '../core/CorePaste';
 import prepayAction from '../core/helpers/prepayAction';
 import { dateToYYYYMMDD } from '../core/helpers/dates';
 
@@ -54,7 +54,7 @@ function EntryMenu( { index, actions, assets, children, menuToolCoords } ) {
 
 function BlankEntryMenu( { date, entries, index, actions, assets, menuToolCoords } ) {
 
-    const { isCut, isCopy, doPaste } = useContext( CopyPasteContext );
+    const { isCut, isCopy, doPaste } = useContext( CorePasteContext );
 
     const paste = prepayAction( actions.paste, { assets, index } );
     const pasteOk = prepayAction( actions.pasteOk, { assets, index } );
@@ -74,7 +74,7 @@ function BlankEntryMenu( { date, entries, index, actions, assets, menuToolCoords
             <EditTool onClick={ event => {
                 createMode();
                 openForm();
-                closeMenu( event, date, index );
+                closeMenu();
             } } />
 
             <PasteTool onClick={ event => {
@@ -99,9 +99,10 @@ function ExistsEntryMenu( { date, entries, index, actions, assets, menuToolCoord
 
     const entry = entries[ index ];
 
-    const { doCut, doCopy, isCut, isCopy, doPaste } = useContext( CopyPasteContext );
+    const { doCut, doCopy, isCut, isCopy, doPaste } = useContext( CorePasteContext );
 
     const cutOk = prepayAction( actions.cutOk, { assets, index } );
+    const cutError = prepayAction( actions.cutError, { assets, index } );
     const paste = prepayAction( actions.paste, { assets, index } );
     const pasteOk = prepayAction( actions.pasteOk, { assets, index } );
     const pasteError = prepayAction( actions.pasteError, { assets, index } );    
@@ -121,7 +122,7 @@ function ExistsEntryMenu( { date, entries, index, actions, assets, menuToolCoord
             <EditTool onClick={ event => {
                 updateMode();
                 openForm();
-                closeMenu( event, date, index );
+                closeMenu();
             } } />
 
             <DeleteTool onClick={ event => {
@@ -132,7 +133,7 @@ function ExistsEntryMenu( { date, entries, index, actions, assets, menuToolCoord
 
             <CutTool onClick={ event => {
                 const data = { ...entry };
-                doCut( { data, cutOk } );
+                doCut( { data, cutOk, cutError } );
                 closeMenu();
             } } />
 

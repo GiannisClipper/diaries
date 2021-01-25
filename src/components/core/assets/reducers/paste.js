@@ -1,11 +1,12 @@
 import {
     CUT_OK,
+    CUT_ERROR,
     PASTE,
     PASTE_OK,
     PASTE_ERROR,
-} from '../types/copyPaste';
+} from '../types/paste';
 
-const copyPasteReducer = ( state, action ) => {
+const pasteReducer = ( state, action ) => {
 
     switch ( action.type ) {
             
@@ -18,14 +19,24 @@ const copyPasteReducer = ( state, action ) => {
 
             return { ...state, [ namespace ]: _items };
 
+        } case CUT_ERROR: {
+            console.log('CUT_ERROR')
+            const { index, assets, data } = action.payload;
+            const { namespace, schema } = assets;
+
+            const _items = [ ...state[ namespace ] ];
+            _items.splice( index, 0, { ...schema(), ...data } );   // insert at index while deleting 0 items first
+            _items[ index ]._uiux.status = {};
+
+            return { ...state, [ namespace ]: _items };
+
         } case PASTE: {
             const { index, assets, data } = action.payload;
             const { namespace, schema } = assets;
 
             const _items = [ ...state[ namespace ] ];
             _items.splice( index, 0, { ...schema(), ...data } );   // insert at index while deleting 0 items first
-            const { mode } = _items[ index ]._uiux;
-            _items[ index ]._uiux.mode = { ...mode, isPaste: true };
+            _items[ index ]._uiux.paste = { isPaste: true };
             _items[ index ]._uiux.status = {};
 
             return { ...state, [ namespace ]: _items };
@@ -35,7 +46,8 @@ const copyPasteReducer = ( state, action ) => {
             const { namespace } = assets;
 
             const _items = state[ namespace ];
-            _items[ index ]._uiux.mode.isPaste = false;
+            _items[ index ]._uiux.paste = {};
+            _items[ index ]._uiux.status = {};
 
             return { ...state, [ namespace ]: _items };
 
@@ -54,4 +66,4 @@ const copyPasteReducer = ( state, action ) => {
     }
 }
 
-export { copyPasteReducer };
+export { pasteReducer };

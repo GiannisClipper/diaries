@@ -6,7 +6,7 @@ import { faBackward, faForward } from '@fortawesome/free-solid-svg-icons';
 import StyledList from '../libs/ListBox';
 
 import { CoreScroll } from '../core/CoreScroll';
-import { CopyPasteContextProvider } from '../core/CopyPaste';
+import { CorePasteContextProvider } from '../core/CorePaste';
 
 import texts from '../app/assets/texts';
 
@@ -20,7 +20,6 @@ import FundsInit from '../payment/fund/FundsInit';
 
 import { DatesContextProvider } from '../date/DatesContext';
 import { Dates } from '../date/Dates';
-import { dateToYYYYMMDD } from '../core/helpers/dates';
 
 const ListBox = styled( StyledList.ListBox )`
     display: block;
@@ -60,7 +59,7 @@ const Bench = ( { diary_id } ) => {
     const { state, actions } = useContext( BenchContext );
     const { periods } = state;
 
-    // to support `scroll` feature
+    // to support `scrolling` feature
 
     const outer = useRef( null );
     const inner = useRef( null );
@@ -116,13 +115,13 @@ const Bench = ( { diary_id } ) => {
 
             <PrevButton reference={ prev } />
 
-            <CopyPasteContextProvider>
+            <CorePasteContextProvider>
                 <Periods
                     diary_id={ diary_id }
                     periods={ periods }
                     startDate={ startDate }
                 />
-            </CopyPasteContextProvider>
+            </CorePasteContextProvider>
 
             <NextButton reference={ next } />
 
