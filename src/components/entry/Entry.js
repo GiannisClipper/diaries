@@ -6,16 +6,15 @@ import { ToolBox } from '../libs/ToolBox';
 import { Loader } from '../libs/Loader';
 import { SuspendedTool } from '../libs/Tools';
 
-import { CorePasteContext } from '../core/CorePaste';
+import { CutCopyPasteContext } from '../core/CutCopyPasteContext';
 import { CreateRequest, UpdateRequest, DeleteRequest } from '../core/CoreRequests';
-import prepayAction from '../core/helpers/prepayAction';
-import { dateToYYYYMMDD } from '../core/helpers/dates';
 import { dragFeature, dropFeature } from '../core/features/dragNDrop';
 
 import { EntriesContext } from './EntriesContext';
 import EntryRepr from './EntryRepr';
 import { EntryMenuTool, BlankEntryMenu, ExistsEntryMenu } from './EntryMenu';
 import EntryForm from './EntryForm';
+import { presetCutCopyPasteFeature, cutCopyPasteFeature } from './features/cutCopyPaste';
 
 const RowBox = StyledRow.RowBox;
 
@@ -32,96 +31,36 @@ const Entry = ( { diary_id, date, entries, index, actions, assets } ) => {
     const entry = entries[ index ];
     const { _uiux } = entry;
 
-    const { doCut, isCut, isCopy, doPaste, doPasteOk, doPasteError } = useContext( CorePasteContext );
+    // cut-copy-paste feature...
 
-    const cutOk = prepayAction( actions.cutOk, { assets, index } );
-    const cutError = prepayAction( actions.cutError, { assets, index } );
-    const paste = prepayAction( actions.paste, { assets, index } );
-    const pasteOk = prepayAction( actions.pasteOk, { assets, index } );
-    const pasteError = prepayAction( actions.pasteError, { assets, index } );
-    const createMode = prepayAction( actions.createMode, { assets, index } );
-    const createRequest = prepayAction( actions.createRequest, { assets, index } );
-    const updateMode = prepayAction( actions.updateMode, { assets, index } );
-    const updateRequest = prepayAction( actions.updateRequest, { assets, index } );
+    const cutCopyPasteContext = useContext( CutCopyPasteContext )
 
-    const onDrag = event => {
-        const data = { ...entry };
-        doCut( { data, cutOk, cutError } );
-    }
+    const { onCut, onCopy, onPaste } = presetCutCopyPasteFeature( 
+        { cutCopyPasteContext, date, entries, index, actions, assets } 
+    );
 
-    const onDrop = event => {
-        if ( isCut() ) {
-            const data = { date: dateToYYYYMMDD( date ), index };
-            doPaste( { data, paste, pasteOk, pasteError } );
-        } else if ( isCopy() ) {
-            const data = { date: dateToYYYYMMDD( date ), index, id: null };
-            doPaste( { data, paste, pasteOk, pasteError } );
-        }
-    }
+    useEffect( () => {
+        cutCopyPasteFeature( 
+            { cutCopyPasteContext, entries, index, actions, assets } 
+        );
+    } );
 
-    // let draggable, onDragStart, onDragOver, onDrop;
+    // ...cut-copy-paste feature
 
-    // if ( ! _uiux.form.isOpen && ! _uiux.status.isResponseError ) {
-
-    //     if ( entry.id ) {  // no drag empty rows
-
-    //         draggable = 'true';
-
-    //         onDragStart = event => {
-    //             event.dataTransfer.effectAllowed = 'move';                
-    //             const data = { ...entry };
-    //             doCut( { data, cutOk, cutError } );
-    //         }
-    //     }
-
-    //     onDragOver = event => {  // allowDrop
-    //         event.preventDefault();
-    //     }
-
-    //     onDrop = event => {
-    //         event.preventDefault();
-    //         if ( isCut() ) {
-    //             const data = { date: dateToYYYYMMDD( date ), index };
-    //             doPaste( { data, paste, pasteOk, pasteError } );
-    //         } else if ( isCopy() ) {
-    //             const data = { date: dateToYYYYMMDD( date ), index, id: null };
-    //             doPaste( { data, paste, pasteOk, pasteError } );
-    //         }
-    //     }
-    // }
-
-    if ( _uiux.paste.isPaste ) {
-        if ( Object.keys( _uiux.status ).length === 0 ) {
-            if ( isCut() ) {
-                updateMode();
-                updateRequest();
-
-            } else if ( isCopy() ) {
-                createMode();
-                createRequest();
-            }
-
-        } else if ( _uiux.status.isResponseOkAfter ) {
-            doPasteOk();
-
-        } else if ( _uiux.status.isResponseErrorAfter ) {
-            console.log('doPasteError')
-            doPasteError();
-        }
-    }
-
-    // drag-n-drop feature
+    // drag-n-drop feature...
 
     const elemRef = useRef();
 
     useEffect( () => {
         if ( ! _uiux.form.isOpen &&  ! _uiux.status.isResponseError ) {
-            if ( entry.id ) {
-                dragFeature( { elemRef, onDrag } );
-            }
-            dropFeature( { elemRef, onDrop } );
+
+            if ( entry.id ) dragFeature( { elemRef, onDrag: onCut } );
+
+            dropFeature( { elemRef, onDrop: onPaste } );
         }
     } );
+
+    // ...drag-n-drop feature
 
     if ( ! diary_id ) {
         return null;
@@ -192,21 +131,21 @@ const Entry = ( { diary_id, date, entries, index, actions, assets } ) => {
                     null
                 : ! entry.id ? 
                     <BlankEntryMenu 
-                        date={ date }
-                        entries={ entries }
                         index={ index }
                         actions={ actions }
                         assets={ assets }
                         menuToolCoords={ _uiux.menuToolCoords }
+                        onPaste={ onPaste }
                     />
                 : 
                     <ExistsEntryMenu 
-                        date={ date }
-                        entries={ entries }
                         index={ index }
                         actions={ actions }
                         assets={ assets }
                         menuToolCoords={ _uiux.menuToolCoords }
+                        onCut={ onCut }
+                        onCopy={ onCopy }
+                        onPaste={ onPaste }
                     />
                 }
 

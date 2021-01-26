@@ -38,7 +38,7 @@ const CorePasteContextProvider = ( { children } ) => {
 
     const doPaste = payload => {
         mem.paste = payload;
-        const { paste } = mem.paste
+        const { paste } = mem.paste;
 
         if ( isCut() ) {
             const { cutOk } = mem.cut;

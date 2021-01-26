@@ -6,7 +6,7 @@ import { faBackward, faForward } from '@fortawesome/free-solid-svg-icons';
 import StyledList from '../libs/ListBox';
 
 import { CoreScroll } from '../core/CoreScroll';
-import { CorePasteContextProvider } from '../core/CorePaste';
+import { CutCopyPasteContextProvider } from '../core/CutCopyPasteContext';
 
 import texts from '../app/assets/texts';
 
@@ -115,13 +115,13 @@ const Bench = ( { diary_id } ) => {
 
             <PrevButton reference={ prev } />
 
-            <CorePasteContextProvider>
+            <CutCopyPasteContextProvider>
                 <Periods
                     diary_id={ diary_id }
                     periods={ periods }
                     startDate={ startDate }
                 />
-            </CorePasteContextProvider>
+            </CutCopyPasteContextProvider>
 
             <NextButton reference={ next } />
 
