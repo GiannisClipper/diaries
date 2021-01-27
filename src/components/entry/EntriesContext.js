@@ -12,15 +12,15 @@ import { updateOneOfManyReducer } from '../core/assets/reducers/update';
 import { deleteOneOfManyReducer } from '../core/assets/reducers/delete';
 
 import pluginActions from '../core/helpers/pluginActions';
-import menuTypes from '../core/assets/actions/menu';
-import modeTypes from '../core/assets/actions/mode';
-import pasteTypes from '../core/assets/actions/paste';
-import formTypes from '../core/assets/actions/form';
-import validationTypes from '../core/assets/actions/validation';
-import createTypes from '../core/assets/actions/create';
-import updateTypes from '../core/assets/actions/update';
-import deleteTypes from '../core/assets/actions/delete';
-import retrieveManyTypes from '../core/assets/actions/retrieveMany';
+import menuActions from '../core/assets/actions/menu';
+import modeActions from '../core/assets/actions/mode';
+import pasteActions from '../core/assets/actions/paste';
+import formActions from '../core/assets/actions/form';
+import validationActions from '../core/assets/actions/validation';
+import createActions from '../core/assets/actions/create';
+import updateActions from '../core/assets/actions/update';
+import deleteActions from '../core/assets/actions/delete';
+import retrieveManyActions from '../core/assets/actions/retrieveMany';
 
 import { AppContext } from '../app/AppContext';
 
@@ -37,15 +37,15 @@ const reducers = [
 ];
 
 const rawActions = {
-    ...menuTypes,
-    ...modeTypes,
-    ...pasteTypes,
-    ...formTypes,
-    ...validationTypes,
-    ...createTypes,
-    ...updateTypes,
-    ...deleteTypes,
-    ...retrieveManyTypes,
+    ...menuActions,
+    ...modeActions,
+    ...pasteActions,
+    ...formActions,
+    ...validationActions,
+    ...createActions,
+    ...updateActions,
+    ...deleteActions,
+    ...retrieveManyActions,
 };
 
 const EntriesContext = createContext();

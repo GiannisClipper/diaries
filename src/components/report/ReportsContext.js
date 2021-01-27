@@ -8,11 +8,11 @@ import { retrieveManyReducer } from '../core/assets/reducers/retrieveMany';
 import { reportsReducer } from './assets/reducers';
 
 import pluginActions from '../core/helpers/pluginActions';
-import pageTypes from '../core/assets/actions/page';
-import modeTypes from '../core/assets/actions/mode';
-import formTypes from '../core/assets/actions/form';
-import validationTypes from '../core/assets/actions/validation';
-import retrieveManyTypes from '../core/assets/actions/retrieveMany';
+import pageActions from '../core/assets/actions/page';
+import modeActions from '../core/assets/actions/mode';
+import formActions from '../core/assets/actions/form';
+import validationActions from '../core/assets/actions/validation';
+import retrieveManyActions from '../core/assets/actions/retrieveMany';
 
 import { AppContext } from '../app/AppContext';
 
@@ -27,11 +27,11 @@ const reducers = [
 ];
 
 const rawActions = {
-    ...pageTypes,
-    ...modeTypes,
-    ...formTypes,
-    ...validationTypes,
-    ...retrieveManyTypes
+    ...pageActions,
+    ...modeActions,
+    ...formActions,
+    ...validationActions,
+    ...retrieveManyActions
 };
 
 const ReportsContext = createContext();

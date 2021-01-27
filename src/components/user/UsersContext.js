@@ -11,14 +11,14 @@ import { deleteOneOfManyReducer } from '../core/assets/reducers/delete';
 import { retrieveManyReducer } from '../core/assets/reducers/retrieveMany';
 
 import pluginActions from '../core/helpers/pluginActions';
-import pageTypes from '../core/assets/actions/page';
-import modeTypes from '../core/assets/actions/mode';
-import formTypes from '../core/assets/actions/form';
-import validationTypes from '../core/assets/actions/validation';
-import createTypes from '../core/assets/actions/create';
-import updateTypes from '../core/assets/actions/update';
-import deleteTypes from '../core/assets/actions/delete';
-import retrieveManyTypes from '../core/assets/actions/retrieveMany';
+import pageActions from '../core/assets/actions/page';
+import modeActions from '../core/assets/actions/mode';
+import formActions from '../core/assets/actions/form';
+import validationActions from '../core/assets/actions/validation';
+import createActions from '../core/assets/actions/create';
+import updateActions from '../core/assets/actions/update';
+import deleteActions from '../core/assets/actions/delete';
+import retrieveManyActions from '../core/assets/actions/retrieveMany';
 
 import { AppContext } from '../app/AppContext';
 
@@ -36,14 +36,14 @@ const reducers = [
 ];
 
 const rawActions = {
-    ...pageTypes,
-    ...modeTypes,
-    ...formTypes,
-    ...validationTypes,
-    ...createTypes,
-    ...updateTypes,
-    ...deleteTypes,
-    ...retrieveManyTypes
+    ...pageActions,
+    ...modeActions,
+    ...formActions,
+    ...validationActions,
+    ...createActions,
+    ...updateActions,
+    ...deleteActions,
+    ...retrieveManyActions
 };
 
 const UsersContext = createContext();

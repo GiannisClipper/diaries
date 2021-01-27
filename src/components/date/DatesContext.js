@@ -5,7 +5,7 @@ import { datesReducer } from './assets/reducers';
 import { retrieveManyReducer } from '../core/assets/reducers/retrieveMany';
 
 import pluginActions from '../core/helpers/pluginActions';
-import retrieveManyTypes from '../core/assets/actions/retrieveMany';
+import retrieveManyActions from '../core/assets/actions/retrieveMany';
 
 import { AppContext } from '../app/AppContext';
 
@@ -17,7 +17,7 @@ const reducers = [
 ];
 
 const rawActions = {
-    ...retrieveManyTypes
+    ...retrieveManyActions
 };
 
 const DatesContext = createContext();

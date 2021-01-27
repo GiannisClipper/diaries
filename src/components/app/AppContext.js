@@ -9,26 +9,26 @@ import comboReducer from '../core/helpers/comboReducer';
 import { appReducer } from './assets/reducers';
 
 import pluginActions from '../core/helpers/pluginActions';
-import modeTypes from '../core/assets/actions/mode';
-import formTypes from '../core/assets/actions/form';
-import validationTypes from '../core/assets/actions/validation';
-import signinTypes from '../core/assets/actions/signin';
-import retrieveTypes from '../core/assets/actions/retrieve';
-import updateTypes from '../core/assets/actions/update';
-import errorTypes from '../core/assets/actions/error';
+import modeActions from '../core/assets/actions/mode';
+import formActions from '../core/assets/actions/form';
+import validationActions from '../core/assets/actions/validation';
+import signinActions from '../core/assets/actions/signin';
+import retrieveActions from '../core/assets/actions/retrieve';
+import updateActions from '../core/assets/actions/update';
+import errorActions from '../core/assets/actions/error';
 
 const reducers = [
     appReducer
 ];
 
 const rawActions = { 
-    ...modeTypes,
-    ...formTypes,
-    ...validationTypes,
-    ...signinTypes, 
-    ...retrieveTypes,
-    ...updateTypes,
-    ...errorTypes
+    ...modeActions,
+    ...formActions,
+    ...validationActions,
+    ...signinActions, 
+    ...retrieveActions,
+    ...updateActions,
+    ...errorActions
 };
 
 const AppContext = createContext();

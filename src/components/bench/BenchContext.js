@@ -5,7 +5,7 @@ import { pageReducer } from '../core/assets/reducers/page';
 import { benchReducer } from './assets/reducers';
 
 import pluginActions from '../core/helpers/pluginActions';
-import pageTypes from '../core/assets/actions/page';
+import pageActions from '../core/assets/actions/page';
 
 import { benchSchema } from './assets/schemas';
 
@@ -15,7 +15,7 @@ const reducers = [
 ];
 
 const rawActions = {
-    ...pageTypes
+    ...pageActions
 };
 
 const BenchContext = createContext();
