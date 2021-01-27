@@ -12,11 +12,11 @@ import {
     CloseTool
 } from '../libs/Tools';
 
-import prepayAction from '../core/helpers/prepayAction';
+import presetAction from '../core/helpers/presetAction';
 
 function EntryMenuTool( { index, actions, assets } ) {
 
-    const openMenu = prepayAction( actions.openMenu, { assets, index } );
+    const openMenu = presetAction( actions.openMenu, { assets, index } );
 
     const menuToolRef = useRef( null );
 
@@ -34,7 +34,7 @@ function EntryMenuTool( { index, actions, assets } ) {
 
 function EntryMenu( { index, actions, assets, children, menuToolCoords } ) {
 
-    const closeMenu = prepayAction( actions.closeMenu, { assets, index } );
+    const closeMenu = presetAction( actions.closeMenu, { assets, index } );
 
     let { top, left } = menuToolCoords;
     top = `${ top }px`;
@@ -52,9 +52,9 @@ function EntryMenu( { index, actions, assets, children, menuToolCoords } ) {
 
 function BlankEntryMenu( { index, actions, assets, menuToolCoords, onPaste } ) {
 
-    const createMode = prepayAction( actions.createMode, { assets, index } );
-    const openForm = prepayAction( actions.openForm, { assets, index } );
-    const closeMenu = prepayAction( actions.closeMenu, { assets, index } );
+    const createMode = presetAction( actions.createMode, { assets, index } );
+    const openForm = presetAction( actions.openForm, { assets, index } );
+    const closeMenu = presetAction( actions.closeMenu, { assets, index } );
 
     return (
         <EntryMenu
@@ -81,10 +81,10 @@ function BlankEntryMenu( { index, actions, assets, menuToolCoords, onPaste } ) {
 
 function ExistsEntryMenu( { index, actions, assets, menuToolCoords, onCut, onCopy, onPaste } ) {
     
-    const updateMode = prepayAction( actions.updateMode, { assets, index } );
-    const deleteMode = prepayAction( actions.deleteMode, { assets, index } );
-    const openForm = prepayAction( actions.openForm, { assets, index } );
-    const closeMenu = prepayAction( actions.closeMenu, { assets, index } );
+    const updateMode = presetAction( actions.updateMode, { assets, index } );
+    const deleteMode = presetAction( actions.deleteMode, { assets, index } );
+    const openForm = presetAction( actions.openForm, { assets, index } );
+    const closeMenu = presetAction( actions.closeMenu, { assets, index } );
 
     return (
         <EntryMenu

@@ -4,7 +4,7 @@ import { RowBox, RowValue, RowMenu } from '../libs/RowBox';
 
 import { UpdateRequest } from '../core/CoreRequests';
 import { CoreMenu, UpdateMenuOption } from '../core/CoreMenu';
-import prepayAction from '../core/helpers/prepayAction';
+import presetAction from '../core/helpers/presetAction';
 
 import { AppContext } from '../app/AppContext';
 
@@ -17,8 +17,8 @@ function Settings() {
     const { settings } = state;
     const { _uiux } = settings;
 
-    const updateMode = prepayAction( actions.updateMode, { assets } );
-    const openForm = prepayAction( actions.openForm, { assets } );
+    const updateMode = presetAction( actions.updateMode, { assets } );
+    const openForm = presetAction( actions.openForm, { assets } );
 
     return (
         <>

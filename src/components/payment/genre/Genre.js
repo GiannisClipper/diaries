@@ -4,7 +4,7 @@ import { RowBox, RowValue, RowMenu } from '../../libs/RowBox';
 
 import { CreateRequest, UpdateRequest, DeleteRequest } from '../../core/CoreRequests';
 import { CoreMenu, CreateMenuOption, UpdateMenuOption, DeleteMenuOption } from '../../core/CoreMenu';
-import prepayAction from '../../core/helpers/prepayAction';
+import presetAction from '../../core/helpers/presetAction';
 
 import { GenresContext } from './GenresContext';
 import GenreForm from './GenreForm';
@@ -14,10 +14,10 @@ function Genre( { genres, index, actions, assets } ) {
     const genre = genres[ index ];
     const { _uiux } = genre;
 
-    const createMode = prepayAction( actions.createMode, { assets, index } );
-    const updateMode = prepayAction( actions.updateMode, { assets, index } );
-    const deleteMode = prepayAction( actions.deleteMode, { assets, index } );
-    const openForm = prepayAction( actions.openForm, { assets, index } );
+    const createMode = presetAction( actions.createMode, { assets, index } );
+    const updateMode = presetAction( actions.updateMode, { assets, index } );
+    const deleteMode = presetAction( actions.deleteMode, { assets, index } );
+    const openForm = presetAction( actions.openForm, { assets, index } );
 
     const typeInfo = _uiux.mode.isCreate
         ? ''

@@ -5,14 +5,14 @@ import { InputBox, InputLabel, InputValue } from '../../libs/InputBox';
 
 import CoreForm from "../../core/CoreForm";
 import { isBlank, isFound } from '../../core/assets/validators';
-import prepayAction from '../../core/helpers/prepayAction';
+import presetAction from '../../core/helpers/presetAction';
 
 import { FundsContext } from './FundsContext';
 
 function FundForm( { funds, index, actions, assets } ) {
 
-    const closeForm = prepayAction( actions.closeForm, { assets, index } );
-    const noMode = prepayAction( actions.noMode, { assets, index } );
+    const closeForm = presetAction( actions.closeForm, { assets, index } );
+    const noMode = presetAction( actions.noMode, { assets, index } );
     const onClickOut = () => { closeForm(); noMode() };
 
     const fund = funds[ index ];

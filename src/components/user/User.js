@@ -4,7 +4,7 @@ import { RowBox, RowValue, RowMenu } from '../libs/RowBox';
 
 import { CreateRequest, UpdateRequest, DeleteRequest } from '../core/CoreRequests';
 import { CoreMenu, CreateMenuOption, UpdateMenuOption, DeleteMenuOption } from '../core/CoreMenu';
-import prepayAction from '../core/helpers/prepayAction';
+import presetAction from '../core/helpers/presetAction';
 
 import { UsersContext } from './UsersContext';
 import UserForm from './UserForm';
@@ -14,10 +14,10 @@ function User( { users, index, actions, assets } ) {
     const user = users[ index ];
     const { _uiux } = user;
 
-    const createMode = prepayAction( actions.createMode, { assets, index } );
-    const updateMode = prepayAction( actions.updateMode, { assets, index } );
-    const deleteMode = prepayAction( actions.deleteMode, { assets, index } );
-    const openForm = prepayAction( actions.openForm, { assets, index } );
+    const createMode = presetAction( actions.createMode, { assets, index } );
+    const updateMode = presetAction( actions.updateMode, { assets, index } );
+    const deleteMode = presetAction( actions.deleteMode, { assets, index } );
+    const openForm = presetAction( actions.openForm, { assets, index } );
 
     return (
         <RowBox>

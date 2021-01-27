@@ -1,5 +1,5 @@
 import { useContext, useEffect } from 'react';
-import prepayAction from './helpers/prepayAction';
+import presetAction from './helpers/presetAction';
 import { doFetch } from './helpers/customFetch';
 
 function SigninRequest( { Context, assets, url }) {
@@ -7,8 +7,8 @@ function SigninRequest( { Context, assets, url }) {
     const { state, actions } = useContext( Context );
     const { namespace, parseToDB } = assets;
 
-    const signinResponseOk = prepayAction( actions.signinResponseOk, { assets } );
-    const signinResponseError = prepayAction( actions.signinResponseError, { assets } );
+    const signinResponseOk = presetAction( actions.signinResponseOk, { assets } );
+    const signinResponseError = presetAction( actions.signinResponseError, { assets } );
 
     const _item = state[ namespace ];
 
@@ -36,10 +36,10 @@ function CreateRequest( { Context, assets, index, url } ) {
     const { state, actions } = useContext( Context );
     const { namespace, parseToDB } = assets;
 
-    const createResponseOk = prepayAction( actions.createResponseOk, { assets, index } );
-    const createResponseError = prepayAction( actions.createResponseError, { assets, index } );
-    const createResponseOkAfter = prepayAction( actions.createResponseOkAfter, { assets, index } );
-    const createResponseErrorAfter = prepayAction( actions.createResponseErrorAfter, { assets, index } );
+    const createResponseOk = presetAction( actions.createResponseOk, { assets, index } );
+    const createResponseError = presetAction( actions.createResponseError, { assets, index } );
+    const createResponseOkAfter = presetAction( actions.createResponseOkAfter, { assets, index } );
+    const createResponseErrorAfter = presetAction( actions.createResponseErrorAfter, { assets, index } );
     const handleError = actions.handleError;
 
     const _item = index !== undefined 
@@ -77,10 +77,10 @@ function RetrieveRequest( { Context, assets, index, url } ) {
     const { state, actions } = useContext( Context );
     const { namespace } = assets;
 
-    const retrieveResponseOk = prepayAction( actions.retrieveResponseOk, { assets, index } );
-    const retrieveResponseError = prepayAction( actions.retrieveResponseError, { assets, index } );
-    const retrieveResponseOkAfter = prepayAction( actions.retrieveResponseOkAfter, { assets, index } );
-    const retrieveResponseErrorAfter = prepayAction( actions.retrieveResponseErrorAfter, { assets, index } );
+    const retrieveResponseOk = presetAction( actions.retrieveResponseOk, { assets, index } );
+    const retrieveResponseError = presetAction( actions.retrieveResponseError, { assets, index } );
+    const retrieveResponseOkAfter = presetAction( actions.retrieveResponseOkAfter, { assets, index } );
+    const retrieveResponseErrorAfter = presetAction( actions.retrieveResponseErrorAfter, { assets, index } );
     const handleError = actions.handleError;
 
     const _item = index !== undefined 
@@ -116,10 +116,10 @@ function UpdateRequest( { Context, assets, index, url } ) {
     const { state, actions } = useContext( Context );
     const { namespace, parseToDB } = assets;
 
-    const updateResponseOk = prepayAction( actions.updateResponseOk, { assets, index } );
-    const updateResponseError = prepayAction( actions.updateResponseError, { assets, index } );
-    const updateResponseOkAfter = prepayAction( actions.updateResponseOkAfter, { assets, index } );
-    const updateResponseErrorAfter = prepayAction( actions.updateResponseErrorAfter, { assets, index } );
+    const updateResponseOk = presetAction( actions.updateResponseOk, { assets, index } );
+    const updateResponseError = presetAction( actions.updateResponseError, { assets, index } );
+    const updateResponseOkAfter = presetAction( actions.updateResponseOkAfter, { assets, index } );
+    const updateResponseErrorAfter = presetAction( actions.updateResponseErrorAfter, { assets, index } );
     const handleError = actions.handleError;
 
     const _item = index !== undefined 
@@ -158,10 +158,10 @@ function DeleteRequest( { Context, assets, index, url } ) {
     const { state, actions } = useContext( Context );
     const { namespace, parseToDB } = assets;
 
-    const deleteResponseOk = prepayAction( actions.deleteResponseOk, { assets, index } );
-    const deleteResponseError = prepayAction( actions.deleteResponseError, { assets, index } );
-    const deleteResponseOkAfter = prepayAction( actions.deleteResponseOkAfter, { assets, index } );
-    const deleteResponseErrorAfter = prepayAction( actions.deleteResponseErrorAfter, { assets, index } );
+    const deleteResponseOk = presetAction( actions.deleteResponseOk, { assets, index } );
+    const deleteResponseError = presetAction( actions.deleteResponseError, { assets, index } );
+    const deleteResponseOkAfter = presetAction( actions.deleteResponseOkAfter, { assets, index } );
+    const deleteResponseErrorAfter = presetAction( actions.deleteResponseErrorAfter, { assets, index } );
     const handleError = actions.handleError;
 
     const _item = index !== undefined 
@@ -199,12 +199,12 @@ function RetrieveManyRequest( { Context, assets, url } ) {
 
     const { state, actions } = useContext( Context );
 
-    const retrieveManyRequest = prepayAction( actions.retrieveManyRequest, { assets } );
-    const retrieveManyResponseWaiting = prepayAction( actions.retrieveManyResponseWaiting, { assets } );
-    const retrieveManyResponseOk = prepayAction( actions.retrieveManyResponseOk, { assets } );
-    const retrieveManyResponseError = prepayAction( actions.retrieveManyResponseError, { assets } );
-    const retrieveManyResponseOkAfter = prepayAction( actions.retrieveManyResponseOkAfter, { assets } );
-    const retrieveManyResponseErrorAfter = prepayAction( actions.retrieveManyResponseErrorAfter, { assets } );
+    const retrieveManyRequest = presetAction( actions.retrieveManyRequest, { assets } );
+    const retrieveManyResponseWaiting = presetAction( actions.retrieveManyResponseWaiting, { assets } );
+    const retrieveManyResponseOk = presetAction( actions.retrieveManyResponseOk, { assets } );
+    const retrieveManyResponseError = presetAction( actions.retrieveManyResponseError, { assets } );
+    const retrieveManyResponseOkAfter = presetAction( actions.retrieveManyResponseOkAfter, { assets } );
+    const retrieveManyResponseErrorAfter = presetAction( actions.retrieveManyResponseErrorAfter, { assets } );
     const handleError = actions.handleError;
 
     const { _uiux } = state;

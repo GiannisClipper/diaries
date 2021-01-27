@@ -7,7 +7,7 @@ import { InputFromList } from '../libs/InputFromList';
 import CoreForm from "../core/CoreForm";
 import { dayNames, YYYYMMDDToRepr, dateToYYYYMMDD } from '../core/helpers/dates';
 import { isBlank, isNotFound } from '../core/assets/validators';
-import prepayAction from '../core/helpers/prepayAction';
+import presetAction from '../core/helpers/presetAction';
 
 import { EntriesContext } from "./EntriesContext";
 
@@ -16,8 +16,8 @@ import PaymentForm from '../payment/PaymentForm';
 
 function EntryForm( { date, entries, index, actions, assets } ) {
 
-    const closeForm = prepayAction( actions.closeForm, { assets, index } );
-    const noMode = prepayAction( actions.noMode, { assets, index } );
+    const closeForm = presetAction( actions.closeForm, { assets, index } );
+    const noMode = presetAction( actions.noMode, { assets, index } );
     const onClickOut = () => { closeForm(); noMode() };
 
     const entry = entries[ index ];

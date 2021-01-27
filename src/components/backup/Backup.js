@@ -4,7 +4,7 @@ import { RowBox, RowValue, RowMenu } from '../libs/RowBox';
 
 import { RetrieveRequest } from '../core/CoreRequests';
 import { CoreMenu, RetrieveMenuOption } from '../core/CoreMenu';
-import prepayAction from '../core/helpers/prepayAction';
+import presetAction from '../core/helpers/presetAction';
 import saveAsTextFile from '../core/helpers/saveAsTextFile';
 
 import { AppContext } from '../app/AppContext';
@@ -18,8 +18,8 @@ function Backup() {
     const { backup } = state;
     const { _uiux } = backup;
 
-    const retrieveMode = prepayAction( actions.retrieveMode, { assets } );
-    const openForm = prepayAction( actions.openForm, { assets } );
+    const retrieveMode = presetAction( actions.retrieveMode, { assets } );
+    const openForm = presetAction( actions.openForm, { assets } );
 
     useEffect( () => {
         

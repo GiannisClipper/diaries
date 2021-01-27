@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 
 import { OkCancelForm } from '../libs/Forms';
 
-import prepayAction from './helpers/prepayAction';
+import presetAction from './helpers/presetAction';
 
 import texts from '../app/assets/texts';
 
@@ -63,9 +63,9 @@ function CoreForm( { Context, assets, index, validators, children } ) {
 
     const cancelLabel = texts.buttons.cancel;
 
-    const validation = validators ? prepayAction( actions.validation, { assets, index } ) : null;
-    const validationOk = validators ? prepayAction( actions.validationOk, { assets, index } ) : null;
-    const validationError = validators ? prepayAction( actions.validationError, { assets, index } ) : null;
+    const validation = validators ? presetAction( actions.validation, { assets, index } ) : null;
+    const validationOk = validators ? presetAction( actions.validationOk, { assets, index } ) : null;
+    const validationError = validators ? presetAction( actions.validationError, { assets, index } ) : null;
 
     const rawRequest = (
         mode.isCreate ?
@@ -81,13 +81,13 @@ function CoreForm( { Context, assets, index, validators, children } ) {
         null
     );
 
-    const request = prepayAction( rawRequest, { assets, index } );
+    const request = presetAction( rawRequest, { assets, index } );
 
     validators = mode.isDelete ? null : validators;
     const onClickOk = validators ? validation : request;
 
-    const closeForm = prepayAction( actions.closeForm, { assets, index } );
-    const noMode = prepayAction( actions.noMode, { assets, index } );
+    const closeForm = presetAction( actions.closeForm, { assets, index } );
+    const noMode = presetAction( actions.noMode, { assets, index } );
     const onClickCancel = () => { closeForm(); noMode(); };
 
     return (

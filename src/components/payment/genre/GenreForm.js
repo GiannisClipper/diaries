@@ -6,14 +6,14 @@ import { InputCheck } from '../../libs/InputCheck';
 
 import CoreForm from "../../core/CoreForm";
 import { isBlank, isFound } from '../../core/assets/validators';
-import prepayAction from '../../core/helpers/prepayAction';
+import presetAction from '../../core/helpers/presetAction';
 
 import { GenresContext } from './GenresContext';
 
 function GenreForm( { genres, index, actions, assets } ) {
 
-    const closeForm = prepayAction( actions.closeForm, { assets, index } );
-    const noMode = prepayAction( actions.noMode, { assets, index } );
+    const closeForm = presetAction( actions.closeForm, { assets, index } );
+    const noMode = presetAction( actions.noMode, { assets, index } );
     const onClickOut = () => { closeForm(); noMode() };
 
     const genre = genres[ index ];

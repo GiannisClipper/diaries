@@ -4,14 +4,14 @@ import { Modal } from '../libs/Modal';
 import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
 
 import CoreForm from "../core/CoreForm";
-import prepayAction from '../core/helpers/prepayAction';
+import presetAction from '../core/helpers/presetAction';
 
 import { AppContext } from '../app/AppContext';
 
 function BackupForm( { backup, actions, assets } ) {
 
-    const closeForm = prepayAction( actions.closeForm, { assets } );
-    const noMode = prepayAction( actions.noMode, { assets } );
+    const closeForm = presetAction( actions.closeForm, { assets } );
+    const noMode = presetAction( actions.noMode, { assets } );
     const onClickOut = () => { closeForm(); noMode() };
 
     return (

@@ -1,5 +1,5 @@
 import { useContext, useEffect } from 'react';
-import prepayAction from '../core/helpers/prepayAction';
+import presetAction from '../core/helpers/presetAction';
 import { AppContext } from '../app/AppContext';
 import assets from './assets/assets';
 
@@ -9,7 +9,7 @@ function Signout() {
     const { signin } = state;
     const { token } = signin;
 
-    const signout = prepayAction( actions.signout, { assets } );
+    const signout = presetAction( actions.signout, { assets } );
 
     useEffect( () => {
         if ( token ) {

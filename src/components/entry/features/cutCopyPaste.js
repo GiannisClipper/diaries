@@ -1,4 +1,4 @@
-import prepayAction from '../../core/helpers/prepayAction';
+import presetAction from '../../core/helpers/presetAction';
 import { dateToYYYYMMDD } from '../../core/helpers/dates';
 
 function presetCutCopyPasteFeature( { cutCopyPasteContext, date, entries, index, actions, assets } ) {
@@ -14,11 +14,11 @@ function presetCutCopyPasteFeature( { cutCopyPasteContext, date, entries, index,
         setPasteProcess, 
     } = cutCopyPasteContext;
 
-    const cutOk = prepayAction( actions.cutOk, { assets, index } );
-    const cutError = prepayAction( actions.cutError, { assets, index } );
-    const paste = prepayAction( actions.paste, { assets, index } );
-    const pasteOk = prepayAction( actions.pasteOk, { assets, index } );
-    const pasteError = prepayAction( actions.pasteError, { assets, index } );
+    const cutOk = presetAction( actions.cutOk, { assets, index } );
+    const cutError = presetAction( actions.cutError, { assets, index } );
+    const paste = presetAction( actions.paste, { assets, index } );
+    const pasteOk = presetAction( actions.pasteOk, { assets, index } );
+    const pasteError = presetAction( actions.pasteError, { assets, index } );
 
     const onCut = event => {
         setCut( { 
@@ -67,10 +67,10 @@ function cutCopyPasteFeature( { cutCopyPasteContext, entries, index, actions, as
         setPasteError 
     } = cutCopyPasteContext;
 
-    const createMode = prepayAction( actions.createMode, { assets, index } );
-    const createRequest = prepayAction( actions.createRequest, { assets, index } );
-    const updateMode = prepayAction( actions.updateMode, { assets, index } );
-    const updateRequest = prepayAction( actions.updateRequest, { assets, index } );
+    const createMode = presetAction( actions.createMode, { assets, index } );
+    const createRequest = presetAction( actions.createRequest, { assets, index } );
+    const updateMode = presetAction( actions.updateMode, { assets, index } );
+    const updateRequest = presetAction( actions.updateRequest, { assets, index } );
 
     if ( _uiux.paste.isPaste ) {
         if ( Object.keys( _uiux.status ).length === 0 ) {

@@ -9,7 +9,7 @@ import { OkButton } from '../libs/Buttons';
 
 import { InputValidation } from '../core/CoreForm';
 import { isBlank } from '../core/assets/validators';
-import prepayAction from '../core/helpers/prepayAction';
+import presetAction from '../core/helpers/presetAction';
 
 import texts from '../app/assets/texts';
 
@@ -22,10 +22,10 @@ const SignList = styled( ListBox )`
 
 function SignForm( { signin, actions, assets } ) {
 
-    const validation = prepayAction( actions.validation, { assets } );
-    const validationOk = prepayAction( actions.validationOk, { assets } );
-    const validationError = prepayAction( actions.validationError, { assets } );
-    const signinRequest = prepayAction( actions.signinRequest, { assets } );
+    const validation = presetAction( actions.validation, { assets } );
+    const validationOk = presetAction( actions.validationOk, { assets } );
+    const validationError = presetAction( actions.validationError, { assets } );
+    const signinRequest = presetAction( actions.signinRequest, { assets } );
 
     const [ data, setData ] = useState( { ...signin } );
 

@@ -6,14 +6,14 @@ import { InputDate } from '../libs/InputDate';
 
 import CoreForm from "../core/CoreForm";
 import { isBlank, isFound } from '../core/assets/validators';
-import prepayAction from '../core/helpers/prepayAction';
+import presetAction from '../core/helpers/presetAction';
 
 import { DiariesContext } from './DiariesContext';
 
 function DiaryForm( { diaries, index, actions, assets } ) {
 
-    const closeForm = prepayAction( actions.closeForm, { assets, index } );
-    const noMode = prepayAction( actions.noMode, { assets, index } );
+    const closeForm = presetAction( actions.closeForm, { assets, index } );
+    const noMode = presetAction( actions.noMode, { assets, index } );
     const onClickOut = () => { closeForm(); noMode() };
 
     const diary = diaries[ index ];

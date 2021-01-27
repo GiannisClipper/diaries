@@ -6,14 +6,14 @@ import { InputDate } from '../libs/InputDate';
 
 import CoreForm from "../core/CoreForm";
 import { shiftDate, YYYYMMDDToRepr, dateToYYYYMMDD } from '../core/helpers/dates';
-import prepayAction from '../core/helpers/prepayAction';
+import presetAction from '../core/helpers/presetAction';
 
 import { ReportsContext } from './ReportsContext';
 
 function ReportForm( { reports, index, actions, assets } ) {
 
-    const closeForm = prepayAction( actions.closeForm, { assets, index } );
-    const noMode = prepayAction( actions.noMode, { assets, index } );
+    const closeForm = presetAction( actions.closeForm, { assets, index } );
+    const noMode = presetAction( actions.noMode, { assets, index } );
     const onClickOut = () => { closeForm(); noMode() };
 
     const report = reports[ index ];

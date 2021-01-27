@@ -4,7 +4,7 @@ import { RowBox, RowValue, RowMenu } from '../libs/RowBox';
 
 import { RetrieveManyRequest } from '../core/CoreRequests';
 import { CoreMenu, RetrieveManyMenuOption } from '../core/CoreMenu';
-import prepayAction from '../core/helpers/prepayAction';
+import presetAction from '../core/helpers/presetAction';
 
 import { ReportsContext } from './ReportsContext';
 import ReportForm from './ReportForm';
@@ -18,8 +18,8 @@ function Report( { reports, index, actions, assets } ) {
     const { parseToDB } = assets;
     const dataToDB = parseToDB( report );
 
-    const retrieveManyMode = prepayAction( actions.retrieveManyMode, { assets, index } );
-    const openForm = prepayAction( actions.openForm, { assets, index } );
+    const retrieveManyMode = presetAction( actions.retrieveManyMode, { assets, index } );
+    const openForm = presetAction( actions.openForm, { assets, index } );
 
     useEffect( () => {
         if ( _uiux.status.isResponseWaiting ) {

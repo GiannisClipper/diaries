@@ -5,15 +5,15 @@ import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
 import { InputFromList } from '../libs/InputFromList';
 
 import CoreForm from "../core/CoreForm";
-import prepayAction from '../core/helpers/prepayAction';
+import presetAction from '../core/helpers/presetAction';
 import { isBlank } from '../core/assets/validators';
 
 import { AppContext } from '../app/AppContext';
 
 function SettingsForm( { settings, actions, assets } ) {
 
-    const closeForm = prepayAction( actions.closeForm, { assets } );
-    const noMode = prepayAction( actions.noMode, { assets } );
+    const closeForm = presetAction( actions.closeForm, { assets } );
+    const noMode = presetAction( actions.noMode, { assets } );
     const onClickOut = () => { closeForm(); noMode() };
 
     const [ data, setData ] = useState( { ...settings } );
