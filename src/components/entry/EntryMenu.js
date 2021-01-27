@@ -12,9 +12,7 @@ import {
     CloseTool
 } from '../libs/Tools';
 
-import { CorePasteContext } from '../core/CorePaste';
 import prepayAction from '../core/helpers/prepayAction';
-import { dateToYYYYMMDD } from '../core/helpers/dates';
 
 function EntryMenuTool( { index, actions, assets } ) {
 

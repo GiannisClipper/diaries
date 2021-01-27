@@ -43,8 +43,8 @@ const Entry = ( { diary_id, date, entries, index, actions, assets } ) => {
         cutCopyPasteFeature( 
             { cutCopyPasteContext, entries, index, actions, assets } 
         );
-    } );
-
+    } );  
+    
     // ...cut-copy-paste feature
 
     // drag-n-drop feature...
