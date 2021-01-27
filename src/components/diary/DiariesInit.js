@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
-import { RetrieveManyRequest } from '../core/CoreRequests';
+import { retrieveManyRequestFeature } from '../core/features/requests';
 
-import { DiariesContext } from './DiariesContext';
 import { diariesSchema } from './assets/schemas';
 
 function DiariesInit( { state, actions, assets } ) {
@@ -27,15 +26,22 @@ function DiariesInit( { state, actions, assets } ) {
         actions.retrieveManyRequestBefore( { assets, index: 0 } );
     }
 
+    // request feature
+
+    useEffect( () => {
+
+        retrieveManyRequestFeature( { 
+            _uiux,
+            actions,
+            assets,
+            url: `/.netlify/functions/diary?user_id=${ user_id }`
+        } );
+
+    } );
+
     // useEffect( () => console.log( 'Has rendered. ', 'DiariesInit' ) );
 
-    return (
-        <RetrieveManyRequest
-            Context={ DiariesContext }
-            assets={ assets }
-            url={ `/.netlify/functions/diary?user_id=${ user_id }` }
-        />
-    );
+    return null;
 }
 
 export default DiariesInit;

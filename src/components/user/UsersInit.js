@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
-import { RetrieveManyRequest } from '../core/CoreRequests';
+import { retrieveManyRequestFeature } from '../core/features/requests';
 
-import { UsersContext } from './UsersContext';
 import { usersSchema } from './assets/schemas';
 
 function UsersInit( { state, actions, assets } ) {
@@ -20,15 +19,22 @@ function UsersInit( { state, actions, assets } ) {
         actions.retrieveManyRequestBefore( { assets, index: 0 } );
     }
 
+    // request feature
+
+    useEffect( () => {
+
+        retrieveManyRequestFeature( { 
+            _uiux,
+            actions,
+            assets,
+            url: `/.netlify/functions/user`
+        } );
+
+    } );
+
     // useEffect( () => console.log( 'Has rendered. ', 'UsersInit' ) );
 
-    return (
-        <RetrieveManyRequest
-            Context={ UsersContext }
-            assets={ assets }
-            url={ `/.netlify/functions/user` }
-        />
-    );
+    return null;
 }
 
 export default UsersInit;

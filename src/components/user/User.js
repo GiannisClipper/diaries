@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { RowBox, RowValue, RowMenu } from '../libs/RowBox';
 
-import { CreateRequest, UpdateRequest, DeleteRequest } from '../core/CoreRequests';
 import { CoreMenu, CreateMenuOption, UpdateMenuOption, DeleteMenuOption } from '../core/CoreMenu';
 import presetAction from '../core/helpers/presetAction';
+import { createRequestFeature, updateRequestFeature, deleteRequestFeature } from '../core/features/requests';
 
-import { UsersContext } from './UsersContext';
 import UserForm from './UserForm';
 
 function User( { users, index, actions, assets } ) {
@@ -19,33 +18,41 @@ function User( { users, index, actions, assets } ) {
     const deleteMode = presetAction( actions.deleteMode, { assets, index } );
     const openForm = presetAction( actions.openForm, { assets, index } );
 
+    // request features
+
+    useEffect( () => {
+
+        if ( _uiux.mode.isCreate ) {
+            createRequestFeature( { 
+                _item: user,
+                actions,
+                assets,
+                index,
+                url: `/.netlify/functions/user`
+            } );
+
+        } else if ( _uiux.mode.isUpdate ) {
+            updateRequestFeature( { 
+                _item: user,
+                actions,
+                assets,
+                index,
+                url: `/.netlify/functions/user?id=${ user.id }`
+            } );
+
+        } else if ( _uiux.mode.isDelete ) {
+            deleteRequestFeature( { 
+                _item: user,
+                actions,
+                assets,
+                index,
+                url: `/.netlify/functions/user?id=${ user.id }`
+            } );
+        }
+    }, [ user, _uiux, actions, assets, index ] );
+
     return (
         <RowBox>
-            { _uiux.mode.isCreate ?
-                <CreateRequest 
-                    Context={ UsersContext }
-                    assets={ assets }
-                    index={ index }
-                    url={ `/.netlify/functions/user` }
-                />
-
-            : _uiux.mode.isUpdate ?
-                <UpdateRequest 
-                    Context={ UsersContext }
-                    assets={ assets }
-                    index={ index }
-                    url={ `/.netlify/functions/user?id=${ user.id }` }
-                />
-
-            : _uiux.mode.isDelete ?
-                <DeleteRequest 
-                    Context={ UsersContext }
-                    assets={ assets }
-                    index={ index }
-                    url={ `/.netlify/functions/user?id=${ user.id }` }
-                />
-
-            : null }
 
             <RowValue title={ `${ user.id }` }>
                 <span>{ user.username }</span>
@@ -82,7 +89,7 @@ function User( { users, index, actions, assets } ) {
                     index={ index }
                     actions={ actions }
                     assets={ assets }
-        /> 
+                /> 
             : null }
 
         </RowBox>

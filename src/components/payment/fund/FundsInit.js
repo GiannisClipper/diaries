@@ -1,6 +1,6 @@
-import React, { useContext, useEffect  } from 'react';
+import { useContext, useEffect  } from 'react';
 
-import { RetrieveManyRequest } from '../../core/CoreRequests';
+import { retrieveManyRequestFeature } from '../../core/features/requests';
 
 import { FundsContext } from './FundsContext';
 import assets from './assets/assets';
@@ -27,20 +27,24 @@ function FundsInit( { diary_id } ) {
         actions.retrieveManyRequestBefore( { assets, index: 0 } );
     }
 
+    // request feature
+
+    useEffect( () => {
+
+        if ( diary_id ) {
+            retrieveManyRequestFeature( { 
+                _uiux,
+                actions,
+                assets,
+                url: `/.netlify/functions/payment-fund?diary_id=${ diary_id }`
+            } );
+        }
+
+    } );
+        
     // useEffect( () => console.log( 'Has rendered. ', 'payment/FundsInit' ) );
 
-    if ( ! diary_id ) {
-        return null;
-
-    } else {
-        return (
-            <RetrieveManyRequest 
-                Context={ FundsContext }
-                assets={ assets }
-                url={ `/.netlify/functions/payment-fund?diary_id=${ diary_id }` }
-            />
-        );
-    }
+    return null;
 }
 
 export default FundsInit;

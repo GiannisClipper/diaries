@@ -2,11 +2,10 @@ import React, { useEffect } from 'react';
 
 import { RowBox, RowValue, RowMenu } from '../libs/RowBox';
 
-import { RetrieveManyRequest } from '../core/CoreRequests';
 import { CoreMenu, RetrieveManyMenuOption } from '../core/CoreMenu';
 import presetAction from '../core/helpers/presetAction';
+import { retrieveManyRequestFeature } from '../core/features/requests';
 
-import { ReportsContext } from './ReportsContext';
 import ReportForm from './ReportForm';
 import { paymentsPDF } from './helpers/reportPDF';
 
@@ -21,6 +20,22 @@ function Report( { reports, index, actions, assets } ) {
     const retrieveManyMode = presetAction( actions.retrieveManyMode, { assets, index } );
     const openForm = presetAction( actions.openForm, { assets, index } );
 
+    // request feature
+
+    useEffect( () => {
+
+        retrieveManyRequestFeature( {
+            _uiux,
+            actions,
+            assets,
+            url: `/.netlify/functions/report` +
+            `?type=${ dataToDB.type }` +
+            `&dateFrom=${ dataToDB.dateFrom }` +
+            `&dateTill=${ dataToDB.dateTill } `
+        } );
+
+    }, [ _uiux, actions, assets, dataToDB ] );
+
     useEffect( () => {
         if ( _uiux.status.isResponseWaiting ) {
             paymentsPDF( [] );
@@ -29,31 +44,20 @@ function Report( { reports, index, actions, assets } ) {
     } );
 
     return (
-        <>
-            <RetrieveManyRequest 
-                Context={ ReportsContext }
-                assets={ assets }
-                url={ `/.netlify/functions/report` +
-                    `?type=${ dataToDB.type }` +
-                    `&dateFrom=${ dataToDB.dateFrom }` +
-                    `&dateTill=${ dataToDB.dateTill } `
-                }
-            />
+        <RowBox key={ index }>
 
-            <RowBox key={ index }>
-                <RowValue title={ `` }>
-                    <span>{ report.descr }</span>
-                </RowValue>
+            <RowValue title={ `` }>
+                <span>{ report.descr }</span>
+            </RowValue>
 
-                <RowMenu>
-                    <CoreMenu status={ _uiux.status } >
-                        <RetrieveManyMenuOption 
-                            retrieveManyMode={ retrieveManyMode }
-                            openForm={ openForm } 
-                        />
-                    </CoreMenu>
-                </RowMenu>
-            </RowBox> 
+            <RowMenu>
+                <CoreMenu status={ _uiux.status } >
+                    <RetrieveManyMenuOption 
+                        retrieveManyMode={ retrieveManyMode }
+                        openForm={ openForm } 
+                    />
+                </CoreMenu>
+            </RowMenu>
 
             { _uiux.form.isOpen ?
                 <ReportForm
@@ -64,7 +68,7 @@ function Report( { reports, index, actions, assets } ) {
                 /> 
             : null }
 
-        </>
+        </RowBox> 
     );
 }
 

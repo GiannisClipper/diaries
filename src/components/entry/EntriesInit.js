@@ -5,14 +5,14 @@ import { dateToYYYYMMDD } from '../core/helpers/dates';
 function EntriesInit( { diary_id, state, actions, assets }) {
 
     const { date, _uiux } = state; 
-    const { status } = _uiux;
+    const { dataFromDB, status } = _uiux;
 
     const schema = assets.schema;
     assets.schema = () => ( { 
         ...schema(), diary_id, date: dateToYYYYMMDD( date ) 
     } );
 
-    if ( status.isResponseOk ) {
+    if ( dataFromDB && status.isResponseOk ) {
         actions.retrieveManyResponseOkAfter( { assets } );
     }
 

@@ -7,10 +7,9 @@ import { Loader } from '../libs/Loader';
 import { SuspendedTool } from '../libs/Tools';
 
 import { CutCopyPasteContext } from '../core/CutCopyPasteContext';
-import { CreateRequest, UpdateRequest, DeleteRequest } from '../core/CoreRequests';
+import { createRequestFeature, updateRequestFeature, deleteRequestFeature } from '../core/features/requests';
 import { dragFeature, dropFeature } from '../core/features/dragNDrop';
 
-import { EntriesContext } from './EntriesContext';
 import EntryRepr from './EntryRepr';
 import { EntryMenuTool, BlankEntryMenu, ExistsEntryMenu } from './EntryMenu';
 import EntryForm from './EntryForm';
@@ -31,6 +30,39 @@ const Entry = ( { diary_id, date, entries, index, actions, assets } ) => {
     const entry = entries[ index ];
     const { _uiux } = entry;
 
+    // request features...
+
+    useEffect( () => {
+
+        if ( _uiux.mode.isCreate ) {
+            createRequestFeature( { 
+                _item: entry,
+                actions,
+                assets,
+                index,
+                url: `/.netlify/functions/entry`
+            } );
+
+        } else if ( _uiux.mode.isUpdate ) {
+            updateRequestFeature( { 
+                _item: entry,
+                actions,
+                assets,
+                index,
+                url: `/.netlify/functions/entry?id=${ entry.id }`
+            } );
+
+        } else if ( _uiux.mode.isDelete ) {
+            deleteRequestFeature( { 
+                _item: entry,
+                actions,
+                assets,
+                index,
+                url: `/.netlify/functions/entry?id=${ entry.id }`
+            } );
+        }
+    }, [ entry, _uiux, actions, assets, index ] );
+
     // cut-copy-paste feature...
 
     const cutCopyPasteContext = useContext( CutCopyPasteContext )
@@ -45,8 +77,6 @@ const Entry = ( { diary_id, date, entries, index, actions, assets } ) => {
         );
     } );  
     
-    // ...cut-copy-paste feature
-
     // drag-n-drop feature...
 
     const elemRef = useRef();
@@ -60,8 +90,6 @@ const Entry = ( { diary_id, date, entries, index, actions, assets } ) => {
         }
     } );
 
-    // ...drag-n-drop feature
-
     if ( ! diary_id ) {
         return null;
 
@@ -71,33 +99,6 @@ const Entry = ( { diary_id, date, entries, index, actions, assets } ) => {
                 key={ index }
                 ref={ elemRef }
             >
-
-                { _uiux.mode.isCreate ?
-                    <CreateRequest
-                        Context={ EntriesContext }
-                        assets={ assets }
-                        index={ index }
-                        url={ `/.netlify/functions/entry` }
-                    />
-
-                : _uiux.mode.isUpdate ?
-                    <UpdateRequest 
-                        Context={ EntriesContext }
-                        assets={ assets }
-                        index={ index }
-                        url={ `/.netlify/functions/entry?id=${ entry.id }` }
-                    />
-
-                : _uiux.mode.isDelete ?
-                    <DeleteRequest
-                        Context={ EntriesContext }
-                        assets={ assets }
-                        index={ index }
-                        url={ `/.netlify/functions/entry?id=${ entry.id }` }
-                    />
-
-                : null }
-
                 <RowValue
                     title={ `${ entry.diary_id }.${ entry.id }.${ entry.date }.${ entry.index }.${ index }.` }
                 >

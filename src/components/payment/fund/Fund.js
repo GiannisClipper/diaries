@@ -2,9 +2,9 @@ import React, { useContext, useEffect } from 'react';
 
 import { RowBox, RowValue, RowMenu } from '../../libs/RowBox';
 
-import { CreateRequest, UpdateRequest, DeleteRequest } from '../../core/CoreRequests';
 import { CoreMenu, CreateMenuOption, UpdateMenuOption, DeleteMenuOption } from '../../core/CoreMenu';
 import presetAction from '../../core/helpers/presetAction';
+import { createRequestFeature, updateRequestFeature, deleteRequestFeature } from '../../core/features/requests';
 
 import { FundsContext } from './FundsContext';
 import FundForm from './FundForm';
@@ -19,34 +19,41 @@ function Fund( { funds, index, actions, assets } ) {
     const deleteMode = presetAction( actions.deleteMode, { assets, index } );
     const openForm = presetAction( actions.openForm, { assets, index } );
 
+    // request features
+
+    useEffect( () => {
+
+        if ( _uiux.mode.isCreate ) {
+            createRequestFeature( { 
+                _item: fund,
+                actions,
+                assets,
+                index,
+                url: `/.netlify/functions/payment-fund`
+            } );
+
+        } else if ( _uiux.mode.isUpdate ) {
+            updateRequestFeature( { 
+                _item: fund,
+                actions,
+                assets,
+                index,
+                url: `/.netlify/functions/payment-fund?id=${ fund.id }`
+            } );
+
+        } else if ( _uiux.mode.isDelete ) {
+            deleteRequestFeature( { 
+                _item: fund,
+                actions,
+                assets,
+                index,
+                url: `/.netlify/functions/payment-fund?id=${ fund.id }`
+            } );
+        }
+    }, [ fund, _uiux, actions, assets, index ] );
+
     return (
         <RowBox>
-
-            { _uiux.mode.isCreate ?
-                <CreateRequest
-                    Context={ FundsContext }
-                    assets={ assets }
-                    index={ index }
-                    url={ `/.netlify/functions/payment-fund` }
-                />
-
-            : _uiux.mode.isUpdate ?
-                <UpdateRequest 
-                    Context={ FundsContext }
-                    assets={ assets }
-                    index={ index }
-                    url={ `/.netlify/functions/payment-fund?id=${ fund.id }` }
-                />
-
-            : _uiux.mode.isDelete ?
-                <DeleteRequest 
-                    Context={ FundsContext }
-                    assets={ assets }
-                    index={ index }
-                    url={ `/.netlify/functions/payment-fund?id=${ fund.id }` }
-                />
-
-            : null }
 
             <RowValue title={ `${ fund.diary_id }.${ fund.id }` }>
                 <span style={ { fontFamily: 'monospace' } } >{ `${ fund.code } ` }</span>
@@ -55,24 +62,24 @@ function Fund( { funds, index, actions, assets } ) {
 
             <RowMenu>
                 { ! fund.id 
-                ?
-                <CoreMenu status={ _uiux.status } >
-                    <CreateMenuOption 
-                        createMode={ createMode }
-                        openForm={ openForm } 
-                    />
-                </CoreMenu>
-                :
-                <CoreMenu status={ _uiux.status } >
-                    <UpdateMenuOption 
-                        updateMode={ updateMode }
-                        openForm={ openForm } 
-                    />
-                    <DeleteMenuOption 
-                        deleteMode={ deleteMode }
-                        openForm={ openForm } 
-                    />
-                </CoreMenu>
+                    ?
+                    <CoreMenu status={ _uiux.status } >
+                        <CreateMenuOption 
+                            createMode={ createMode }
+                            openForm={ openForm } 
+                        />
+                    </CoreMenu>
+                    :
+                    <CoreMenu status={ _uiux.status } >
+                        <UpdateMenuOption 
+                            updateMode={ updateMode }
+                            openForm={ openForm } 
+                        />
+                        <DeleteMenuOption 
+                            deleteMode={ deleteMode }
+                            openForm={ openForm } 
+                        />
+                    </CoreMenu>
                 }
             </RowMenu>
 

@@ -1,10 +1,10 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 
 import { RowBox, RowValue, RowMenu } from '../libs/RowBox';
 
-import { UpdateRequest } from '../core/CoreRequests';
 import { CoreMenu, UpdateMenuOption } from '../core/CoreMenu';
 import presetAction from '../core/helpers/presetAction';
+import { updateRequestFeature } from '../core/features/requests';
 
 import { AppContext } from '../app/AppContext';
 
@@ -20,31 +20,37 @@ function Settings() {
     const updateMode = presetAction( actions.updateMode, { assets } );
     const openForm = presetAction( actions.openForm, { assets } );
 
+    // request feature
+
+    useEffect( () => {
+
+        updateRequestFeature( { 
+            _item: settings,
+            actions,
+            assets,
+            url: `/.netlify/functions/settings`
+        } );
+
+    }, [ settings, actions ] );
+    
     return (
-        <>
-            <UpdateRequest 
-                Context={ AppContext }
-                assets={ assets }
-                url={ `/.netlify/functions/settings` }
-            />
+        <RowBox>
 
-            <RowBox>
-                <RowValue title={ `${ settings.id }` }>
-                    <div>{ `Επιλογή θέματος: ${ settings.theme }` }</div>
-                    <br />
-                    <div>{ `Επιλογή γλώσσας: ${ settings.language }` }</div>
-                    <br />
-                </RowValue>
+            <RowValue title={ `${ settings.id }` }>
+                <div>{ `Επιλογή θέματος: ${ settings.theme }` }</div>
+                <br />
+                <div>{ `Επιλογή γλώσσας: ${ settings.language }` }</div>
+                <br />
+            </RowValue>
 
-                <RowMenu>
-                    <CoreMenu status={ _uiux.status } >
-                        <UpdateMenuOption 
-                            updateMode={ updateMode }
-                            openForm={ openForm }
-                        />
-                    </CoreMenu>
-                </RowMenu>
-            </RowBox> 
+            <RowMenu>
+                <CoreMenu status={ _uiux.status } >
+                    <UpdateMenuOption 
+                        updateMode={ updateMode }
+                        openForm={ openForm }
+                    />
+                </CoreMenu>
+            </RowMenu>
 
             { _uiux.form.isOpen ?
                 <SettingsForm
@@ -54,7 +60,7 @@ function Settings() {
                 /> 
             : null }
 
-        </>
+        </RowBox> 
     );
 }
 

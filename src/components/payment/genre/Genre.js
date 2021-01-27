@@ -2,9 +2,9 @@ import React, { useContext, useEffect } from 'react';
 
 import { RowBox, RowValue, RowMenu } from '../../libs/RowBox';
 
-import { CreateRequest, UpdateRequest, DeleteRequest } from '../../core/CoreRequests';
 import { CoreMenu, CreateMenuOption, UpdateMenuOption, DeleteMenuOption } from '../../core/CoreMenu';
 import presetAction from '../../core/helpers/presetAction';
+import { createRequestFeature, updateRequestFeature, deleteRequestFeature } from '../../core/features/requests';
 
 import { GenresContext } from './GenresContext';
 import GenreForm from './GenreForm';
@@ -29,34 +29,41 @@ function Genre( { genres, index, actions, assets } ) {
         ? 'Π'
         : '-';
 
+    // request features
+
+    useEffect( () => {
+
+        if ( _uiux.mode.isCreate ) {
+            createRequestFeature( { 
+                _item: genre,
+                actions,
+                assets,
+                index,
+                url: `/.netlify/functions/payment-genre`
+            } );
+
+        } else if ( _uiux.mode.isUpdate ) {
+            updateRequestFeature( { 
+                _item: genre,
+                actions,
+                assets,
+                index,
+                url: `/.netlify/functions/payment-genre?id=${ genre.id }`
+            } );
+
+        } else if ( _uiux.mode.isDelete ) {
+            deleteRequestFeature( { 
+                _item: genre,
+                actions,
+                assets,
+                index,
+                url: `/.netlify/functions/payment-genre?id=${ genre.id }`
+            } );
+        }
+    }, [ genre, _uiux, actions, assets, index ] );
+
     return (
         <RowBox>
-
-            { _uiux.mode.isCreate ?
-                <CreateRequest
-                    Context={ GenresContext }
-                    assets={ assets }
-                    index={ index }
-                    url={ `/.netlify/functions/payment-genre` }
-                />
-
-            : _uiux.mode.isUpdate ?
-                <UpdateRequest 
-                    Context={ GenresContext }
-                    assets={ assets }
-                    index={ index }
-                    url={ `/.netlify/functions/payment-genre?id=${genre.id}` }
-                />
-
-            : _uiux.mode.isDelete ?
-                <DeleteRequest 
-                    Context={ GenresContext }
-                    assets={ assets }
-                    index={ index }
-                    url={ `/.netlify/functions/payment-genre?id=${genre.id}` }
-                />
-
-            : null }
 
             <RowValue title={ `${ genre.diary_id }.${ genre.id }` }>
                 <span style={ { fontFamily: 'monospace' } } >{ `${ typeInfo } ${ genre.code } ` }</span>
@@ -65,24 +72,24 @@ function Genre( { genres, index, actions, assets } ) {
 
             <RowMenu>
                 { ! genre.id 
-                ?
-                <CoreMenu status={ _uiux.status } >
-                    <CreateMenuOption 
-                        createMode={ createMode }
-                        openForm={ openForm } 
-                    />
-                </CoreMenu>
-                :
-                <CoreMenu status={ _uiux.status } >
-                    <UpdateMenuOption 
-                        updateMode={ updateMode }
-                        openForm={ openForm } 
-                    />
-                    <DeleteMenuOption 
-                        deleteMode={ deleteMode }
-                        openForm={ openForm } 
-                    />
-                </CoreMenu>
+                    ?
+                    <CoreMenu status={ _uiux.status } >
+                        <CreateMenuOption 
+                            createMode={ createMode }
+                            openForm={ openForm } 
+                        />
+                    </CoreMenu>
+                    :
+                    <CoreMenu status={ _uiux.status } >
+                        <UpdateMenuOption 
+                            updateMode={ updateMode }
+                            openForm={ openForm } 
+                        />
+                        <DeleteMenuOption 
+                            deleteMode={ deleteMode }
+                            openForm={ openForm } 
+                        />
+                    </CoreMenu>
                 }
             </RowMenu>
 

@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 
-import { SigninRequest } from '../core/CoreRequests';
+import { signinRequestFeature } from '../core/features/requests';
 
 import { AppContext } from '../app/AppContext';
 
@@ -12,20 +12,25 @@ function Signin() {
     const { state, actions } = useContext( AppContext );
     const { signin } = state;
 
-    return (
-        <>
-            <SigninRequest 
-                Context={ AppContext }
-                assets={ assets }
-                url={ `/.netlify/functions/signin` }
-            />
+    // request feature
 
-            <SigninForm
-                signin={ signin }
-                actions={ actions }
-                assets={ assets }
-            / >
-        </>
+    useEffect( () => {
+
+        signinRequestFeature( { 
+            _item: signin,
+            actions,
+            assets,
+            url: `/.netlify/functions/signin`
+        } );
+
+    }, [ signin, actions ] );
+    
+    return (
+        <SigninForm
+            signin={ signin }
+            actions={ actions }
+            assets={ assets }
+        / >
     );
 }
 

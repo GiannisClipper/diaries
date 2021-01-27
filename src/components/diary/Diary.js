@@ -1,14 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { RowBox, RowValue, RowMenu } from '../libs/RowBox';
 
-import { CreateRequest, UpdateRequest, DeleteRequest } from '../core/CoreRequests';
 import { CoreMenu, CreateMenuOption, UpdateMenuOption, DeleteMenuOption } from '../core/CoreMenu';
 import presetAction from '../core/helpers/presetAction';
+import { createRequestFeature, updateRequestFeature, deleteRequestFeature } from '../core/features/requests';
 
 import { LinkBench } from '../app/AppLinks';
 
-import { DiariesContext } from './DiariesContext';
 import DiaryForm from './DiaryForm';
 
 function Diary( { diaries, index, actions, assets } ) {
@@ -21,44 +20,52 @@ function Diary( { diaries, index, actions, assets } ) {
     const deleteMode = presetAction( actions.deleteMode, { assets, index } );
     const openForm = presetAction( actions.openForm, { assets, index } );
 
+    // request features
+
+    useEffect( () => {
+
+        if ( _uiux.mode.isCreate ) {
+            createRequestFeature( { 
+                _item: diary,
+                actions,
+                assets,
+                index,
+                url: `/.netlify/functions/diary`
+            } );
+
+        } else if ( _uiux.mode.isUpdate ) {
+            updateRequestFeature( { 
+                _item: diary,
+                actions,
+                assets,
+                index,
+                url: `/.netlify/functions/diary?id=${ diary.id }`
+            } );
+
+        } else if ( _uiux.mode.isDelete ) {
+            deleteRequestFeature( { 
+                _item: diary,
+                actions,
+                assets,
+                index,
+                url: `/.netlify/functions/diary?id=${ diary.id }`
+            } );
+        }
+    }, [ diary, _uiux, actions, assets, index ] );
+
     return (
-            <RowBox>
-                { _uiux.mode.isCreate ?
-                    <CreateRequest 
-                        Context={ DiariesContext }
-                        assets={ assets }
-                        index={ index }
-                        url={ `/.netlify/functions/diary` }
-                    />
+        <RowBox>
 
-                : _uiux.mode.isUpdate ?
-                    <UpdateRequest 
-                        Context={ DiariesContext }
-                        assets={ assets }
-                        index={ index }
-                        url={ `/.netlify/functions/diary?id=${ diary.id }` }
-                    />
+            <RowValue title={ `${ diary.user_id }.${ diary.id }` }>
 
-                : _uiux.mode.isDelete ?
-                    <DeleteRequest 
-                        Context={ DiariesContext }
-                        assets={ assets }
-                        index={ index }
-                        url={ `/.netlify/functions/diary?id=${ diary.id }` }
-                    />
+                { ! diary.id || <LinkBench id={ diary.id } /> }
 
-                : null }
+                <span>{ diary.title }</span>
+                <span>{ diary.startDate }</span>
+            </RowValue>
 
-                <RowValue title={ `${ diary.user_id }.${ diary.id }` }>
-
-                    { ! diary.id || <LinkBench id={ diary.id } /> }
-
-                    <span>{ diary.title }</span>
-                    <span>{ diary.startDate }</span>
-                </RowValue>
-
-                <RowMenu>
-                    { ! diary.id 
+            <RowMenu>
+                { ! diary.id 
                     ?
                     <CoreMenu status={ _uiux.status } >
                         <CreateMenuOption 
@@ -70,26 +77,26 @@ function Diary( { diaries, index, actions, assets } ) {
                     <CoreMenu status={ _uiux.status } >
                         <UpdateMenuOption 
                             updateMode={ updateMode }
-                            openForm={ openForm } 
+                            openForm={ openForm }
                         />
                         <DeleteMenuOption 
                             deleteMode={ deleteMode }
                             openForm={ openForm } 
                         />
                     </CoreMenu>
-                    }
-                </RowMenu>
+                }
+            </RowMenu>
 
-                { _uiux.form.isOpen ?
-                    <DiaryForm
-                        diaries={ diaries }
-                        index={ index }
-                        actions={ actions }
-                        assets={ assets }
-                    /> 
-                : null }
+            { _uiux.form.isOpen ?
+                <DiaryForm
+                    diaries={ diaries }
+                    index={ index }
+                    actions={ actions }
+                    assets={ assets }
+                /> 
+            : null }
 
-            </RowBox>
+        </RowBox>
     );
 }
 

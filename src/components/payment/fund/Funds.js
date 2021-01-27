@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 
 import { FundsContext } from './FundsContext';
-import assets from './assets/assets'; 
+import assets from './assets/assets';
 import FundsInit from './FundsInit';
 import Fund from './Fund';
 

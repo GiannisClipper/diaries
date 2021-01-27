@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 
 import { heads } from '../app/assets/texts';
 
@@ -37,7 +37,7 @@ function SettingsPage() {
                         { heads.payment.genres }
                     </BlockLabel>
                     <BlockValue>
-                        <Genres />
+                        <Genres diary_id={ diary_id } />
                     </BlockValue>
                 </BlockBox>
 
@@ -46,7 +46,7 @@ function SettingsPage() {
                         { heads.payment.funds }
                     </BlockLabel>
                     <BlockValue>
-                        <Funds />
+                        <Funds diary_id={ diary_id } />
                     </BlockValue>
                 </BlockBox>
 

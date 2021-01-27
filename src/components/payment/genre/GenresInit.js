@@ -1,6 +1,6 @@
-import React, { useContext, useEffect  } from 'react';
+import { useContext, useEffect  } from 'react';
 
-import { RetrieveManyRequest } from '../../core/CoreRequests';
+import { retrieveManyRequestFeature } from '../../core/features/requests';
 
 import assets from './assets/assets';
 import { GenresContext } from './GenresContext';
@@ -27,20 +27,24 @@ function GenresInit( { diary_id } ) {
         actions.retrieveManyRequestBefore( { assets, index: 0 } );
     }
 
+    // request feature
+
+    useEffect( () => {
+
+        if ( diary_id ) {
+            retrieveManyRequestFeature( { 
+                _uiux,
+                actions,
+                assets,
+                url: `/.netlify/functions/payment-genre?diary_id=${ diary_id }`
+            } );
+        }
+
+    } );
+
     // useEffect( () => console.log( 'Has rendered. ', 'payment/GenresInit' ) );
 
-    if ( ! diary_id ) {
-        return null;
-
-    } else {
-        return (
-            <RetrieveManyRequest 
-                Context={ GenresContext }
-                assets={ assets }
-                url={ `/.netlify/functions/payment-genre?diary_id=${ diary_id }` }
-            />
-        );
-    }
+    return null;
 }
 
 export default GenresInit;

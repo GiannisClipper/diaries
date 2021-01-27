@@ -21,8 +21,7 @@ const entriesReducer = ( state, action ) => {
         } case RETRIEVE_MANY_RESPONSE_OK_AFTER: {
             const { schema, parseFromDB, sorter } = action.payload.assets;
             
-            const { date } = state;
-            const _uiux = { ...state._uiux };
+            const { date, _uiux } = state;
             const { dataFromDB } = _uiux;
             dataFromDB.sort( sorter );
 
