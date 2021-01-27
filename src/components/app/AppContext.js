@@ -8,7 +8,7 @@ import { backupSchema } from '../backup/assets/schemas';
 import comboReducer from '../core/helpers/comboReducer';
 import { appReducer } from './assets/reducers';
 
-import chargeActions from '../core/helpers/chargeActions';
+import pluginActions from '../core/helpers/pluginActions';
 import modeTypes from '../core/assets/actions/mode';
 import formTypes from '../core/assets/actions/form';
 import validationTypes from '../core/assets/actions/validation';
@@ -44,7 +44,7 @@ const AppContextProvider = props => {
 
     window.state = state;  // for debugging purposes
 
-    const actions = chargeActions( dispatch, rawActions );
+    const actions = pluginActions( dispatch, rawActions );
 
     useEffect( () => console.log( 'Has rendered. ', 'AppContextProvider' ) );
 

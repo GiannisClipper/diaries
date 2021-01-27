@@ -7,7 +7,7 @@ import { validationOneOfManyReducer } from '../core/assets/reducers/validation';
 import { retrieveManyReducer } from '../core/assets/reducers/retrieveMany';
 import { reportsReducer } from './assets/reducers';
 
-import chargeActions from '../core/helpers/chargeActions';
+import pluginActions from '../core/helpers/pluginActions';
 import pageTypes from '../core/assets/actions/page';
 import modeTypes from '../core/assets/actions/mode';
 import formTypes from '../core/assets/actions/form';
@@ -40,7 +40,7 @@ const ReportsContextProvider = props => {
 
     const [ state, dispatch ] = useReducer( comboReducer( ...reducers ), reportsSchema() );
 
-    const actions = chargeActions( dispatch, rawActions );
+    const actions = pluginActions( dispatch, rawActions );
     
     actions.handleError = useContext( AppContext ).actions.handleError;
 

@@ -10,7 +10,7 @@ import { updateOneOfManyReducer } from '../../core/assets/reducers/update';
 import { deleteOneOfManyReducer } from '../../core/assets/reducers/delete';
 import { retrieveManyReducer } from '../../core/assets/reducers/retrieveMany';
 
-import chargeActions from '../../core/helpers/chargeActions';
+import pluginActions from '../../core/helpers/pluginActions';
 import pageTypes from '../../core/assets/actions/page';
 import modeTypes from '../../core/assets/actions/mode';
 import formTypes from '../../core/assets/actions/form';
@@ -52,7 +52,7 @@ const GenresContextProvider = props => {
 
     const [ state, dispatch ] = useReducer( comboReducer( ...reducers ), genresSchema() );
 
-    const actions = chargeActions( dispatch, rawActions );
+    const actions = pluginActions( dispatch, rawActions );
     
     actions.handleError = useContext( AppContext ).actions.handleError;
 

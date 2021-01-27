@@ -4,7 +4,7 @@ import comboReducer from '../core/helpers/comboReducer';
 import { datesReducer } from './assets/reducers';
 import { retrieveManyReducer } from '../core/assets/reducers/retrieveMany';
 
-import chargeActions from '../core/helpers/chargeActions';
+import pluginActions from '../core/helpers/pluginActions';
 import retrieveManyTypes from '../core/assets/actions/retrieveMany';
 
 import { AppContext } from '../app/AppContext';
@@ -28,7 +28,7 @@ const DatesContextProvider = props => {
 
     const [ state, dispatch ] = useReducer( comboReducer( ...reducers ), schema );
 
-    const actions = chargeActions( dispatch, rawActions );
+    const actions = pluginActions( dispatch, rawActions );
     
     actions.handleError = useContext( AppContext ).actions.handleError;
 

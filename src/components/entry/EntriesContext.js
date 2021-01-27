@@ -11,7 +11,7 @@ import { createOneOfManyReducer } from '../core/assets/reducers/create';
 import { updateOneOfManyReducer } from '../core/assets/reducers/update';
 import { deleteOneOfManyReducer } from '../core/assets/reducers/delete';
 
-import chargeActions from '../core/helpers/chargeActions';
+import pluginActions from '../core/helpers/pluginActions';
 import menuTypes from '../core/assets/actions/menu';
 import modeTypes from '../core/assets/actions/mode';
 import pasteTypes from '../core/assets/actions/paste';
@@ -57,7 +57,7 @@ const EntriesContextProvider = props => {
 
     const [ state, dispatch ] = useReducer( comboReducer( ...reducers ), schema );
 
-    const actions = chargeActions( dispatch, rawActions );
+    const actions = pluginActions( dispatch, rawActions );
     
     actions.handleError = useContext( AppContext ).actions.handleError;
 

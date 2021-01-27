@@ -1,4 +1,4 @@
-const chargeActions = ( dispatch, rawActions ) => {
+const pluginActions = ( dispatch, rawActions ) => {
 
     const actions = {};
 
@@ -9,5 +9,5 @@ const chargeActions = ( dispatch, rawActions ) => {
     return actions;
 }
 
-export default chargeActions;
-export { chargeActions };
+export default pluginActions;
+export { pluginActions };
