@@ -16,7 +16,7 @@ const reducers = [
     retrieveManyReducer
 ];
 
-const rawActions = {
+const unpluggedActions = {
     ...retrieveManyActions
 };
 
@@ -28,7 +28,7 @@ const DatesContextProvider = props => {
 
     const [ state, dispatch ] = useReducer( comboReducer( ...reducers ), schema );
 
-    const actions = pluginActions( dispatch, rawActions );
+    const actions = pluginActions( dispatch, unpluggedActions );
     
     actions.handleError = useContext( AppContext ).actions.handleError;
 

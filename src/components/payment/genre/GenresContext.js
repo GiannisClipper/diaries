@@ -35,7 +35,7 @@ const reducers = [
     retrieveManyReducer,
 ];
 
-const rawActions = {
+const unpluggedActions = {
     ...pageActions,
     ...modeActions,
     ...formActions,
@@ -52,7 +52,7 @@ const GenresContextProvider = props => {
 
     const [ state, dispatch ] = useReducer( comboReducer( ...reducers ), genresSchema() );
 
-    const actions = pluginActions( dispatch, rawActions );
+    const actions = pluginActions( dispatch, unpluggedActions );
     
     actions.handleError = useContext( AppContext ).actions.handleError;
 

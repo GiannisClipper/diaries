@@ -14,7 +14,7 @@ const reducers = [
     pageReducer,
 ];
 
-const rawActions = {
+const unpluggedActions = {
     ...pageActions
 };
 
@@ -24,7 +24,7 @@ const BenchContextProvider = props => {
 
     const [ state, dispatch ] = useReducer( comboReducer( ...reducers ), benchSchema() );
 
-    const actions = pluginActions( dispatch, rawActions );
+    const actions = pluginActions( dispatch, unpluggedActions );
 
     useEffect( () => console.log( 'Has rendered. ', 'BenchContextProvider' ) );
 

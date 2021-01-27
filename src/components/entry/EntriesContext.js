@@ -36,7 +36,7 @@ const reducers = [
     deleteOneOfManyReducer,
 ];
 
-const rawActions = {
+const unpluggedActions = {
     ...menuActions,
     ...modeActions,
     ...pasteActions,
@@ -57,7 +57,7 @@ const EntriesContextProvider = props => {
 
     const [ state, dispatch ] = useReducer( comboReducer( ...reducers ), schema );
 
-    const actions = pluginActions( dispatch, rawActions );
+    const actions = pluginActions( dispatch, unpluggedActions );
     
     actions.handleError = useContext( AppContext ).actions.handleError;
 

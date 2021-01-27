@@ -1,9 +1,9 @@
-const pluginActions = ( dispatch, rawActions ) => {
+const pluginActions = ( dispatch, unpluggedActions ) => {
 
     const actions = {};
 
-    Object.keys( rawActions ).forEach( key => 
-        actions[ key ] = payload => dispatch( { ...rawActions[ key ], payload } )
+    Object.keys( unpluggedActions ).forEach( key => 
+        actions[ key ] = payload => dispatch( { ...unpluggedActions[ key ], payload } )
     );
 
     return actions;

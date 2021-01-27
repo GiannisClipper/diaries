@@ -21,7 +21,7 @@ const reducers = [
     appReducer
 ];
 
-const rawActions = { 
+const unpluggedActions = { 
     ...modeActions,
     ...formActions,
     ...validationActions,
@@ -44,7 +44,7 @@ const AppContextProvider = props => {
 
     window.state = state;  // for debugging purposes
 
-    const actions = pluginActions( dispatch, rawActions );
+    const actions = pluginActions( dispatch, unpluggedActions );
 
     useEffect( () => console.log( 'Has rendered. ', 'AppContextProvider' ) );
 
