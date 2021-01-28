@@ -15,16 +15,12 @@ function CoreMenu( { status, children } ) {
         status.isRequest ||
         status.isResponseWaiting 
         ?
-            <MenuOptionBox>
-                <LoadingIcon />
-            </MenuOptionBox>
+            <LoadingIcon />
         : 
         status.isResponseError ||
         status.isResponseErrorAfter 
         ?
-            <MenuOptionBox>
-                <SuspendedIcon />
-            </MenuOptionBox>
+            <SuspendedIcon />
         : 
             <>{ children }</>
     );

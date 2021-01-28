@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 import { dateToYYYYMMDD } from '../core/helpers/dates';
 
-function EntriesInit( { diary_id, state, actions, assets }) {
+function EntriesLoader( { diary_id, state, actions, assets }) {
 
     const { date, _uiux } = state; 
     const { dataFromDB, status } = _uiux;
@@ -16,10 +16,10 @@ function EntriesInit( { diary_id, state, actions, assets }) {
         actions.retrieveManyResponseOkAfter( { assets } );
     }
 
-    useEffect( () => console.log( 'Has rendered. ', 'EntriesInit' ) );
+    useEffect( () => console.log( 'Has rendered. ', 'EntriesLoader' ) );
 
     return null;
 }
 
-export default EntriesInit;
-export { EntriesInit };
+export default EntriesLoader;
+export { EntriesLoader };

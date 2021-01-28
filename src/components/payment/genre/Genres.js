@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 
 import { GenresContext } from './GenresContext';
 import assets from './assets/assets'; 
-import GenresInit from './GenresInit';
+import GenresLoader from './GenresLoader';
 import Genre from './Genre';
 
 function Genres( { diary_id } ) {
@@ -16,7 +16,7 @@ function Genres( { diary_id } ) {
 
     return (
         <ul>
-            <GenresInit 
+            <GenresLoader 
                 diary_id={ diary_id }
                 state={ state }
                 actions={ actions }

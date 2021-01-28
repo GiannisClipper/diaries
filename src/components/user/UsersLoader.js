@@ -4,7 +4,7 @@ import { retrieveManyRequestFeature } from '../core/features/requests';
 
 import { usersSchema } from './assets/schemas';
 
-function UsersInit( { state, actions, assets } ) {
+function UsersLoader( { state, actions, assets } ) {
 
     const { _uiux } = state;
     const { schema } = assets;
@@ -32,10 +32,10 @@ function UsersInit( { state, actions, assets } ) {
 
     } );
 
-    // useEffect( () => console.log( 'Has rendered. ', 'UsersInit' ) );
+    // useEffect( () => console.log( 'Has rendered. ', 'UsersLoader' ) );
 
     return null;
 }
 
-export default UsersInit;
-export { UsersInit };
+export default UsersLoader;
+export { UsersLoader };

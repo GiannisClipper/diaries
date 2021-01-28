@@ -14,7 +14,7 @@ const calcStartDate = startDate => {
     return startDate;
 }
 
-function BenchInit( { diary_id, state, actions, assets } ) {
+function BenchLoader( { diary_id, state, actions, assets } ) {
 
     const { _uiux } = state;
 
@@ -43,10 +43,10 @@ function BenchInit( { diary_id, state, actions, assets } ) {
 
     } );
 
-    useEffect( () => console.log( 'Has rendered. ', 'BenchInit' ) );
+    useEffect( () => console.log( 'Has rendered. ', 'BenchLoader' ) );
 
     return null;
 }
 
-export default BenchInit;
-export { BenchInit };
+export default BenchLoader;
+export { BenchLoader };

@@ -12,11 +12,11 @@ import texts from '../app/assets/texts';
 
 import { BenchContext } from './BenchContext';
 import assets from './assets/assets';
-import { BenchInit } from './BenchInit';
+import { BenchLoader } from './BenchLoader';
 
-import GenresInit from '../payment/genre/GenresInit';
+import GenresLoader from '../payment/genre/GenresLoader';
 
-import FundsInit from '../payment/fund/FundsInit';
+import FundsLoader from '../payment/fund/FundsLoader';
 
 import { DatesContextProvider } from '../date/DatesContext';
 import { Dates } from '../date/Dates';
@@ -98,15 +98,15 @@ const Bench = ( { diary_id } ) => {
                 doScrollDown={ () => actions.nextPage( { assets } ) }
             />
 
-            <GenresInit 
+            <GenresLoader 
                 diary_id={ diary_id }
             />
 
-            <FundsInit 
+            <FundsLoader 
                 diary_id={ diary_id }
             />
 
-            <BenchInit
+            <BenchLoader
                 diary_id={ diary_id }
                 state={ state }
                 actions={ actions }

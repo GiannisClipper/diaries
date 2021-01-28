@@ -24,9 +24,11 @@ function Icon( { icon, title } ) {
 
 function RotatingIcon( { icon, title } ) {
     return (
-        <RotatingBox>
-            <FontAwesomeIcon icon={ icon } className="icon" title={ title } />
-        </RotatingBox>
+        <IconBox>
+            <RotatingBox>
+                <FontAwesomeIcon icon={ icon } className="icon" title={ title } />
+            </RotatingBox>
+        </IconBox>
     )
 }
 

@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 
 import { FundsContext } from './FundsContext';
 import assets from './assets/assets';
-import FundsInit from './FundsInit';
+import FundsLoader from './FundsLoader';
 import Fund from './Fund';
 
 function Funds( { diary_id } ) {
@@ -16,7 +16,7 @@ function Funds( { diary_id } ) {
 
     return (
         <ul>
-            <FundsInit 
+            <FundsLoader 
                 diary_id={ diary_id }
                 state={ state }
                 actions={ actions }

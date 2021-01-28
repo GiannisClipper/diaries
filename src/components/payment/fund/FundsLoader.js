@@ -2,13 +2,13 @@ import { useContext, useEffect  } from 'react';
 
 import { retrieveManyRequestFeature } from '../../core/features/requests';
 
+import { FundsContext } from './FundsContext';
 import assets from './assets/assets';
-import { GenresContext } from './GenresContext';
-import { genresSchema } from './assets/schemas';
+import { fundsSchema } from './assets/schemas';
 
-function GenresInit( { diary_id } ) {
+function FundsLoader( { diary_id } ) {
 
-    const { state, actions } = useContext( GenresContext );
+    const { state, actions } = useContext( FundsContext );
     const { _uiux } = state;
     const { schema } = assets;
     assets.schema = () => ( { ...schema(), diary_id } );
@@ -19,9 +19,9 @@ function GenresInit( { diary_id } ) {
     ) {
 
         actions.openPage( { data: {
-            ...genresSchema(),
+            ...fundsSchema(),
             diary_id,
-            genres: [ schema() ],
+            funds: [ assets.schema() ],
         } } );
 
         actions.retrieveManyRequestBefore( { assets, index: 0 } );
@@ -36,16 +36,16 @@ function GenresInit( { diary_id } ) {
                 _uiux,
                 actions,
                 assets,
-                url: `/.netlify/functions/payment-genre?diary_id=${ diary_id }`
+                url: `/.netlify/functions/payment-fund?diary_id=${ diary_id }`
             } );
         }
 
     } );
-
-    // useEffect( () => console.log( 'Has rendered. ', 'payment/GenresInit' ) );
+        
+    // useEffect( () => console.log( 'Has rendered. ', 'payment/FundsLoader' ) );
 
     return null;
 }
 
-export default GenresInit;
-export { GenresInit };
+export default FundsLoader;
+export { FundsLoader };

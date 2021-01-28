@@ -2,7 +2,7 @@ import React, { useEffect, useContext } from 'react';
 
 import { DatesContext } from './DatesContext';
 import assets from './assets/assets'; 
-import DatesInit from './DatesInit';
+import DatesLoader from './DatesLoader';
 import Date1 from './Date1';
 
 const Dates = ( { diary_id, startDate } ) => {
@@ -14,7 +14,7 @@ const Dates = ( { diary_id, startDate } ) => {
 
     return (
         <ul>
-            <DatesInit 
+            <DatesLoader 
                 state={ state }
                 actions={ actions }
                 assets={ assets }

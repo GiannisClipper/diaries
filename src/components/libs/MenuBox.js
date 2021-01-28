@@ -15,7 +15,6 @@ const MenuOptionBox = styled.span`
     vertical-align: top;
     padding: .5em;
     font-size: 1em;
-    cursor: pointer;
 
     ${ props => props.theme.MenuOptionBox && props.theme.MenuOptionBox };
 `;

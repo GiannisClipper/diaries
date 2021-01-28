@@ -7,7 +7,7 @@ import { heads } from '../app/assets/texts';
 
 import { ReportsContext } from './ReportsContext';
 import assets from './assets/assets'; 
-import ReportsInit from './ReportsInit';
+import ReportsLoader from './ReportsLoader';
 import Report from './Report';
 
 function Reports() {
@@ -21,7 +21,7 @@ function Reports() {
 
     return (
         <ListBox>
-            <ReportsInit 
+            <ReportsLoader 
                 state={ state }
                 actions={ actions }
                 assets={ assets }

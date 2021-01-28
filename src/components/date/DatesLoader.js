@@ -10,7 +10,7 @@ import { FundsContext } from '../payment/fund/FundsContext';
 
 import assets from './assets/assets';
 
-function DatesInit() {
+function DatesLoader() {
 
     const { diary_id } = useContext( BenchContext ).state;
 
@@ -57,10 +57,10 @@ function DatesInit() {
         }
     } );
     
-    useEffect( () => console.log( 'Has rendered. ', 'DatesInit' ) );
+    useEffect( () => console.log( 'Has rendered. ', 'DatesLoader' ) );
 
     return null;
 }
 
-export default DatesInit;
-export { DatesInit };
+export default DatesLoader;
+export { DatesLoader };

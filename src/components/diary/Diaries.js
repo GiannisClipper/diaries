@@ -8,7 +8,7 @@ import { heads } from '../app/assets/texts';
 
 import { DiariesContext } from './DiariesContext';
 import assets from './assets/assets'; 
-import DiariesInit from './DiariesInit';
+import DiariesLoader from './DiariesLoader';
 import Diary from './Diary';
 
 function Diaries() {
@@ -26,7 +26,7 @@ function Diaries() {
 
     return (
         <ListBox>
-            <DiariesInit 
+            <DiariesLoader 
                 state={ state }
                 actions={ actions }
                 assets={ assets }

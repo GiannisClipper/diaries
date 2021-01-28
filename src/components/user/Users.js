@@ -7,7 +7,7 @@ import { heads } from '../app/assets/texts';
 
 import { UsersContext } from './UsersContext';
 import assets from './assets/assets'; 
-import UsersInit from './UsersInit';
+import UsersLoader from './UsersLoader';
 import User from './User';
 
 function Users() {
@@ -21,7 +21,7 @@ function Users() {
 
     return (
         <ListBox>
-            <UsersInit 
+            <UsersLoader 
                 state={ state }
                 actions={ actions }
                 assets={ assets }

@@ -5,7 +5,7 @@ const data = [
     { descr: 'Κατάσταση οικονομικών κινήσεων', type: 'payment' }
 ];
 
-function ReportsInit( { actions, assets, state } ) {
+function ReportsLoader( { actions, assets, state } ) {
 
     const { _uiux } = state;
 
@@ -18,4 +18,4 @@ function ReportsInit( { actions, assets, state } ) {
     return null;
 }
 
-export default ReportsInit;
+export default ReportsLoader;

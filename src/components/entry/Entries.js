@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { EntriesContext } from './EntriesContext';
 import assets from './assets/assets';
-import EntriesInit from './EntriesInit';
+import EntriesLoader from './EntriesLoader';
 import Entry from './Entry';
 
 const List = styled.ul`
@@ -23,7 +23,7 @@ function Entries( { diary_id } ) {
 
     return (
         <List>
-            <EntriesInit 
+            <EntriesLoader 
                 diary_id={ diary_id }
                 state={ state }
                 actions={ actions }

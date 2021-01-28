@@ -4,7 +4,7 @@ import { retrieveManyRequestFeature } from '../core/features/requests';
 
 import { diariesSchema } from './assets/schemas';
 
-function DiariesInit( { state, actions, assets } ) {
+function DiariesLoader( { state, actions, assets } ) {
 
     const { _uiux } = state;
     const { schema } = assets;
@@ -26,7 +26,6 @@ function DiariesInit( { state, actions, assets } ) {
         actions.retrieveManyRequestBefore( { assets, index: 0 } );
     }
 
-    // request feature
 
     useEffect( () => {
 
@@ -39,10 +38,10 @@ function DiariesInit( { state, actions, assets } ) {
 
     } );
 
-    // useEffect( () => console.log( 'Has rendered. ', 'DiariesInit' ) );
+    // useEffect( () => console.log( 'Has rendered. ', 'DiariesLoader' ) );
 
     return null;
 }
 
-export default DiariesInit;
-export { DiariesInit };
+export default DiariesLoader;
+export { DiariesLoader };
