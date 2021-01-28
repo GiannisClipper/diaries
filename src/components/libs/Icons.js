@@ -3,17 +3,32 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
     faEllipsisH, 
     faEdit, 
-    faFont, 
-    faEuroSign, 
     faTrashAlt, 
     faCut, 
     faCamera, 
     faClone, 
     faTimes, 
-    faBan 
+    faBan,
+    faSyncAlt
 } from '@fortawesome/free-solid-svg-icons';
 
-import { ToolBox } from './ToolBox';
+import { IconBox, RotatingBox, ToolBox } from './IconBox';
+
+function Icon( { icon, title } ) {
+    return (
+        <IconBox>
+            <FontAwesomeIcon icon={ icon } className="icon" title={ title } />
+        </IconBox>
+    )
+}
+
+function RotatingIcon( { icon, title } ) {
+    return (
+        <RotatingBox>
+            <FontAwesomeIcon icon={ icon } className="icon" title={ title } />
+        </RotatingBox>
+    )
+}
 
 function Tool( { icon, title, onClick, reference } ) {
     return (
@@ -29,20 +44,6 @@ const MenuTool = ( { onClick, reference } ) =>
         title='Menu'
         onClick={ onClick }
         reference={ reference }
-    />
-
-const AddNoteTool = ( { onClick } ) => 
-    <Tool 
-        icon={ faFont } 
-        title='Νέο σημείωμα'
-        onClick={ onClick }
-    />
-
-const AddPaymentTool = ( { onClick } ) => 
-    <Tool 
-        icon={ faEuroSign } 
-        title='Νέα πληρωμή'
-        onClick={ onClick }
     />
 
 const EditTool = ( { onClick } ) => 
@@ -88,22 +89,27 @@ const CloseTool = ( { onClick } ) =>
         onClick={ onClick }
     />
 
-const SuspendedTool = () => 
-    <Tool 
+const SuspendedIcon = () => 
+    <Icon
         icon={ faBan } 
-        disabled={ true }
+        // disabled={ true }
     />
+
+const LoadingIcon = () =>
+    <RotatingIcon
+        icon={ faSyncAlt }
+    />
+
 
 export { 
     Tool, 
     MenuTool, 
-    AddNoteTool, 
-    AddPaymentTool, 
     EditTool, 
     DeleteTool, 
     CutTool, 
     CopyTool, 
     PasteTool, 
     CloseTool, 
-    SuspendedTool 
+    SuspendedIcon,
+    LoadingIcon
 };

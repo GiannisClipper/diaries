@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
-import { Loader } from './Loader';
+import { LoadingIcon } from './Icons';
 
 const Button = styled.button`
     display: inline-block;
@@ -22,12 +22,12 @@ const Button = styled.button`
 `;
 
 const StyledOkButton = styled( Button )`
-    ${props => props.theme.OkButton && props.theme.OkButton };
-    ${props => props.isDelete && props.theme.CautionButton && props.theme.CautionButton };
+    ${ props => props.theme.OkButton && props.theme.OkButton };
+    ${ props => props.isDelete && props.theme.CautionButton && props.theme.CautionButton };
 `;
 
 const StyledCancelButton = styled( Button )`
-    ${props => props.theme.CancelButton && props.theme.CancelButton };
+    ${ props => props.theme.CancelButton && props.theme.CancelButton };
 `;
 
 function OkButton( { icon, label, onClick, isRequest, isDelete } ) {
@@ -37,11 +37,11 @@ function OkButton( { icon, label, onClick, isRequest, isDelete } ) {
     label = label || 'ΟΚ';
 
     return (
-        <StyledOkButton onClick={onClick} isDelete={isDelete}>
+        <StyledOkButton onClick={ onClick } isDelete={ isDelete }>
             {isRequest
-                ? <Loader /> 
-                : <FontAwesomeIcon className="icon" icon={icon} />}
-            <span>{label}</span>
+                ? <LoadingIcon /> 
+                : <FontAwesomeIcon className="icon" icon={ icon } />}
+            <span>{ label }</span>
         </StyledOkButton>
     );
 }
@@ -53,9 +53,9 @@ function CancelButton( { icon, label, onClick } ) {
     label = label || 'ΑΚΥΡΟ';
 
     return (
-        <StyledCancelButton onClick={onClick}>
-            <FontAwesomeIcon className="icon" icon={icon} />
-            <span>{label}</span>
+        <StyledCancelButton onClick={ onClick }>
+            <FontAwesomeIcon className="icon" icon={ icon } />
+            <span>{ label }</span>
         </StyledCancelButton>
     );
 }

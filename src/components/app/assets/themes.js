@@ -55,7 +55,7 @@ const createTheme = colors => ( {
     MenuOptionBox: css`
         background-color: inherited;
     `,
-    ToolBox: css`
+    IconBox: css`
         background-color: inherited;
     `,
     FormBox: css`

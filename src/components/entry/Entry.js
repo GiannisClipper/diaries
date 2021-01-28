@@ -2,9 +2,7 @@ import React, { useContext, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 
 import StyledRow from '../libs/RowBox';
-import { ToolBox } from '../libs/ToolBox';
-import { Loader } from '../libs/Loader';
-import { SuspendedTool } from '../libs/Tools';
+import { LoadingIcon, SuspendedIcon } from '../libs/Icons';
 
 import { CutCopyPasteContext } from '../core/CutCopyPasteContext';
 import { createRequestFeature, updateRequestFeature, deleteRequestFeature } from '../core/features/requests';
@@ -113,12 +111,12 @@ const Entry = ( { diary_id, date, entries, index, actions, assets } ) => {
                     _uiux.status.isResponseWaiting ||
                     _uiux.status.isResponseOk ?
 
-                        <ToolBox><Loader /></ToolBox>
+                        <LoadingIcon />
 
                     : _uiux.status.isResponseError ||
                     _uiux.status.isResponseErrorAfter ?
 
-                        <SuspendedTool />
+                        <SuspendedIcon />
                     : 
                         <EntryMenuTool 
                             index={ index } 

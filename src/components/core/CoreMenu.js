@@ -3,8 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 import { MenuOptionBox } from '../libs/MenuBox';
-import { SuspendedTool } from '../libs/Tools';
-import { Loader } from '../libs/Loader';
+import { LoadingIcon, SuspendedIcon } from '../libs/Icons';
 
 function CoreMenu( { status, children } ) {
 
@@ -17,14 +16,14 @@ function CoreMenu( { status, children } ) {
         status.isResponseWaiting 
         ?
             <MenuOptionBox>
-                <Loader />
+                <LoadingIcon />
             </MenuOptionBox>
         : 
         status.isResponseError ||
         status.isResponseErrorAfter 
         ?
             <MenuOptionBox>
-                <SuspendedTool />
+                <SuspendedIcon />
             </MenuOptionBox>
         : 
             <>{ children }</>

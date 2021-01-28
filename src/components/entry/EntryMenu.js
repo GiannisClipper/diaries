@@ -10,7 +10,7 @@ import {
     CopyTool, 
     PasteTool, 
     CloseTool
-} from '../libs/Tools';
+} from '../libs/Icons';
 
 import presetAction from '../core/helpers/presetAction';
 
