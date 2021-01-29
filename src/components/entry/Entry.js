@@ -88,79 +88,74 @@ const Entry = ( { diary_id, date, entries, index, actions, assets } ) => {
         }
     } );
 
-    if ( ! diary_id ) {
-        return null;
-
-    } else {
-        return (
-            <RowBox
-                key={ index }
-                ref={ elemRef }
+    return (
+        <RowBox
+            key={ index }
+            ref={ elemRef }
+        >
+            <RowValue
+                title={ `${ entry.diary_id }.${ entry.id }.${ entry.date }.${ entry.index }.${ index }.` }
             >
-                <RowValue
-                    title={ `${ entry.diary_id }.${ entry.id }.${ entry.date }.${ entry.index }.${ index }.` }
-                >
-                    <EntryRepr entry={ entry } />
-                </RowValue>
+                <EntryRepr entry={ entry } />
+            </RowValue>
 
-                <RowMenu>
-                    { 
-                    _uiux.status.isValidation || 
-                    _uiux.status.isRequestBefore ||
-                    _uiux.status.isRequest ||
-                    _uiux.status.isResponseWaiting ||
-                    _uiux.status.isResponseOk ?
+            <RowMenu>
+                { 
+                _uiux.status.isValidation || 
+                _uiux.status.isRequestBefore ||
+                _uiux.status.isRequest ||
+                _uiux.status.isResponseWaiting ||
+                _uiux.status.isResponseOk ?
 
-                        <LoadingIcon />
+                    <LoadingIcon />
 
-                    : _uiux.status.isResponseError ||
-                    _uiux.status.isResponseErrorAfter ?
+                : _uiux.status.isResponseError ||
+                _uiux.status.isResponseErrorAfter ?
 
-                        <SuspendedIcon />
-                    : 
-                        <EntryMenuTool 
-                            index={ index } 
-                            actions={ actions }
-                            assets={ assets }
-                        />
-                    }
-                </RowMenu>
-
-                { ! _uiux.menu.isOpen ?
-                    null
-                : ! entry.id ? 
-                    <BlankEntryMenu 
-                        index={ index }
-                        actions={ actions }
-                        assets={ assets }
-                        menuToolCoords={ _uiux.menuToolCoords }
-                        onPaste={ onPaste }
-                    />
+                    <SuspendedIcon />
                 : 
-                    <ExistsEntryMenu 
-                        index={ index }
+                    <EntryMenuTool 
+                        index={ index } 
                         actions={ actions }
                         assets={ assets }
-                        menuToolCoords={ _uiux.menuToolCoords }
-                        onCut={ onCut }
-                        onCopy={ onCopy }
-                        onPaste={ onPaste }
                     />
                 }
+            </RowMenu>
 
-                { _uiux.form.isOpen ?
-                    <EntryForm 
-                        date={ date }
-                        entries={ entries }
-                        index={ index }
-                        actions={ actions }
-                        assets={ assets }
-                    /> 
-                : null }
+            { ! _uiux.menu.isOpen ?
+                null
+            : ! entry.id ? 
+                <BlankEntryMenu 
+                    index={ index }
+                    actions={ actions }
+                    assets={ assets }
+                    menuToolCoords={ _uiux.menuToolCoords }
+                    onPaste={ onPaste }
+                />
+            : 
+                <ExistsEntryMenu 
+                    index={ index }
+                    actions={ actions }
+                    assets={ assets }
+                    menuToolCoords={ _uiux.menuToolCoords }
+                    onCut={ onCut }
+                    onCopy={ onCopy }
+                    onPaste={ onPaste }
+                />
+            }
 
-            </RowBox> 
-        );
-    }
+            { _uiux.form.isOpen ?
+                <EntryForm 
+                    date={ date }
+                    entries={ entries }
+                    index={ index }
+                    actions={ actions }
+                    assets={ assets }
+                /> 
+            : null }
+
+        </RowBox> 
+    );
 }
 
 export default Entry;

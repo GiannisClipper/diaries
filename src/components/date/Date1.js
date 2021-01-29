@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect } from 'react';
 import styled, { css } from 'styled-components';
 
 import StyledBlock from '../libs/BlockBox';
@@ -39,11 +39,15 @@ const Date1 = ( { diary_id, date, reference } ) => {  // Date1(), to differ from
             </BlockLabel>
 
             <BlockValue>
-                <EntriesContextProvider state={ date }>
-                    <Entries
-                        diary_id={ diary_id }
-                    />
-                </EntriesContextProvider>
+                { diary_id ?
+                    <EntriesContextProvider state={ date }>
+                        <Entries
+                            diary_id={ diary_id }
+                        />
+                    </EntriesContextProvider>
+                :
+                    null
+                }
             </BlockValue>
 
         </BlockBox>

@@ -3,16 +3,13 @@ import { useContext, useEffect  } from 'react';
 import { retrieveManyRequestFeature } from '../core/features/requests';
 import { dateToYYYYMMDD } from '../core/helpers/dates';
 
-import { BenchContext } from '../bench/BenchContext';
 import { DatesContext } from '../date/DatesContext';
 import { GenresContext } from '../payment/genre/GenresContext';
 import { FundsContext } from '../payment/fund/FundsContext';
 
 import assets from './assets/assets';
 
-function DatesLoader() {
-
-    const { diary_id } = useContext( BenchContext ).state;
+function DatesLoader( { diary_id } ) {
 
     const { state, actions } = useContext( DatesContext );
     const { dates, _uiux } = state;

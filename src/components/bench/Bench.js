@@ -5,7 +5,7 @@ import { faBackward, faForward } from '@fortawesome/free-solid-svg-icons';
 
 import StyledList from '../libs/ListBox';
 
-import { CoreScroll } from '../core/CoreScroll';
+import scrollFeature from '../core/features/scroll';
 import { CutCopyPasteContextProvider } from '../core/CutCopyPasteContext';
 
 import texts from '../app/assets/texts';
@@ -46,6 +46,7 @@ const StyledNextButton = styled.button`
 `;
 
 function NextButton( { reference } ) {
+
     return (
         <StyledNextButton ref={ reference }>
             { texts.buttons.next }
@@ -59,14 +60,35 @@ const Bench = ( { diary_id } ) => {
     const { state, actions } = useContext( BenchContext );
     const { periods } = state;
 
-    // to support `scrolling` feature
+    // scroll feature
 
     const outer = useRef( null );
     const inner = useRef( null );
     const prev = useRef( null );
     const next = useRef( null );
+    const scrollMem = useRef( {
+        direction: {},  // isUp, isDown
+        scrollTop: 0,  // `outer` element attr: how many pixels already scrolled vertically 
+        offsetHeight: 0,  // `inner` element attr: the total height -including padding, border
+    } );
 
-    // to support `scrollToStartDate` feature
+    useEffect( () => {
+        const args = {
+            outer: outer.current,
+            inner: inner.current,
+            prev: prev.current,
+            next: next.current,
+            scrollMem: scrollMem.current,
+            doScrollUp: () => actions.prevPage( { assets } ),
+            doScrollDown: () => actions.nextPage( { assets } ),
+        }
+    
+        scrollFeature( { ...args } );
+        return () => scrollFeature( { ...args, disabled: true } );
+
+    } );
+
+    // scrollToStartDate feature
 
     const startDate = useRef( null );  
 
@@ -88,15 +110,6 @@ const Bench = ( { diary_id } ) => {
 
     return (
         <ListBox ref={ inner }>
-
-            <CoreScroll
-                outer={ outer.current }
-                inner={ inner.current }
-                prev={ prev.current }
-                next={ next.current }
-                doScrollUp={ () => actions.prevPage( { assets } ) }
-                doScrollDown={ () => actions.nextPage( { assets } ) }
-            />
 
             <GenresLoader 
                 diary_id={ diary_id }

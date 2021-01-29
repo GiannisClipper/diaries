@@ -49,7 +49,8 @@ const appReducer = ( state, action ) => {
 
                     let { signin } = state;
 
-                    if ( error && error.message && error.message.includes( 'No auth' ) ) {
+                    //if ( error && error.message && error.message.includes( 'No auth' ) ) {
+                    if ( error.includes( 'No auth' ) ) {
                         signin = signinSchema();
                     }
 

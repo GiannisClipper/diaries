@@ -7,7 +7,7 @@ import Date1 from './Date1';
 
 const Dates = ( { diary_id, startDate } ) => {
 
-    const { state, actions } = useContext( DatesContext ); 
+    const { state } = useContext( DatesContext ); 
     const { dates } = state;
 
     // useEffect( () => console.log( 'Has rendered. ', 'Dates', dates ) );
@@ -15,9 +15,7 @@ const Dates = ( { diary_id, startDate } ) => {
     return (
         <ul>
             <DatesLoader 
-                state={ state }
-                actions={ actions }
-                assets={ assets }
+                diary_id={ diary_id }
             />
 
             { dates.map( date => (
