@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { AppContextProvider } from './AppContext';
 import { UsersContextProvider } from '../user/UsersContext';
 import { DiariesContextProvider } from '../diary/DiariesContext';
-import { BenchContextProvider } from '../bench/BenchContext';
 import { GenresContextProvider } from '../payment/genre/GenresContext';
 import { FundsContextProvider } from '../payment/fund/FundsContext';
 import AppStyle from './AppStyle';
@@ -16,7 +15,6 @@ function App() {
         <AppContextProvider>
         <UsersContextProvider>
         <DiariesContextProvider>
-        <BenchContextProvider>
         <GenresContextProvider>
         <FundsContextProvider>
             <AppStyle>
@@ -24,7 +22,6 @@ function App() {
             </AppStyle>
         </FundsContextProvider>
         </GenresContextProvider>
-        </BenchContextProvider>
         </DiariesContextProvider>
         </UsersContextProvider>
         </AppContextProvider>

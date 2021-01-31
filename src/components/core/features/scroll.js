@@ -53,7 +53,7 @@ function scrollFeature( { outer, inner, prev, next, scrollMem, doScrollUp, doScr
         const direction = scrollMem.direction;
 
         if ( direction.isUp ) {
-            const scrollTop = scrollMem.scrollTop;  
+            const scrollTop = scrollMem.scrollTop;
             const offsetHeight = scrollMem.offsetHeight;
             const offsetDiff = inner.offsetHeight - offsetHeight;
             outer.scrollTop = scrollTop + offsetDiff;

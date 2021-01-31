@@ -66,7 +66,7 @@ const datesReducer = ( state, action ) => {
                 date._uiux.status = { isResponseErrorAfter: true };
                 date.entries.forEach( entry => entry._uiux.status = { isResponseErrorAfter: true } );
             } );
-            _uiux.status = { isResponseError: true };
+            _uiux.status = { isResponseErrorAfter: true };
 
             return { ...state, dates, _uiux };
 

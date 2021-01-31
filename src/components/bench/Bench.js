@@ -73,6 +73,7 @@ const Bench = ( { diary_id } ) => {
     } );
 
     useEffect( () => {
+
         const args = {
             outer: outer.current,
             inner: inner.current,
@@ -82,7 +83,7 @@ const Bench = ( { diary_id } ) => {
             doScrollUp: () => actions.prevPage( { assets } ),
             doScrollDown: () => actions.nextPage( { assets } ),
         }
-    
+
         scrollFeature( { ...args } );
         return () => scrollFeature( { ...args, disabled: true } );
 

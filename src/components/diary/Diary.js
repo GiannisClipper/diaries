@@ -53,6 +53,8 @@ function Diary( { diaries, index, actions, assets } ) {
         }
     }, [ diary, _uiux, actions, assets, index ] );
 
+    // useEffect( () => console.log( 'Has rendered. ', 'Diary' ) );
+
     return (
         <RowBox>
 

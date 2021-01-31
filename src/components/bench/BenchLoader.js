@@ -27,7 +27,7 @@ function BenchLoader( { diary_id, state, actions, assets } ) {
             data: { 
                 ...benchSchema(),
                 diary_id, 
-                _uiux,
+//                _uiux,
             } 
         } );
 

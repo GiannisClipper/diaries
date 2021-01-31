@@ -14,7 +14,7 @@ const LinkBox = ( { to, icon, title } ) => {
     return ( { id, active } ) => {
 
         return (
-            <Link to={ id ? `${to}/${id}` : to }> 
+            <Link to={ id ? `${ to }/${ id }` : to }> 
                 <LinkBoxStyle active={ active }>
                     <FontAwesomeIcon icon={ icon } className="icon" title={ title } />
                 </LinkBoxStyle>

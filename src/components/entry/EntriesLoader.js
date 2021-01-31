@@ -16,7 +16,7 @@ function EntriesLoader( { diary_id, state, actions, assets }) {
         actions.retrieveManyResponseOkAfter( { assets } );
     }
 
-    useEffect( () => console.log( 'Has rendered. ', 'EntriesLoader' ) );
+    // useEffect( () => console.log( 'Has rendered. ', 'EntriesLoader' ) );
 
     return null;
 }

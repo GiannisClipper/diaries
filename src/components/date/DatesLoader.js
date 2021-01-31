@@ -54,7 +54,7 @@ function DatesLoader( { diary_id } ) {
         }
     } );
     
-    useEffect( () => console.log( 'Has rendered. ', 'DatesLoader' ) );
+    // useEffect( () => console.log( 'Has rendered. ', 'DatesLoader' ) );
 
     return null;
 }

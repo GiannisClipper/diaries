@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 
 import { heads } from '../app/assets/texts';
 
-import { BenchContext } from '../bench/BenchContext';
+import { BenchContext } from './BenchContext';
 
 import { ListBox } from '../libs/ListBox';
 import { BlockBox, BlockLabel, BlockValue } from '../libs/BlockBox';
@@ -13,9 +13,7 @@ import { LinkHome, LinkBench, LinkReports, LinkBenchSettings, LinkSignout } from
 import Genres from "../payment/genre/Genres";
 import Funds from "../payment/fund/Funds";
 
-function SettingsPage() {
-
-    const { diary_id } = useContext( BenchContext ).state;
+function SettingsPage( { diary_id } ) {
 
     // useEffect( () => console.log( 'Has rendered. ', 'BenchSettingsPage' ) );
 
@@ -23,9 +21,9 @@ function SettingsPage() {
         <>
         <AppNav>
             <LinkHome />
-            <LinkBench diary_id={ diary_id } />
+            <LinkBench id={ diary_id } />
             <LinkReports />
-            <LinkBenchSettings />
+            <LinkBenchSettings id={ diary_id } active />
             <LinkSignout />
         </AppNav>
 

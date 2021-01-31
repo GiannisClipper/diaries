@@ -24,6 +24,8 @@ const BenchContextProvider = props => {
 
     const [ state, dispatch ] = useReducer( comboReducer( ...reducers ), benchSchema() );
 
+    window.bench_state = state;  // for debugging purposes
+
     const actions = pluginActions( dispatch, unpluggedActions );
 
     useEffect( () => console.log( 'Has rendered. ', 'BenchContextProvider' ) );

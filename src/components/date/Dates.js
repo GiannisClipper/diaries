@@ -1,7 +1,6 @@
 import React, { useEffect, useContext } from 'react';
 
 import { DatesContext } from './DatesContext';
-import assets from './assets/assets'; 
 import DatesLoader from './DatesLoader';
 import Date1 from './Date1';
 

@@ -29,7 +29,7 @@ const BlockValue = styled( StyledBlock.BlockValue )`
 
 const Date1 = ( { diary_id, date, reference } ) => {  // Date1(), to differ from native function Date()
 
-    useEffect( () => console.log( 'Has rendered. ', 'Date1' ) );
+    // useEffect( () => console.log( 'Has rendered. ', 'Date1' ) );
 
     return (
         <BlockBox ref={ reference } isStartDate={ reference }>
