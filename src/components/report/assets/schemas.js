@@ -14,6 +14,7 @@ const reportSchema = () => ( {
     dateTill: '',
     _uiux: {
         form: {},  // isOpen
+        mode: {},  // isRetrieveMany
         status: {},  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError
         error: {},
     }

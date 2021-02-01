@@ -67,4 +67,69 @@ const retrieveOneReducer = ( state, action ) => {
     }
 }
 
-export { retrieveOneReducer };
+const retrieveOneOfManyReducer = ( state, action ) => {
+
+    switch ( action.type ) {
+            
+        case RETRIEVE_REQUEST: {
+            const { index, assets } = action.payload;
+            const { namespace } = assets;
+
+            const _items = state[ namespace ];
+
+            _items[ index ]._uiux.status = { isRequest: true };
+
+            return { ...state, [ namespace ]: _items };
+
+        } case RETRIEVE_RESPONSE_OK: {
+            const { index, dataFromDB, assets } = action.payload;
+            const { namespace, parseFromDB } = assets;
+
+            const _items = state[ namespace ];
+
+            _items[ index ] = { ..._items[ index ], ...parseFromDB( dataFromDB ) };
+            _items[ index ]._uiux.status = { isResponseOk: true };
+
+            return { ...state, [ namespace ]: _items };
+
+        } case RETRIEVE_RESPONSE_OK_AFTER: {
+            const { index, assets } = action.payload;
+            const { namespace } = assets;
+
+            const _items = state[ namespace ];
+
+            _items[ index ]._uiux.mode = {};
+            _items[ index ]._uiux.form = {};
+            _items[ index ]._uiux.status = { isResponseOkAfter: true };
+
+            return { ...state, [ namespace ]: _items };
+
+        } case RETRIEVE_RESPONSE_ERROR: {
+            const { index, error, assets } = action.payload;
+            const { namespace } = assets;
+
+            const _items = state[ namespace ];
+
+            _items[ index ]._uiux.status = { isResponseError: true }
+            _items[ index ]._uiux.error = error;
+
+            return { ...state, [ namespace ]: _items };
+
+        } case RETRIEVE_RESPONSE_ERROR_AFTER: {
+            const { index, assets } = action.payload;
+            const { namespace, schema } = assets;
+
+            const _items = state[ namespace ];
+
+            _items[ index ] = schema();
+            _items[ index ]._uiux.status = { isResponseErrorAfter: true }
+
+            return { ...state, [ namespace ]: _items };
+
+        } default: {
+            return undefined;
+        }
+    }
+}
+
+export { retrieveOneReducer, retrieveOneOfManyReducer };

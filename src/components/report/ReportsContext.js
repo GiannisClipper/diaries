@@ -4,7 +4,7 @@ import comboReducer from '../core/helpers/comboReducer';
 import { modeOneOfManyReducer } from '../core/assets/reducers/mode';
 import { formOneOfManyReducer } from '../core/assets/reducers/form';
 import { validationOneOfManyReducer } from '../core/assets/reducers/validation';
-import { retrieveManyReducer } from '../core/assets/reducers/retrieveMany';
+import { retrieveOneOfManyReducer } from '../core/assets/reducers/retrieve';
 import { reportsReducer } from './assets/reducers';
 
 import pluginActions from '../core/helpers/pluginActions';
@@ -12,7 +12,7 @@ import pageActions from '../core/assets/actions/page';
 import modeActions from '../core/assets/actions/mode';
 import formActions from '../core/assets/actions/form';
 import validationActions from '../core/assets/actions/validation';
-import retrieveManyActions from '../core/assets/actions/retrieveMany';
+import retrieveActions from '../core/assets/actions/retrieve';
 
 import { AppContext } from '../app/AppContext';
 
@@ -23,7 +23,7 @@ const reducers = [
     modeOneOfManyReducer,
     formOneOfManyReducer,
     validationOneOfManyReducer,
-    retrieveManyReducer,
+    retrieveOneOfManyReducer,
 ];
 
 const unpluggedActions = {
@@ -31,7 +31,7 @@ const unpluggedActions = {
     ...modeActions,
     ...formActions,
     ...validationActions,
-    ...retrieveManyActions
+    ...retrieveActions
 };
 
 const ReportsContext = createContext();

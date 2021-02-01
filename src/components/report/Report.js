@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 
 import { RowBox, RowValue, RowMenu } from '../libs/RowBox';
 
-import { CoreMenu, RetrieveManyMenuOption } from '../core/CoreMenu';
+import { CoreMenu, RetrieveMenuOption } from '../core/CoreMenu';
 import presetAction from '../core/helpers/presetAction';
-import { retrieveManyRequestFeature } from '../core/features/requests';
+import { retrieveRequestFeature } from '../core/features/requests';
 
 import ReportForm from './ReportForm';
 import { paymentsPDF } from './helpers/reportPDF';
@@ -12,33 +12,37 @@ import { paymentsPDF } from './helpers/reportPDF';
 function Report( { reports, index, actions, assets } ) {
 
     const report = reports[ index ];
-    const { _uiux } = report;
+    const { _uiux, result } = report;
 
     const { parseToDB } = assets;
     const dataToDB = parseToDB( report );
 
-    const retrieveManyMode = presetAction( actions.retrieveManyMode, { assets, index } );
+    const retrieveMode = presetAction( actions.retrieveMode, { assets, index } );
     const openForm = presetAction( actions.openForm, { assets, index } );
 
     // request feature
 
     useEffect( () => {
 
-        retrieveManyRequestFeature( {
-            _uiux,
-            actions,
-            assets,
-            url: `/.netlify/functions/report` +
-            `?type=${ dataToDB.type }` +
-            `&dateFrom=${ dataToDB.dateFrom }` +
-            `&dateTill=${ dataToDB.dateTill } `
-        } );
+        if ( _uiux.form.isOpen && _uiux.mode.isRetrieve ) {
 
-    }, [ _uiux, actions, assets, dataToDB ] );
+            retrieveRequestFeature( {
+                _item: report,
+                actions,
+                assets,
+                index,
+                url: `/.netlify/functions/report` +
+                `?type=${ dataToDB.type }` +
+                `&dateFrom=${ dataToDB.dateFrom }` +
+                `&dateTill=${ dataToDB.dateTill } `
+            } );
+        }
+
+    }, [ _uiux, report, actions, assets, index, dataToDB ] );
 
     useEffect( () => {
-        if ( _uiux.status.isResponseWaiting ) {
-            paymentsPDF( [] );
+        if ( _uiux.status.isResponseOkAfter ) {
+            paymentsPDF( result );
             _uiux.status = {};
         }
     } );
@@ -52,8 +56,8 @@ function Report( { reports, index, actions, assets } ) {
 
             <RowMenu>
                 <CoreMenu status={ _uiux.status } >
-                    <RetrieveManyMenuOption 
-                        retrieveManyMode={ retrieveManyMode }
+                    <RetrieveMenuOption 
+                        retrieveMode={ retrieveMode }
                         openForm={ openForm } 
                     />
                 </CoreMenu>

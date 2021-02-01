@@ -1,4 +1,5 @@
 import { OPEN_PAGE } from '../../core/assets/types/page';
+import { RETRIEVE_RESPONSE_OK } from '../../core/assets/types/retrieve';
 
 const reportsReducer = ( state, action ) => {
 
@@ -13,7 +14,23 @@ const reportsReducer = ( state, action ) => {
             _uiux.page = { isOpen: true };
 
             return { ...state, [ namespace ]: _items, _uiux };
-        
+
+        } case RETRIEVE_RESPONSE_OK: {
+            const { index, dataFromDB, assets } = action.payload;
+            const { namespace, parseFromDB, sorter } = assets;
+
+            const _items = state[ namespace ];
+
+            const result = [];
+            dataFromDB.forEach( x => result.push( { ...parseFromDB( x ) } ) );
+            if ( sorter ) result.sort( sorter );
+
+            console.log( namespace, index)
+            _items[ index ].result = result;
+            _items[ index ]._uiux.status = { isResponseOk: true };
+
+            return { ...state, [ namespace ]: _items };
+
         } default: {
             return undefined;
         }

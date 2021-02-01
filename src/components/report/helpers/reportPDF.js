@@ -72,7 +72,7 @@ const paymentsPDF = data => {
     pdf.text( 20, 90, 'Κατάσταση οικονομικών, title somewhere here?!' );
 
     pdf.setFont( 'trebuchetMSBoldItalic', 'bolditalic' );
-    pdf.text( 20, 100, 'Κατάσταση οικονομικών, title somewhere here?!' );
+    pdf.text( 20, 100, JSON.stringify( data ) );
 
     // https://micropyramid.com/blog/export-html-web-page-to-pdf-using-jspdf/
     // const cols = {
