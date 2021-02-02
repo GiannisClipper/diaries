@@ -35,7 +35,7 @@ jsPDF.API.events.push( [ 'addFonts', addTrebuchetMSBold ] );
 jsPDF.API.events.push( [ 'addFonts', addTrebuchetMSItalic ] );
 jsPDF.API.events.push( [ 'addFonts', addTrebuchetMSBoldItalic ] );
 
-const paymentsPDF = data => {
+const testPDF = data => {
     const pdf = new jsPDF({
         orientation: 'landscape',
         unit: 'mm',
@@ -87,6 +87,68 @@ const paymentsPDF = data => {
 
     // let coordY = 80;
 
+
+    const blobPDF =  new Blob( [ pdf.output() ], { type : 'application/pdf' } );
+    const blobURL = URL.createObjectURL( blobPDF );
+    window.open( blobURL );
+}
+
+const paymentsPDF = ( { title, data } ) => {
+    const pdf = new jsPDF( {
+        orientation: 'landscape',
+        unit: 'mm',
+        format: 'a4'
+    } );
+
+    pdf.setFont( 'trebuchetMSNormal', 'normal' );
+    pdf.setFontSize( 14 );
+    pdf.text( title, 148.5, 20, 'center' );
+
+    pdf.setFontSize( 12 );
+
+    // https://micropyramid.com/blog/export-html-web-page-to-pdf-using-jspdf/
+    const labels = {
+        date: 'ΗΜ/ΝΙΑ',
+        incoming: 'ΕΙΣΠΡΑΞΗ',
+        outgoing: 'ΠΛΗΡΩΜΗ',
+        genre_id: 'ΚΑΤΗΓΟΡΙΑ',
+        remarks: 'ΣΗΜΕΙΩΣΗ',
+        fund_id: 'ΜΕΣΟ',
+    };
+
+    const cols = {
+        date: { width: 30, align: 'center' },
+        incoming: { width: 30, align: 'right' },
+        outgoing: { width: 30, align: 'right' },
+        genre_id: { width: 60, align: 'left' },
+        remarks: { width: 60, align: 'left' },
+        fund_id: { width: 60, align: 'left' },
+    };
+
+//    pdf.text( 20, 30, labels, 'right' );
+
+    let coordX = 20;
+    let coordY = 40;
+    Object.keys( cols ).forEach( key => {
+        const { width, align } = cols[ key ];
+        pdf.text( coordX, coordY, '|' );
+        coordX += align === 'center' ? width / 2 : align === 'right' ? width : 0;
+        pdf.text( labels[ key ], coordX, coordY, align );
+        coordX += align === 'center' ? width / 2 : align === 'right' ? 0 : width;
+    } );
+
+    for ( let i = 0; i < data.length; i++ ) {
+        let coordX = 20;
+        let coordY = ( 50 + 10 * i );
+        Object.keys( cols ).forEach( key => {
+            const { width, align } = cols[ key ];
+            pdf.text( coordX, coordY, '|' );
+            coordX += align === 'center' ? width / 2 : align === 'right' ? width : 0;
+            data[ i ][ key ] = data[ i ][ key ] || '?';
+            pdf.text( data[ i ][ key ], coordX, coordY, align );
+            coordX += align === 'center' ? width / 2 : align === 'right' ? 0 : width;
+        } );    
+    }
 
     const blobPDF =  new Blob( [ pdf.output() ], { type : 'application/pdf' } );
     const blobURL = URL.createObjectURL( blobPDF );

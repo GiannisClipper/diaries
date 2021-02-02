@@ -26,6 +26,13 @@ function Report( { reports, index, actions, assets } ) {
 
         if ( _uiux.form.isOpen && _uiux.mode.isRetrieve ) {
 
+            if ( _uiux.status.isResponseOk ) {
+                paymentsPDF( {
+                    title: report.descr,
+                    data: result
+                } );
+            }
+    
             retrieveRequestFeature( {
                 _item: report,
                 actions,
@@ -34,18 +41,18 @@ function Report( { reports, index, actions, assets } ) {
                 url: `/.netlify/functions/report` +
                 `?type=${ dataToDB.type }` +
                 `&dateFrom=${ dataToDB.dateFrom }` +
-                `&dateTill=${ dataToDB.dateTill } `
+                `&dateTill=${ dataToDB.dateTill }`
             } );
         }
 
-    }, [ _uiux, report, actions, assets, index, dataToDB ] );
+    }, [ _uiux, report, actions, assets, index, dataToDB, result ] );
 
-    useEffect( () => {
-        if ( _uiux.status.isResponseOkAfter ) {
-            paymentsPDF( result );
-            _uiux.status = {};
-        }
-    } );
+    // useEffect( () => {
+    //     if ( _uiux.status.isResponseOkAfter ) {
+    //         paymentsPDF( result );
+    //         _uiux.status = {};
+    //     }
+    // } );
 
     return (
         <RowBox key={ index }>
