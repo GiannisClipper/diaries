@@ -34,7 +34,7 @@ const AppBox = styled.div`
     ${ props => props.theme.AppBox && props.theme.AppBox };
 `;
 
-const AppInfo = styled.div`
+const AppInfoStyled = styled.div`
     position: fixed;
     top: 10vh;
     right: calc( ( 10% - 4em ) / 2 );
@@ -52,6 +52,18 @@ const AppInfo = styled.div`
 
     ${ props => props.theme.AppInfo && props.theme.AppInfo };
 `;
+
+const AppInfo = ( { children } ) => {
+    const { state } = useContext( AppContext );
+    const { signin } = state;
+    const { username } = signin;
+
+    return (
+        <AppInfoStyled>
+            [ { children } @ { username } ]
+        </AppInfoStyled>
+    );
+}
 
 const AppPage = props => {
 
@@ -73,12 +85,8 @@ const AppPage = props => {
             </AppNav>
 
             <AppBox centeredness>
-                { `${username} @ ${texts.heads.app}` }
+                { `${ username } @ ${ texts.heads.app }` }
             </AppBox>
-
-            <AppInfo>
-                { `${username} @ ${texts.heads.app}` }
-            </AppInfo>
         </>
     );
 }

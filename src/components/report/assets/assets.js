@@ -10,6 +10,7 @@ const assets = {
     parseFromDB: data => data.type === 'payment'
         ? parsePaymentFromDB( data )
         : parseNoteFromDB( data ),
+    sorter: ( x, y ) => x.date > y.date ? 1 : -1,
 };
 
 export default assets;

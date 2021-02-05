@@ -35,7 +35,7 @@ jsPDF.API.events.push( [ 'addFonts', addTrebuchetMSBold ] );
 jsPDF.API.events.push( [ 'addFonts', addTrebuchetMSItalic ] );
 jsPDF.API.events.push( [ 'addFonts', addTrebuchetMSBoldItalic ] );
 
-const testPDF = data => {
+const testPDF = () => {
     const pdf = new jsPDF({
         orientation: 'landscape',
         unit: 'mm',
@@ -71,88 +71,165 @@ const testPDF = data => {
     pdf.setFont( 'trebuchetMSItalic', 'italic' );
     pdf.text( 20, 90, 'Κατάσταση οικονομικών, title somewhere here?!' );
 
-    pdf.setFont( 'trebuchetMSBoldItalic', 'bolditalic' );
-    pdf.text( 20, 100, JSON.stringify( data ) );
-
     // https://micropyramid.com/blog/export-html-web-page-to-pdf-using-jspdf/
-    // const cols = {
-    //     serial: { width: 10, value: null },
-    //     date: { width: 30, value: null },
-    //     genre: { width: 60, value: null },
-    //     incoming: { width: 30, value: null },
-    //     outgoing: { width: 30, value: null },
-    //     remarks: { width: 60, value: null },
-    //     fund: { width: 60, value: null },
-    // };
 
-    // let coordY = 80;
+//    pdf.save( 'test.pdf' )
 
-
-    const blobPDF =  new Blob( [ pdf.output() ], { type : 'application/pdf' } );
+    const blobPDF =  new Blob( [ pdf.output( 'blob' ) ], { type : 'application/pdf' } );
     const blobURL = URL.createObjectURL( blobPDF );
     window.open( blobURL );
 }
 
-const paymentsPDF = ( { title, data } ) => {
+const TOP = 10;
+const LEFT = 10;
+const rowHeight = 8;
+const rowsPerPage = 20;
+
+const offsetX = ( width, align ) => align === 'center' ? width / 2 : align === 'right' ? width - 1 : 1;
+const offsetY = ( height ) => height * 0.7;
+
+
+const printTitle = ( { pdf, top, title, rowHeight } ) => {
+    let coordY = top;
+    let coordX = 148.5;
+
+    pdf.setFontSize( 10 );
+    pdf.text( title, coordX, coordY, 'center' );
+
+    top += rowHeight;
+    return top;
+}
+
+const printLabels = ( { pdf, top, cols, labels, rowHeight } ) => {
+    pdf.setFontSize( 8 );
+
+    let coordY = top;
+    let coordX = LEFT;
+
+    Object.keys( cols ).forEach( key => {
+        const { width, align } = cols[ key ];
+        pdf.rect( 
+            coordX, 
+            coordY,
+            width,
+            rowHeight 
+        );
+
+        pdf.text( 
+            labels[ key ], 
+            coordX + offsetX( width, align ), 
+            coordY + offsetY( rowHeight ), 
+            align 
+        );
+        coordX += width;
+    } );
+
+    top += rowHeight;
+    return top;
+}
+
+const printRows = ( { pdf, top, cols, rows, rowsPerPage, rowHeight, page } ) => {
+
+    const firstRow = ( page - 1 ) * rowsPerPage;
+    const lastRow = Math.min( page * rowsPerPage, rows.length ) - 1;
+
+    for ( let i = firstRow; i <= lastRow; i++ ) {
+        let coordX = LEFT;
+        let coordY = top;
+
+        Object.keys( cols ).forEach( key => {
+            const { width, align } = cols[ key ];
+
+            pdf.text( 
+                rows[ i ][ key ] || '', 
+                coordX + offsetX( width, align ), 
+                coordY + offsetY( rowHeight ), 
+                align 
+            );
+
+            coordX += width;
+        } );
+
+        top += rowHeight;    
+    }
+
+    return top;
+}
+
+const printTotals = ( { pdf, top, cols, totals, rowHeight } ) => {
+    let coordY = top;
+    let coordX = LEFT;
+
+    Object.keys( cols ).forEach( key => {
+        const { width, align } = cols[ key ];
+
+        if ( totals[ key ] !== undefined ) {
+            pdf.rect( 
+                coordX, 
+                coordY, 
+                width, 
+                rowHeight 
+            );
+
+            pdf.text( 
+                totals[ key ], 
+                coordX + offsetX( width, align ), 
+                coordY + offsetY( rowHeight ), 
+                align 
+            );
+        }
+
+        coordX += width;
+    } );
+
+    top += rowHeight;
+    return top;
+}
+
+const reportPDF = ( { title, cols, labels, result, totals } ) => {
+
     const pdf = new jsPDF( {
         orientation: 'landscape',
         unit: 'mm',
         format: 'a4'
     } );
 
-    pdf.setFont( 'trebuchetMSNormal', 'normal' );
-    pdf.setFontSize( 14 );
-    pdf.text( title, 148.5, 20, 'center' );
-
-    pdf.setFontSize( 12 );
-
     // https://micropyramid.com/blog/export-html-web-page-to-pdf-using-jspdf/
-    const labels = {
-        date: 'ΗΜ/ΝΙΑ',
-        incoming: 'ΕΙΣΠΡΑΞΗ',
-        outgoing: 'ΠΛΗΡΩΜΗ',
-        genre_id: 'ΚΑΤΗΓΟΡΙΑ',
-        remarks: 'ΣΗΜΕΙΩΣΗ',
-        fund_id: 'ΜΕΣΟ',
-    };
+   pdf.setFont( 'trebuchetMSNormal', 'normal' );
 
-    const cols = {
-        date: { width: 30, align: 'center' },
-        incoming: { width: 30, align: 'right' },
-        outgoing: { width: 30, align: 'right' },
-        genre_id: { width: 60, align: 'left' },
-        remarks: { width: 60, align: 'left' },
-        fund_id: { width: 60, align: 'left' },
-    };
+    //pdf.setFont( 'Tahoma', 'normal' );
+    // pdf.addFileToVFS( 'trebuchetMSNormal.ttf', base64TrebuchetMSNormal );
+    // pdf.addFont( 'trebuchetMSNormal.ttf', 'trebuchetMSNormal', 'normal' );
+    // pdf.setFont( 'trebuchetMSNormal' );
 
-//    pdf.text( 20, 30, labels, 'right' );
+    let pages = parseInt( result.length / rowsPerPage );
+    pages += result.length % 20 ? 1 : 0;
+    pages += pages === 0 ? 1 : 0;
 
-    let coordX = 20;
-    let coordY = 40;
-    Object.keys( cols ).forEach( key => {
-        const { width, align } = cols[ key ];
-        pdf.text( coordX, coordY, '|' );
-        coordX += align === 'center' ? width / 2 : align === 'right' ? width : 0;
-        pdf.text( labels[ key ], coordX, coordY, align );
-        coordX += align === 'center' ? width / 2 : align === 'right' ? 0 : width;
-    } );
+    for ( let page = 1; page <= pages; page++ ) {
 
-    for ( let i = 0; i < data.length; i++ ) {
-        let coordX = 20;
-        let coordY = ( 50 + 10 * i );
-        Object.keys( cols ).forEach( key => {
-            const { width, align } = cols[ key ];
-            pdf.text( coordX, coordY, '|' );
-            coordX += align === 'center' ? width / 2 : align === 'right' ? width : 0;
-            data[ i ][ key ] = data[ i ][ key ] || '?';
-            pdf.text( data[ i ][ key ], coordX, coordY, align );
-            coordX += align === 'center' ? width / 2 : align === 'right' ? 0 : width;
-        } );    
+        if ( page > 1 ) {
+            pdf.addPage();
+        }
+
+        let top = TOP;
+
+        title += ` (${ page }/${ pages })`;
+
+        top = printTitle( { pdf, top, title, rowHeight } );
+
+        top = printLabels( { pdf, top, cols, labels, rowHeight } );
+
+        top = printRows( { pdf, top, cols, rows: result, rowsPerPage, rowHeight, page } );
+
+        if ( page === pages ) {
+            top = printTotals( { pdf, top, cols, totals, rowHeight } );
+        }
     }
-
-    const blobPDF =  new Blob( [ pdf.output() ], { type : 'application/pdf' } );
+    const blobPDF =  pdf.output( 'blob' );
+    // const blobPDF =  new Blob( [ pdf.output() ], { type : 'application/pdf' } );
     const blobURL = URL.createObjectURL( blobPDF );
     window.open( blobURL );
 }
 
-export  { paymentsPDF };
+export  { reportPDF, testPDF };

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 
 import { RowBox, RowValue, RowMenu } from '../libs/RowBox';
 
@@ -7,9 +7,15 @@ import presetAction from '../core/helpers/presetAction';
 import { retrieveRequestFeature } from '../core/features/requests';
 
 import ReportForm from './ReportForm';
-import { paymentsPDF } from './helpers/reportPDF';
+import { paymentsPDF } from './helpers/paymentsPDF';
+
+import { GenresContext } from '../payment/genre/GenresContext';
+import { FundsContext } from '../payment/fund/FundsContext';
 
 function Report( { reports, index, actions, assets } ) {
+
+    const  { genres } = useContext( GenresContext ).state;
+    const  { funds } = useContext( FundsContext ).state;
 
     const report = reports[ index ];
     const { _uiux, result } = report;
@@ -28,8 +34,12 @@ function Report( { reports, index, actions, assets } ) {
 
             if ( _uiux.status.isResponseOk ) {
                 paymentsPDF( {
-                    title: report.descr,
-                    data: result
+                    descr: report.descr,
+                    dateFrom: dataToDB.dateFrom,
+                    dateTill: dataToDB.dateTill,
+                    result,
+                    genres,
+                    funds,
                 } );
             }
     

@@ -9,6 +9,7 @@ import { shiftDate, YYYYMMDDToRepr, dateToYYYYMMDD } from '../core/helpers/dates
 import presetAction from '../core/helpers/presetAction';
 
 import { ReportsContext } from './ReportsContext';
+import { testPDF } from './helpers/reportPDF';
 
 function ReportForm( { reports, index, actions, assets } ) {
 
@@ -71,6 +72,17 @@ function ReportForm( { reports, index, actions, assets } ) {
                             value={ data.dateTill }
                             onChange={ event => setData( { ...data, dateTill: event.target.value } ) }
                         />
+                    </InputValue>
+                </InputBox>
+
+                <InputBox>
+                    <InputLabel>
+                        Test
+                    </InputLabel>
+                    <InputValue>
+                        <button onClick={ event => testPDF() } >
+                            testPDF()
+                        </button>
                     </InputValue>
                 </InputBox>
 

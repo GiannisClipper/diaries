@@ -25,7 +25,6 @@ const reportsReducer = ( state, action ) => {
             dataFromDB.forEach( x => result.push( { ...parseFromDB( x ) } ) );
             if ( sorter ) result.sort( sorter );
 
-            console.log( namespace, index)
             _items[ index ].result = result;
             _items[ index ]._uiux.status = { isResponseOk: true };
 
