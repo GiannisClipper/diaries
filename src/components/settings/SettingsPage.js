@@ -1,18 +1,21 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 
 import { ListBox } from '../libs/ListBox';
 import { BlockBox, BlockLabel, BlockValue } from '../libs/BlockBox';
 
+import { LanguageContext } from '../core/LanguageContext';
+
 import { AppBox, AppNav, AppInfo } from '../app/AppPage';
 import { LinkHome, LinkDiaries, LinkBench, LinkUsers, LinkSettings, LinkSignout } from '../app/AppLinks';
-import texts from '../app/assets/texts';
 
 import Settings from './Settings';
 import Backup from '../backup/Backup';
 
 function SettingsPage() {
 
-    // useEffect( () => console.log( 'Has rendered. ', 'SettingsPage' ) );
+    const { lexicon } = useContext( LanguageContext ).state;
+
+    useEffect( () => console.log( 'Has rendered. ', 'SettingsPage' ) );
 
     return (
         <>
@@ -29,7 +32,7 @@ function SettingsPage() {
             <ListBox>
                 <BlockBox>
                     <BlockLabel>
-                        { texts.heads.settings }
+                        { lexicon.head_settings }
                     </BlockLabel>
                     <BlockValue>
                         <Settings />
@@ -38,7 +41,7 @@ function SettingsPage() {
 
                 <BlockBox>
                     <BlockLabel>
-                        { texts.heads.backup }
+                        { lexicon.head_backup }
                     </BlockLabel>
                     <BlockValue>
                         <Backup />
@@ -48,7 +51,7 @@ function SettingsPage() {
         </AppBox>
 
         <AppInfo>
-            { texts.heads.settings }
+            { lexicon.head_settings }
         </AppInfo>
         </>
     );

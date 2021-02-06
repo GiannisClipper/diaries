@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { Modal } from '../libs/Modal';
 import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
 import { InputFromList } from '../libs/InputFromList';
 
+import { LanguageContext } from '../core/LanguageContext';
 import CoreForm from "../core/CoreForm";
 import presetAction from '../core/helpers/presetAction';
 import { isBlank } from '../core/assets/validators';
@@ -11,6 +12,13 @@ import { isBlank } from '../core/assets/validators';
 import { AppContext } from '../app/AppContext';
 
 function SettingsForm( { settings, actions, assets } ) {
+
+    const { lexicon } = useContext( LanguageContext ).state;
+
+    const labels = {
+        theme: lexicon.input_settings_theme,
+        language: lexicon.input_settings_language,
+    };
 
     const closeForm = presetAction( actions.closeForm, { assets } );
     const noMode = presetAction( actions.noMode, { assets } );
@@ -21,8 +29,8 @@ function SettingsForm( { settings, actions, assets } ) {
     const validators = () => {
         let errors = [];
 
-        errors.push( isBlank( 'Θέμα', data.theme ) );
-        errors.push( isBlank( 'Γλώσσα', data.language ) );
+        errors.push( isBlank( labels.theme, data.theme ) );
+        errors.push( isBlank( labels.language, data.language ) );
 
         errors = errors.filter( x => x !== null );
 
@@ -40,12 +48,12 @@ function SettingsForm( { settings, actions, assets } ) {
 
                 <InputBox>
                     <InputLabel>
-                        Θέμα
+                        { labels.theme }
                     </InputLabel>
                     <InputValue>
                         <InputFromList
                             value={ data.theme }
-                            allValues={ [ 'light', 'dark' ] }
+                            allValues={ [ 'LIGHT', 'DARK' ] }
                             onChange={ event => setData( { ...data, theme: event.target.value } ) }
                         />
                     </InputValue>
@@ -53,12 +61,12 @@ function SettingsForm( { settings, actions, assets } ) {
 
                 <InputBox>
                     <InputLabel>
-                        Γλώσσα
+                        { labels.language }
                     </InputLabel>
                     <InputValue>
                         <InputFromList
                             value={ data.language }
-                            allValues={ [ 'English', 'Greek' ] }
+                            allValues={ [ 'EN', 'GR' ] }
                             onChange={ event => setData( { ...data, language: event.target.value } ) }
                         />
                     </InputValue>

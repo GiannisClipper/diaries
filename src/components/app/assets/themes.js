@@ -135,7 +135,7 @@ const lightColors = {
     CautionButtonText: '#382853',
 };
 
-const light = createTheme( lightColors );
+const LIGHT = createTheme( lightColors );
 
 const darkColors = {
     appNormalBack: '#4F758D',
@@ -160,6 +160,7 @@ const darkColors = {
     CautionButtonText: '#bb96ff',
 };
 
-const dark = createTheme( darkColors );
+const DARK = createTheme( darkColors );
 
-export { light, dark };
+export default { LIGHT, DARK };
+export { LIGHT, DARK };

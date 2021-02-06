@@ -26,7 +26,7 @@ function AppRoutes() {
             { token 
             ?
                 <Switch>
-                    <Route exact path='/' render={ () => (<AppPage />) } />
+                    <Route exact path='/' render={ () => <AppPage /> } />
                     <Route exact path='/signin' render={ () => <Redirect to={ { pathname: '/' } } /> } />
                     <Route exact path='/signout' render={ () => <Signout /> } />
                     <Route exact path='/users' render={ () => <UsersPage /> } />
