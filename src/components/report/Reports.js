@@ -10,7 +10,7 @@ import assets from './assets/assets';
 import ReportsLoader from './ReportsLoader';
 import Report from './Report';
 
-function Reports() {
+function Reports( { lexicon } ) {
 
     const { state, actions } = useContext( ReportsContext );
     const { reports } = state;
@@ -25,11 +25,12 @@ function Reports() {
                 state={ state }
                 actions={ actions }
                 assets={ assets }
+                lexicon={ lexicon }
             />
 
             <BlockBox>
                 <BlockLabel>
-                    { heads.reports }
+                    { lexicon.reports }
                 </BlockLabel>
 
                 <BlockValue>
@@ -40,6 +41,7 @@ function Reports() {
                                 index={ index++ }
                                 actions={ actions }
                                 assets={ assets }
+                                lexicon={ lexicon }
                                 key={ index } 
                             />
                         ) ) }

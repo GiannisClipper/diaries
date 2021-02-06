@@ -1,5 +1,4 @@
 const heads = {
-    app: 'diariesApp by giannisClipper',
     users: 'Χρήστες εφαρμογής',
     settings: 'Γενικές ρυθμίσεις',
     diaries: 'Ημερολόγια χρήστη',

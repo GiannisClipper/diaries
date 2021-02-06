@@ -8,9 +8,15 @@ import CoreForm from "../../core/CoreForm";
 import { isBlank, isFound } from '../../core/assets/validators';
 import presetAction from '../../core/helpers/presetAction';
 
+import { AppContext } from '../../app/AppContext';
+
+import lexicons from './assets/lexicons';
 import { GenresContext } from './GenresContext';
 
 function GenreForm( { genres, index, actions, assets } ) {
+
+    const { language } = useContext( AppContext ).state.settings;
+    const lexicon = lexicons[ language ] || lexicons.DEFAULT;
 
     const closeForm = presetAction( actions.closeForm, { assets, index } );
     const noMode = presetAction( actions.noMode, { assets, index } );
@@ -23,9 +29,9 @@ function GenreForm( { genres, index, actions, assets } ) {
     const validators = () => {
         let errors = [];
 
-        errors.push( isBlank( 'Ονομασία', data.name ) );
-        errors.push( isFound( 'Ονομασία', genres.map( x=> x.name ), data.name, index ) );
-        errors.push( isFound( 'Λογιστικός κωδικός', genres.map( x=> x.code ), data.code, index ) );
+        errors.push( isBlank( lexicon.name, data.name ) );
+        errors.push( isFound( lexicon.name, genres.map( x=> x.name ), data.name, index ) );
+        errors.push( isFound( lexicon.code, genres.map( x=> x.code ), data.code, index ) );
 
         errors = errors.filter( x => x !== null );
 
@@ -36,6 +42,7 @@ function GenreForm( { genres, index, actions, assets } ) {
         <Modal onClick={ onClickOut } centeredness>
 
             <CoreForm
+                headLabel={ lexicon.genre }
                 Context={ GenresContext }
                 assets={ assets }
                 index={ index }
@@ -56,7 +63,7 @@ function GenreForm( { genres, index, actions, assets } ) {
 
                 <InputBox>
                     <InputLabel>
-                        Ονομασία
+                        { lexicon.name }
                     </InputLabel>
                     <InputValue>
                         <input
@@ -68,25 +75,25 @@ function GenreForm( { genres, index, actions, assets } ) {
 
                 <InputBox>
                     <InputLabel>
-                        Εγγραφές
+                        { lexicon.type }
                     </InputLabel>
                     <InputValue>
                         <InputCheck
                             checked={ data.isIncoming }
                             onChange={ event => setData( { ...data, isIncoming: event.target.checked } ) }
-                            label='Εισπράξεων'
+                            label={ lexicon.isIncoming }
                         />
                         <InputCheck
                             checked={ data.isOutgoing }
                             onChange={ event => setData( { ...data, isOutgoing: event.target.checked } ) }
-                            label='Πληρωμών'
+                            label={ lexicon.isOutgoing }
                         />                        
                     </InputValue>
                 </InputBox>
 
                 <InputBox>
                     <InputLabel>
-                        Λογ.Κωδικ.
+                        { lexicon.code }
                     </InputLabel>
                     <InputValue>
                         <input

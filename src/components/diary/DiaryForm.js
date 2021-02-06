@@ -10,7 +10,7 @@ import presetAction from '../core/helpers/presetAction';
 
 import { DiariesContext } from './DiariesContext';
 
-function DiaryForm( { diaries, index, actions, assets } ) {
+function DiaryForm( { diaries, index, actions, assets, lexicon } ) {
 
     const closeForm = presetAction( actions.closeForm, { assets, index } );
     const noMode = presetAction( actions.noMode, { assets, index } );
@@ -36,6 +36,7 @@ function DiaryForm( { diaries, index, actions, assets } ) {
         <Modal onClick={ onClickOut } centeredness>
 
             <CoreForm
+                headLabel={ lexicon.diary }
                 Context={ DiariesContext }
                 assets={ assets }
                 index={ index }
@@ -56,7 +57,7 @@ function DiaryForm( { diaries, index, actions, assets } ) {
 
                 <InputBox>
                     <InputLabel>
-                        Τίτλος ημερολογίου
+                        { lexicon.title }
                     </InputLabel>
                     <InputValue>
                         <input
@@ -68,7 +69,7 @@ function DiaryForm( { diaries, index, actions, assets } ) {
 
                 <InputBox>
                     <InputLabel>
-                        Ημ/νία εκκίνησης
+                        { lexicon.startDate }
                     </InputLabel>
                     <InputValue>
                         <InputDate

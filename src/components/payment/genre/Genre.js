@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 import { RowBox, RowValue, RowMenu } from '../../libs/RowBox';
 
@@ -6,7 +6,6 @@ import { CoreMenu, CreateMenuOption, UpdateMenuOption, DeleteMenuOption } from '
 import presetAction from '../../core/helpers/presetAction';
 import { createRequestFeature, updateRequestFeature, deleteRequestFeature } from '../../core/features/requests';
 
-import { GenresContext } from './GenresContext';
 import GenreForm from './GenreForm';
 
 function Genre( { genres, index, actions, assets } ) {

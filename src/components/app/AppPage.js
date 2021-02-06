@@ -1,9 +1,12 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
+
 import { centeredness } from '../libs/InitStyle';
-import texts from './assets/texts';
+
 import { LinkHome, LinkBench, LinkDiaries, LinkUsers, LinkSettings, LinkSignout } from './AppLinks';
 import { AppContext } from './AppContext';
+import appLexicons from './assets/lexicons';
+import { APP_TITLE } from './assets/constants';
 
 const AppNav = styled.div`
     position: fixed;
@@ -68,24 +71,26 @@ const AppInfo = ( { children } ) => {
 const AppPage = props => {
 
     const { state } = useContext( AppContext );
-    const { signin } = state;
+    const { signin, settings } = state;
     const { username } = signin;
+    const { language } = settings;
+    const appLexicon = appLexicons[ language ] || appLexicons.DEFAULT;
 
     // useEffect( () => console.log( 'Has rendered. ', 'AppPage' ) );
 
     return (
         <>
             <AppNav>
-                <LinkHome active />
-                <LinkDiaries />
-                <LinkBench />
-                <LinkUsers />
-                <LinkSettings />
-                <LinkSignout />
+                <LinkHome title={ appLexicon.home } active />
+                <LinkDiaries title={ appLexicon.diaries } />
+                <LinkBench title={ appLexicon.bench } />
+                <LinkUsers title={ appLexicon.users } />
+                <LinkSettings title={ appLexicon.settings } />
+                <LinkSignout title={ appLexicon.signout } />
             </AppNav>
 
             <AppBox centeredness>
-                { `${ username } @ ${ texts.heads.app }` }
+                { `${ username } @ ${ APP_TITLE }` }
             </AppBox>
         </>
     );

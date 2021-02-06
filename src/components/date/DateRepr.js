@@ -1,6 +1,7 @@
-import React from 'react';
-import { dayNames, monthNames } from '../core/helpers/dates';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
+import lexicons from '../core/assets/lexicons';
+import { AppContext } from '../app/AppContext';
 
 const StyledDateRepr = styled.div`
     width: 10em;
@@ -36,24 +37,27 @@ const DayName = styled.span`
     
 function DateRepr( { date } ) {
 
-    const dayName = dayNames[ date.getDay() ];
+    const { language } = useContext( AppContext ).state.settings;
+    const lexicon = lexicons[ language ] || lexicons.DEFAULT;
+
+    const dayName = lexicon.days[ date.getDay() ];
     const dateNum = date.getDate().toString().padStart( 2, '0' );
-    const monthName = monthNames[ date.getMonth() ];
+    const monthName = lexicon.months[ date.getMonth() ];
     const yearNum = date.getFullYear();
 
     return (
         <StyledDateRepr>
 
             <MonthAndYear>
-                { `${yearNum} ${monthName}` }
+                { `${ yearNum } ${ monthName }` }
             </MonthAndYear>
 
             <DateNumber>
-                { `${dateNum}` }
+                { `${ dateNum }` }
             </DateNumber>
 
             <DayName>
-                { `${dayName}` }
+                { `${ dayName }` }
             </DayName>
 
         </StyledDateRepr>

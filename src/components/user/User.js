@@ -8,7 +8,7 @@ import { createRequestFeature, updateRequestFeature, deleteRequestFeature } from
 
 import UserForm from './UserForm';
 
-function User( { users, index, actions, assets } ) {
+function User( { users, index, actions, assets, lexicon } ) {
 
     const user = users[ index ];
     const { _uiux } = user;
@@ -89,6 +89,7 @@ function User( { users, index, actions, assets } ) {
                     index={ index }
                     actions={ actions }
                     assets={ assets }
+                    lexicon={ lexicon }
                 /> 
             : null }
 

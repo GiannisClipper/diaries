@@ -1,24 +1,16 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 
 import { Modal } from '../libs/Modal';
 import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
 import { InputFromList } from '../libs/InputFromList';
 
-import { LanguageContext } from '../core/LanguageContext';
 import CoreForm from "../core/CoreForm";
 import presetAction from '../core/helpers/presetAction';
 import { isBlank } from '../core/assets/validators';
 
 import { AppContext } from '../app/AppContext';
 
-function SettingsForm( { settings, actions, assets } ) {
-
-    const { lexicon } = useContext( LanguageContext ).state;
-
-    const labels = {
-        theme: lexicon.input_settings_theme,
-        language: lexicon.input_settings_language,
-    };
+function SettingsForm( { settings, actions, assets, lexicon } ) {
 
     const closeForm = presetAction( actions.closeForm, { assets } );
     const noMode = presetAction( actions.noMode, { assets } );
@@ -29,8 +21,8 @@ function SettingsForm( { settings, actions, assets } ) {
     const validators = () => {
         let errors = [];
 
-        errors.push( isBlank( labels.theme, data.theme ) );
-        errors.push( isBlank( labels.language, data.language ) );
+        errors.push( isBlank( lexicon.theme, data.theme ) );
+        errors.push( isBlank( lexicon.language, data.language ) );
 
         errors = errors.filter( x => x !== null );
 
@@ -41,6 +33,7 @@ function SettingsForm( { settings, actions, assets } ) {
         <Modal onClick={ onClickOut } centeredness>
 
             <CoreForm
+                headLabel={ lexicon.settings }
                 Context={ AppContext }
                 assets={ assets }
                 validators={ validators }
@@ -48,7 +41,7 @@ function SettingsForm( { settings, actions, assets } ) {
 
                 <InputBox>
                     <InputLabel>
-                        { labels.theme }
+                        { lexicon.theme }
                     </InputLabel>
                     <InputValue>
                         <InputFromList
@@ -61,7 +54,7 @@ function SettingsForm( { settings, actions, assets } ) {
 
                 <InputBox>
                     <InputLabel>
-                        { labels.language }
+                        { lexicon.language }
                     </InputLabel>
                     <InputValue>
                         <InputFromList

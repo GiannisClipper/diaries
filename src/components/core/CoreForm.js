@@ -35,7 +35,7 @@ function InputValidation( {
     return null;
 }
 
-function CoreForm( { Context, assets, index, validators, children } ) {
+function CoreForm( { headLabel, Context, assets, index, validators, children } ) {
 
     const { state, actions } = useContext( Context );
     const { namespace } = assets;
@@ -46,8 +46,6 @@ function CoreForm( { Context, assets, index, validators, children } ) {
 
     const { _uiux } = _item;
     const { status, mode } = _uiux;
-
-    const headLabel = texts.heads[ namespace ];
 
     const okLabel = ( 
         mode.isCreate ?

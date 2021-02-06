@@ -3,16 +3,12 @@ import React, { useContext, useEffect } from 'react';
 import { ListBox } from '../libs/ListBox';
 import { BlockBox, BlockLabel, BlockValue } from '../libs/BlockBox';
 
-import { LanguageContext } from '../core/LanguageContext';
-
 import { UsersContext } from './UsersContext';
 import assets from './assets/assets'; 
 import UsersLoader from './UsersLoader';
 import User from './User';
 
-function Users() {
-
-    const language = useContext( LanguageContext ).state;
+function Users( { lexicon } ) {
 
     const { state, actions } = useContext( UsersContext );
     const { users } = state;
@@ -31,7 +27,7 @@ function Users() {
 
             <BlockBox>
                 <BlockLabel>
-                    { language.head_users }
+                    { lexicon.users }
                 </BlockLabel>
 
                 <BlockValue>
@@ -41,7 +37,8 @@ function Users() {
                                 users={ users}
                                 index={ index++ }
                                 actions={ actions }
-                                assets={ assets }                
+                                assets={ assets }
+                                lexicon={ lexicon }
                                 key={ index } 
                             />
                         ) ) }

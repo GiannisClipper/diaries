@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
 
-const data = [
-    { descr: 'Κατάσταση σημειωμάτων', type: 'note' },
-    { descr: 'Κατάσταση οικονομικών κινήσεων', type: 'payment' }
-];
+function ReportsLoader( { actions, assets, lexicon, state } ) {
 
-function ReportsLoader( { actions, assets, state } ) {
-
+    const data = [
+        { descr: lexicon.descr_notes, type: 'note' },
+        { descr: lexicon.descr_payments, type: 'payment' }
+    ];
+    
     const { _uiux } = state;
 
     useEffect( () => {

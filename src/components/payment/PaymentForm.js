@@ -8,8 +8,9 @@ import { getFromList } from '../core/helpers/getFromList';
 
 import { GenresContext } from '../payment/genre/GenresContext';
 import { FundsContext } from '../payment/fund/FundsContext';
+import lexicons from '../user/assets/lexicons';
 
-function PaymentForm( { data, setData } ) {
+function PaymentForm( { data, setData, lexicon } ) {
 
     const  { genres } = useContext( GenresContext ).state;
 
@@ -71,7 +72,7 @@ function PaymentForm( { data, setData } ) {
         <>
         <InputBox>
             <InputLabel title={ `${ data.genre_id }` }>
-                Κατηγορία
+                { lexicon.genre_name }
             </InputLabel>
             <InputValue>
                 <InputFromList
@@ -87,7 +88,7 @@ function PaymentForm( { data, setData } ) {
 
         <InputBox>
             <InputLabel>
-                Είσπραξη
+                { lexicon.incoming }
             </InputLabel>
             <InputValue>
                 <InputNumber
@@ -101,7 +102,7 @@ function PaymentForm( { data, setData } ) {
 
         <InputBox>
             <InputLabel>
-                Πληρωμή
+                { lexicon.outgoing }
             </InputLabel>
             <InputValue>
                 <InputNumber
@@ -115,7 +116,7 @@ function PaymentForm( { data, setData } ) {
 
         <InputBox>
             <InputLabel>
-                Αιτιολογία
+                { lexicon.remark }
             </InputLabel>
             <InputValue>
                 <input
@@ -127,7 +128,7 @@ function PaymentForm( { data, setData } ) {
 
         <InputBox>
             <InputLabel title={ `${ data.fund_id }` }>
-                Μέσο πληρωμής
+                { lexicon.fund_name }
             </InputLabel>
             <InputValue>
                 <InputFromList

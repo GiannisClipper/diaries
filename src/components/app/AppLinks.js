@@ -9,9 +9,9 @@ const LinkBoxStyle = styled.span`
     ${ props => props.active && props.theme.activeLinkBox };
 `;
 
-const LinkBox = ( { to, icon, title } ) => {
+const LinkBox = ( { to, icon } ) => {
 
-    return ( { id, active } ) => {
+    return ( { title, active, id } ) => {
 
         return (
             <Link to={ id ? `${ to }/${ id }` : to }> 
@@ -26,7 +26,7 @@ const LinkBox = ( { to, icon, title } ) => {
 const LinkHome = LinkBox( { 
     to: "/", 
     icon: faHome, 
-    title: "Αρχική" 
+    title: "Αρχική"
 } );
 
 const LinkSignin = LinkBox( { 

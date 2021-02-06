@@ -7,7 +7,7 @@ import { AppContext } from '../app/AppContext';
 import assets from './assets/assets';
 import SigninForm from './SigninForm';
 
-function Signin() {
+function Signin( { lexicon } ) {
 
     const { state, actions } = useContext( AppContext );
     const { signin } = state;
@@ -30,6 +30,7 @@ function Signin() {
             signin={ signin }
             actions={ actions }
             assets={ assets }
+            lexicon={ lexicon }
         / >
     );
 }

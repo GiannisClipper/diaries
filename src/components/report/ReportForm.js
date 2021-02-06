@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 
 import { Modal } from '../libs/Modal';
 import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
@@ -11,7 +11,7 @@ import presetAction from '../core/helpers/presetAction';
 import { ReportsContext } from './ReportsContext';
 import { testPDF } from './helpers/reportPDF';
 
-function ReportForm( { reports, index, actions, assets } ) {
+function ReportForm( { reports, index, actions, assets, lexicon } ) {
 
     const closeForm = presetAction( actions.closeForm, { assets, index } );
     const noMode = presetAction( actions.noMode, { assets, index } );
@@ -33,6 +33,7 @@ function ReportForm( { reports, index, actions, assets } ) {
     return (
         <Modal onClick={ onClickOut } centeredness>
             <CoreForm
+                headLabel={ lexicon.report }
                 Context={ ReportsContext }
                 assets={ assets }
                 index={ index }
@@ -40,7 +41,7 @@ function ReportForm( { reports, index, actions, assets } ) {
             >
                 <InputBox>
                     <InputLabel>
-                        Περιγραφή
+                        { lexicon.descr }
                     </InputLabel>
                     <InputValue>
                         <input 
@@ -53,7 +54,7 @@ function ReportForm( { reports, index, actions, assets } ) {
 
                 <InputBox>
                     <InputLabel>
-                        Από
+                        { lexicon.dateFrom }
                     </InputLabel>
                     <InputValue>
                         <InputDate
@@ -65,7 +66,7 @@ function ReportForm( { reports, index, actions, assets } ) {
 
                 <InputBox>
                     <InputLabel>
-                        Έως
+                        { lexicon.dateTill }
                     </InputLabel>
                     <InputValue>
                         <InputDate

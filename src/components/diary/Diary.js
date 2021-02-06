@@ -10,7 +10,7 @@ import { LinkBench } from '../app/AppLinks';
 
 import DiaryForm from './DiaryForm';
 
-function Diary( { diaries, index, actions, assets } ) {
+function Diary( { diaries, index, actions, assets, lexicon } ) {
 
     const diary = diaries[ index ];
     const { _uiux } = diary;
@@ -95,6 +95,7 @@ function Diary( { diaries, index, actions, assets } ) {
                     index={ index }
                     actions={ actions }
                     assets={ assets }
+                    lexicon={ lexicon }
                 /> 
             : null }
 

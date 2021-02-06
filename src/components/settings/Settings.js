@@ -2,7 +2,6 @@ import React, { useContext, useEffect } from 'react';
 
 import { RowBox, RowValue, RowMenu } from '../libs/RowBox';
 
-import { LanguageContext } from '../core/LanguageContext';
 import { CoreMenu, UpdateMenuOption } from '../core/CoreMenu';
 import presetAction from '../core/helpers/presetAction';
 import { updateRequestFeature } from '../core/features/requests';
@@ -12,9 +11,7 @@ import { AppContext } from '../app/AppContext';
 import assets from './assets/assets';
 import SettingsForm from './SettingsForm';
 
-function Settings() {
-
-    const { lexicon } = useContext( LanguageContext ).state;
+function Settings( { lexicon } ) {
 
     const { state, actions } = useContext( AppContext );
     const { settings } = state;
@@ -40,9 +37,9 @@ function Settings() {
         <RowBox>
 
             <RowValue title={ `${ settings.id }` }>
-                <div>{ `${ lexicon.input_settings_theme }: ${ settings.theme }` }</div>
+                <div>{ `${ lexicon.theme }: ${ settings.theme }` }</div>
                 <br />
-                <div>{ `${ lexicon.input_settings_language }: ${ settings.language }` }</div>
+                <div>{ `${ lexicon.language }: ${ settings.language }` }</div>
                 <br />
             </RowValue>
 
@@ -60,6 +57,7 @@ function Settings() {
                     settings={ settings }
                     actions={ actions }
                     assets={ assets }
+                    lexicon={ lexicon }
                 /> 
             : null }
 

@@ -11,7 +11,7 @@ import { InputValidation } from '../core/CoreForm';
 import { isBlank } from '../core/assets/validators';
 import presetAction from '../core/helpers/presetAction';
 
-import texts from '../app/assets/texts';
+import { APP_TITLE } from '../app/assets/constants';
 
 const SignList = styled( ListBox )`
     width: 30em;
@@ -20,7 +20,7 @@ const SignList = styled( ListBox )`
     ${ props => props.theme.AppHeader && props.theme.AppHeader };
 `;
 
-function SignForm( { signin, actions, assets } ) {
+function SignForm( { signin, actions, assets, lexicon } ) {
 
     const validation = presetAction( actions.validation, { assets } );
     const validationOk = presetAction( actions.validationOk, { assets } );
@@ -34,24 +34,20 @@ function SignForm( { signin, actions, assets } ) {
     const validators = () => {
         let errors = [];
 
-        errors.push( isBlank( 'Όνομα', data.username ) );
-        errors.push( isBlank( 'Κωδικός', data.password ) );
+        errors.push( isBlank( lexicon.username, data.username ) );
+        errors.push( isBlank( lexicon.password, data.password ) );
 
         errors = errors.filter( x => x !== null );
 
         return { data, errors };
      }
 
-    const headLabel = texts.heads.app;
-
-    const okLabel = texts.buttons.signin;
-
     const onClickOk = validation;
 
     return (
         <SignList>
             <HeadBox>
-                { headLabel }
+                { APP_TITLE }
             </HeadBox>
 
             <InputValidation
@@ -64,7 +60,7 @@ function SignForm( { signin, actions, assets } ) {
 
             <InputBox>
                 <InputLabel>
-                    Όνομα
+                    { lexicon.username }
                 </InputLabel>
                 <InputValue>
                     <input
@@ -76,7 +72,7 @@ function SignForm( { signin, actions, assets } ) {
 
             <InputBox>
                 <InputLabel>
-                    Κωδικός
+                    { lexicon.password }
                 </InputLabel>
                 <InputValue>
                     <input
@@ -91,7 +87,7 @@ function SignForm( { signin, actions, assets } ) {
                 <ButtonLabel />
                 <ButtonValue>
                     <OkButton 
-                        label={ okLabel } 
+                        label={ lexicon.signin } 
                         onClick={ onClickOk } 
                         isRequest={ status.isRequest } 
                     />

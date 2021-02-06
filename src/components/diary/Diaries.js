@@ -4,14 +4,13 @@ import { ListBox } from '../libs/ListBox';
 import { BlockBox, BlockLabel, BlockValue } from '../libs/BlockBox';
 
 import { AppContext } from '../app/AppContext';
-import { heads } from '../app/assets/texts';
 
 import { DiariesContext } from './DiariesContext';
 import assets from './assets/assets'; 
 import DiariesLoader from './DiariesLoader';
 import Diary from './Diary';
 
-function Diaries() {
+function Diaries( { lexicon } ) {
 
     const { user_id } = useContext( AppContext ).state.signin;
     const { schema } = assets;
@@ -34,7 +33,7 @@ function Diaries() {
 
             <BlockBox>
                 <BlockLabel>
-                    { heads.diaries }
+                    { lexicon.diaries }
                 </BlockLabel>
 
                 <BlockValue>
@@ -45,6 +44,7 @@ function Diaries() {
                                 index={ index++ }
                                 actions={ actions }
                                 assets={ assets }
+                                lexicon={ lexicon }
                                 key={ index }
                             />
                         ) ) }

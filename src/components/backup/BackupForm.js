@@ -8,7 +8,7 @@ import presetAction from '../core/helpers/presetAction';
 
 import { AppContext } from '../app/AppContext';
 
-function BackupForm( { backup, actions, assets } ) {
+function BackupForm( { backup, actions, assets, lexicon } ) {
 
     const closeForm = presetAction( actions.closeForm, { assets } );
     const noMode = presetAction( actions.noMode, { assets } );
@@ -18,6 +18,7 @@ function BackupForm( { backup, actions, assets } ) {
         <Modal onClick={ onClickOut } centeredness>
 
             <CoreForm
+                headLabel={ lexicon.backup }
                 Context={ AppContext }
                 assets={ assets }
             >

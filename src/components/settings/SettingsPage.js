@@ -3,55 +3,59 @@ import React, { useContext, useEffect } from 'react';
 import { ListBox } from '../libs/ListBox';
 import { BlockBox, BlockLabel, BlockValue } from '../libs/BlockBox';
 
-import { LanguageContext } from '../core/LanguageContext';
-
+import { AppContext } from '../app/AppContext';
 import { AppBox, AppNav, AppInfo } from '../app/AppPage';
 import { LinkHome, LinkDiaries, LinkBench, LinkUsers, LinkSettings, LinkSignout } from '../app/AppLinks';
+import appLexicons from '../app/assets/lexicons';
 
+import lexicons from './assets/lexicons';
 import Settings from './Settings';
+
 import Backup from '../backup/Backup';
 
 function SettingsPage() {
 
-    const { lexicon } = useContext( LanguageContext ).state;
+    const { language } = useContext( AppContext ).state.settings;
+    const appLexicon = appLexicons[ language ] || appLexicons.DEFAULT;
+    const lexicon = lexicons[ language ] || lexicons.DEFAULT;
 
     useEffect( () => console.log( 'Has rendered. ', 'SettingsPage' ) );
 
     return (
         <>
         <AppNav>
-            <LinkHome />
-            <LinkDiaries />
-            <LinkBench />
-            <LinkUsers />
-            <LinkSettings active />
-            <LinkSignout />
+            <LinkHome title={ appLexicon.home } />
+            <LinkDiaries title={ appLexicon.diaries } />
+            <LinkBench title={ appLexicon.bench } />
+            <LinkUsers title={ appLexicon.users } />
+            <LinkSettings title={ appLexicon.settings } active />
+            <LinkSignout title={ appLexicon.signout } />
         </AppNav>
 
         <AppBox centeredness>
             <ListBox>
                 <BlockBox>
                     <BlockLabel>
-                        { lexicon.head_settings }
+                        { lexicon.settings }
                     </BlockLabel>
                     <BlockValue>
-                        <Settings />
+                        <Settings lexicon={ lexicon }/>
                     </BlockValue>
                 </BlockBox>
 
                 <BlockBox>
                     <BlockLabel>
-                        { lexicon.head_backup }
+                        { lexicon.backup }
                     </BlockLabel>
                     <BlockValue>
-                        <Backup />
+                        <Backup lexicon={ lexicon }/>
                     </BlockValue>
                 </BlockBox>
             </ListBox>
         </AppBox>
 
         <AppInfo>
-            { lexicon.head_settings }
+            { lexicon.settings }
         </AppInfo>
         </>
     );

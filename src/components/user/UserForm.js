@@ -11,7 +11,7 @@ import presetAction from '../core/helpers/presetAction';
 
 import { UsersContext } from './UsersContext';
 
-function UserForm( { users, index, actions, assets } ) {
+function UserForm( { users, index, actions, assets, lexicon } ) {
 
     const closeForm = presetAction( actions.closeForm, { assets, index } );
     const noMode = presetAction( actions.noMode, { assets, index } );
@@ -25,15 +25,15 @@ function UserForm( { users, index, actions, assets } ) {
     const validators = () => {
         let errors = [];
 
-        errors.push( isBlank( 'Όνομα', data.username ) );
-        errors.push( isFound( 'Όνομα', users.map( x=> x.title ), data.username, index ) );
+        errors.push( isBlank( lexicon.username, data.username ) );
+        errors.push( isFound( lexicon.username, users.map( x=> x.title ), data.username, index ) );
 
         if ( _uiux.mode.isCreate ) {
-            errors.push( isBlank( 'Κωδικός εισόδου', data.password ) );
+            errors.push( isBlank( lexicon.password, data.password ) );
         }
 
         if ( data.password ) {
-            errors.push( isNotFound( 'Επανάληψη', [ data.password ], data.password2 ) );
+            errors.push( isNotFound( lexicon.password2, [ data.password ], data.password2 ) );
         }
 
         errors = errors.filter( x => x !== null );
@@ -45,6 +45,7 @@ function UserForm( { users, index, actions, assets } ) {
         <Modal onClick={ onClickOut } centeredness>
 
             <CoreForm
+                headLabel={ lexicon.user }
                 Context={ UsersContext }
                 assets={ assets }
                 index={ index }
@@ -65,7 +66,7 @@ function UserForm( { users, index, actions, assets } ) {
 
                 <InputBox>
                     <InputLabel>
-                        Όνομα χρήστη
+                        { lexicon.username }
                     </InputLabel>
                     <InputValue>
                         <input
@@ -77,7 +78,7 @@ function UserForm( { users, index, actions, assets } ) {
 
                 <InputBox>
                     <InputLabel>
-                        Κωδικός εισόδου
+                        { lexicon.password }
                     </InputLabel>
                     <InputValue>
                         <input
@@ -90,7 +91,7 @@ function UserForm( { users, index, actions, assets } ) {
 
                 <InputBox>
                     <InputLabel>
-                        Επανάληψη κωδικού
+                        { lexicon.password2 }
                     </InputLabel>
                     <InputValue>
                         <input
@@ -103,7 +104,7 @@ function UserForm( { users, index, actions, assets } ) {
 
                 <InputBox>
                     <InputLabel>
-                        Email
+                        { lexicon.email }
                     </InputLabel>
                     <InputValue>
                         <InputEmail
@@ -115,25 +116,25 @@ function UserForm( { users, index, actions, assets } ) {
 
                 <InputBox>
                     <InputLabel>
-                        Δικαιώματα
+                        { lexicon.type }
                     </InputLabel>
                     <InputValue>
                         <InputCheck
                             checked={ data.isAdmin }
                             onChange={ event => setData( { ...data, isAdmin: event.target.checked } ) }
-                            label='Διαχειριστή'
+                            label={ lexicon.admin }
                         />
                         <InputCheck
                             checked={ data.isUser }
                             onChange={ event => setData( { ...data, isUser: event.target.checked } ) }
-                            label='Απλού χρήστη'
+                            label={ lexicon.user }
                         />                        
                     </InputValue>
                 </InputBox>
 
                 <InputBox>
                     <InputLabel>
-                        Σημειώσεις
+                        { lexicon.remark }
                     </InputLabel>
                     <InputValue>
                         <input

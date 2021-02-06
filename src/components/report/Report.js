@@ -12,7 +12,7 @@ import { paymentsPDF } from './helpers/paymentsPDF';
 import { GenresContext } from '../payment/genre/GenresContext';
 import { FundsContext } from '../payment/fund/FundsContext';
 
-function Report( { reports, index, actions, assets } ) {
+function Report( { reports, index, actions, assets, lexicon } ) {
 
     const  { genres } = useContext( GenresContext ).state;
     const  { funds } = useContext( FundsContext ).state;
@@ -57,13 +57,6 @@ function Report( { reports, index, actions, assets } ) {
 
     }, [ _uiux, report, actions, assets, index, dataToDB, result ] );
 
-    // useEffect( () => {
-    //     if ( _uiux.status.isResponseOkAfter ) {
-    //         paymentsPDF( result );
-    //         _uiux.status = {};
-    //     }
-    // } );
-
     return (
         <RowBox key={ index }>
 
@@ -86,6 +79,7 @@ function Report( { reports, index, actions, assets } ) {
                     index={ index }
                     actions={ actions }
                     assets={ assets }
+                    lexicon={ lexicon }
                 /> 
             : null }
 

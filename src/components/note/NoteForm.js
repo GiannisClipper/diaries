@@ -2,12 +2,12 @@ import React from 'react';
 
 import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
 
-function NoteForm( { data, setData } ) {
+function NoteForm( { data, setData, lexicon } ) {
 
     return (
         <InputBox>
             <InputLabel>
-                Σημείωμα
+                { lexicon.note }
             </InputLabel>
             <InputValue>
                 <textarea

@@ -157,8 +157,6 @@ function retrieveManyRequestFeature( { _uiux, actions, assets, url } ) {
 
     const { status, error } = _uiux;
 
-    console.log( JSON.stringify( _uiux ))
-
     if ( status.isRequestBefore ) {
         retrieveManyRequest();
 
