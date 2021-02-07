@@ -18,7 +18,5 @@ const GR = {
     isOutgoing: 'Εξόδων',
 }
 
-const DEFAULT = EN;
-
-export default { DEFAULT, EN, GR };
-export { DEFAULT, EN, GR };
+export default { EN, GR };
+export { EN, GR };

@@ -36,7 +36,7 @@ function DiaryForm( { diaries, index, actions, assets, lexicon } ) {
         <Modal onClick={ onClickOut } centeredness>
 
             <CoreForm
-                headLabel={ lexicon.diary }
+                headLabel={ lexicon.diary.diary }
                 Context={ DiariesContext }
                 assets={ assets }
                 index={ index }
@@ -57,7 +57,7 @@ function DiaryForm( { diaries, index, actions, assets, lexicon } ) {
 
                 <InputBox>
                     <InputLabel>
-                        { lexicon.title }
+                        { lexicon.diary.title }
                     </InputLabel>
                     <InputValue>
                         <input
@@ -69,7 +69,7 @@ function DiaryForm( { diaries, index, actions, assets, lexicon } ) {
 
                 <InputBox>
                     <InputLabel>
-                        { lexicon.startDate }
+                        { lexicon.diary.startDate }
                     </InputLabel>
                     <InputValue>
                         <InputDate

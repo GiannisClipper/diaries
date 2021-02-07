@@ -21,8 +21,8 @@ function SettingsForm( { settings, actions, assets, lexicon } ) {
     const validators = () => {
         let errors = [];
 
-        errors.push( isBlank( lexicon.theme, data.theme ) );
-        errors.push( isBlank( lexicon.language, data.language ) );
+        errors.push( isBlank( lexicon.settings.theme, data.theme ) );
+        errors.push( isBlank( lexicon.settings.language, data.language ) );
 
         errors = errors.filter( x => x !== null );
 
@@ -33,7 +33,7 @@ function SettingsForm( { settings, actions, assets, lexicon } ) {
         <Modal onClick={ onClickOut } centeredness>
 
             <CoreForm
-                headLabel={ lexicon.settings }
+                headLabel={ lexicon.settings.settings }
                 Context={ AppContext }
                 assets={ assets }
                 validators={ validators }
@@ -41,7 +41,7 @@ function SettingsForm( { settings, actions, assets, lexicon } ) {
 
                 <InputBox>
                     <InputLabel>
-                        { lexicon.theme }
+                        { lexicon.settings.theme }
                     </InputLabel>
                     <InputValue>
                         <InputFromList
@@ -54,7 +54,7 @@ function SettingsForm( { settings, actions, assets, lexicon } ) {
 
                 <InputBox>
                     <InputLabel>
-                        { lexicon.language }
+                        { lexicon.settings.language }
                     </InputLabel>
                     <InputValue>
                         <InputFromList

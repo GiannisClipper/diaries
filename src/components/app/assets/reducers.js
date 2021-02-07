@@ -1,3 +1,4 @@
+import { HANDLE_LEXICON } from '../../core/assets/types/lexicon';
 import { HANDLE_ERROR } from '../../core/assets/types/error';
 import comboReducer from '../../core/helpers/comboReducer';
 import { modeOneReducer } from '../../core/assets/reducers/mode';
@@ -9,6 +10,7 @@ import { signinReducer } from '../../signin/assets/reducers';
 import { settingsReducer } from '../../settings/assets/reducers';
 import { backupReducer } from '../../backup/assets/reducers';
 import { signinSchema } from '../../signin/assets/schemas';
+import lexicons from './lexicons';
 
 const appReducer = ( state, action ) => {
 
@@ -44,7 +46,14 @@ const appReducer = ( state, action ) => {
 
             switch ( action.type ) {
     
-                case HANDLE_ERROR: {
+                case HANDLE_LEXICON: {
+                    const { language } = action.payload;
+                    const { _uiux } = state;
+                    const lexicon = lexicons[ language ] || lexicons.DEFAULT;
+
+                    return { ...state, _uiux: { ..._uiux, lexicon } };
+        
+                } case HANDLE_ERROR: {
                     const { error } = action.payload;
 
                     let { signin } = state;
@@ -57,7 +66,7 @@ const appReducer = ( state, action ) => {
                     state._uiux.error = error;
 
                     return { ...state, signin };
-        
+
                 } default: {
                     console.log( `undefined type:${ action.type }` );
                     throw new Error();

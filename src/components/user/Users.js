@@ -27,7 +27,7 @@ function Users( { lexicon } ) {
 
             <BlockBox>
                 <BlockLabel>
-                    { lexicon.users }
+                    { lexicon.user.users }
                 </BlockLabel>
 
                 <BlockValue>

@@ -1,0 +1,3 @@
+const HANDLE_LEXICON = 'HANDLE_LEXICON';
+
+export { HANDLE_LEXICON };

@@ -6,7 +6,5 @@ const GR = {
     note: 'Σημείωμα',
 }
 
-const DEFAULT = EN;
-
-export default { DEFAULT, EN, GR };
-export { DEFAULT, EN, GR };
+export default { EN, GR };
+export { EN, GR };

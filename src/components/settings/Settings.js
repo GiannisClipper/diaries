@@ -37,9 +37,9 @@ function Settings( { lexicon } ) {
         <RowBox>
 
             <RowValue title={ `${ settings.id }` }>
-                <div>{ `${ lexicon.theme }: ${ settings.theme }` }</div>
+                <div>{ `${ lexicon.settings.theme }: ${ settings.theme }` }</div>
                 <br />
-                <div>{ `${ lexicon.language }: ${ settings.language }` }</div>
+                <div>{ `${ lexicon.settings.language }: ${ settings.language }` }</div>
                 <br />
             </RowValue>
 

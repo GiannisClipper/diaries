@@ -7,26 +7,24 @@ import { AppBox, AppNav } from '../app/AppPage';
 import { LinkHome, LinkBench, LinkReports, LinkBenchSettings, LinkSignout } from '../app/AppLinks';
 
 import { AppContext } from '../app/AppContext';
-import appLexicons from '../app/assets/lexicons';
 
 import Genres from "../payment/genre/Genres";
 import Funds from "../payment/fund/Funds";
 
 function SettingsPage( { diary_id } ) {
 
-    const { language } = useContext( AppContext ).state.settings;
-    const appLexicon = appLexicons[ language ] || appLexicons.DEFAULT;
+    const { lexicon } = useContext( AppContext ).state._uiux;
 
     // useEffect( () => console.log( 'Has rendered. ', 'BenchSettingsPage' ) );
 
     return (
         <>
         <AppNav>
-            <LinkHome title={ appLexicon.home } />
-            <LinkBench title={ appLexicon.bench } id={ diary_id } />
-            <LinkReports title={ appLexicon.reports } />
-            <LinkBenchSettings title={ appLexicon.bench_settings } id={ diary_id } active />
-            <LinkSignout title={ appLexicon.signout } />
+            <LinkHome title={ lexicon.home } />
+            <LinkBench title={ lexicon.bench.bench } id={ diary_id } />
+            <LinkReports title={ lexicon.report.reports } />
+            <LinkBenchSettings title={ lexicon.bench.settings } id={ diary_id } active />
+            <LinkSignout title={ lexicon.signin.signout } />
         </AppNav>
 
         <AppBox centeredness>
@@ -34,7 +32,7 @@ function SettingsPage( { diary_id } ) {
 
                 <BlockBox>
                     <BlockLabel>
-                        { appLexicon.payment_genres }
+                        { lexicon.paymentGenre.genres }
                     </BlockLabel>
                     <BlockValue>
                         <Genres diary_id={ diary_id } />
@@ -43,7 +41,7 @@ function SettingsPage( { diary_id } ) {
 
                 <BlockBox>
                     <BlockLabel>
-                        { appLexicon.payment_funds }
+                        { lexicon.paymentFund.funds }
                     </BlockLabel>
                     <BlockValue>
                         <Funds diary_id={ diary_id } />

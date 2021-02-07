@@ -3,27 +3,25 @@ import React, { useContext, useState } from 'react';
 import { AppBox, AppNav, AppInfo } from '../app/AppPage';
 import { LinkHome, LinkDiaries, LinkBench, LinkReports, LinkBenchSettings, LinkSignout } from '../app/AppLinks';
 import { AppContext } from '../app/AppContext';
-import appLexicons from '../app/assets/lexicons';
 
 import { BenchContextProvider } from './BenchContext';
 import Bench from './Bench';
 
 function BenchPage( { diary_id } ) {
 
-    const { language } = useContext( AppContext ).state.settings;
-    const appLexicon = appLexicons[ language ] || appLexicons.DEFAULT;
+    const { lexicon } = useContext( AppContext ).state._uiux;
 
     // useEffect( () => console.log( 'Has rendered. ', 'BenchPage' ) );
 
     return (
         <BenchContextProvider>
             <AppNav>
-                <LinkHome title={ appLexicon.home } />
-                <LinkDiaries title={ appLexicon.diaries } />
-                <LinkBench title={ appLexicon.bench } id={ diary_id } active />
-                <LinkReports title={ appLexicon.reports } />
-                <LinkBenchSettings title={ appLexicon.bench_settings } id={ diary_id } />
-                <LinkSignout title={ appLexicon.signout } />
+                <LinkHome title={ lexicon.home } />
+                <LinkDiaries title={ lexicon.diary.diaries } />
+                <LinkBench title={ lexicon.bench.bench } id={ diary_id } active />
+                <LinkReports title={ lexicon.report.reports } />
+                <LinkBenchSettings title={ lexicon.bench.settings } id={ diary_id } />
+                <LinkSignout title={ lexicon.signin.signout } />
             </AppNav>
 
             <AppBox>

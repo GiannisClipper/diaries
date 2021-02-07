@@ -8,7 +8,6 @@ import { getFromList } from '../core/helpers/getFromList';
 
 import { GenresContext } from '../payment/genre/GenresContext';
 import { FundsContext } from '../payment/fund/FundsContext';
-import lexicons from '../user/assets/lexicons';
 
 function PaymentForm( { data, setData, lexicon } ) {
 
@@ -72,7 +71,7 @@ function PaymentForm( { data, setData, lexicon } ) {
         <>
         <InputBox>
             <InputLabel title={ `${ data.genre_id }` }>
-                { lexicon.genre_name }
+                { lexicon.payment.genre_name }
             </InputLabel>
             <InputValue>
                 <InputFromList
@@ -88,7 +87,7 @@ function PaymentForm( { data, setData, lexicon } ) {
 
         <InputBox>
             <InputLabel>
-                { lexicon.incoming }
+                { lexicon.payment.incoming }
             </InputLabel>
             <InputValue>
                 <InputNumber
@@ -102,7 +101,7 @@ function PaymentForm( { data, setData, lexicon } ) {
 
         <InputBox>
             <InputLabel>
-                { lexicon.outgoing }
+                { lexicon.payment.outgoing }
             </InputLabel>
             <InputValue>
                 <InputNumber
@@ -116,7 +115,7 @@ function PaymentForm( { data, setData, lexicon } ) {
 
         <InputBox>
             <InputLabel>
-                { lexicon.remark }
+                { lexicon.payment.remark }
             </InputLabel>
             <InputValue>
                 <input
@@ -128,7 +127,7 @@ function PaymentForm( { data, setData, lexicon } ) {
 
         <InputBox>
             <InputLabel title={ `${ data.fund_id }` }>
-                { lexicon.fund_name }
+                { lexicon.payment.fund_name }
             </InputLabel>
             <InputValue>
                 <InputFromList

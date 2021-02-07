@@ -6,13 +6,18 @@ import { ThemeProvider } from 'styled-components';
 import { InitStyle } from '../libs/InitStyle';
 import themes from './assets/themes';
 
+const AppLoad = props => {
 
-const AppStyle = props => {
+    const { state, actions } = useContext( AppContext );
+    const { settings, _uiux } = state;
+    const { theme, language } = settings;
+    const { lexicon } = _uiux;
 
-    const { settings } = useContext( AppContext ).state;
-    const { theme } = settings;
+    if ( language !== lexicon.language ) {
+        actions.handleLexicon( { language } );
+    }
 
-    // useEffect( () => console.log( 'Has rendered. ', 'AppStyle' ) );
+    // useEffect( () => console.log( 'Has rendered. ', 'AppLoad' ) );
 
     return (
         <ThemeProvider theme={ themes[ theme ] || themes[ 'LIGHT' ] }>
@@ -25,5 +30,5 @@ const AppStyle = props => {
     );
 }
 
-export default AppStyle;
-export { AppStyle };
+export default AppLoad;
+export { AppLoad };

@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
-import lexicons from '../core/assets/lexicons';
 import { AppContext } from '../app/AppContext';
 
 const StyledDateRepr = styled.div`
@@ -37,12 +36,11 @@ const DayName = styled.span`
     
 function DateRepr( { date } ) {
 
-    const { language } = useContext( AppContext ).state.settings;
-    const lexicon = lexicons[ language ] || lexicons.DEFAULT;
+    const { lexicon } = useContext( AppContext ).state._uiux;
 
-    const dayName = lexicon.days[ date.getDay() ];
+    const dayName = lexicon.core.days[ date.getDay() ];
     const dateNum = date.getDate().toString().padStart( 2, '0' );
-    const monthName = lexicon.months[ date.getMonth() ];
+    const monthName = lexicon.core.months[ date.getMonth() ];
     const yearNum = date.getFullYear();
 
     return (

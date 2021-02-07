@@ -7,7 +7,7 @@ function NoteForm( { data, setData, lexicon } ) {
     return (
         <InputBox>
             <InputLabel>
-                { lexicon.note }
+                { lexicon.note.note }
             </InputLabel>
             <InputValue>
                 <textarea

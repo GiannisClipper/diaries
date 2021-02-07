@@ -15,7 +15,10 @@ import validationActions from '../core/assets/actions/validation';
 import signinActions from '../core/assets/actions/signin';
 import retrieveActions from '../core/assets/actions/retrieve';
 import updateActions from '../core/assets/actions/update';
+import lexiconActions from '../core/assets/actions/lexicon';
 import errorActions from '../core/assets/actions/error';
+
+import lexicons from './assets/lexicons';
 
 const reducers = [
     appReducer
@@ -28,6 +31,7 @@ const unpluggedActions = {
     ...signinActions, 
     ...retrieveActions,
     ...updateActions,
+    ...lexiconActions,
     ...errorActions
 };
 
@@ -39,6 +43,7 @@ const AppContextProvider = props => {
     schema.signin = { ...signinSchema(), ...JSON.parse( localStorage.getItem( 'signin' ) || '{}' ) };
     schema.settings = { ...settingsSchema(), ...JSON.parse( localStorage.getItem( 'settings' ) || '{}' ) };
     schema.backup = backupSchema();
+    schema._uiux.lexicon = lexicons[ schema.settings.language ] || lexicons.DEFAULT;
 
     const [ state, dispatch ] = useReducer( comboReducer( ...reducers ), schema );
 

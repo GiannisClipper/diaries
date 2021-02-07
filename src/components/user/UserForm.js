@@ -25,15 +25,15 @@ function UserForm( { users, index, actions, assets, lexicon } ) {
     const validators = () => {
         let errors = [];
 
-        errors.push( isBlank( lexicon.username, data.username ) );
-        errors.push( isFound( lexicon.username, users.map( x=> x.title ), data.username, index ) );
+        errors.push( isBlank( lexicon.user.username, data.username ) );
+        errors.push( isFound( lexicon.user.username, users.map( x=> x.title ), data.username, index ) );
 
         if ( _uiux.mode.isCreate ) {
-            errors.push( isBlank( lexicon.password, data.password ) );
+            errors.push( isBlank( lexicon.user.password, data.password ) );
         }
 
         if ( data.password ) {
-            errors.push( isNotFound( lexicon.password2, [ data.password ], data.password2 ) );
+            errors.push( isNotFound( lexicon.user.password2, [ data.password ], data.password2 ) );
         }
 
         errors = errors.filter( x => x !== null );
@@ -45,7 +45,7 @@ function UserForm( { users, index, actions, assets, lexicon } ) {
         <Modal onClick={ onClickOut } centeredness>
 
             <CoreForm
-                headLabel={ lexicon.user }
+                headLabel={ lexicon.user.user }
                 Context={ UsersContext }
                 assets={ assets }
                 index={ index }
@@ -66,7 +66,7 @@ function UserForm( { users, index, actions, assets, lexicon } ) {
 
                 <InputBox>
                     <InputLabel>
-                        { lexicon.username }
+                        { lexicon.user.username }
                     </InputLabel>
                     <InputValue>
                         <input
@@ -78,7 +78,7 @@ function UserForm( { users, index, actions, assets, lexicon } ) {
 
                 <InputBox>
                     <InputLabel>
-                        { lexicon.password }
+                        { lexicon.user.password }
                     </InputLabel>
                     <InputValue>
                         <input
@@ -91,7 +91,7 @@ function UserForm( { users, index, actions, assets, lexicon } ) {
 
                 <InputBox>
                     <InputLabel>
-                        { lexicon.password2 }
+                        { lexicon.user.password2 }
                     </InputLabel>
                     <InputValue>
                         <input
@@ -104,7 +104,7 @@ function UserForm( { users, index, actions, assets, lexicon } ) {
 
                 <InputBox>
                     <InputLabel>
-                        { lexicon.email }
+                        { lexicon.user.email }
                     </InputLabel>
                     <InputValue>
                         <InputEmail
@@ -116,25 +116,25 @@ function UserForm( { users, index, actions, assets, lexicon } ) {
 
                 <InputBox>
                     <InputLabel>
-                        { lexicon.type }
+                        { lexicon.user.type }
                     </InputLabel>
                     <InputValue>
                         <InputCheck
                             checked={ data.isAdmin }
                             onChange={ event => setData( { ...data, isAdmin: event.target.checked } ) }
-                            label={ lexicon.admin }
+                            label={ lexicon.user.admin }
                         />
                         <InputCheck
                             checked={ data.isUser }
                             onChange={ event => setData( { ...data, isUser: event.target.checked } ) }
-                            label={ lexicon.user }
+                            label={ lexicon.user.user }
                         />                        
                     </InputValue>
                 </InputBox>
 
                 <InputBox>
                     <InputLabel>
-                        { lexicon.remark }
+                        { lexicon.user.remark }
                     </InputLabel>
                     <InputValue>
                         <input

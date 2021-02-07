@@ -3,28 +3,24 @@ import React, { useContext, useEffect } from 'react';
 import { AppContext } from '../app/AppContext';
 import { AppBox, AppNav, AppInfo } from '../app/AppPage';
 import { LinkHome, LinkDiaries, LinkBench, LinkUsers, LinkSettings, LinkSignout } from '../app/AppLinks';
-import appLexicons from '../app/assets/lexicons';
 
-import lexicons from './assets/lexicons';
 import Diaries from './Diaries';
 
 function DiariesPage() {
 
-    const { language } = useContext( AppContext ).state.settings;
-    const appLexicon = appLexicons[ language ] || appLexicons.DEFAULT;
-    const lexicon = lexicons[ language ] || lexicons.DEFAULT;
+    const { lexicon } = useContext( AppContext ).state._uiux;
 
     // useEffect( () => console.log( 'Has rendered. ', 'DiariesPage' ) );
 
     return (
         <>
         <AppNav>
-            <LinkHome title={ appLexicon.home } />
-            <LinkDiaries title={ appLexicon.diaries } active />
-            <LinkBench title={ appLexicon.bench } />
-            <LinkUsers title={ appLexicon.users } />
-            <LinkSettings title={ appLexicon.settings } />
-            <LinkSignout title={ appLexicon.signout } />
+            <LinkHome title={ lexicon.home } />
+            <LinkDiaries title={ lexicon.diary.diaries } active />
+            <LinkBench title={ lexicon.bench.bench } />
+            <LinkUsers title={ lexicon.user.users } />
+            <LinkSettings title={ lexicon.settings.settings } />
+            <LinkSignout title={ lexicon.signin.signout } />
         </AppNav>
 
         <AppBox centeredness>
@@ -32,7 +28,7 @@ function DiariesPage() {
         </AppBox>
 
         <AppInfo>
-            { lexicon.diaries }
+            { lexicon.diary.diaries }
         </AppInfo>
         </>
     );

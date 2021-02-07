@@ -33,7 +33,7 @@ function Diaries( { lexicon } ) {
 
             <BlockBox>
                 <BlockLabel>
-                    { lexicon.diaries }
+                    { lexicon.diary.diaries }
                 </BlockLabel>
 
                 <BlockValue>

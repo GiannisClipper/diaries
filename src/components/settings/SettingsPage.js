@@ -6,37 +6,33 @@ import { BlockBox, BlockLabel, BlockValue } from '../libs/BlockBox';
 import { AppContext } from '../app/AppContext';
 import { AppBox, AppNav, AppInfo } from '../app/AppPage';
 import { LinkHome, LinkDiaries, LinkBench, LinkUsers, LinkSettings, LinkSignout } from '../app/AppLinks';
-import appLexicons from '../app/assets/lexicons';
 
-import lexicons from './assets/lexicons';
 import Settings from './Settings';
 
 import Backup from '../backup/Backup';
 
 function SettingsPage() {
 
-    const { language } = useContext( AppContext ).state.settings;
-    const appLexicon = appLexicons[ language ] || appLexicons.DEFAULT;
-    const lexicon = lexicons[ language ] || lexicons.DEFAULT;
+    const { lexicon } = useContext( AppContext ).state._uiux;
 
     useEffect( () => console.log( 'Has rendered. ', 'SettingsPage' ) );
 
     return (
         <>
         <AppNav>
-            <LinkHome title={ appLexicon.home } />
-            <LinkDiaries title={ appLexicon.diaries } />
-            <LinkBench title={ appLexicon.bench } />
-            <LinkUsers title={ appLexicon.users } />
-            <LinkSettings title={ appLexicon.settings } active />
-            <LinkSignout title={ appLexicon.signout } />
+            <LinkHome title={ lexicon.home } />
+            <LinkDiaries title={ lexicon.diary.diaries } />
+            <LinkBench title={ lexicon.bench.bench } />
+            <LinkUsers title={ lexicon.user.users } />
+            <LinkSettings title={ lexicon.settings.settings } active />
+            <LinkSignout title={ lexicon.signin.signout } />
         </AppNav>
 
         <AppBox centeredness>
             <ListBox>
                 <BlockBox>
                     <BlockLabel>
-                        { lexicon.settings }
+                        { lexicon.settings.settings }
                     </BlockLabel>
                     <BlockValue>
                         <Settings lexicon={ lexicon }/>
@@ -45,7 +41,7 @@ function SettingsPage() {
 
                 <BlockBox>
                     <BlockLabel>
-                        { lexicon.backup }
+                        { lexicon.settings.backup }
                     </BlockLabel>
                     <BlockValue>
                         <Backup lexicon={ lexicon }/>
@@ -55,7 +51,7 @@ function SettingsPage() {
         </AppBox>
 
         <AppInfo>
-            { lexicon.settings }
+            { lexicon.settings.settings }
         </AppInfo>
         </>
     );

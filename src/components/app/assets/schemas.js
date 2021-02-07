@@ -3,6 +3,7 @@ const appSchema = () => ( {
     settings: {},
     backup: {},
     _uiux: {
+        lexicon: {},
         error: {},
     },
 } );

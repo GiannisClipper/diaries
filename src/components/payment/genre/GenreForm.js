@@ -10,13 +10,11 @@ import presetAction from '../../core/helpers/presetAction';
 
 import { AppContext } from '../../app/AppContext';
 
-import lexicons from './assets/lexicons';
 import { GenresContext } from './GenresContext';
 
 function GenreForm( { genres, index, actions, assets } ) {
 
-    const { language } = useContext( AppContext ).state.settings;
-    const lexicon = lexicons[ language ] || lexicons.DEFAULT;
+    const { lexicon } = useContext( AppContext ).state._uiux;
 
     const closeForm = presetAction( actions.closeForm, { assets, index } );
     const noMode = presetAction( actions.noMode, { assets, index } );
@@ -29,9 +27,9 @@ function GenreForm( { genres, index, actions, assets } ) {
     const validators = () => {
         let errors = [];
 
-        errors.push( isBlank( lexicon.name, data.name ) );
-        errors.push( isFound( lexicon.name, genres.map( x=> x.name ), data.name, index ) );
-        errors.push( isFound( lexicon.code, genres.map( x=> x.code ), data.code, index ) );
+        errors.push( isBlank( lexicon.genre.name, data.name ) );
+        errors.push( isFound( lexicon.genre.name, genres.map( x=> x.name ), data.name, index ) );
+        errors.push( isFound( lexicon.genre.code, genres.map( x=> x.code ), data.code, index ) );
 
         errors = errors.filter( x => x !== null );
 
@@ -42,7 +40,7 @@ function GenreForm( { genres, index, actions, assets } ) {
         <Modal onClick={ onClickOut } centeredness>
 
             <CoreForm
-                headLabel={ lexicon.genre }
+                headLabel={ lexicon.genre.genre }
                 Context={ GenresContext }
                 assets={ assets }
                 index={ index }
@@ -63,7 +61,7 @@ function GenreForm( { genres, index, actions, assets } ) {
 
                 <InputBox>
                     <InputLabel>
-                        { lexicon.name }
+                        { lexicon.genre.name }
                     </InputLabel>
                     <InputValue>
                         <input
@@ -75,25 +73,25 @@ function GenreForm( { genres, index, actions, assets } ) {
 
                 <InputBox>
                     <InputLabel>
-                        { lexicon.type }
+                        { lexicon.genre.type }
                     </InputLabel>
                     <InputValue>
                         <InputCheck
                             checked={ data.isIncoming }
                             onChange={ event => setData( { ...data, isIncoming: event.target.checked } ) }
-                            label={ lexicon.isIncoming }
+                            label={ lexicon.genre.isIncoming }
                         />
                         <InputCheck
                             checked={ data.isOutgoing }
                             onChange={ event => setData( { ...data, isOutgoing: event.target.checked } ) }
-                            label={ lexicon.isOutgoing }
+                            label={ lexicon.genre.isOutgoing }
                         />                        
                     </InputValue>
                 </InputBox>
 
                 <InputBox>
                     <InputLabel>
-                        { lexicon.code }
+                        { lexicon.genre.code }
                     </InputLabel>
                     <InputValue>
                         <input

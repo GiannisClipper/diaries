@@ -1,16 +1,16 @@
 const EN = {
+    entries: 'Entries',
     entry: 'Entry',
     date: 'Date',
     type: 'Type'
 }
 
 const GR = {
+    entries: 'Εγγραφές',
     entry: 'Εγγραφή',
     date: 'Ημ/νία',
     type: 'Τύπος'
 }
 
-const DEFAULT = EN;
-
-export default { DEFAULT, EN, GR };
-export { DEFAULT, EN, GR };
+export default { EN, GR };
+export { EN, GR };

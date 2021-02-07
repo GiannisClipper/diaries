@@ -5,7 +5,7 @@ import { centeredness } from '../libs/InitStyle';
 
 import { LinkHome, LinkBench, LinkDiaries, LinkUsers, LinkSettings, LinkSignout } from './AppLinks';
 import { AppContext } from './AppContext';
-import appLexicons from './assets/lexicons';
+//import lexicons from './assets/lexicons';
 import { APP_TITLE } from './assets/constants';
 
 const AppNav = styled.div`
@@ -71,22 +71,21 @@ const AppInfo = ( { children } ) => {
 const AppPage = props => {
 
     const { state } = useContext( AppContext );
-    const { signin, settings } = state;
+    const { signin, _uiux } = state;
     const { username } = signin;
-    const { language } = settings;
-    const appLexicon = appLexicons[ language ] || appLexicons.DEFAULT;
+    const { lexicon } = _uiux;
 
     // useEffect( () => console.log( 'Has rendered. ', 'AppPage' ) );
 
     return (
         <>
             <AppNav>
-                <LinkHome title={ appLexicon.home } active />
-                <LinkDiaries title={ appLexicon.diaries } />
-                <LinkBench title={ appLexicon.bench } />
-                <LinkUsers title={ appLexicon.users } />
-                <LinkSettings title={ appLexicon.settings } />
-                <LinkSignout title={ appLexicon.signout } />
+                <LinkHome title={ lexicon.home } active />
+                <LinkDiaries title={ lexicon.diary.diaries } />
+                <LinkBench title={ lexicon.bench.bench } />
+                <LinkUsers title={ lexicon.user.users } />
+                <LinkSettings title={ lexicon.settings.settings } />
+                <LinkSignout title={ lexicon.signin.signout } />
             </AppNav>
 
             <AppBox centeredness>

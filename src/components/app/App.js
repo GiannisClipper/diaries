@@ -4,7 +4,7 @@ import { UsersContextProvider } from '../user/UsersContext';
 import { DiariesContextProvider } from '../diary/DiariesContext';
 import { GenresContextProvider } from '../payment/genre/GenresContext';
 import { FundsContextProvider } from '../payment/fund/FundsContext';
-import AppStyle from './AppStyle';
+import AppLoad from './AppLoad';
 import AppRoutes from './AppRoutes';
 
 function App() {
@@ -17,9 +17,9 @@ function App() {
         <DiariesContextProvider>
         <GenresContextProvider>
         <FundsContextProvider>
-            <AppStyle>
+            <AppLoad>
                 <AppRoutes />
-            </AppStyle>
+            </AppLoad>
         </FundsContextProvider>
         </GenresContextProvider>
         </DiariesContextProvider>

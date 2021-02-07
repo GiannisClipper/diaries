@@ -9,13 +9,11 @@ import presetAction from '../../core/helpers/presetAction';
 
 import { AppContext } from '../../app/AppContext';
 
-import lexicons from './assets/lexicons';
 import { FundsContext } from './FundsContext';
 
 function FundForm( { funds, index, actions, assets } ) {
 
-    const { language } = useContext( AppContext ).state.settings;
-    const lexicon = lexicons[ language ] || lexicons.DEFAULT;
+    const { lexicon } = useContext( AppContext ).state._uiux;
 
     const closeForm = presetAction( actions.closeForm, { assets, index } );
     const noMode = presetAction( actions.noMode, { assets, index } );
@@ -28,9 +26,9 @@ function FundForm( { funds, index, actions, assets } ) {
     const validators = () => {
         let errors = [];
 
-        errors.push( isBlank( lexicon.name, data.name ) );
-        errors.push( isFound( lexicon.name, funds.map( x=> x.name ), data.name, index ) );
-        errors.push( isFound( lexicon.code, funds.map( x=> x.code ), data.code, index ) );
+        errors.push( isBlank( lexicon.fund.name, data.name ) );
+        errors.push( isFound( lexicon.fund.name, funds.map( x=> x.name ), data.name, index ) );
+        errors.push( isFound( lexicon.fund.code, funds.map( x=> x.code ), data.code, index ) );
 
         errors = errors.filter( x => x !== null );
 
@@ -41,7 +39,7 @@ function FundForm( { funds, index, actions, assets } ) {
         <Modal onClick={ onClickOut } centeredness>
 
             <CoreForm
-                headLabel={ lexicon.fund }
+                headLabel={ lexicon.fund.fund }
                 Context={ FundsContext }
                 assets={ assets }
                 index={ index }
@@ -62,7 +60,7 @@ function FundForm( { funds, index, actions, assets } ) {
 
                 <InputBox>
                     <InputLabel>
-                        { lexicon.name }
+                        { lexicon.fund.name }
                     </InputLabel>
                     <InputValue>
                         <input
@@ -74,7 +72,7 @@ function FundForm( { funds, index, actions, assets } ) {
 
                 <InputBox>
                     <InputLabel>
-                        { lexicon.code }
+                        { lexicon.fund.code }
                     </InputLabel>
                     <InputValue>
                         <input

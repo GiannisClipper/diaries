@@ -33,7 +33,7 @@ function ReportForm( { reports, index, actions, assets, lexicon } ) {
     return (
         <Modal onClick={ onClickOut } centeredness>
             <CoreForm
-                headLabel={ lexicon.report }
+                headLabel={ lexicon.report.report }
                 Context={ ReportsContext }
                 assets={ assets }
                 index={ index }
@@ -41,7 +41,7 @@ function ReportForm( { reports, index, actions, assets, lexicon } ) {
             >
                 <InputBox>
                     <InputLabel>
-                        { lexicon.descr }
+                        { lexicon.report.descr }
                     </InputLabel>
                     <InputValue>
                         <input 
@@ -54,7 +54,7 @@ function ReportForm( { reports, index, actions, assets, lexicon } ) {
 
                 <InputBox>
                     <InputLabel>
-                        { lexicon.dateFrom }
+                        { lexicon.report.dateFrom }
                     </InputLabel>
                     <InputValue>
                         <InputDate
@@ -66,7 +66,7 @@ function ReportForm( { reports, index, actions, assets, lexicon } ) {
 
                 <InputBox>
                     <InputLabel>
-                        { lexicon.dateTill }
+                        { lexicon.report.dateTill }
                     </InputLabel>
                     <InputValue>
                         <InputDate

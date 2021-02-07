@@ -12,7 +12,5 @@ const GR = {
     startDate: 'Ημ/νία εκκίνησης',
 }
 
-const DEFAULT = EN;
-
-export default { DEFAULT, EN, GR };
-export { DEFAULT, EN, GR };
+export default { EN, GR };
+export { EN, GR };
