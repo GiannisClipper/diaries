@@ -4,8 +4,10 @@ const IconBox = styled.span`
     display: inline-block;
     width: 2em;
     vertical-align: top;
-    padding: .5em;
     font-size: 1em;
+    cursor: pointer;
+    // padding: .5em;
+    // border: 1px dotted blue;
 
     ${ props => props.theme.IconBox && props.theme.IconBox };
 `;
@@ -19,8 +21,4 @@ const RotatingBox = styled.span`
     }
 `;
 
-const ToolBox = styled( IconBox )`
-    cursor: pointer;
-`;
-
-export { IconBox, RotatingBox, ToolBox };
+export { IconBox, RotatingBox };

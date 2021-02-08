@@ -7,13 +7,9 @@ import CoreForm from "../../core/CoreForm";
 import { isBlank, isFound } from '../../core/assets/validators';
 import presetAction from '../../core/helpers/presetAction';
 
-import { AppContext } from '../../app/AppContext';
-
 import { FundsContext } from './FundsContext';
 
-function FundForm( { funds, index, actions, assets } ) {
-
-    const { lexicon } = useContext( AppContext ).state._uiux;
+function FundForm( { funds, index, actions, assets, lexicon } ) {
 
     const closeForm = presetAction( actions.closeForm, { assets, index } );
     const noMode = presetAction( actions.noMode, { assets, index } );

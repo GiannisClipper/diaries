@@ -12,7 +12,7 @@ const List = styled.ul`
     width: 100%;
 `;
 
-function Entries( { diary_id } ) {
+function Entries( { diary_id, lexicon } ) {
 
     const { state, actions } = useContext( EntriesContext );
     const { date, entries } = state;
@@ -38,6 +38,7 @@ function Entries( { diary_id } ) {
                     index={ index++ }
                     actions={ actions }
                     assets={ assets }
+                    lexicon={ lexicon }
                     key={ index }
                 />
             ) }

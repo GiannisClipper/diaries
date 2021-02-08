@@ -35,7 +35,10 @@ function SettingsPage( { diary_id } ) {
                         { lexicon.paymentGenre.genres }
                     </BlockLabel>
                     <BlockValue>
-                        <Genres diary_id={ diary_id } />
+                        <Genres 
+                            diary_id={ diary_id } 
+                            lexicon={ lexicon }
+                        />
                     </BlockValue>
                 </BlockBox>
 
@@ -44,7 +47,10 @@ function SettingsPage( { diary_id } ) {
                         { lexicon.paymentFund.funds }
                     </BlockLabel>
                     <BlockValue>
-                        <Funds diary_id={ diary_id } />
+                        <Funds 
+                            diary_id={ diary_id } 
+                            lexicon={ lexicon }
+                        />
                     </BlockValue>
                 </BlockBox>
 

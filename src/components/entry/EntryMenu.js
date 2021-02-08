@@ -2,41 +2,44 @@ import React, { useContext, useRef } from 'react';
 
 import { Modal } from '../libs/Modal';
 import { MenuBox } from '../libs/MenuBox';
+
 import { 
-    MenuTool, 
-    EditTool, 
-    DeleteTool, 
-    CutTool, 
-    CopyTool, 
-    PasteTool, 
-    CloseTool
-} from '../libs/Icons';
+    MenuOption,
+    CreateOption,
+    UpdateOption,
+    DeleteOption,
+    CutOption,
+    CopyOption,
+    PasteOption,
+    CloseOption
+} from '../core/CoreMenu';
 
 import presetAction from '../core/helpers/presetAction';
 
-function EntryMenuTool( { index, actions, assets } ) {
+function EntryMenuOption( { index, actions, assets, lexicon } ) {
 
     const openMenu = presetAction( actions.openMenu, { assets, index } );
 
-    const menuToolRef = useRef( null );
+    const menuOptionRef = useRef( null );
 
     return ( 
-        <MenuTool
-            reference={ menuToolRef }
+        <MenuOption
+            lexicon={ lexicon }
+            reference={ menuOptionRef }
             onClick={ event => {
-                const { top, left } = menuToolRef.current.getBoundingClientRect();
-                const menuToolCoords = { top, left };
-                openMenu( { menuToolCoords } );
+                const { top, left } = menuOptionRef.current.getBoundingClientRect();
+                const menuOptionCoords = { top, left };
+                openMenu( { menuOptionCoords } );
             }}
         />
     );
 }
 
-function EntryMenu( { index, actions, assets, children, menuToolCoords } ) {
+function EntryMenu( { index, actions, assets, children, menuOptionCoords } ) {
 
     const closeMenu = presetAction( actions.closeMenu, { assets, index } );
 
-    let { top, left } = menuToolCoords;
+    let { top, left } = menuOptionCoords;
     top = `${ top }px`;
     left = `calc( ${ left }px - ${ children.length * 2 }em )`;
     const style = { top, left };
@@ -50,7 +53,7 @@ function EntryMenu( { index, actions, assets, children, menuToolCoords } ) {
     );
 }
 
-function BlankEntryMenu( { index, actions, assets, menuToolCoords, onPaste } ) {
+function BlankEntryMenu( { index, actions, assets, lexicon, menuOptionCoords, onPaste } ) {
 
     const createMode = presetAction( actions.createMode, { assets, index } );
     const openForm = presetAction( actions.openForm, { assets, index } );
@@ -61,25 +64,36 @@ function BlankEntryMenu( { index, actions, assets, menuToolCoords, onPaste } ) {
             index={ index }
             actions={ actions }
             assets={ assets }
-            menuToolCoords={ menuToolCoords }
+            menuOptionCoords={ menuOptionCoords }
         >
-            <EditTool onClick={ event => {
-                createMode();
-                openForm();
-                closeMenu();
-            } } />
 
-            <PasteTool onClick={ event => {
-                closeMenu();
-                onPaste();
-            } } />
+            <CreateOption
+                lexicon={ lexicon }
+                onClick={ event => {
+                    createMode();
+                    openForm();
+                    closeMenu();
+                } }
+            />
 
-            <CloseTool onClick={closeMenu} />
+            <PasteOption
+                lexicon={ lexicon }
+                onClick={ event => {
+                    closeMenu();
+                    onPaste();
+                } }
+            />
+
+            <CloseOption
+                lexicon={ lexicon }
+                onClick={ closeMenu }
+            />
+
         </EntryMenu>
     );
 }
 
-function ExistsEntryMenu( { index, actions, assets, menuToolCoords, onCut, onCopy, onPaste } ) {
+function ExistsEntryMenu( { index, actions, assets, lexicon, menuOptionCoords, onCut, onCopy, onPaste } ) {
     
     const updateMode = presetAction( actions.updateMode, { assets, index } );
     const deleteMode = presetAction( actions.deleteMode, { assets, index } );
@@ -91,38 +105,58 @@ function ExistsEntryMenu( { index, actions, assets, menuToolCoords, onCut, onCop
             index={ index }
             actions={ actions }
             assets={ assets }
-            menuToolCoords={ menuToolCoords }
+            menuOptionCoords={ menuOptionCoords }
         >
-            <EditTool onClick={ event => {
-                updateMode();
-                openForm();
-                closeMenu();
-            } } />
 
-            <DeleteTool onClick={ event => {
-                deleteMode();
-                openForm();
-                closeMenu();
-            } } />
+            <UpdateOption
+                lexicon={ lexicon }
+                onClick={ event => {
+                    updateMode();
+                    openForm();
+                    closeMenu();
+                } }
+            />
 
-            <CutTool onClick={ event => {
-                onCut();
-                closeMenu();
-            } } />
+            <DeleteOption
+                lexicon={ lexicon }
+                onClick={ event => {
+                    deleteMode();
+                    openForm();
+                    closeMenu();
+                } }
+            />
 
-            <CopyTool onClick={ event => {
-                onCopy();
-                closeMenu();
-            } } />
+            <CutOption
+                lexicon={ lexicon }
+                onClick={ event => {
+                    onCut();
+                    closeMenu();
+                } }
+            />
 
-            <PasteTool onClick={ event => {
-                closeMenu();
-                onPaste();
-            } } />
+            <CopyOption
+                lexicon={ lexicon }
+                onClick={ event => {
+                    onCopy();
+                    closeMenu();
+                } }
+            />
 
-            <CloseTool onClick={ closeMenu } />
+            <PasteOption
+                lexicon={ lexicon }
+                onClick={ event => {
+                    closeMenu();
+                    onPaste();
+                } }
+            />
+
+            <CloseOption
+                lexicon={ lexicon }
+                onClick={ closeMenu }
+            />
+
         </EntryMenu>
     );
 }
 
-export { EntryMenuTool, BlankEntryMenu, ExistsEntryMenu };
+export { EntryMenuOption, BlankEntryMenu, ExistsEntryMenu };

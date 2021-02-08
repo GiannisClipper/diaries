@@ -9,7 +9,7 @@ import { createRequestFeature, updateRequestFeature, deleteRequestFeature } from
 import { dragFeature, dropFeature } from '../core/features/dragNDrop';
 
 import EntryRepr from './EntryRepr';
-import { EntryMenuTool, BlankEntryMenu, ExistsEntryMenu } from './EntryMenu';
+import { EntryMenuOption, BlankEntryMenu, ExistsEntryMenu } from './EntryMenu';
 import EntryForm from './EntryForm';
 import { presetCutCopyPasteFeature, cutCopyPasteFeature } from './features/cutCopyPaste';
 
@@ -23,7 +23,7 @@ const RowMenu = styled( StyledRow.RowMenu )`
     width: 2em;
 `;
 
-const Entry = ( { diary_id, date, entries, index, actions, assets } ) => {
+const Entry = ( { diary_id, date, entries, index, actions, assets, lexicon } ) => {
 
     const entry = entries[ index ];
     const { _uiux } = entry;
@@ -114,10 +114,11 @@ const Entry = ( { diary_id, date, entries, index, actions, assets } ) => {
 
                     <SuspendedIcon />
                 : 
-                    <EntryMenuTool 
+                    <EntryMenuOption 
                         index={ index } 
                         actions={ actions }
                         assets={ assets }
+                        lexicon={ lexicon }
                     />
                 }
             </RowMenu>
@@ -129,7 +130,8 @@ const Entry = ( { diary_id, date, entries, index, actions, assets } ) => {
                     index={ index }
                     actions={ actions }
                     assets={ assets }
-                    menuToolCoords={ _uiux.menuToolCoords }
+                    lexicon={ lexicon }
+                    menuOptionCoords={ _uiux.menuOptionCoords }
                     onPaste={ onPaste }
                 />
             : 
@@ -137,7 +139,8 @@ const Entry = ( { diary_id, date, entries, index, actions, assets } ) => {
                     index={ index }
                     actions={ actions }
                     assets={ assets }
-                    menuToolCoords={ _uiux.menuToolCoords }
+                    lexicon={ lexicon }
+                    menuOptionCoords={ _uiux.menuOptionCoords }
                     onCut={ onCut }
                     onCopy={ onCopy }
                     onPaste={ onPaste }
@@ -151,6 +154,7 @@ const Entry = ( { diary_id, date, entries, index, actions, assets } ) => {
                     index={ index }
                     actions={ actions }
                     assets={ assets }
+                    lexicon={ lexicon }
                 /> 
             : null }
 

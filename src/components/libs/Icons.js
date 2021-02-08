@@ -1,18 +1,20 @@
 import React from 'react';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
+    faBan,
+    faSyncAlt,
     faEllipsisH, 
-    faEdit, 
+    faEdit,
+    faSearch,
     faTrashAlt, 
     faCut, 
     faCamera, 
     faClone, 
-    faTimes, 
-    faBan,
-    faSyncAlt
+    faTimes 
 } from '@fortawesome/free-solid-svg-icons';
 
-import { IconBox, RotatingBox, ToolBox } from './IconBox';
+import { IconBox, RotatingBox } from './IconBox';
 
 function Icon( { icon, title } ) {
     return (
@@ -32,86 +34,84 @@ function RotatingIcon( { icon, title } ) {
     )
 }
 
-function Tool( { icon, title, onClick, reference } ) {
-    return (
-        <ToolBox onClick={ onClick } ref={ reference }>
-            <FontAwesomeIcon icon={ icon } className="icon" title={ title } />
-        </ToolBox>
-    )
-}
-
-const MenuTool = ( { onClick, reference } ) => 
-    <Tool 
-        icon={ faEllipsisH } 
-        title='Menu'
-        onClick={ onClick }
-        reference={ reference }
+const LoadingIcon = ( { title } ) =>
+    <RotatingIcon
+        icon={ faSyncAlt }
+        title={ title }
     />
 
-const EditTool = ( { onClick } ) => 
-    <Tool 
-        icon={ faEdit } 
-        title='Επεξεργασία'
-        onClick={ onClick }
-    />
-
-const DeleteTool = ( { onClick } ) => 
-    <Tool 
-        icon={ faTrashAlt } 
-        title='Διαγραφή'
-        onClick={ onClick }
-    />
-
-const CutTool = ( { onClick } ) => 
-    <Tool 
-        icon={ faCut } 
-        title='Αποκοπή'
-        onClick={ onClick }
-    />
-
-const CopyTool = ( { onClick } ) => 
-    <Tool 
-        icon={ faCamera } 
-        title='Αντιγραφή'
-        onClick={ onClick }
-    />
-
-const PasteTool = ( { onClick, disabled } ) => 
-    <Tool 
-        icon={ faClone } 
-        title='Επικόλληση'
-        onClick={ onClick }
-        disabled={ disabled }
-    />
-
-const CloseTool = ( { onClick } ) => 
-    <Tool 
-        icon={ faTimes } 
-        title='Κλείσιμο'
-        onClick={ onClick }
-    />
-
-const SuspendedIcon = () => 
+const SuspendedIcon = ( { title } ) => 
     <Icon
         icon={ faBan } 
+        title={ title }
         // disabled={ true }
     />
 
-const LoadingIcon = () =>
-    <RotatingIcon
-        icon={ faSyncAlt }
+const MenuIcon = ( { title } ) => 
+    <Icon
+        icon={ faEllipsisH } 
+        title={ title }
+    />
+
+const CreateIcon = ( { title } ) => 
+    <Icon
+        icon={ faEdit } 
+        title={ title }
+    />
+
+const RetrieveIcon = ( { title } ) => 
+    <Icon
+        icon={ faSearch } 
+        title={ title }
+    />
+
+const UpdateIcon = ( { title } ) => 
+    <Icon
+        icon={ faEdit } 
+        title={ title }
+    />
+
+const DeleteIcon = ( { title } ) => 
+    <Icon
+        icon={ faTrashAlt } 
+        title={ title }
+    />
+
+const CutIcon = ( { title } ) => 
+    <Icon
+        icon={ faCut } 
+        title={ title }
+    />
+
+const CopyIcon = ( { title } ) => 
+    <Icon
+        icon={ faCamera } 
+        title={ title }
+    />
+
+const PasteIcon = ( { title } ) => 
+    <Icon
+        icon={ faClone } 
+        title={ title }
     />
 
 
+const CloseIcon = ( { title } ) => 
+    <Icon
+        icon={ faTimes } 
+        title={ title }
+    />
+
 export { 
-    Tool, 
-    MenuTool, 
-    EditTool, 
-    DeleteTool, 
-    CutTool, 
-    CopyTool, 
-    PasteTool, 
-    CloseTool, 
+    LoadingIcon,
     SuspendedIcon,
-    LoadingIcon
+    MenuIcon,
+    CreateIcon,
+    RetrieveIcon,
+    UpdateIcon,
+    DeleteIcon,
+    CutIcon,
+    CopyIcon,
+    PasteIcon,
+    CloseIcon,
 };

@@ -1,9 +1,19 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
-import { MenuOptionBox } from '../libs/MenuBox';
-import { LoadingIcon, SuspendedIcon } from '../libs/Icons';
+import { OptionBox } from '../libs/MenuBox';
+import { 
+    LoadingIcon,
+    SuspendedIcon,
+    MenuIcon,
+    CreateIcon,
+    RetrieveIcon,
+    UpdateIcon,
+    DeleteIcon,
+    CutIcon,
+    CopyIcon,
+    PasteIcon,
+    CloseIcon,
+} from '../libs/Icons';
 
 function CoreMenu( { status, children } ) {
 
@@ -26,92 +36,124 @@ function CoreMenu( { status, children } ) {
     );
 }
 
-function CreateMenuOption( { reference, createMode, openForm } ) {
+function MenuOption( { reference, onClick, lexicon } ) {
 
     return (
-        <MenuOptionBox 
+        <OptionBox 
             ref={ reference }
-            onClick={ () => { createMode(); openForm(); } }
+            onClick={ onClick }
         >
-            <FontAwesomeIcon 
-                className="icon" 
-                icon={ faEdit } 
-                title="Νέα εγγραφή" 
-            />
-        </MenuOptionBox>
+            <MenuIcon title={ lexicon.core.menu } />
+        </OptionBox>
     )
 }
 
-function RetrieveMenuOption( { reference, retrieveMode, openForm } ) {
+function CreateOption( { reference, onClick, lexicon } ) {
 
     return (
-        <MenuOptionBox 
+        <OptionBox 
             ref={ reference }
-            onClick={ () => { retrieveMode(); openForm(); } }
+            onClick={ onClick }
         >
-            <FontAwesomeIcon 
-                className="icon" 
-                icon={ faEdit } 
-                title="Ανάκτηση"
-            />
-        </MenuOptionBox>
+            <CreateIcon title={ lexicon.core.create } />
+        </OptionBox>
     )
 }
 
-function UpdateMenuOption( { reference, updateMode, openForm } ) {
+function RetrieveOption( { reference, onClick, lexicon } ) {
 
     return (
-        <MenuOptionBox 
+        <OptionBox 
             ref={ reference }
-            onClick={ () => { updateMode(); openForm(); } }
+            onClick={ onClick }
         >
-            <FontAwesomeIcon 
-                className="icon" 
-                icon={ faEdit } 
-                title="Τροποποίηση" 
-            />
-        </MenuOptionBox>
+            <RetrieveIcon title={ lexicon.core.retrieve } />
+        </OptionBox>
     )
 }
 
-function DeleteMenuOption( { reference, deleteMode, openForm } ) {
+function UpdateOption( { reference, onClick, lexicon } ) {
 
     return (
-        <MenuOptionBox 
+        <OptionBox 
             ref={ reference }
-            onClick={ () => { deleteMode(); openForm(); } }
+            onClick={ onClick }
         >
-            <FontAwesomeIcon 
-                className="icon" 
-                icon={ faTrashAlt } 
-                title="Διαγραφή" 
-            />
-        </MenuOptionBox>
+            <UpdateIcon title={ lexicon.core.update } />
+        </OptionBox>
     )
 }
 
-function RetrieveManyMenuOption( { reference, retrieveManyMode, openForm } ) {
+function DeleteOption( { reference, onClick, lexicon } ) {
 
     return (
-        <MenuOptionBox 
+        <OptionBox 
             ref={ reference }
-            onClick={ () => { retrieveManyMode(); openForm(); } }
+            onClick={ onClick }
         >
-            <FontAwesomeIcon 
-                className="icon" 
-                icon={ faEdit } 
-                title="Ανάκτηση"
-            />
-        </MenuOptionBox>
+            <DeleteIcon title={ lexicon.core.delete } />
+        </OptionBox>
+    )
+}
+
+function CutOption( { reference, onClick, lexicon } ) {
+
+    return (
+        <OptionBox 
+            ref={ reference }
+            onClick={ onClick }
+        >
+            <CutIcon title={ lexicon.core.cut } />
+        </OptionBox>
+    )
+}
+
+function CopyOption( { reference, onClick, lexicon } ) {
+
+    return (
+        <OptionBox 
+            ref={ reference }
+            onClick={ onClick }
+        >
+            <CopyIcon title={ lexicon.core.copy } />
+        </OptionBox>
+    )
+}
+
+function PasteOption( { reference, onClick, lexicon } ) {
+
+    return (
+        <OptionBox 
+            ref={ reference }
+            onClick={ onClick }
+        >
+            <PasteIcon title={ lexicon.core.paste } />
+        </OptionBox>
+    )
+}
+
+function CloseOption( { reference, onClick, lexicon } ) {
+
+    return (
+        <OptionBox
+            ref={ reference }
+            onClick={ onClick }
+        >
+            <CloseIcon title={ lexicon.core.close } />
+        </OptionBox>
     )
 }
 
 export default CoreMenu;
 export { 
     CoreMenu,
-    CreateMenuOption,
-    RetrieveMenuOption,
-    UpdateMenuOption,
-    DeleteMenuOption,
-    RetrieveManyMenuOption,
+    MenuOption,
+    CreateOption,
+    RetrieveOption,
+    UpdateOption,
+    DeleteOption,
+    CutOption,
+    CopyOption,
+    PasteOption,
+    CloseOption,
 };

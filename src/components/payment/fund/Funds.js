@@ -5,7 +5,7 @@ import assets from './assets/assets';
 import FundsLoader from './FundsLoader';
 import Fund from './Fund';
 
-function Funds( { diary_id } ) {
+function Funds( { diary_id, lexicon } ) {
 
     const { state, actions } = useContext( FundsContext );
     const { funds } = state;
@@ -28,6 +28,7 @@ function Funds( { diary_id } ) {
                     funds={ funds }
                     actions={ actions }
                     assets={ assets }
+                    lexicon={ lexicon }
                     index={ index++ }
                     key={ index }
                 />

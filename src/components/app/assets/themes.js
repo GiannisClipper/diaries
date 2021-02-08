@@ -52,7 +52,7 @@ const createTheme = colors => ( {
     MenuBox: css`
         background-color: ${colors.weakBack};
     `,
-    MenuOptionBox: css`
+    OptionBox: css`
         background-color: inherited;
     `,
     IconBox: css`

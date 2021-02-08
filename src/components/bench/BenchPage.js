@@ -25,7 +25,10 @@ function BenchPage( { diary_id } ) {
             </AppNav>
 
             <AppBox>
-                <Bench diary_id={ diary_id } />
+                <Bench 
+                    diary_id={ diary_id } 
+                    lexicon={ lexicon }
+                />
             </AppBox>
 
             <AppInfo>

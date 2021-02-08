@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 
 import { RowBox, RowValue, RowMenu } from '../libs/RowBox';
 
-import { CoreMenu, UpdateMenuOption } from '../core/CoreMenu';
+import { CoreMenu, UpdateOption } from '../core/CoreMenu';
 import presetAction from '../core/helpers/presetAction';
 import { updateRequestFeature } from '../core/features/requests';
 
@@ -45,11 +45,14 @@ function Settings( { lexicon } ) {
 
             <RowMenu>
                 <CoreMenu status={ _uiux.status } >
-                    <UpdateMenuOption 
-                        updateMode={ updateMode }
-                        openForm={ openForm }
+                    <UpdateOption 
+                        lexicon={ lexicon }
+                        onClick={ () => { 
+                            updateMode(); 
+                            openForm(); 
+                        } }
                     />
-                </CoreMenu>
+            </CoreMenu>
             </RowMenu>
 
             { _uiux.form.isOpen ?

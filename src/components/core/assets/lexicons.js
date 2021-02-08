@@ -22,6 +22,15 @@ const EN = {
         "November",
         "December"
     ],
+    menu: 'Options',
+    create: 'Create new',
+    retrieve: 'Retrieve',
+    update: 'Update',
+    delete: 'Delete',
+    cut: 'Cut',
+    copy: 'Copy',
+    paste: 'Paste',
+    close: 'Close',
 }
 
 const GR = {
@@ -48,6 +57,15 @@ const GR = {
         "Νοέμβριος",
         "Δεκέμβριος"
     ],
+    menu: 'Επιλογές',
+    create: 'Νέα καταχώρηση',
+    retrieve: 'Ανάκτηση',
+    update: 'Τροποποίηση',
+    delete: 'Διαγραφή',
+    cut: 'Αποκοπή',
+    copy: 'Αντιγραφή',
+    paste: 'Επικόλληση',
+    close: 'Κλείσιμο',
 }
 
 export default { EN, GR };

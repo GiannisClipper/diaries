@@ -14,7 +14,7 @@ const entrySchema = () => ( {
     type: '',  // 'note', 'payment'
     _uiux: {
         menu: {},  // isOpen
-        menuToolCoords: {}, // top, left
+        menuOptionCoords: {}, // top, left
         form: {},  // isOpen
         mode: {},  // isCreate, isUpdate, isDelete, isRetrieveMany
         paste: {},  // isPaste

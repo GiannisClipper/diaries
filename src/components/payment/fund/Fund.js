@@ -2,13 +2,13 @@ import React, { useEffect } from 'react';
 
 import { RowBox, RowValue, RowMenu } from '../../libs/RowBox';
 
-import { CoreMenu, CreateMenuOption, UpdateMenuOption, DeleteMenuOption } from '../../core/CoreMenu';
+import { CoreMenu, CreateOption, UpdateOption, DeleteOption } from '../../core/CoreMenu';
 import presetAction from '../../core/helpers/presetAction';
 import { createRequestFeature, updateRequestFeature, deleteRequestFeature } from '../../core/features/requests';
 
 import FundForm from './FundForm';
 
-function Fund( { funds, index, actions, assets } ) {
+function Fund( { funds, index, actions, assets, lexicon } ) {
 
     const fund = funds[ index ];
     const { _uiux } = fund;
@@ -63,20 +63,29 @@ function Fund( { funds, index, actions, assets } ) {
                 { ! fund.id 
                     ?
                     <CoreMenu status={ _uiux.status } >
-                        <CreateMenuOption 
-                            createMode={ createMode }
-                            openForm={ openForm } 
+                        <CreateOption 
+                            lexicon={ lexicon }
+                            onClick={ () => { 
+                                createMode(); 
+                                openForm(); 
+                            } }
                         />
                     </CoreMenu>
                     :
                     <CoreMenu status={ _uiux.status } >
-                        <UpdateMenuOption 
-                            updateMode={ updateMode }
-                            openForm={ openForm } 
+                        <UpdateOption 
+                            lexicon={ lexicon }
+                            onClick={ () => { 
+                                updateMode(); 
+                                openForm(); 
+                            } }
                         />
-                        <DeleteMenuOption 
-                            deleteMode={ deleteMode }
-                            openForm={ openForm } 
+                        <DeleteOption 
+                            lexicon={ lexicon }
+                            onClick={ () => { 
+                                deleteMode(); 
+                                openForm(); 
+                            } }
                         />
                     </CoreMenu>
                 }
@@ -88,6 +97,7 @@ function Fund( { funds, index, actions, assets } ) {
                     index={ index }
                     actions={ actions }
                     assets={ assets }
+                    lexicon={ lexicon }
             /> 
             : null }
 

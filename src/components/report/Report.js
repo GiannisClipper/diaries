@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 
 import { RowBox, RowValue, RowMenu } from '../libs/RowBox';
 
-import { CoreMenu, RetrieveMenuOption } from '../core/CoreMenu';
+import { CoreMenu, RetrieveOption } from '../core/CoreMenu';
 import presetAction from '../core/helpers/presetAction';
 import { retrieveRequestFeature } from '../core/features/requests';
 
@@ -66,9 +66,12 @@ function Report( { reports, index, actions, assets, lexicon } ) {
 
             <RowMenu>
                 <CoreMenu status={ _uiux.status } >
-                    <RetrieveMenuOption 
-                        retrieveMode={ retrieveMode }
-                        openForm={ openForm } 
+                    <RetrieveOption 
+                        lexicon={ lexicon }
+                        onClick={ () => { 
+                            retrieveMode(); 
+                            openForm(); 
+                        } }
                     />
                 </CoreMenu>
             </RowMenu>

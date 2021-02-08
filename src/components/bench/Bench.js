@@ -55,7 +55,7 @@ function NextButton( { reference } ) {
     );
 }
 
-const Bench = ( { diary_id } ) => {
+const Bench = ( { diary_id, lexicon } ) => {
 
     const { state, actions } = useContext( BenchContext );
     const { periods } = state;
@@ -134,6 +134,7 @@ const Bench = ( { diary_id } ) => {
                     diary_id={ diary_id }
                     periods={ periods }
                     startDate={ startDate }
+                    lexicon={ lexicon }
                 />
             </CutCopyPasteContextProvider>
 
@@ -143,7 +144,7 @@ const Bench = ( { diary_id } ) => {
     );
 }
 
-const Periods = ( { diary_id, periods, startDate } ) => {
+const Periods = ( { diary_id, periods, startDate, lexicon } ) => {
 
     // useEffect( () => console.log( 'Has rendered. ', 'Periods' ) );
 
@@ -154,6 +155,7 @@ const Periods = ( { diary_id, periods, startDate } ) => {
                     diary_id={ diary_id }
                     period={ period }
                     startDate={ startDate }
+                    lexicon={ lexicon }
                     key={ period.dates[ 0 ].date }
                 />
             ) ) }
@@ -161,7 +163,7 @@ const Periods = ( { diary_id, periods, startDate } ) => {
     );
 }
 
-const Period = React.memo( ( { diary_id, period, startDate } ) => {
+const Period = React.memo( ( { diary_id, period, startDate, lexicon } ) => {
 
     useEffect( () => console.log( 'Has rendered. ', 'Period' ) );
 
@@ -170,6 +172,7 @@ const Period = React.memo( ( { diary_id, period, startDate } ) => {
             <Dates
                 diary_id={ diary_id }
                 startDate={ startDate }
+                lexicon={ lexicon }
             />
         </DatesContextProvider>
     );

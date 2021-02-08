@@ -5,7 +5,7 @@ import assets from './assets/assets';
 import GenresLoader from './GenresLoader';
 import Genre from './Genre';
 
-function Genres( { diary_id } ) {
+function Genres( { diary_id, lexicon } ) {
 
     const { state, actions } = useContext( GenresContext );
     const { genres } = state;
@@ -28,6 +28,7 @@ function Genres( { diary_id } ) {
                     genres={ genres }
                     actions={ actions }
                     assets={ assets }
+                    lexicon={ lexicon }
                     index={ index++ }
                     key={ index }
                 />

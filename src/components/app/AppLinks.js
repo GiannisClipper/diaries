@@ -26,55 +26,46 @@ const LinkBox = ( { to, icon } ) => {
 const LinkHome = LinkBox( { 
     to: "/", 
     icon: faHome, 
-    title: "Αρχική"
 } );
 
 const LinkSignin = LinkBox( { 
     to: '/signin', 
     icon: faDoorOpen, 
-    title: 'Είσοδος' 
 } );
 
 const LinkSignout = LinkBox( { 
     to: '/signout', 
     icon: faDoorClosed, 
-    title: 'Έξοδος' 
 } );
 
 const LinkSettings = LinkBox( { 
     to: '/settings', 
     icon: faCog, 
-    title: 'Ρυθμίσεις' 
 } );
 
 const LinkUsers = LinkBox( { 
     to: '/users', 
     icon: faUser, 
-    title: 'Χρήστες' 
 } );
 
 const LinkDiaries = LinkBox( { 
     to: '/diaries', 
     icon: faBookOpen, 
-    title: 'Ημερολόγια' 
 } );
 
 const LinkBench = LinkBox( { 
     to: '/bench', 
     icon: faEdit, 
-    title: 'Εγγραφές' 
 } );
 
 const LinkBenchSettings = LinkBox( { 
     to: '/bench_settings', 
     icon: faCogs, 
-    title: 'Ρυθμίσεις' 
 } );
 
 const LinkReports = LinkBox( { 
     to: '/reports', 
     icon: faMap, 
-    title: 'Καταστάσεις' 
 } );
 
 export { 

@@ -19,7 +19,7 @@ function ReportsPage() {
             <LinkHome title={ lexicon.home } />
                 <LinkDiaries title={ lexicon.diary.diaries } />
                 <LinkBench title={ lexicon.bench.bench } />
-                <LinkReports title={ lexicon.reports.report } active />
+                <LinkReports title={ lexicon.report.reports } active />
                 <LinkBenchSettings title={ lexicon.bench.settings } />
                 <LinkSignout title={ lexicon.signin.signout } />
             </AppNav>

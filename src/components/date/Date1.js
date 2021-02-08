@@ -27,7 +27,7 @@ const BlockValue = styled( StyledBlock.BlockValue )`
     padding: 0;
 `;
 
-const Date1 = ( { diary_id, date, reference } ) => {  // Date1(), to differ from native function Date()
+const Date1 = ( { diary_id, date, reference, lexicon } ) => {  // Date1(), to differ from native function Date()
 
     // useEffect( () => console.log( 'Has rendered. ', 'Date1' ) );
 
@@ -43,6 +43,7 @@ const Date1 = ( { diary_id, date, reference } ) => {  // Date1(), to differ from
                     <EntriesContextProvider state={ date }>
                         <Entries
                             diary_id={ diary_id }
+                            lexicon={ lexicon }
                         />
                     </EntriesContextProvider>
                 :

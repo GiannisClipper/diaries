@@ -8,7 +8,7 @@ import Users from './Users';
 
 function UsersPage() {
 
-    const { lexicon } = useContext( AppContext ).state.settings;
+    const { lexicon } = useContext( AppContext ).state._uiux;
 
     // useEffect( () => console.log( 'Has rendered. ', 'UsersPage' ) );
 

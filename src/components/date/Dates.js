@@ -4,7 +4,7 @@ import { DatesContext } from './DatesContext';
 import DatesLoader from './DatesLoader';
 import Date1 from './Date1';
 
-const Dates = ( { diary_id, startDate } ) => {
+const Dates = ( { diary_id, startDate, lexicon } ) => {
 
     const { state } = useContext( DatesContext ); 
     const { dates } = state;
@@ -22,6 +22,7 @@ const Dates = ( { diary_id, startDate } ) => {
                     diary_id={ diary_id }
                     date={ date }
                     reference={ date._uiux.isStartDate ? startDate : null }
+                    lexicon={ lexicon }
                     key={ date.date }
                 />
             ) ) }
