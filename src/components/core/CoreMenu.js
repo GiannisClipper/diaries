@@ -36,113 +36,54 @@ function CoreMenu( { status, children } ) {
     );
 }
 
-function MenuOption( { reference, onClick, lexicon } ) {
-
-    return (
-        <OptionBox 
-            ref={ reference }
-            onClick={ onClick }
-        >
-            <MenuIcon title={ lexicon.core.menu } />
-        </OptionBox>
-    )
+function WithOptionBox( Option ) {
+    return function WithOptionBoxIcon( { reference, onClick, lexicon } ) {
+        return (
+            <OptionBox 
+                ref={ reference }
+                onClick={ onClick }
+            >
+                <Option lexicon={ lexicon } />
+            </OptionBox>
+        )
+    }
 }
 
-function CreateOption( { reference, onClick, lexicon } ) {
+const MenuOption = WithOptionBox( 
+    ( { lexicon } ) => <MenuIcon title={ lexicon.core.menu } />
+)
 
-    return (
-        <OptionBox 
-            ref={ reference }
-            onClick={ onClick }
-        >
-            <CreateIcon title={ lexicon.core.create } />
-        </OptionBox>
-    )
-}
+const CreateOption = WithOptionBox( 
+    ( { lexicon } ) => <CreateIcon title={ lexicon.core.create } />
+)
 
-function RetrieveOption( { reference, onClick, lexicon } ) {
+const RetrieveOption = WithOptionBox( 
+    ( { lexicon } ) => <RetrieveIcon title={ lexicon.core.retrieve } />
+)
 
-    return (
-        <OptionBox 
-            ref={ reference }
-            onClick={ onClick }
-        >
-            <RetrieveIcon title={ lexicon.core.retrieve } />
-        </OptionBox>
-    )
-}
+const UpdateOption = WithOptionBox( 
+    ( { lexicon } ) => <UpdateIcon title={ lexicon.core.update } />
+)
 
-function UpdateOption( { reference, onClick, lexicon } ) {
+const DeleteOption = WithOptionBox( 
+    ( { lexicon } ) => <DeleteIcon title={ lexicon.core.delete } />
+)
 
-    return (
-        <OptionBox 
-            ref={ reference }
-            onClick={ onClick }
-        >
-            <UpdateIcon title={ lexicon.core.update } />
-        </OptionBox>
-    )
-}
+const CutOption = WithOptionBox( 
+    ( { lexicon } ) => <CutIcon title={ lexicon.core.cut } />
+)
 
-function DeleteOption( { reference, onClick, lexicon } ) {
+const CopyOption = WithOptionBox( 
+    ( { lexicon } ) => <CopyIcon title={ lexicon.core.copy } />
+)
 
-    return (
-        <OptionBox 
-            ref={ reference }
-            onClick={ onClick }
-        >
-            <DeleteIcon title={ lexicon.core.delete } />
-        </OptionBox>
-    )
-}
+const PasteOption = WithOptionBox( 
+    ( { lexicon } ) => <PasteIcon title={ lexicon.core.paste } />
+)
 
-function CutOption( { reference, onClick, lexicon } ) {
-
-    return (
-        <OptionBox 
-            ref={ reference }
-            onClick={ onClick }
-        >
-            <CutIcon title={ lexicon.core.cut } />
-        </OptionBox>
-    )
-}
-
-function CopyOption( { reference, onClick, lexicon } ) {
-
-    return (
-        <OptionBox 
-            ref={ reference }
-            onClick={ onClick }
-        >
-            <CopyIcon title={ lexicon.core.copy } />
-        </OptionBox>
-    )
-}
-
-function PasteOption( { reference, onClick, lexicon } ) {
-
-    return (
-        <OptionBox 
-            ref={ reference }
-            onClick={ onClick }
-        >
-            <PasteIcon title={ lexicon.core.paste } />
-        </OptionBox>
-    )
-}
-
-function CloseOption( { reference, onClick, lexicon } ) {
-
-    return (
-        <OptionBox
-            ref={ reference }
-            onClick={ onClick }
-        >
-            <CloseIcon title={ lexicon.core.close } />
-        </OptionBox>
-    )
-}
+const CloseOption = WithOptionBox( 
+    ( { lexicon } ) => <CloseIcon title={ lexicon.core.close } />
+)
 
 export default CoreMenu;
 export { 
