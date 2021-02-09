@@ -21,13 +21,14 @@ function BackupForm( { backup, actions, assets, lexicon } ) {
                 headLabel={ lexicon.backup }
                 Context={ AppContext }
                 assets={ assets }
+                lexicon={ lexicon }
             >
 
                 <InputBox>
                     <InputLabel />
                     <InputValue>
                         <input 
-                            value={ `Αντίγραφο βάσης δεδομένων σε αρχείο json.` }
+                            value={ lexicon.descr }
                             tabIndex="-1"
                             readOnly
                         />

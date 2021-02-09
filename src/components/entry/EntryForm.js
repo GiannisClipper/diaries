@@ -56,6 +56,7 @@ function EntryForm( { date, entries, index, actions, assets, lexicon } ) {
                 headLabel={ lexicon.entry.entry }
                 Context={ EntriesContext }
                 assets={ assets }
+                lexicon={ lexicon }
                 index={ index }
                 validators={ validators }
             >

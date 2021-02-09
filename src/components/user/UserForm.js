@@ -48,6 +48,7 @@ function UserForm( { users, index, actions, assets, lexicon } ) {
                 headLabel={ lexicon.user.user }
                 Context={ UsersContext }
                 assets={ assets }
+                lexicon={ lexicon }
                 index={ index }
                 validators={ validators }
             >

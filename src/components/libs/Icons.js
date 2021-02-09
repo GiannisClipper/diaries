@@ -11,7 +11,11 @@ import {
     faCut, 
     faCamera, 
     faClone, 
-    faTimes 
+    faTimes,
+    faForward,
+    faBackward,
+    faCaretDown,
+    faCheck,
 } from '@fortawesome/free-solid-svg-icons';
 
 import { IconBox, RotatingBox } from './IconBox';
@@ -95,8 +99,37 @@ const PasteIcon = ( { title } ) =>
         title={ title }
     />
 
-
 const CloseIcon = ( { title } ) => 
+    <Icon
+        icon={ faTimes } 
+        title={ title }
+    />
+
+const ForwardIcon = ( { title } ) => 
+    <Icon
+        icon={ faForward } 
+        title={ title }
+    />
+
+const BackwardIcon = ( { title } ) => 
+    <Icon
+        icon={ faBackward } 
+        title={ title }
+    />
+
+const DownIcon = ( { title } ) => 
+    <Icon
+        icon={ faCaretDown } 
+        title={ title }
+    />
+
+const OkIcon = ( { title } ) => 
+    <Icon
+        icon={ faCheck } 
+        title={ title }
+    />
+
+const CancelIcon = ( { title } ) => 
     <Icon
         icon={ faTimes } 
         title={ title }
@@ -114,4 +147,9 @@ export {
     CopyIcon,
     PasteIcon,
     CloseIcon,
+    ForwardIcon,
+    BackwardIcon,
+    DownIcon,
+    OkIcon,
+    CancelIcon,
 };

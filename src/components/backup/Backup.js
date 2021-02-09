@@ -12,7 +12,7 @@ import { AppContext } from '../app/AppContext';
 import assets from './assets/assets';
 import BackupForm from './BackupForm';
 
-function Backup() {
+function Backup( { lexicon } ) {
 
     const { state, actions } = useContext( AppContext );
     const { backup } = state;
@@ -51,6 +51,7 @@ function Backup() {
             <RowMenu>
                 <CoreMenu status={ _uiux.status } >
                     <RetrieveOption 
+                        lexicon={ lexicon }
                         onClick={ () => { 
                             retrieveMode(); 
                             openForm(); 
@@ -64,6 +65,7 @@ function Backup() {
                     backup={ backup }
                     actions={ actions }
                     assets={ assets }
+                    lexicon={ lexicon }
                 />
             : null }
 

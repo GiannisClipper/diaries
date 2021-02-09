@@ -2,12 +2,10 @@ import styled from 'styled-components';
 
 const IconBox = styled.span`
     display: inline-block;
-    width: 2em;
+    // width: 2em;
     vertical-align: top;
-    font-size: 1em;
+    font-size: 100%;
     cursor: pointer;
-    // padding: .5em;
-    // border: 1px dotted blue;
 
     ${ props => props.theme.IconBox && props.theme.IconBox };
 `;

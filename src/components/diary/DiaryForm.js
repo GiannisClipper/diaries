@@ -23,9 +23,9 @@ function DiaryForm( { diaries, index, actions, assets, lexicon } ) {
     const validators = () => {
         let errors = [];
 
-        errors.push( isBlank( 'Κωδικός χρήστη', data.user_id ) );
-        errors.push( isBlank( 'Τίτλος', data.title ) );
-        errors.push( isFound( 'Τίτλος', diaries.map( x=> x.title ), data.title, index ) );
+        errors.push( isBlank( lexicon.diary.user_id, data.user_id ) );
+        errors.push( isBlank( lexicon.diary.title, data.title ) );
+        errors.push( isFound( lexicon.diary.title, diaries.map( x=> x.title ), data.title, index ) );
 
         errors = errors.filter( x => x !== null );
 
@@ -39,6 +39,7 @@ function DiaryForm( { diaries, index, actions, assets, lexicon } ) {
                 headLabel={ lexicon.diary.diary }
                 Context={ DiariesContext }
                 assets={ assets }
+                lexicon={ lexicon }
                 index={ index }
                 validators={ validators }
             >

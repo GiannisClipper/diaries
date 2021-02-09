@@ -1,14 +1,11 @@
 import React, { useEffect, useRef, useContext } from 'react';
 import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBackward, faForward } from '@fortawesome/free-solid-svg-icons';
 
 import StyledList from '../libs/ListBox';
+import { BackwardIcon, ForwardIcon } from '../libs/Icons';
 
 import scrollFeature from '../core/features/scroll';
 import { CutCopyPasteContextProvider } from '../core/CutCopyPasteContext';
-
-import texts from '../app/assets/texts';
 
 import { BenchContext } from './BenchContext';
 import assets from './assets/assets';
@@ -31,11 +28,11 @@ const StyledPrevButton = styled.button`
     font-size: .75em;
 `;
 
-function PrevButton( { reference } ) {
+function PrevButton( { reference, lexicon } ) {
     return (
         <StyledPrevButton ref={reference}>
-            <FontAwesomeIcon icon={ faBackward } className="icon" />
-            { texts.buttons.prev }
+            <BackwardIcon />
+            { lexicon.bench.prev }
         </StyledPrevButton>
     );
 }
@@ -45,12 +42,12 @@ const StyledNextButton = styled.button`
     font-size: .75em;
 `;
 
-function NextButton( { reference } ) {
+function NextButton( { reference, lexicon } ) {
 
     return (
         <StyledNextButton ref={ reference }>
-            { texts.buttons.next }
-            <FontAwesomeIcon icon={ faForward } className="icon" />
+            { lexicon.bench.next }
+            <ForwardIcon />
         </StyledNextButton>
     );
 }
@@ -112,7 +109,7 @@ const Bench = ( { diary_id, lexicon } ) => {
     return (
         <ListBox ref={ inner }>
 
-            <GenresLoader 
+            <GenresLoader
                 diary_id={ diary_id }
             />
 
@@ -127,7 +124,10 @@ const Bench = ( { diary_id, lexicon } ) => {
                 assets={ assets }
             />
 
-            <PrevButton reference={ prev } />
+            <PrevButton 
+                reference={ prev } 
+                lexicon={ lexicon }
+            />
 
             <CutCopyPasteContextProvider>
                 <Periods
@@ -138,7 +138,10 @@ const Bench = ( { diary_id, lexicon } ) => {
                 />
             </CutCopyPasteContextProvider>
 
-            <NextButton reference={ next } />
+            <NextButton 
+                reference={ next }
+                lexicon={ lexicon }
+            />
 
         </ListBox>
     );

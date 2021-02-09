@@ -1,7 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
+import { DownIcon } from './Icons';
 
 const Box = styled.span`
     position: relative;
@@ -154,7 +153,7 @@ function InputFromList( { className, allValues, value, onChange } ) {
             />
 
             <InputIcon onClick={() => listStatus.current.isOpen || _onKeyDown( { keyCode: 40 } ) }>
-                <FontAwesomeIcon icon={ faCaretDown } />
+                <DownIcon />
             </InputIcon>
 
             { listStatus.current.isOpen

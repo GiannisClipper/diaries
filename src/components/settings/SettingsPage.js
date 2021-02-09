@@ -41,7 +41,7 @@ function SettingsPage() {
 
                 <BlockBox>
                     <BlockLabel>
-                        { lexicon.settings.backup }
+                        { lexicon.backup.backup }
                     </BlockLabel>
                     <BlockValue>
                         <Backup lexicon={ lexicon }/>

@@ -36,6 +36,7 @@ function SettingsForm( { settings, actions, assets, lexicon } ) {
                 headLabel={ lexicon.settings.settings }
                 Context={ AppContext }
                 assets={ assets }
+                lexicon={ lexicon }
                 validators={ validators }
             >
 

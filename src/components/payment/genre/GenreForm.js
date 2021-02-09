@@ -39,6 +39,7 @@ function GenreForm( { genres, index, actions, assets, lexicon } ) {
                 headLabel={ lexicon.genre.genre }
                 Context={ GenresContext }
                 assets={ assets }
+                lexicon={ lexicon }
                 index={ index }
                 validators={ validators }
             >

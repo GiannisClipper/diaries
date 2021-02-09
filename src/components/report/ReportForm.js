@@ -36,6 +36,7 @@ function ReportForm( { reports, index, actions, assets, lexicon } ) {
                 headLabel={ lexicon.report.report }
                 Context={ ReportsContext }
                 assets={ assets }
+                lexicon={ lexicon }
                 index={ index }
                 validators={ validators }
             >

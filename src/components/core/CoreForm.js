@@ -35,7 +35,7 @@ function InputValidation( {
     return null;
 }
 
-function CoreForm( { headLabel, Context, assets, index, validators, children } ) {
+function CoreForm( { headLabel, Context, assets, lexicon, index, validators, children } ) {
 
     const { state, actions } = useContext( Context );
     const { namespace } = assets;
@@ -49,17 +49,17 @@ function CoreForm( { headLabel, Context, assets, index, validators, children } )
 
     const okLabel = ( 
         mode.isCreate ?
-            texts.buttons.create :
+            lexicon.core.create :
         mode.isUpdate ?
-            texts.buttons.update :
+            lexicon.core.update :
         mode.isDelete ?
-            texts.buttons.delete :
+            lexicon.core.delete :
         mode.isRetrieveMany ?
-            texts.buttons.retrieveMany :
+            lexicon.core.retrieve :
         null
     );
 
-    const cancelLabel = texts.buttons.cancel;
+    const cancelLabel = lexicon.core.cancel;
 
     const validation = validators ? presetAction( actions.validation, { assets, index } ) : null;
     const validationOk = validators ? presetAction( actions.validationOk, { assets, index } ) : null;

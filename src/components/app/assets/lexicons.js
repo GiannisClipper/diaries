@@ -8,6 +8,7 @@ import paymentGenreLexicons from '../../payment/genre/assets/lexicons';
 import paymentFundLexicons from '../../payment/fund/assets/lexicons';
 import reportLexicons from '../../report/assets/lexicons';
 import settingsLexicons from '../../settings/assets/lexicons';
+import backupLexicons from '../../backup/assets/lexicons';
 import signinLexicons from '../../signin/assets/lexicons';
 import userLexicons from '../../user/assets/lexicons';
 
@@ -24,6 +25,7 @@ let EN = {
     paymentFund: paymentFundLexicons.EN,
     report: reportLexicons.EN,
     settings: settingsLexicons.EN,
+    backup: backupLexicons.EN,
     signin: signinLexicons.EN,
     user: userLexicons.EN,
 }
@@ -41,6 +43,7 @@ let GR = {
     paymentFund: paymentFundLexicons.GR,
     report: reportLexicons.GR,
     settings: settingsLexicons.GR,
+    backup: backupLexicons.GR,
     signin: signinLexicons.GR,
     user: userLexicons.GR,
 }

@@ -38,6 +38,7 @@ function FundForm( { funds, index, actions, assets, lexicon } ) {
                 headLabel={ lexicon.fund.fund }
                 Context={ FundsContext }
                 assets={ assets }
+                lexicon={ lexicon }
                 index={ index }
                 validators={ validators }
             >
