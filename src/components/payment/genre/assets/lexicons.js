@@ -6,6 +6,7 @@ const EN = {
     type: 'Type',
     isRevenue: 'Revenues',
     isExpense: 'Expenses',
+    isMixed: 'Mixed',
 }
 
 const GR = {
@@ -16,6 +17,7 @@ const GR = {
     type: 'Τύπος',
     isRevenue: 'Εσόδων',
     isExpense: 'Εξόδων',
+    isMixed: 'Μικτό',
 }
 
 export default { EN, GR };

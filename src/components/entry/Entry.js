@@ -96,7 +96,10 @@ const Entry = ( { diary_id, date, entries, index, actions, assets, lexicon } ) =
             <RowValue
                 title={ `${ entry.diary_id }.${ entry.id }.${ entry.date }.${ entry.index }.${ index }.` }
             >
-                <EntryRepr entry={ entry } />
+                <EntryRepr 
+                    entry={ entry }
+                    lexicon={ lexicon }
+                />
             </RowValue>
 
             <RowMenu>

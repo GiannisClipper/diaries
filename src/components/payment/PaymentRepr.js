@@ -5,7 +5,7 @@ import { getFromList } from '../core/helpers/getFromList';
 import { GenresContext } from '../payment/genre/GenresContext';
 import { FundsContext } from '../payment/fund/FundsContext';
 
-const PaymentRepr = ( { entry } ) => {
+const PaymentRepr = ( { entry, lexicon } ) => {
 
     const  { genres } = useContext( GenresContext ).state;
     const  { funds } = useContext( FundsContext ).state;
@@ -22,8 +22,8 @@ const PaymentRepr = ( { entry } ) => {
 
     let repr = '';
 
-    repr += revenue ? `Είσπραξη ${ fund_name } ${ revenue }, ` : '';
-    repr += expense ? `Πληρωμή ${ fund_name } ${ expense }, ` : '';
+    repr += revenue ? `${ lexicon.payment.revenue } ${ fund_name } ${ revenue }, ` : '';
+    repr += expense ? `${ lexicon.payment.expense } ${ fund_name } ${ expense }, ` : '';
     repr += `${ genre_name }, `;
     repr += remark ? `${ remark }` : '';
 

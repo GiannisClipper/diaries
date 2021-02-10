@@ -3,7 +3,7 @@ import React from 'react';
 import NoteRepr from '../note/NoteRepr';
 import PaymentRepr from '../payment/PaymentRepr';
 
-const EntryRepr = ( { entry } ) => {
+const EntryRepr = ( { entry, lexicon } ) => {
 
     let { type } = entry;
 
@@ -12,7 +12,7 @@ const EntryRepr = ( { entry } ) => {
             ? <NoteRepr entry={ entry } /> :
 
         type === 'payment'
-            ? <PaymentRepr entry={ entry } /> :
+            ? <PaymentRepr entry={ entry } lexicon={ lexicon } /> :
 
         null
     ); 

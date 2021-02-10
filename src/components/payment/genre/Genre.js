@@ -21,11 +21,11 @@ function Genre( { genres, index, actions, assets, lexicon } ) {
     const typeInfo = _uiux.mode.isCreate
         ? ''
         : genre.isRevenue && genre.isExpense
-        ? 'Μ'
+        ? lexicon.paymentGenre.isMixed.substr( 0, 2 )
         : genre.isRevenue
-        ? 'Ε'
+        ? lexicon.paymentGenre.isRevenue.substr( 0, 2 )
         : genre.isExpense
-        ? 'Π'
+        ? lexicon.paymentGenre.isExpense.substr( 0, 2 )
         : '-';
 
     // request features
