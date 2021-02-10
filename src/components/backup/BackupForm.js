@@ -18,17 +18,16 @@ function BackupForm( { backup, actions, assets, lexicon } ) {
         <Modal onClick={ onClickOut } centeredness>
 
             <CoreForm
-                headLabel={ lexicon.backup }
+                headLabel={ lexicon.backup.backup }
                 Context={ AppContext }
                 assets={ assets }
                 lexicon={ lexicon }
             >
-
                 <InputBox>
                     <InputLabel />
                     <InputValue>
                         <input 
-                            value={ lexicon.descr }
+                            value={ lexicon.backup.descr }
                             tabIndex="-1"
                             readOnly
                         />

@@ -3,8 +3,6 @@ import React, { useContext, useEffect } from 'react';
 import { ListBox } from '../libs/ListBox';
 import { BlockBox, BlockLabel, BlockValue } from '../libs/BlockBox';
 
-import { heads } from '../app/assets/texts';
-
 import { ReportsContext } from './ReportsContext';
 import assets from './assets/assets'; 
 import ReportsLoader from './ReportsLoader';

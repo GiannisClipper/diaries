@@ -9,19 +9,20 @@ const _isFound = ( values, value, index = -1 ) => {
     return false;
 }
 
-const isBlank = ( inputLabel, value ) =>
+const isBlank = ( lexicon, inputLabel, value ) =>
     _isBlank( value )
-        ? `Η τιμή στο πεδίο '${ inputLabel }' δεν μπορεί να είναι κενή.`
+        ? `${ inputLabel }: ${ lexicon.core.isBlank }`
         : null;
 
-const isFound = ( inputLabel, values, value, index ) =>
+const isFound = ( lexicon, inputLabel, values, value, index ) =>
     ! _isBlank( value ) && _isFound( values, value, index )
-        ? `Η τιμή στο πεδίο '${ inputLabel }' υπάρχει ήδη.`
+        ? `${ inputLabel }: ${ lexicon.core.isFound }`
         : null;
 
-const isNotFound = ( inputLabel, values, value ) =>
+const isNotFound = ( lexicon, inputLabel, values, value ) =>
     ! _isFound( values, value )
-        ? `Η τιμή στο πεδίο '${ inputLabel }' δεν είναι έγκυρη.`
+        ? `${ inputLabel }: ${ lexicon.core.isNotFound }`
         : null;
 
+export default { isBlank, isFound, isNotFound };
 export { isBlank, isFound, isNotFound };

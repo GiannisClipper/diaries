@@ -5,8 +5,9 @@ import { InputBox, InputLabel, InputValue } from '../../libs/InputBox';
 import { InputCheck } from '../../libs/InputCheck';
 
 import CoreForm from "../../core/CoreForm";
-import { isBlank, isFound } from '../../core/assets/validators';
+import validators from '../../core/assets/validators';
 import presetAction from '../../core/helpers/presetAction';
+import withLexicon from '../../core/helpers/withLexicon';
 
 import { GenresContext } from './GenresContext';
 
@@ -20,8 +21,11 @@ function GenreForm( { genres, index, actions, assets, lexicon } ) {
 
     const [ data, setData ] = useState( { ...genre } );
 
-    const validators = () => {
+    const onValidation = () => {
         let errors = [];
+
+        const isBlank = withLexicon( validators.isBlank, lexicon );
+        const isFound = withLexicon( validators.isFound, lexicon );
 
         errors.push( isBlank( lexicon.genre.name, data.name ) );
         errors.push( isFound( lexicon.genre.name, genres.map( x=> x.name ), data.name, index ) );
@@ -41,7 +45,7 @@ function GenreForm( { genres, index, actions, assets, lexicon } ) {
                 assets={ assets }
                 lexicon={ lexicon }
                 index={ index }
-                validators={ validators }
+                onValidation={ onValidation }
             >
                 <InputBox>
                     <InputLabel>

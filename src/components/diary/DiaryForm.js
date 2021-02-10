@@ -5,8 +5,9 @@ import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
 import { InputDate } from '../libs/InputDate';
 
 import CoreForm from "../core/CoreForm";
-import { isBlank, isFound } from '../core/assets/validators';
+import validators from '../core/assets/validators';
 import presetAction from '../core/helpers/presetAction';
+import withLexicon from '../core/helpers/withLexicon';
 
 import { DiariesContext } from './DiariesContext';
 
@@ -20,8 +21,11 @@ function DiaryForm( { diaries, index, actions, assets, lexicon } ) {
 
     const [ data, setData ] = useState( { ...diary } );
 
-    const validators = () => {
+    const onValidation = () => {
         let errors = [];
+
+        const isBlank = withLexicon( validators.isBlank, lexicon );
+        const isFound = withLexicon( validators.isFound, lexicon );
 
         errors.push( isBlank( lexicon.diary.user_id, data.user_id ) );
         errors.push( isBlank( lexicon.diary.title, data.title ) );
@@ -41,7 +45,7 @@ function DiaryForm( { diaries, index, actions, assets, lexicon } ) {
                 assets={ assets }
                 lexicon={ lexicon }
                 index={ index }
-                validators={ validators }
+                onValidation={ onValidation }
             >
                 <InputBox>
                     <InputLabel>

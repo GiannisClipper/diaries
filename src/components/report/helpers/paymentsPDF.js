@@ -3,7 +3,7 @@ import { getFromList } from '../../core/helpers/getFromList';
 
 import { reportPDF } from './reportPDF';
 
-const paymentsPDF = ( { descr, dateFrom, dateTill, result, genres, funds } ) => {
+const paymentsPDF = ( { lexicon, descr, dateFrom, dateTill, result, genres, funds } ) => {
 
     const title = `${ descr } (${ YYYYMMDDToRepr( dateFrom ) }-${ YYYYMMDDToRepr( dateTill ) })`;
 
@@ -17,12 +17,12 @@ const paymentsPDF = ( { descr, dateFrom, dateTill, result, genres, funds } ) => 
     };
 
     const labels = {
-        date: 'ΗΜ/ΝΙΑ',
-        incoming: 'ΕΙΣΠΡΑΞΗ',
-        outgoing: 'ΠΛΗΡΩΜΗ',
-        genre_name: 'ΚΑΤΗΓΟΡΙΑ',
-        remark: 'ΣΗΜΕΙΩΣΗ',
-        fund_name: 'ΜΕΣΟ',
+        date: lexicon.entry.date,
+        genre_name: lexicon.payment.genre_name,
+        incoming: lexicon.payment.incoming,
+        outgoing: lexicon.payment.outgoing,
+        fund_name: lexicon.payment.fund_name,
+        remark: lexicon.payment.remark,
     };
 
     result.forEach( x => x.date = YYYYMMDDToRepr( x.date ) );
@@ -30,7 +30,7 @@ const paymentsPDF = ( { descr, dateFrom, dateTill, result, genres, funds } ) => 
     const totals = {
         incoming: 0,
         outgoing: 0,
-        remark: 'Υπόλοιπο: ',
+        remark: `${ lexicon.report.difference } = `,
     };
 
     result.forEach( x => {

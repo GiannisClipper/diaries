@@ -6,8 +6,9 @@ import { InputFromList } from '../libs/InputFromList';
 
 import CoreForm from "../core/CoreForm";
 import { YYYYMMDDToRepr, dateToYYYYMMDD } from '../core/helpers/dates';
-import { isBlank, isNotFound } from '../core/assets/validators';
+import validators from '../core/assets/validators';
 import presetAction from '../core/helpers/presetAction';
+import withLexicon from '../core/helpers/withLexicon';
 
 import { EntriesContext } from "./EntriesContext";
 
@@ -24,11 +25,12 @@ function EntryForm( { date, entries, index, actions, assets, lexicon } ) {
 
     const [ data, setData ] = useState( { ...entry } );
 
-    const validators = 
+    const onValidation = 
         data.type === 'note'
             ?
             () => {
                 let errors = [];
+                const isBlank = withLexicon( validators.isBlank, lexicon );        
                 errors.push( isBlank( lexicon.note.note, data.note ) );
                 errors = errors.filter( x => x !== null );
                 return { data, errors };
@@ -37,6 +39,7 @@ function EntryForm( { date, entries, index, actions, assets, lexicon } ) {
             ?
             () => {
                 let errors = [];
+                const isBlank = withLexicon( validators.isBlank, lexicon );
                 errors.push( isBlank( lexicon.payment.genre_name, data.genre_name ) );
                 errors.push( isBlank( lexicon.payment.fund_name, data.fund_name ) );
                 errors = errors.filter( x => x !== null );
@@ -45,6 +48,7 @@ function EntryForm( { date, entries, index, actions, assets, lexicon } ) {
         :
            () => {
                 let errors = [];
+                const isNotFound = withLexicon( validators.isNotFound, lexicon );        
                 errors.push( isNotFound( lexicon.entry.type, [ 'note', 'payment' ], data.type ) );
                 errors = errors.filter( x => x !== null );
                 return { data, errors };
@@ -58,7 +62,7 @@ function EntryForm( { date, entries, index, actions, assets, lexicon } ) {
                 assets={ assets }
                 lexicon={ lexicon }
                 index={ index }
-                validators={ validators }
+                onValidation={ onValidation }
             >
                 <InputBox>
                     <InputLabel>

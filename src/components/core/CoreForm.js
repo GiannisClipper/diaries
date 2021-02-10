@@ -4,11 +4,9 @@ import { OkCancelForm } from '../libs/Forms';
 
 import presetAction from './helpers/presetAction';
 
-import texts from '../app/assets/texts';
-
 function InputValidation( { 
     status, 
-    validators,
+    onValidation,
     validationOk,
     validationError,
     request,
@@ -17,7 +15,7 @@ function InputValidation( {
     useEffect( () => {
     
         if ( status.isValidation ) {
-            const { data, errors } = validators();
+            const { data, errors } = onValidation();
 
             if ( errors.length === 0 ) {
                 validationOk( { data } )
@@ -35,7 +33,7 @@ function InputValidation( {
     return null;
 }
 
-function CoreForm( { headLabel, Context, assets, lexicon, index, validators, children } ) {
+function CoreForm( { headLabel, Context, assets, lexicon, index, onValidation, children } ) {
 
     const { state, actions } = useContext( Context );
     const { namespace } = assets;
@@ -48,41 +46,33 @@ function CoreForm( { headLabel, Context, assets, lexicon, index, validators, chi
     const { status, mode } = _uiux;
 
     const okLabel = ( 
-        mode.isCreate ?
-            lexicon.core.create :
-        mode.isUpdate ?
-            lexicon.core.update :
-        mode.isDelete ?
-            lexicon.core.delete :
-        mode.isRetrieveMany ?
-            lexicon.core.retrieve :
+        mode.isCreate ? lexicon.core.create :
+        mode.isRetrieve ? lexicon.core.retrieve :
+        mode.isRetrieveMany ? lexicon.core.retrieve :
+        mode.isUpdate ? lexicon.core.update :
+        mode.isDelete ? lexicon.core.delete :
         null
     );
 
     const cancelLabel = lexicon.core.cancel;
 
-    const validation = validators ? presetAction( actions.validation, { assets, index } ) : null;
-    const validationOk = validators ? presetAction( actions.validationOk, { assets, index } ) : null;
-    const validationError = validators ? presetAction( actions.validationError, { assets, index } ) : null;
+    const validation = onValidation ? presetAction( actions.validation, { assets, index } ) : null;
+    const validationOk = onValidation ? presetAction( actions.validationOk, { assets, index } ) : null;
+    const validationError = onValidation ? presetAction( actions.validationError, { assets, index } ) : null;
 
     const rawRequest = (
-        mode.isCreate ?
-            actions.createRequest :
-        mode.isRetrieve ?
-            actions.retrieveRequest :
-        mode.isRetrieveMany ?
-            actions.retrieveManyRequest :
-        mode.isUpdate ?
-            actions.updateRequest :
-        mode.isDelete ?
-            actions.deleteRequest :
+        mode.isCreate ? actions.createRequest :
+        mode.isRetrieve ? actions.retrieveRequest :
+        mode.isRetrieveMany ? actions.retrieveManyRequest :
+        mode.isUpdate ? actions.updateRequest :
+        mode.isDelete ? actions.deleteRequest :
         null
     );
 
     const request = presetAction( rawRequest, { assets, index } );
 
-    validators = mode.isDelete ? null : validators;
-    const onClickOk = validators ? validation : request;
+    onValidation = mode.isDelete ? null : onValidation;
+    const onClickOk = onValidation ? validation : request;
 
     const closeForm = presetAction( actions.closeForm, { assets, index } );
     const noMode = presetAction( actions.noMode, { assets, index } );
@@ -100,7 +90,7 @@ function CoreForm( { headLabel, Context, assets, lexicon, index, validators, chi
         >
             <InputValidation
                 status={ status }
-                validators={ validators }
+                onValidation={ onValidation }
                 validationOk={ validationOk }
                 validationError={ validationError }
                 request={ request }

@@ -1,5 +1,5 @@
 const presetAction = ( action, payload ) => {
-    return morePayload => action( { ...morePayload, ...payload } );
+    return morePayload => action( { ...payload, ...morePayload } );
 }
 
 export default presetAction;

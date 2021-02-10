@@ -109,6 +109,11 @@ const Bench = ( { diary_id, lexicon } ) => {
     return (
         <ListBox ref={ inner }>
 
+            <PrevButton 
+                reference={ prev } 
+                lexicon={ lexicon }
+            />
+
             <GenresLoader
                 diary_id={ diary_id }
             />
@@ -122,11 +127,6 @@ const Bench = ( { diary_id, lexicon } ) => {
                 state={ state }
                 actions={ actions }
                 assets={ assets }
-            />
-
-            <PrevButton 
-                reference={ prev } 
-                lexicon={ lexicon }
             />
 
             <CutCopyPasteContextProvider>

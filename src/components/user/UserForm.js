@@ -6,8 +6,9 @@ import { InputEmail } from '../libs/InputEmail';
 import { InputCheck } from '../libs/InputCheck';
 
 import CoreForm from "../core/CoreForm";
-import { isBlank, isFound, isNotFound } from '../core/assets/validators';
+import validators from '../core/assets/validators';
 import presetAction from '../core/helpers/presetAction';
+import withLexicon from '../core/helpers/withLexicon';
 
 import { UsersContext } from './UsersContext';
 
@@ -22,8 +23,12 @@ function UserForm( { users, index, actions, assets, lexicon } ) {
 
     const [ data, setData ] = useState( { ...user } );
 
-    const validators = () => {
+    const onValidation = () => {
         let errors = [];
+
+        const isBlank = withLexicon( validators.isBlank, lexicon );
+        const isFound = withLexicon( validators.isFound, lexicon );
+        const isNotFound = withLexicon( validators.isNotFound, lexicon );
 
         errors.push( isBlank( lexicon.user.username, data.username ) );
         errors.push( isFound( lexicon.user.username, users.map( x=> x.title ), data.username, index ) );
@@ -50,7 +55,7 @@ function UserForm( { users, index, actions, assets, lexicon } ) {
                 assets={ assets }
                 lexicon={ lexicon }
                 index={ index }
-                validators={ validators }
+                onValidation={ onValidation }
             >
                 <InputBox>
                     <InputLabel>

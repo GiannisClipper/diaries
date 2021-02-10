@@ -1,6 +1,6 @@
 const EN = {
     backup: 'Database backup',
-    descr: 'Download database backup to JSON file.',
+    descr: 'Database backup to JSON file.',
 }
 
 const GR = {

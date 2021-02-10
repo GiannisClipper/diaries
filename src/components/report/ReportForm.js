@@ -25,7 +25,7 @@ function ReportForm( { reports, index, actions, assets, lexicon } ) {
         dateTill: YYYYMMDDToRepr( dateToYYYYMMDD( new Date() ) ),
     } );
 
-    const validators = () => {
+    const onValidation = () => {
         let errors = [];
         return { data, errors };
     }
@@ -38,7 +38,7 @@ function ReportForm( { reports, index, actions, assets, lexicon } ) {
                 assets={ assets }
                 lexicon={ lexicon }
                 index={ index }
-                validators={ validators }
+                onValidation={ onValidation }
             >
                 <InputBox>
                     <InputLabel>

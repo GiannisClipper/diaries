@@ -33,6 +33,9 @@ const EN = {
     copy: 'Copy',
     paste: 'Paste',
     close: 'Close',
+    isBlank: 'Empty value not allowed.',
+    isFound: 'Value already exists.',
+    isNotFound: 'Value not valid.',
 }
 
 const GR = {
@@ -70,6 +73,9 @@ const GR = {
     copy: 'Αντιγραφή',
     paste: 'Επικόλληση',
     close: 'Κλείσιμο',
+    isBlank: 'Η τιμή δεν μπορεί να είναι κενή.',
+    isFound: 'Η τιμή υπάρχει ήδη.',
+    isNotFound: 'Η τιμή δεν είναι έγκυρη.',
 }
 
 export default { EN, GR };

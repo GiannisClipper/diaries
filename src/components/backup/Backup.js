@@ -20,6 +20,7 @@ function Backup( { lexicon } ) {
 
     const retrieveMode = presetAction( actions.retrieveMode, { assets } );
     const openForm = presetAction( actions.openForm, { assets } );
+    const retrieveResponseOkAfter = presetAction( actions.retrieveResponseOkAfter, { assets } );
 
     useEffect( () => {
         
@@ -32,11 +33,10 @@ function Backup( { lexicon } ) {
             } );
 
         } else {
-            delete backup._uiux;
-            const content = JSON.stringify( backup, null, 2 );  // spacing = 2
-            backup._uiux = _uiux;
-
-            saveAsTextFile( content, 'backup.json' );
+            const { _uiux, ...data } = backup;
+            const stringified = JSON.stringify( data, null, 2 );  // spacing = 2
+            saveAsTextFile( stringified, 'backup.json' );
+            retrieveResponseOkAfter();
         }
 
     } );
@@ -45,7 +45,7 @@ function Backup( { lexicon } ) {
         <RowBox>
 
             <RowValue>
-                <span>{ `Αντίγραφο βάσης δεδομένων σε αρχείο json.` }</span>
+                <span>{ lexicon.backup.descr }</span>
             </RowValue>
 
             <RowMenu>

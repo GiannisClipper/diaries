@@ -64,7 +64,6 @@ const testPDF = () => {
     pdf.setFont( 'courierNewBoldItalic', 'bolditalic' );
     pdf.text( 20, 70, 'Κατάσταση οικονομικών, title somewhere here?!' );
 
-
     pdf.setFont( 'trebuchetMSBold', 'bold' );
     pdf.text( 20, 80, 'Κατάσταση οικονομικών, title somewhere here?!' );
 

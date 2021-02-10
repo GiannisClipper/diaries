@@ -34,6 +34,7 @@ function Report( { reports, index, actions, assets, lexicon } ) {
 
             if ( _uiux.status.isResponseOk ) {
                 paymentsPDF( {
+                    lexicon,
                     descr: report.descr,
                     dateFrom: dataToDB.dateFrom,
                     dateTill: dataToDB.dateTill,
@@ -55,7 +56,7 @@ function Report( { reports, index, actions, assets, lexicon } ) {
             } );
         }
 
-    }, [ _uiux, report, actions, assets, index, dataToDB, result ] );
+    } );
 
     return (
         <RowBox key={ index }>

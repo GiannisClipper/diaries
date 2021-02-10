@@ -8,8 +8,9 @@ import { ButtonBox, ButtonLabel, ButtonValue } from '../libs/ButtonBox';
 import { OkButton } from '../libs/Buttons';
 
 import { InputValidation } from '../core/CoreForm';
-import { isBlank } from '../core/assets/validators';
+import validators from '../core/assets/validators';
 import presetAction from '../core/helpers/presetAction';
+import withLexicon from '../core/helpers/withLexicon';
 
 import { APP_TITLE } from '../app/assets/constants';
 
@@ -31,8 +32,10 @@ function SignForm( { signin, actions, assets, lexicon } ) {
 
     const { status } = signin._uiux;
 
-    const validators = () => {
+    const onValidation = () => {
         let errors = [];
+
+        const isBlank = withLexicon( validators.isBlank, lexicon );
 
         errors.push( isBlank( lexicon.user.username, data.username ) );
         errors.push( isBlank( lexicon.user.password, data.password ) );
@@ -52,7 +55,7 @@ function SignForm( { signin, actions, assets, lexicon } ) {
 
             <InputValidation
                 status={ status }
-                validators={ validators }
+                onValidation={ onValidation }
                 validationOk={ validationOk }
                 validationError={ validationError }
                 request={ signinRequest }
