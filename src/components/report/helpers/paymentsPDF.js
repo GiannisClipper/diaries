@@ -10,8 +10,8 @@ const paymentsPDF = ( { lexicon, descr, dateFrom, dateTill, result, genres, fund
     const cols = {
         date: { width: 20, align: 'center' },
         genre_name: { width: 70, align: 'left' },
-        incoming: { width: 20, align: 'right' },
-        outgoing: { width: 20, align: 'right' },
+        revenue: { width: 20, align: 'right' },
+        expense: { width: 20, align: 'right' },
         fund_name: { width: 70, align: 'left' },
         remark: { width: 70, align: 'left' },
     };
@@ -19,8 +19,8 @@ const paymentsPDF = ( { lexicon, descr, dateFrom, dateTill, result, genres, fund
     const labels = {
         date: lexicon.entry.date,
         genre_name: lexicon.payment.genre_name,
-        incoming: lexicon.payment.incoming,
-        outgoing: lexicon.payment.outgoing,
+        revenue: lexicon.payment.revenue,
+        expense: lexicon.payment.expense,
         fund_name: lexicon.payment.fund_name,
         remark: lexicon.payment.remark,
     };
@@ -28,21 +28,21 @@ const paymentsPDF = ( { lexicon, descr, dateFrom, dateTill, result, genres, fund
     result.forEach( x => x.date = YYYYMMDDToRepr( x.date ) );
 
     const totals = {
-        incoming: 0,
-        outgoing: 0,
+        revenue: 0,
+        expense: 0,
         remark: `${ lexicon.report.difference } = `,
     };
 
     result.forEach( x => {
-        let incoming = parseFloat( x.incoming );
-        let outgoing = parseFloat( x.outgoing );
-        totals.incoming += isNaN( incoming ) ? 0 : incoming;
-        totals.outgoing += isNaN( outgoing ) ? 0 : outgoing;
+        let revenue = parseFloat( x.revenue );
+        let expense = parseFloat( x.expense );
+        totals.revenue += isNaN( revenue ) ? 0 : revenue;
+        totals.expense += isNaN( expense ) ? 0 : expense;
     } );
 
-    totals.remark += ( totals.incoming - totals.outgoing ).toFixed( 2 );
-    totals.incoming = totals.incoming.toFixed( 2 );
-    totals.outgoing = totals.outgoing.toFixed( 2 );
+    totals.remark += ( totals.revenue - totals.expense ).toFixed( 2 );
+    totals.revenue = totals.revenue.toFixed( 2 );
+    totals.expense = totals.expense.toFixed( 2 );
 
     result.forEach( x => {
         x.genre_name = x.genre_id

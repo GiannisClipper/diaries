@@ -4,8 +4,8 @@ const EN = {
     name: 'Name',
     code: 'Logistic code',
     type: 'Type',
-    isIncoming: 'Revenues',
-    isOutgoing: 'Expenses',
+    isRevenue: 'Revenues',
+    isExpense: 'Expenses',
 }
 
 const GR = {
@@ -14,8 +14,8 @@ const GR = {
     name: 'Ονομασία',
     code: 'Λογιστικός κωδικός',
     type: 'Τύπος',
-    isIncoming: 'Εσόδων',
-    isOutgoing: 'Εξόδων',
+    isRevenue: 'Εσόδων',
+    isExpense: 'Εξόδων',
 }
 
 export default { EN, GR };

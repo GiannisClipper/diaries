@@ -1,15 +1,15 @@
 const EN = {
     genre_name: 'Genre',
-    incoming: 'Revenue',
-    outgoing: 'Expense',
+    revenue: 'Revenue',
+    expense: 'Expense',
     remark: 'Remark',
     fund_name: 'Fund'
 }
 
 const GR = {
     genre_name: 'Κατηγορία',
-    incoming: 'Έσοδο',
-    outgoing: 'Έξοδο',
+    revenue: 'Έσοδο',
+    expense: 'Έξοδο',
     remark: 'Παρατήρηση',
     fund_name: 'Μέσο'
 }

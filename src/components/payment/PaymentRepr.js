@@ -10,7 +10,7 @@ const PaymentRepr = ( { entry } ) => {
     const  { genres } = useContext( GenresContext ).state;
     const  { funds } = useContext( FundsContext ).state;
 
-    let { incoming, outgoing, fund_id, genre_id, remark } = entry;
+    let { revenue, expense, fund_id, genre_id, remark } = entry;
 
     const genre_name = genre_id
         ? getFromList( genres, 'id', genre_id ).name
@@ -22,8 +22,8 @@ const PaymentRepr = ( { entry } ) => {
 
     let repr = '';
 
-    repr += incoming ? `Είσπραξη ${ fund_name } ${ incoming }, ` : '';
-    repr += outgoing ? `Πληρωμή ${ fund_name } ${ outgoing }, ` : '';
+    repr += revenue ? `Είσπραξη ${ fund_name } ${ revenue }, ` : '';
+    repr += expense ? `Πληρωμή ${ fund_name } ${ expense }, ` : '';
     repr += `${ genre_name }, `;
     repr += remark ? `${ remark }` : '';
 

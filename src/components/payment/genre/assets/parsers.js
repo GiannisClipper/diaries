@@ -3,16 +3,16 @@ const parseGenreFromDB = data => ( {
     diary_id: data.diary_id,
     code: data.code,
     name: data.name,
-    isIncoming: data.isIncoming,
-    isOutgoing: data.isOutgoing,
+    isRevenue: data.isRevenue,
+    isExpense: data.isExpense,
 } )
 
 const parseGenreToDB = data => ( {
     diary_id: data.diary_id,
     code: data.code,
     name: data.name,
-    isIncoming: data.isIncoming,
-    isOutgoing: data.isOutgoing,
+    isRevenue: data.isRevenue,
+    isExpense: data.isExpense,
 } );
 
 export { 

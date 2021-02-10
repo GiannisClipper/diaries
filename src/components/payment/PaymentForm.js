@@ -39,21 +39,21 @@ function PaymentForm( { data, setData, lexicon } ) {
 
     const setupGenre = name => {
         let genre_id = null;
-        let isIncoming = false;
-        let isOutgoing = false;
-        let incoming = null;
-        let outgoing = null;
+        let isRevenue = false;
+        let isExpense = false;
+        let revenue = null;
+        let expense = null;
 
         if ( name ) {
             const genre = getFromList( genres, 'name', name );
             genre_id = genre.id;
-            isIncoming = genre.isIncoming;
-            isOutgoing = genre.isOutgoing;
-            incoming = isIncoming ? data.incoming : null;
-            outgoing = isOutgoing ? data.outgoing : null;
+            isRevenue = genre.isRevenue;
+            isExpense = genre.isExpense;
+            revenue = isRevenue ? data.revenue : null;
+            expense = isExpense ? data.expense : null;
         }
 
-        return { genre_id, isIncoming, isOutgoing, incoming, outgoing };
+        return { genre_id, isRevenue, isExpense, revenue, expense };
     }
 
     const setupFund = name => {
@@ -87,28 +87,28 @@ function PaymentForm( { data, setData, lexicon } ) {
 
         <InputBox>
             <InputLabel>
-                { lexicon.payment.incoming }
+                { lexicon.payment.revenue }
             </InputLabel>
             <InputValue>
                 <InputNumber
                     decimals="2"
-                    value={ data.incoming || '' }
-                    onChange={ event => setData( { ...data, incoming: event.target.value } ) }
-                    readOnly={ ! data.isIncoming }
+                    value={ data.revenue || '' }
+                    onChange={ event => setData( { ...data, revenue: event.target.value } ) }
+                    readOnly={ ! data.isRevenue }
                 />
             </InputValue>
         </InputBox>
 
         <InputBox>
             <InputLabel>
-                { lexicon.payment.outgoing }
+                { lexicon.payment.expense }
             </InputLabel>
             <InputValue>
                 <InputNumber
                     decimals="2"
-                    value={ data.outgoing || '' }
-                    onChange={ event => setData( { ...data, outgoing: event.target.value } ) }
-                    readOnly={ ! data.isOutgoing }
+                    value={ data.expense || '' }
+                    onChange={ event => setData( { ...data, expense: event.target.value } ) }
+                    readOnly={ ! data.isExpense }
                 />
             </InputValue>
         </InputBox>

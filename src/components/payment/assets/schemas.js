@@ -1,8 +1,8 @@
 const paymentSchema = () => ( {
     type: 'payment',
     genre_id: '',
-    incoming: null,
-    outgoing: null,
+    revenue: null,
+    expense: null,
     remark: '',
     fund_id: '',
 } );

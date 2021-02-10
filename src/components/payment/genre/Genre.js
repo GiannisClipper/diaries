@@ -20,11 +20,11 @@ function Genre( { genres, index, actions, assets, lexicon } ) {
 
     const typeInfo = _uiux.mode.isCreate
         ? ''
-        : genre.isIncoming && genre.isOutgoing
+        : genre.isRevenue && genre.isExpense
         ? 'Μ'
-        : genre.isIncoming
+        : genre.isRevenue
         ? 'Ε'
-        : genre.isOutgoing
+        : genre.isExpense
         ? 'Π'
         : '-';
 

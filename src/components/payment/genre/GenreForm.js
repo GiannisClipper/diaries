@@ -78,14 +78,14 @@ function GenreForm( { genres, index, actions, assets, lexicon } ) {
                     </InputLabel>
                     <InputValue>
                         <InputCheck
-                            checked={ data.isIncoming }
-                            onChange={ event => setData( { ...data, isIncoming: event.target.checked } ) }
-                            label={ lexicon.genre.isIncoming }
+                            checked={ data.isRevenue }
+                            onChange={ event => setData( { ...data, isRevenue: event.target.checked } ) }
+                            label={ lexicon.genre.isRevenue }
                         />
                         <InputCheck
-                            checked={ data.isOutgoing }
-                            onChange={ event => setData( { ...data, isOutgoing: event.target.checked } ) }
-                            label={ lexicon.genre.isOutgoing }
+                            checked={ data.isExpense }
+                            onChange={ event => setData( { ...data, isExpense: event.target.checked } ) }
+                            label={ lexicon.genre.isExpense }
                         />                        
                     </InputValue>
                 </InputBox>
