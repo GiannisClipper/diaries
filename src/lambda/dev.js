@@ -20,9 +20,12 @@ exports.handler = async function( event, context, callback ) {
 
         // collection = db.collection( 'payments_funds' );
         // result.funds = await collection.updateMany( {}, { $set: { diary_id: '5ff4a9f0a71aef59a8695134' } } );
-        collection = db.collection( 'payments_genres' );
+        // collection = db.collection( 'payments_genres' );
         // result.genres = await collection.updateMany( {}, { $set: { diary_id: '5ff4a9f0a71aef59a8695134' } } );
-        result = await collection.updateMany( {}, { $rename: { "isIncoming": "isRevenue", "isOutgoing": "isExpense" } } );
+        // result = await collection.updateMany( {}, { $rename: { "isIncoming": "isRevenue", "isOutgoing": "isExpense" } } );
+
+        collection = db.collection( 'users' );
+        result = await collection.updateMany( {}, { $set: { "type": "user" }, $unset: { "isAdmin": null, "isUser": null } } );
 
         console.log( result ); // output to netlify function log
         callback( null, responseOnSuccess( result ) );

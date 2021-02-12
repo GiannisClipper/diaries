@@ -3,12 +3,13 @@ import React, { useState } from 'react';
 import { Modal } from '../libs/Modal';
 import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
 import { InputEmail } from '../libs/InputEmail';
-import { InputCheck } from '../libs/InputCheck';
+import { InputFromListSelecting } from '../libs/InputFromList';
 
 import CoreForm from "../core/CoreForm";
 import validators from '../core/assets/validators';
 import presetAction from '../core/helpers/presetAction';
 import withLexicon from '../core/helpers/withLexicon';
+import { getFromList } from '../core/helpers/getFromList';
 
 import { UsersContext } from './UsersContext';
 
@@ -22,6 +23,11 @@ function UserForm( { users, index, actions, assets, lexicon } ) {
     const { _uiux } = user;
 
     const [ data, setData ] = useState( { ...user } );
+
+    const types = [
+        { type: 'admin', descr: lexicon.user.types.admin },
+        { type: 'user', descr: lexicon.user.types.user },
+    ];
 
     const onValidation = () => {
         let errors = [];
@@ -125,16 +131,11 @@ function UserForm( { users, index, actions, assets, lexicon } ) {
                         { lexicon.user.type }
                     </InputLabel>
                     <InputValue>
-                        <InputCheck
-                            checked={ data.isAdmin }
-                            onChange={ event => setData( { ...data, isAdmin: event.target.checked } ) }
-                            label={ lexicon.user.admin }
+                        <InputFromListSelecting
+                            value={ getFromList( types, 'type', data.type ).descr }
+                            allValues={ types.map( x => x.descr ) }
+                            onChange={ event => setData( { ...data, type: getFromList( types, 'descr', event.target.value ).type } ) }
                         />
-                        <InputCheck
-                            checked={ data.isUser }
-                            onChange={ event => setData( { ...data, isUser: event.target.checked } ) }
-                            label={ lexicon.user.user }
-                        />                        
                     </InputValue>
                 </InputBox>
 

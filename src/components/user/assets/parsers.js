@@ -4,8 +4,7 @@ const parseUserFromDB = ( data ) => ( {
     password: '',
     password2: '',
     email: data.email,
-    isAdmin: data.isAdmin,
-    isUser: data.isUser,
+    type: data.type,
     remark: data.remark,
 } )
 
@@ -13,8 +12,7 @@ const parseUserToDB = ( data ) => {
     const result = {
         username: data.username,
         email: data.email,
-        isAdmin: data.isAdmin,
-        isUser: data.isUser,
+        type: data.type,
         remark: data.remark,
     }
 

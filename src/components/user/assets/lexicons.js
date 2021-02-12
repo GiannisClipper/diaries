@@ -4,10 +4,12 @@ const EN = {
     password: 'Password',
     password2: 'Repeat',
     email: 'Email',
-    remark: 'Remarks',
+    remark: 'Remark',
     type: 'Type',
-    admin: 'Administrator',
-    user: 'User'
+    types: {
+        admin: 'Administrator',
+        user: 'User',
+    }
 }
 
 const GR = {
@@ -16,10 +18,12 @@ const GR = {
     password: 'Κωδικός',
     password2: 'Επανάληψη',
     email: 'Email',
-    remark: 'Παρατηρήσεις',
+    remark: 'Παρατήρηση',
     type: 'Τύπος',
-    admin: 'Διαχειριστής',
-    user: 'Χρήστης'
+    types: {
+        admin: 'Διαχειριστής',
+        user: 'Χρήστης',
+    }
 }
 
 export default { EN, GR };
