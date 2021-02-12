@@ -13,8 +13,7 @@ const genreSchema = () => ( {
     diary_id: null,
     name: '',
     code: '',
-    isRevenue: null,
-    isExpense: null,
+    type: '', // revenue, expense
     _uiux: {
         form: {},  // isOpen
         mode: {},  // isCreate, isUpdate, isDelete

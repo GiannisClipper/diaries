@@ -39,21 +39,19 @@ function PaymentForm( { data, setData, lexicon } ) {
 
     const setupGenre = name => {
         let genre_id = null;
-        let isRevenue = false;
-        let isExpense = false;
+        let paymentType = null;
         let revenue = null;
         let expense = null;
 
         if ( name ) {
             const genre = getFromList( genres, 'name', name );
             genre_id = genre.id;
-            isRevenue = genre.isRevenue;
-            isExpense = genre.isExpense;
-            revenue = isRevenue ? data.revenue : null;
-            expense = isExpense ? data.expense : null;
+            paymentType = genre.type;
+            revenue = paymentType === 'revenue' ? data.revenue : null;
+            expense = paymentType === 'expense' ? data.expense : null;
         }
 
-        return { genre_id, isRevenue, isExpense, revenue, expense };
+        return { genre_id, paymentType, revenue, expense };
     }
 
     const setupFund = name => {
@@ -94,7 +92,8 @@ function PaymentForm( { data, setData, lexicon } ) {
                     decimals="2"
                     value={ data.revenue || '' }
                     onChange={ event => setData( { ...data, revenue: event.target.value } ) }
-                    readOnly={ ! data.isRevenue }
+                    readOnly={ data.paymentType !== 'revenue' }
+                    tabIndex={ data.paymentType !== 'revenue' ? '-1' : null }
                 />
             </InputValue>
         </InputBox>
@@ -108,7 +107,8 @@ function PaymentForm( { data, setData, lexicon } ) {
                     decimals="2"
                     value={ data.expense || '' }
                     onChange={ event => setData( { ...data, expense: event.target.value } ) }
-                    readOnly={ ! data.isExpense }
+                    readOnly={ data.paymentType !== 'expense' }
+                    tabIndex={ data.paymentType !== 'expense' ? '-1' : null }
                 />
             </InputValue>
         </InputBox>

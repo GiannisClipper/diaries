@@ -18,15 +18,12 @@ function Genre( { genres, index, actions, assets, lexicon } ) {
     const deleteMode = presetAction( actions.deleteMode, { assets, index } );
     const openForm = presetAction( actions.openForm, { assets, index } );
 
-    const typeInfo = _uiux.mode.isCreate
-        ? ''
-        : genre.isRevenue && genre.isExpense
-        ? lexicon.paymentGenre.isMixed.substr( 0, 2 )
-        : genre.isRevenue
-        ? lexicon.paymentGenre.isRevenue.substr( 0, 2 )
-        : genre.isExpense
-        ? lexicon.paymentGenre.isExpense.substr( 0, 2 )
-        : '-';
+    const typeInfo =
+        genre.type === `revenue` 
+        ? lexicon.paymentGenre.types.revenue.substr( 0, 2 ) 
+        : genre.type === `expense` 
+        ? lexicon.paymentGenre.types.expense.substr( 0, 2 ) 
+        : '--';
 
     // request features
 

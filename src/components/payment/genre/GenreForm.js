@@ -2,12 +2,13 @@ import React, { useState, useContext } from 'react';
 
 import { Modal } from '../../libs/Modal';
 import { InputBox, InputLabel, InputValue } from '../../libs/InputBox';
-import { InputCheck } from '../../libs/InputCheck';
+import { InputFromListSelecting } from '../../libs/InputFromList';
 
 import CoreForm from "../../core/CoreForm";
 import validators from '../../core/assets/validators';
 import presetAction from '../../core/helpers/presetAction';
 import withLexicon from '../../core/helpers/withLexicon';
+import { getFromList } from '../../core/helpers/getFromList';
 
 import { GenresContext } from './GenresContext';
 
@@ -21,15 +22,21 @@ function GenreForm( { genres, index, actions, assets, lexicon } ) {
 
     const [ data, setData ] = useState( { ...genre } );
 
+    const types = [
+        { type: 'revenue', descr: lexicon.paymentGenre.types.revenue },
+        { type: 'expense', descr: lexicon.paymentGenre.types.expense },
+        { type: '', descr: '--' },
+    ];
+
     const onValidation = () => {
         let errors = [];
 
         const isBlank = withLexicon( validators.isBlank, lexicon );
         const isFound = withLexicon( validators.isFound, lexicon );
 
-        errors.push( isBlank( lexicon.genre.name, data.name ) );
-        errors.push( isFound( lexicon.genre.name, genres.map( x=> x.name ), data.name, index ) );
-        errors.push( isFound( lexicon.genre.code, genres.map( x=> x.code ), data.code, index ) );
+        errors.push( isBlank( lexicon.paymentGenre.name, data.name ) );
+        errors.push( isFound( lexicon.paymentGenre.name, genres.map( x=> x.name ), data.name, index ) );
+        errors.push( isFound( lexicon.paymentGenre.code, genres.map( x=> x.code ), data.code, index ) );
 
         errors = errors.filter( x => x !== null );
 
@@ -40,7 +47,7 @@ function GenreForm( { genres, index, actions, assets, lexicon } ) {
         <Modal onClick={ onClickOut } centeredness>
 
             <CoreForm
-                headLabel={ lexicon.genre.genre }
+                headLabel={ lexicon.paymentGenre.genre }
                 Context={ GenresContext }
                 assets={ assets }
                 lexicon={ lexicon }
@@ -62,7 +69,7 @@ function GenreForm( { genres, index, actions, assets, lexicon } ) {
 
                 <InputBox>
                     <InputLabel>
-                        { lexicon.genre.name }
+                        { lexicon.paymentGenre.name }
                     </InputLabel>
                     <InputValue>
                         <input
@@ -74,25 +81,20 @@ function GenreForm( { genres, index, actions, assets, lexicon } ) {
 
                 <InputBox>
                     <InputLabel>
-                        { lexicon.genre.type }
+                        { lexicon.paymentGenre.type }
                     </InputLabel>
                     <InputValue>
-                        <InputCheck
-                            checked={ data.isRevenue }
-                            onChange={ event => setData( { ...data, isRevenue: event.target.checked } ) }
-                            label={ lexicon.genre.isRevenue }
+                        <InputFromListSelecting
+                            value={ getFromList( types, 'type', data.type ).descr }
+                            allValues={ types.map( x => x.descr ) }
+                            onChange={ event => setData( { ...data, type: getFromList( types, 'descr', event.target.value ).type } ) }
                         />
-                        <InputCheck
-                            checked={ data.isExpense }
-                            onChange={ event => setData( { ...data, isExpense: event.target.checked } ) }
-                            label={ lexicon.genre.isExpense }
-                        />                        
                     </InputValue>
                 </InputBox>
 
                 <InputBox>
                     <InputLabel>
-                        { lexicon.genre.code }
+                        { lexicon.paymentGenre.code }
                     </InputLabel>
                     <InputValue>
                         <input

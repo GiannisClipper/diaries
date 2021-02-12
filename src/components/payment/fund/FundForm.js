@@ -26,9 +26,9 @@ function FundForm( { funds, index, actions, assets, lexicon } ) {
         const isBlank = withLexicon( validators.isBlank, lexicon );
         const isFound = withLexicon( validators.isFound, lexicon );
 
-        errors.push( isBlank( lexicon.fund.name, data.name ) );
-        errors.push( isFound( lexicon.fund.name, funds.map( x=> x.name ), data.name, index ) );
-        errors.push( isFound( lexicon.fund.code, funds.map( x=> x.code ), data.code, index ) );
+        errors.push( isBlank( lexicon.paymentFund.name, data.name ) );
+        errors.push( isFound( lexicon.paymentFund.name, funds.map( x=> x.name ), data.name, index ) );
+        errors.push( isFound( lexicon.paymentFund.code, funds.map( x=> x.code ), data.code, index ) );
 
         errors = errors.filter( x => x !== null );
 
@@ -39,7 +39,7 @@ function FundForm( { funds, index, actions, assets, lexicon } ) {
         <Modal onClick={ onClickOut } centeredness>
 
             <CoreForm
-                headLabel={ lexicon.fund.fund }
+                headLabel={ lexicon.paymentFund.fund }
                 Context={ FundsContext }
                 assets={ assets }
                 lexicon={ lexicon }
@@ -61,7 +61,7 @@ function FundForm( { funds, index, actions, assets, lexicon } ) {
 
                 <InputBox>
                     <InputLabel>
-                        { lexicon.fund.name }
+                        { lexicon.paymentFund.name }
                     </InputLabel>
                     <InputValue>
                         <input
@@ -73,7 +73,7 @@ function FundForm( { funds, index, actions, assets, lexicon } ) {
 
                 <InputBox>
                     <InputLabel>
-                        { lexicon.fund.code }
+                        { lexicon.paymentFund.code }
                     </InputLabel>
                     <InputValue>
                         <input
