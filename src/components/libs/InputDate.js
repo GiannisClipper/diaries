@@ -1,6 +1,6 @@
 import React from 'react';
 
-function InputDate( { className, value, onChange, readOnly } ) {
+function InputDate( { value, onChange, readOnly } ) {
 
     onChange = onChange || ( () => {} );
 
@@ -67,12 +67,11 @@ function InputDate( { className, value, onChange, readOnly } ) {
 
     return (
         <input
-            className={`InputDate ${className}`}
-            value={value !== null ? value : ''}
-            onChange={onChange}
-            onBlur={_onBlur}
-            readOnly={readOnly}
-            placeholder={`ΗΗ${separator}ΜΜ${separator}ΕΕΕΕ`}
+            value={ value !== null ? value : '' }
+            onChange={ onChange }
+            onBlur={ _onBlur }
+            readOnly={ readOnly }
+            placeholder={ `ΗΗ${separator}ΜΜ${separator}ΕΕΕΕ` }
         />
     )
 }
