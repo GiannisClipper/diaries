@@ -1,6 +1,6 @@
 const settingsSchema = () => ( {
-    theme: null,
-    language: null,
+    theme: 'LIGHT',
+    language: 'EN',
     _uiux: {
         form: {},  // isOpen
         mode: {},  // isUpdate
