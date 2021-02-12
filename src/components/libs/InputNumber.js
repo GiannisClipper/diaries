@@ -1,6 +1,6 @@
 import React from 'react';
 
-function InputNumber( { className, value, decimals, onChange, readOnly } ) {
+function InputNumber( { value, decimals, onChange, readOnly, tabIndex } ) {
 
     decimals = parseInt( decimals || '0' );
     onChange = onChange || ( () => {} );
@@ -28,18 +28,17 @@ function InputNumber( { className, value, decimals, onChange, readOnly } ) {
     const _onBlur = event => {
         let value = event.target.value;
         value = value ? _formatted( value ) : '';
-        console.log( 'number', value )
         onChange( { target: { value } } );
     }
 
     return (
         <input
-            className={`InputNumber ${className}`}
-            value={value}
-            onKeyPress={_onKeyPress}
-            onChange={_onChange}
-            onBlur={_onBlur}
-            readOnly={readOnly}
+            value={ value }
+            onKeyPress={ _onKeyPress }
+            onChange={ _onChange }
+            onBlur={ _onBlur }
+            readOnly={ readOnly }
+            tabIndex={ tabIndex }
         />
     )
 }

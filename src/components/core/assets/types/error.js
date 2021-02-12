@@ -1,0 +1,3 @@
+const HANDLE_ERROR = 'HANDLE_ERROR';
+
+export { HANDLE_ERROR };

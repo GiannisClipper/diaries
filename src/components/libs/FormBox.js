@@ -8,7 +8,7 @@ const Form = styled.div`
     padding-bottom: 1em;
     overflow: auto;
 
-    ${props => props.theme.FormBox && props.theme.FormBox };
+    ${ props => props.theme.FormBox && props.theme.FormBox };
 `;
 
 function FormBox( { headLabel, children } ) {
@@ -16,11 +16,11 @@ function FormBox( { headLabel, children } ) {
     headLabel = headLabel || '';
 
     return (
-        <Form onClick={event => event.stopPropagation()}>
+        <Form onClick={ event => event.stopPropagation() }>
             <HeadBox>
-                {headLabel}
+                { headLabel }
             </HeadBox>
-            {children}
+            { children }
         </Form> 
     );
 }

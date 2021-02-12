@@ -1,0 +1,4 @@
+const OPEN_FORM = 'OPEN_FORM';
+const CLOSE_FORM = 'CLOSE_FORM';
+
+export { OPEN_FORM, CLOSE_FORM };

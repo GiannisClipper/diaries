@@ -6,8 +6,18 @@ const MenuBox = styled.div`
     padding-left: .5em;
     padding-right: .5em;
 
-    ${props => props.theme.MenuBox && props.theme.MenuBox };
+    ${ props => props.theme.MenuBox && props.theme.MenuBox };
+`;
+
+const OptionBox = styled.span`
+    width: 2em;
+    display: inline-block;
+    vertical-align: top;
+    padding: .5em;
+    font-size: 1em;
+
+    ${ props => props.theme.OptionBox && props.theme.OptionBox };
 `;
 
 export default MenuBox;
-export { MenuBox };
+export { MenuBox, OptionBox };

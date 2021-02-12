@@ -1,14 +1,5 @@
 import { css, createGlobalStyle } from 'styled-components';
 
-const centeredness = css`
-    min-height: 100vh;
-    min-width: 100vw;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-`;
-
 const InitStyle = createGlobalStyle`
     * {
         box-sizing: border-box;
@@ -27,6 +18,12 @@ const InitStyle = createGlobalStyle`
         list-style-type: none;
     }
 
+    [ draggable ] {
+        cursor: grab;
+        cursor: -moz-grab;
+        cursor: -webkit-grab;
+    }
+
     button {
         cursor: pointer;
     }
@@ -36,16 +33,25 @@ const InitStyle = createGlobalStyle`
     }
 
     input:-moz-read-only, textarea:-moz-read-only { /* For Firefox */
-        color: ${props => props.theme.weakText};
+        color: ${ props => props.theme.weakText };
     }
     
     input:read-only, textarea:read-only {
-        color: ${props => props.theme.weakText};
+        color: ${ props => props.theme.weakText };
     }
 
     body {
         height: 100vh;
     }
+`;
+
+const centeredness = css`
+    min-height: 100vh;
+    min-width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 `;
 
 export { InitStyle, centeredness };

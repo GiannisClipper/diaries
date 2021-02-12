@@ -1,6 +1,6 @@
 import React from 'react';
 
-function InputEmail( { className, value, onChange, readOnly } ) {
+function InputEmail( { value, onChange, readOnly } ) {
 
     onChange = onChange || ( () => {} );
 
@@ -12,17 +12,15 @@ function InputEmail( { className, value, onChange, readOnly } ) {
     const _onBlur = event => {
         let value = event.target.value;
         value = _isValid( value ) ? value : '';
-        console.log( 'email', value )
         onChange( { target: { value } } );
     }
 
     return (
         <input
-            className={`InputEmail ${className}`}
-            value={value}
-            onChange={onChange}
-            onBlur={_onBlur}
-            readOnly={readOnly}
+            value={ value }
+            onChange={ onChange }
+            onBlur={ _onBlur }
+            readOnly={ readOnly }
         />
     )
 }

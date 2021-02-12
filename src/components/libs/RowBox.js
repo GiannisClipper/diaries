@@ -6,7 +6,7 @@ const RowBox = styled.li`
     margin-top: .5em;
     margin-bottom: .5em;
 
-    ${props => props.theme.RowBox && props.theme.RowBox };
+    ${ props => props.theme.RowBox && props.theme.RowBox };
 `;
 
 const RowValue = styled.span`
@@ -16,7 +16,7 @@ const RowValue = styled.span`
     text-align: left;
     padding: .5em;
 
-    ${props => props.theme.RowValue && props.theme.RowValue };
+    ${ props => props.theme.RowValue && props.theme.RowValue };
 `;
 
 const RowMenu = styled.span`
@@ -30,7 +30,7 @@ const RowMenu = styled.span`
         padding: .25em;    
     }
 
-    ${props => props.theme.RowMenu && props.theme.RowMenu };
+    ${ props => props.theme.RowMenu && props.theme.RowMenu };
 `;
 
 export default { RowBox, RowValue, RowMenu };
