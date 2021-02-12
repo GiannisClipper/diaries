@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 
 import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
 import { InputNumber } from '../libs/InputNumber';
-import { InputFromList } from '../libs/InputFromList';
+import { InputFromListTyping } from '../libs/InputFromList';
 
 import { getFromList } from '../core/helpers/getFromList';
 
@@ -74,7 +74,7 @@ function PaymentForm( { data, setData, lexicon } ) {
                 { lexicon.payment.genre_name }
             </InputLabel>
             <InputValue>
-                <InputFromList
+                <InputFromListTyping
                     value={ data.genre_name }
                     allValues={ data.allGenres }
                     onChange={ event => {
@@ -130,7 +130,7 @@ function PaymentForm( { data, setData, lexicon } ) {
                 { lexicon.payment.fund_name }
             </InputLabel>
             <InputValue>
-                <InputFromList
+                <InputFromListTyping
                     value={ data.fund_name }
                     allValues={ data.allFunds }
                     onChange={ event => {

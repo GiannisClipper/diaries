@@ -1,14 +1,15 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 
 import { Modal } from '../libs/Modal';
 import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
-import { InputFromList } from '../libs/InputFromList';
+import { InputFromListSelecting } from '../libs/InputFromList';
 
 import CoreForm from "../core/CoreForm";
 import { YYYYMMDDToRepr, dateToYYYYMMDD } from '../core/helpers/dates';
 import validators from '../core/assets/validators';
 import presetAction from '../core/helpers/presetAction';
 import withLexicon from '../core/helpers/withLexicon';
+import { getFromList } from '../core/helpers/getFromList';
 
 import { EntriesContext } from "./EntriesContext";
 
@@ -24,6 +25,11 @@ function EntryForm( { date, entries, index, actions, assets, lexicon } ) {
     const entry = entries[ index ];
 
     const [ data, setData ] = useState( { ...entry } );
+
+    const types = [
+        { type: 'note', descr: lexicon.entry.types.note },
+        { type: 'payment', descr: lexicon.entry.types.payment },
+    ];
 
     const onValidation = 
         data.type === 'note'
@@ -95,10 +101,10 @@ function EntryForm( { date, entries, index, actions, assets, lexicon } ) {
                         { lexicon.entry.type }
                     </InputLabel>
                     <InputValue>
-                        <InputFromList
-                            value={ data.type }
-                            allValues={ [ 'note', 'payment' ] }
-                            onChange={ event => setData( { ...data, type: event.target.value } ) }
+                        <InputFromListSelecting
+                            value={ getFromList( types, 'type', data.type ).descr }
+                            allValues={ types.map( x => x.descr ) }
+                            onChange={ event => setData( { ...data, type: getFromList( types, 'descr', event.target.value ).type } ) }
                         />
                     </InputValue>
                 </InputBox>

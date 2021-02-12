@@ -27,101 +27,32 @@ const InputItem = styled.li`
     ${ props => props.theme.InputItem && props.theme.InputItem };
 `;
 
-const simplify = value => value.toUpperCase();
-
-const simplifyList = values => {
-    for ( let i = 0; i< values.length; i++ ) {
-        if ( i === 0 && typeof values[ i ] === 'object' ) {
-            return values;
-        }
-        values[ i ] = { 
-            accurate: values[ i ],
-            simplified: simplify( values[ i ] ),
-        }
-    }
-    return values;
-}
-
-function InputFromList( { className, allValues, value, onChange } ) {
+function InputFromList( { allValues, value, onChange, _onChange, _onMouseDown, _onKeyDown, _onBlur } ) {
 
     const inputRef = useRef( null );
-
     const listRef = useRef( null );
-
     const listBounds = useRef( {} );
-
-    const listStatus = useRef( {} );
-
-    const [ match, setMatch ] = useState( { value, values: simplifyList( allValues ), index: -2 } );
-
     const indexRef = useRef( null );
+    const [ state, setState ] = useState( { value, values: allValues, index: -2, isOpen: false } );
 
-    const _onFocus = event => {
-        listStatus.current = { isOpen: true };
-    }
+    const openList = event => {
+        setState( { ...state, isOpen: true } );
+    };
 
-    const _onChange = event => {
-        const value = event.target.value;
-        const prevValue = match.value;
-        const prevValues = match.values;
-        let values = prevValue !== '' && value.includes( prevValue ) ? prevValues : allValues;
-        values = values.filter( x => x.simplified.includes( simplify( value ) ) );
-        let index = values.length > 0 ? 0 : -1;
-        setMatch( { value, values, index } );
-    }
+    const toggleList = event => {
+        const { isOpen } = state;
+        setState( { ...state, isOpen: ! isOpen } );
+    };
 
-    const _onMouseDown = value => {
-        listStatus.current = {};
-        const index = 0;
-        setMatch( { value, values: simplifyList( [ value ] ), index } );
-        onChange( { target: { value } } );  // this is the `InputFromList` attribute
-    }
-
-    const _onKeyDown = event => {
-        listStatus.current = { isOpen: true };
-        event = event || window.event;
-        let { value, values, index } = match;
-
-        if ( match.values.length > 0 ) {
-            if ( event.keyCode === 38 ) {  // up arrow
-                index = index > 0 ? index - 1 : match.values.length - 1;
-                setMatch( { value, values, index } );
-
-            } else if ( event.keyCode === 40 ) {  // down arrow
-                index = index < match.values.length - 1 ? index + 1 : 0;
-                setMatch( { value, values, index } );
-
-            } else if ( event.keyCode === 13 ) {  // enter
-                listStatus.current = {};
-                value = index >= 0 ? values[ index ].accurate : null;
-                values = value ? simplifyList( [ value ] ) : [];
-                index = value ? 0 : -1;
-                setMatch( { value, values, index } );
-                onChange( { target: { value } } );  // this is the `InputFromList` attribute
-            }
-        }
-    }
-
-    const _onBlur = event => {
-        listStatus.current = {};
-        let { value, values, index } = match;
-
-        value = ! value 
-            ? ''
-            : index === -2  // initial value not changed
-            ? value 
-            : index === -1  // changed to invaid value
-            ? ''
-            : values[ index ].accurate ;  // index >= 0, changed to valid value
-
-        setMatch( { value, values, index } );
-        onChange( { target: { value } } );  // this is the `InputFromList` attribute
-    }
+    const __onChange = _onChange ? event => _onChange( { event, allValues, state, setState } ) : null;
+    const __onMouseDown = _onMouseDown ? value => _onMouseDown( { value, state, setState, onChange } ) : null;
+    const __onKeyDown = _onKeyDown ? event => _onKeyDown( { event, state, setState, onChange } ) : null;
+    const __onBlur = _onBlur ? event => _onBlur( { event, state, setState, onChange } ) : null;
 
     useEffect( () => {
         let { left, top, width, height } = inputRef.current.getBoundingClientRect();
         top = top + height;
-        height = parseFloat( getComputedStyle( inputRef.current ).fontSize ) * 5;
+        height = parseFloat( getComputedStyle( inputRef.current ).fontSize ) * Math.min( 6, allValues.length ) * 1.4;
 
         listBounds.current = { left, top, width, height } ;
     } );
@@ -137,45 +68,45 @@ function InputFromList( { className, allValues, value, onChange } ) {
                 listRef.current.scrollTop += ( top + height ) - ( listBounds.current.top + listBounds.current.height );
             }
         }
-    } ); // listBounds.current.top, listBounds.current.height ] );
+    } );
 
     let _key = -1;
 
     return (
         <Box>
             <input ref={ inputRef }
-                className={ `InputFromList ${ className }` }
-                value={ match.value || '' }
-                onFocus={ _onFocus }
-                onChange={ _onChange }
-                onKeyDown={ _onKeyDown }
-                onBlur={ _onBlur }
+                value={ state.value || '' }
+                onClick={ openList }
+                onChange={ __onChange }
+                onKeyDown={ __onKeyDown }
+                onBlur={ __onBlur }
             />
 
-            <InputIcon onClick={() => listStatus.current.isOpen || _onKeyDown( { keyCode: 40 } ) }>
+            <InputIcon onMouseDown={ toggleList } > 
                 <DownIcon />
             </InputIcon>
 
-            { listStatus.current.isOpen
+            { state.isOpen
                 ? 
                 <InputList ref={ listRef } listBounds={ listBounds }>
-                    { match.values.map( value =>
-                        ++_key === match.index
-                            ? 
-                            <InputItem 
-                                index ref={ indexRef } 
-                                key={ _key } onMouseDown={ () => _onMouseDown( value.accurate ) }
-                            > 
-                                { value.accurate } 
+                    { state.values.map( value => {
+                        value = value.accurate || value;
+
+                        const attrs = {};
+                        attrs.key = ++_key;
+                        attrs.onMouseDown = () => __onMouseDown( value );
+
+                        if ( _key === state.index ) {
+                            attrs.ref = indexRef;
+                            attrs.index = true;
+                        }
+
+                        return (
+                            <InputItem { ...attrs } >
+                                { value }
                             </InputItem>
-                            : 
-                            <InputItem 
-                                key={ _key } 
-                                onMouseDown={ () => _onMouseDown( value.accurate ) }
-                            > 
-                                { value.accurate } 
-                            </InputItem>
-                    ) }
+                        );
+                    } ) }
                 </InputList>
                 : 
                 null
@@ -184,4 +115,154 @@ function InputFromList( { className, allValues, value, onChange } ) {
     )
 }
 
-export { InputFromList };
+function WithTyping( InputFromList ) {
+
+    const simplify = value => value.toUpperCase();
+
+    const simplifyList = values => {
+        for ( let i = 0; i< values.length; i++ ) {
+            if ( i === 0 && typeof values[ i ] === 'object' ) {
+                return values;
+            }
+            values[ i ] = { 
+                accurate: values[ i ],
+                simplified: simplify( values[ i ] ),
+            }
+        }
+        return values;
+    }
+
+    const _onChange = ( { event, allValues, state, setState } ) => {
+        const value = event.target.value;
+        const prevValue = state.value;
+        const prevValues = state.values;
+        let values = prevValue !== '' && value.includes( prevValue ) ? prevValues : allValues;
+        values = values.filter( x => x.simplified.includes( simplify( value ) ) );
+        let index = values.length > 0 ? 0 : -1;
+        setState( { ...state, value, values, index } );
+    }
+
+    const _onMouseDown = ( { value, setState, onChange } ) => {
+        setState( { value, values: simplifyList( [ value ] ), index: 0, isOpen: false } );
+        onChange( { target: { value } } );  // extrnal defined attribute
+    }
+
+    const _onKeyDown = ( { event, state, setState, onChange } ) => {
+        event = event || window.event;
+        let { value, values, index, isOpen } = state;
+
+        if ( state.values.length > 0 ) {
+            if ( event.keyCode === 38 ) {  // up arrow
+                index = index > 0 ? index - 1 : state.values.length - 1;
+                isOpen = true;
+                setState( { ...state, index, isOpen } );
+
+            } else if ( event.keyCode === 40 ) {  // down arrow
+                index = index < state.values.length - 1 ? index + 1 : 0;
+                isOpen = true;
+                setState( { ...state, index, isOpen } );
+
+            } else if ( event.keyCode === 13 ) {  // enter
+                value = index >= 0 ? values[ index ].accurate : null;
+                values = value ? simplifyList( [ value ] ) : [];
+                index = value ? 0 : -1;
+                isOpen = false;
+                setState( { value, values, index, isOpen } );
+                onChange( { target: { value } } );  // extrnal defined attribute
+            }
+        }
+    }
+
+    const _onBlur = ( { event, state, setState, onChange } ) => {
+        let { value, values, index, isOpen } = state;
+        isOpen = false;
+
+        value = 
+            ! value 
+            ? ''
+            : index === -2  // initial value not changed
+            ? value 
+            : index === -1  // changed to invaid value
+            ? ''
+            : values[ index ].accurate ;  // index >= 0, changed to valid value
+
+        setState( { ...state, value, isOpen } );
+        onChange( { target: { value } } );  // extrnal defined attribute
+    }
+
+    return ( { allValues, value, onChange } ) =>
+        <InputFromList
+            allValues={ simplifyList( allValues ) }
+            value={ value }
+            onChange={ onChange }
+            _onChange={ _onChange } 
+            _onMouseDown={ _onMouseDown } 
+            _onKeyDown={ _onKeyDown }
+            _onBlur={ _onBlur }
+        />
+}
+
+function WithSelecting( InputFromList ) {
+
+    const _onMouseDown = ( { value, state, setState, onChange } ) => {
+        let { values, index } = state;
+        for ( let i = 0; i < values.length; i++ ) {
+            index = value === values[ i ] ? i : index;
+        }
+        setState( { ...state, value, index, isOpen: false } );
+        onChange( { target: { value } } );  // extrnal defined attribute
+    }
+
+    const _onKeyDown = ( { event, state, setState, onChange } ) => {
+        event = event || window.event;
+        let { value, values, index, isOpen } = state;
+
+        if ( event.keyCode === 38 ) {  // up arrow
+            index = index > 0 ? index - 1 : state.values.length - 1;
+            isOpen = true;
+            setState( { ...state, index, isOpen } );
+
+        } else if ( event.keyCode === 40 ) {  // down arrow
+            index = index >= 0 && index < state.values.length - 1 ? index + 1 : 0;
+            isOpen = true;
+            setState( { ...state, index, isOpen } );
+
+        } else if ( event.keyCode === 13 ) {  // enter
+            value = values[ index ];
+            isOpen = false;
+            setState( { ...state, value, index, isOpen } );
+            onChange( { target: { value } } );  // extrnal defined attribute
+        }
+    }
+
+    const _onBlur = ( { event, state, setState, onChange } ) => {
+        let { value, values, index, isOpen } = state;
+        isOpen = false;
+
+        value = 
+            ! value 
+            ? ''
+            : index < 0  // initial value not changed
+            ? value
+            : values[ index ];  // index >= 0, changed to valid value
+
+        setState( { ...state, value, isOpen } );
+        onChange( { target: { value } } );  // extrnal defined attribute
+    }
+
+    return ( { allValues, value, onChange } ) =>
+        <InputFromList
+            allValues={ allValues }
+            value={ value }
+            onChange={ onChange }
+            _onMouseDown={ _onMouseDown } 
+            _onKeyDown={ _onKeyDown }
+            _onBlur={ _onBlur }
+        />
+}
+
+const InputFromListTyping = WithTyping( InputFromList );
+
+const InputFromListSelecting = WithSelecting( InputFromList );
+
+export { InputFromListTyping, InputFromListSelecting };
