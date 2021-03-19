@@ -19,7 +19,7 @@ function BenchPage( { diary_id } ) {
                 <LinkHome title={ lexicon.home } />
                 <LinkDiaries title={ lexicon.diary.diaries } />
                 <LinkBench title={ lexicon.bench.bench } id={ diary_id } active />
-                <LinkReports title={ lexicon.report.reports } />
+                <LinkReports title={ lexicon.report.reports } id={ diary_id } />
                 <LinkBenchSettings title={ lexicon.bench.settings } id={ diary_id } />
                 <LinkSignout title={ lexicon.signin.signout } />
             </AppNav>

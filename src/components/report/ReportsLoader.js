@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 
-function ReportsLoader( { actions, assets, lexicon, state } ) {
+function ReportsLoader( { diary_id, actions, assets, lexicon, state } ) {
 
     const data = [
-        { descr: lexicon.report.descr_notes, type: 'note' },
-        { descr: lexicon.report.descr_payments, type: 'payment' }
+        { diary_id, descr: lexicon.report.descr_notes, type: 'note' },
+        { diary_id, descr: lexicon.report.descr_payments, type: 'payment' }
     ];
     
     const { _uiux } = state;

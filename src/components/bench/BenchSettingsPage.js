@@ -22,7 +22,7 @@ function SettingsPage( { diary_id } ) {
         <AppNav>
             <LinkHome title={ lexicon.home } />
             <LinkBench title={ lexicon.bench.bench } id={ diary_id } />
-            <LinkReports title={ lexicon.report.reports } />
+            <LinkReports title={ lexicon.report.reports } id={ diary_id } />
             <LinkBenchSettings title={ lexicon.bench.settings } id={ diary_id } active />
             <LinkSignout title={ lexicon.signin.signout } />
         </AppNav>

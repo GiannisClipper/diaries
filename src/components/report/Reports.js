@@ -8,7 +8,7 @@ import assets from './assets/assets';
 import ReportsLoader from './ReportsLoader';
 import Report from './Report';
 
-function Reports( { lexicon } ) {
+function Reports( { diary_id, lexicon } ) {
 
     const { state, actions } = useContext( ReportsContext );
     const { reports } = state;
@@ -20,6 +20,7 @@ function Reports( { lexicon } ) {
     return (
         <ListBox>
             <ReportsLoader 
+                diary_id={ diary_id }
                 state={ state }
                 actions={ actions }
                 assets={ assets }

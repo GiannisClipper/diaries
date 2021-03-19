@@ -50,7 +50,8 @@ function Report( { reports, index, actions, assets, lexicon } ) {
                 assets,
                 index,
                 url: `/.netlify/functions/report` +
-                `?type=${ dataToDB.type }` +
+                `?diary_id=${ dataToDB.diary_id }` +
+                `&type=${ dataToDB.type }` +
                 `&dateFrom=${ dataToDB.dateFrom }` +
                 `&dateTill=${ dataToDB.dateTill }`
             } );

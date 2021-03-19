@@ -7,7 +7,7 @@ import { LinkHome, LinkDiaries, LinkBench, LinkReports, LinkBenchSettings, LinkS
 import { ReportsContextProvider } from './ReportsContext';
 import Reports from './Reports';
 
-function ReportsPage() {
+function ReportsPage( { diary_id } ) {
 
     const { lexicon } = useContext( AppContext ).state._uiux;
 
@@ -18,14 +18,17 @@ function ReportsPage() {
             <AppNav>
             <LinkHome title={ lexicon.home } />
                 <LinkDiaries title={ lexicon.diary.diaries } />
-                <LinkBench title={ lexicon.bench.bench } />
-                <LinkReports title={ lexicon.report.reports } active />
-                <LinkBenchSettings title={ lexicon.bench.settings } />
+                <LinkBench title={ lexicon.bench.bench } id={ diary_id } />
+                <LinkReports title={ lexicon.report.reports } id={ diary_id } active />
+                <LinkBenchSettings title={ lexicon.bench.settings } id={ diary_id } />
                 <LinkSignout title={ lexicon.signin.signout } />
             </AppNav>
 
             <AppBox centeredness>
-                <Reports lexicon={ lexicon } />
+                <Reports 
+                    diary_id={ diary_id }
+                    lexicon={ lexicon } 
+                />
             </AppBox>
 
             <AppInfo>

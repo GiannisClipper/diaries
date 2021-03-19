@@ -2,12 +2,14 @@ import { createHandler, auth } from './common/handler';
 
 const getMethod = async ( event, db, collectionName, payload ) => {
     const { 
+        diary_id,
         type, 
         dateFrom, 
         dateTill,
     } = event.queryStringParameters;
 
     const filters = { 
+        diary_id: { $eq: diary_id },
         type: { $eq: type },
         date: { $gte: dateFrom, $lte: dateTill },
     };

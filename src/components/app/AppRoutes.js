@@ -35,7 +35,7 @@ function AppRoutes() {
                     <Route exact path='/bench' render={ () => <BenchPage /> } />
                     <Route exact path='/bench/:id' render={ props => <BenchPage diary_id={ props.match.params.id } /> } />
                     <Route exact path='/bench_settings/:id' render={ props => <BenchSettingsPage diary_id={ props.match.params.id } /> } />
-                    <Route exact path='/reports' render={ () => <ReportsPage /> } />
+                    <Route exact path='/reports/:id' render={ props => <ReportsPage diary_id={ props.match.params.id } /> } />
                     <Route render={ () => <Error404 /> } />
                 </Switch>
             :
