@@ -194,7 +194,7 @@ const reportPDF = ( { title, cols, labels, result, totals } ) => {
     } );
 
     // https://micropyramid.com/blog/export-html-web-page-to-pdf-using-jspdf/
-   pdf.setFont( 'trebuchetMSNormal', 'normal' );
+    pdf.setFont( 'trebuchetMSNormal', 'normal' );
 
     //pdf.setFont( 'Tahoma', 'normal' );
     // pdf.addFileToVFS( 'trebuchetMSNormal.ttf', base64TrebuchetMSNormal );
@@ -225,6 +225,7 @@ const reportPDF = ( { title, cols, labels, result, totals } ) => {
             top = printTotals( { pdf, top, cols, totals, rowHeight } );
         }
     }
+
     const blobPDF =  pdf.output( 'blob' );
     // const blobPDF =  new Blob( [ pdf.output() ], { type : 'application/pdf' } );
     const blobURL = URL.createObjectURL( blobPDF );

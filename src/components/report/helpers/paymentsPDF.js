@@ -1,9 +1,8 @@
 import { YYYYMMDDToRepr } from '../../core/helpers/dates';
-import { getFromList } from '../../core/helpers/getFromList';
 
 import { reportPDF } from './reportPDF';
 
-const paymentsPDF = ( { lexicon, descr, dateFrom, dateTill, result, genres, funds } ) => {
+const paymentsPDF = ( { lexicon, descr, dateFrom, dateTill, result } ) => {
 
     const title = `${ descr } (${ YYYYMMDDToRepr( dateFrom ) }-${ YYYYMMDDToRepr( dateTill ) })`;
 
@@ -43,15 +42,6 @@ const paymentsPDF = ( { lexicon, descr, dateFrom, dateTill, result, genres, fund
     totals.remark += ( totals.revenue - totals.expense ).toFixed( 2 );
     totals.revenue = totals.revenue.toFixed( 2 );
     totals.expense = totals.expense.toFixed( 2 );
-
-    result.forEach( x => {
-        x.genre_name = x.genre_id
-            ? getFromList( genres, 'id', x.genre_id ).name
-            : '';
-        x.fund_name = x.fund_id
-            ? getFromList( funds, 'id', x.fund_id ).name
-            : '';
-    } );
 
     reportPDF( { title, cols, labels, result, totals } );
 }

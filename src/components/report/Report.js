@@ -33,17 +33,16 @@ function Report( { reports, index, actions, assets, lexicon } ) {
         if ( _uiux.form.isOpen && _uiux.mode.isRetrieve ) {
 
             if ( _uiux.status.isResponseOk ) {
+
                 paymentsPDF( {
                     lexicon,
                     descr: report.descr,
                     dateFrom: dataToDB.dateFrom,
                     dateTill: dataToDB.dateTill,
-                    result,
-                    genres,
-                    funds,
+                    result
                 } );
             }
-    
+
             retrieveRequestFeature( {
                 _item: report,
                 actions,

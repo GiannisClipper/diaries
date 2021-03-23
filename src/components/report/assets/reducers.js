@@ -17,15 +17,13 @@ const reportsReducer = ( state, action ) => {
 
         } case RETRIEVE_RESPONSE_OK: {
             const { index, dataFromDB, assets } = action.payload;
-            const { namespace, parseFromDB, sorter } = assets;
+            const { namespace, sorter } = assets;
 
             const _items = state[ namespace ];
 
-            const result = [];
-            dataFromDB.forEach( x => result.push( { ...parseFromDB( x ) } ) );
-            if ( sorter ) result.sort( sorter );
+            if ( sorter ) dataFromDB.sort( sorter );
 
-            _items[ index ].result = result;
+            _items[ index ].result = dataFromDB;
             _items[ index ]._uiux.status = { isResponseOk: true };
 
             return { ...state, [ namespace ]: _items };
