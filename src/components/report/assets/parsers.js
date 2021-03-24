@@ -7,6 +7,7 @@ const parseReportToDB = ( data ) => {
         descr: data.descr,
         dateFrom: reprToYYYYMMDD( data.dateFrom ),
         dateTill: reprToYYYYMMDD( data.dateTill ),
+        groupBy: data.groupBy,
     };
 
     if ( result.type === 'payment' ) {

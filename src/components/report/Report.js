@@ -52,7 +52,8 @@ function Report( { reports, index, actions, assets, lexicon } ) {
                 `?diary_id=${ dataToDB.diary_id }` +
                 `&type=${ dataToDB.type }` +
                 `&dateFrom=${ dataToDB.dateFrom }` +
-                `&dateTill=${ dataToDB.dateTill }`
+                `&dateTill=${ dataToDB.dateTill }` +
+                `&groupBy=${ dataToDB.groupBy }`
             } );
         }
 

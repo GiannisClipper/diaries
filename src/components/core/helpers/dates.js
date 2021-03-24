@@ -98,6 +98,25 @@ const shiftDate = ( date, days ) => {
     return newDate;
 }
 
+const splitWeeks = ( dateFrom, dateTill ) => {
+
+    // TODO: should consider and the time values as well
+
+    const dayOfWeek = dateFrom.getDay();
+    const days = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+    dateFrom = shiftDate( dateFrom, -days );
+
+    const weeks = [];
+    while ( dateFrom <= dateTill ) {
+        weeks.push( {
+            dateFrom,
+            dateTill: shiftDate( dateFrom, 6 ),
+        } );
+        dateFrom = shiftDate( dateFrom, 7 );
+    }
+    return weeks;
+}
+
 export { 
     isLeap,
     isYear,
@@ -108,5 +127,6 @@ export {
     reprToYYYYMMDD,
     YYYYMMDDToRepr,
     daysBetween,
-    shiftDate
+    shiftDate,
+    splitWeeks
 };
