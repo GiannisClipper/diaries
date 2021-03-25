@@ -79,6 +79,7 @@ const testPDF = () => {
     window.open( blobURL );
 }
 
+
 const TOP = 10;
 const LEFT = 10;
 const rowHeight = 8;
@@ -86,7 +87,6 @@ const rowsPerPage = 20;
 
 const offsetX = ( width, align ) => align === 'center' ? width / 2 : align === 'right' ? width - 1 : 1;
 const offsetY = ( height ) => height * 0.7;
-
 
 const printTitle = ( { pdf, top, title, rowHeight } ) => {
     let coordY = top;

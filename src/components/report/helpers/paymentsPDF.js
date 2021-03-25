@@ -1,48 +1,39 @@
 import { YYYYMMDDToRepr } from '../../core/helpers/dates';
 
+import paymentsReport from '../assets/reports/payments';
+import paymentsGroupByMonthReport from '../assets/reports/paymentsGroupByMonth';
+
 import { reportPDF } from './reportPDF';
 
-const paymentsPDF = ( { lexicon, descr, dateFrom, dateTill, result } ) => {
+const paymentsPDF = ( { lexicon, username, diary_title, type, descr, dateFrom, dateTill, groupBy, result } ) => {
+
+    const overTitle = `${ username } > ${ diary_title }`;
 
     const title = `${ descr } (${ YYYYMMDDToRepr( dateFrom ) }-${ YYYYMMDDToRepr( dateTill ) })`;
 
-    const cols = {
-        date: { width: 20, align: 'center' },
-        genre_name: { width: 70, align: 'left' },
-        revenue: { width: 20, align: 'right' },
-        expense: { width: 20, align: 'right' },
-        fund_name: { width: 70, align: 'left' },
-        remark: { width: 70, align: 'left' },
-    };
+    const underTitle = 'filters goes here';
 
-    const labels = {
-        date: lexicon.entry.date,
-        genre_name: lexicon.payment.genre_name,
-        revenue: lexicon.payment.revenue,
-        expense: lexicon.payment.expense,
-        fund_name: lexicon.payment.fund_name,
-        remark: lexicon.payment.remark,
-    };
+    const reportModule = 
+        ( groupBy === 'month' ) ? paymentsGroupByMonthReport :
+        // ( type === 'payment' && groupBy === 'week' ) ? paymentsGroupByWeekReport :
+        // ( type === 'payment' && groupBy === 'genre' ) ? paymentsGroupByGenreReport :
+        // ( type === 'payment' && groupBy === 'fund' ) ? paymentsGroupByFundReport :
+        ( type === 'payment' ) ? paymentsReport : undefined;
 
-    result.forEach( x => x.date = YYYYMMDDToRepr( x.date ) );
+    const cols = reportModule.cols;
 
-    const totals = {
-        revenue: 0,
-        expense: 0,
-        remark: `${ lexicon.report.difference } = `,
-    };
+    const labels = reportModule.labels( lexicon );
 
-    result.forEach( x => {
-        let revenue = parseFloat( x.revenue );
-        let expense = parseFloat( x.expense );
-        totals.revenue += isNaN( revenue ) ? 0 : revenue;
-        totals.expense += isNaN( expense ) ? 0 : expense;
-    } );
+    let totals = reportModule.calculateTotals( { result } );
 
-    totals.remark += ( totals.revenue - totals.expense ).toFixed( 2 );
-    totals.revenue = totals.revenue.toFixed( 2 );
-    totals.expense = totals.expense.toFixed( 2 );
+    result = reportModule.normalizeRows( { result, totals } );
 
+    totals = reportModule.normalizeTotals( { totals, lexicon } );
+
+    console.log( cols )
+    console.log( labels )
+    console.log( result )
+    console.log( totals )
     reportPDF( { title, cols, labels, result, totals } );
 }
 

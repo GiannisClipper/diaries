@@ -10,6 +10,12 @@ const EN = {
     descr_payments_fund: 'Payment report (group by fund)',
     dateFrom: 'From date',
     dateTill: 'Till date',
+    sn: 'S/N',
+    count: 'Records',
+    month: 'Month',
+    week: 'Week',
+    revenue100: '%',
+    expense100: '%',
     difference: 'Difference',
 }
 
@@ -25,6 +31,12 @@ const GR = {
     descr_payments_fund: 'Κατάσταση πληρωμών (συγκεντρωτικά ανά μέσο)',
     dateFrom: 'Από ημ/νία',
     dateTill: 'Έως ημ/νία',
+    sn: 'Α/Α',
+    count: 'Εγγραφές',
+    month: 'Μήνας',
+    week: 'Εβδομάδα',
+    revenue100: '%',
+    expense100: '%',
     difference: 'Υπόλοιπο',
 }
 

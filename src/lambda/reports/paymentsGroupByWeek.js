@@ -12,27 +12,10 @@ import {
 
 const paymentsGroupByWeek = ( { diary_id, type, dateFrom, dateTill } ) => {
 
-    // let tempDate = YYYYMMDDToDate( dateFrom );
-    // const dayOfWeek = tempDate.getDay();
-    // const days = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
-    // tempDate = shiftDate( tempDate, -days );
-
-    // const weeks = [];
-    // while ( dateToYYYYMMDD( tempDate ) <= dateTill ) {
-    //     const date1 = dateToYYYYMMDD( tempDate );
-    //     const date2 = dateToYYYYMMDD( shiftDate( tempDate, 6 ) );
-    //     weeks.push( `${ date1 }-${ date2 }` );
-    //     tempDate = shiftDate( tempDate, 7 );
-    // }
-
     const weeks = splitWeeks( YYYYMMDDToDate( dateFrom ), YYYYMMDDToDate( dateTill ) );
     const lastDate = weeks[ weeks.length - 1 ].dateTill;
     weeks.push( { dateFrom: lastDate, dateTill: lastDate } );  // to support the operation of `bucket.boundaries` in `groupWeek` stage
     weeks.forEach( ( x, i ) => weeks[ i ] = `${ dateToYYYYMMDD( x.dateFrom ) }-${ dateToYYYYMMDD( x.dateTill ) }` );
-
-    // for ( let i = 0; i < weeks.length ; i++ ) {
-    //     weeks[ i ] = `${weeks[ i ].dateFrom}-${weeks[ i ].dateTill}`;
-    // }
 
     const matchDocuments = { 
         $match: {

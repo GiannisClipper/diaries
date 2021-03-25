@@ -36,9 +36,13 @@ function Report( { reports, index, actions, assets, lexicon } ) {
 
                 paymentsPDF( {
                     lexicon,
+                    username: 'username',
+                    diary_title: 'diary title',
+                    type: dataToDB.type,
                     descr: report.descr,
                     dateFrom: dataToDB.dateFrom,
                     dateTill: dataToDB.dateTill,
+                    groupBy: dataToDB.groupBy,
                     result
                 } );
             }
