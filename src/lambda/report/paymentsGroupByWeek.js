@@ -5,29 +5,21 @@ import {
 } from '../../components/core/helpers/dates';
 
 import {
+    matchPayments,
     convertFieldTo,
     groupWeek,
     sortWeek,
 } from './aggregation';
 
-const paymentsGroupByWeek = ( { diary_id, type, dateFrom, dateTill } ) => {
+const paymentsGroupByWeek = ( { diary_id, type, dateFrom, dateTill, genre_id, fund_id } ) => {
 
     const weeks = splitWeeks( YYYYMMDDToDate( dateFrom ), YYYYMMDDToDate( dateTill ) );
     const lastDate = weeks[ weeks.length - 1 ].dateTill;
     weeks.push( { dateFrom: lastDate, dateTill: lastDate } );  // to support the operation of `bucket.boundaries` in `groupWeek` stage
     weeks.forEach( ( x, i ) => weeks[ i ] = `${ dateToYYYYMMDD( x.dateFrom ) }-${ dateToYYYYMMDD( x.dateTill ) }` );
 
-    const matchDocuments = { 
-        $match: {
-            diary_id,
-            type,
-            date: { 
-                $gte: dateFrom, 
-                $lte: dateTill
-            }
-        }
-    };
-    
+    const matchDocuments = matchPayments( { diary_id, type, dateFrom, dateTill, genre_id, fund_id } );
+
     const projectFields1 = { 
         $project: {
             _id: 0,

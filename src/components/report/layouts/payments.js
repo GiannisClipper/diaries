@@ -1,4 +1,4 @@
-import { YYYYMMDDToRepr } from '../../../core/helpers/dates';
+import { YYYYMMDDToRepr } from '../../core/helpers/dates';
 
 const cols = {
     sn: { width: 10, align: 'center' },
@@ -24,9 +24,9 @@ const normalizeRows = ( { result } ) => {
 
     let sn = 0;
 
-    result.forEach( x => {
-        x.sn = `${ ++sn }`;
-        x.date = YYYYMMDDToRepr( x.date );
+    result.forEach( row => {
+        row.sn = ++sn;
+        row.date = YYYYMMDDToRepr( row.date );
     } );
 
     return result;

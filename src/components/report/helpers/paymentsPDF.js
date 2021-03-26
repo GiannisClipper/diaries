@@ -1,24 +1,41 @@
 import { YYYYMMDDToRepr } from '../../core/helpers/dates';
 
-import paymentsReport from '../assets/reports/payments';
-import paymentsGroupByMonthReport from '../assets/reports/paymentsGroupByMonth';
+import paymentsReport from '../layouts/payments';
+import paymentsGroupByMonthReport from '../layouts/paymentsGroupByMonth';
+import paymentsGroupByWeekReport from '../layouts/paymentsGroupByWeek';
+import paymentsGroupByGenreReport from '../layouts/paymentsGroupByGenre';
+import paymentsGroupByFundReport from '../layouts/paymentsGroupByFund';
 
 import { reportPDF } from './reportPDF';
 
-const paymentsPDF = ( { lexicon, username, diary_title, type, descr, dateFrom, dateTill, groupBy, result } ) => {
+const paymentsPDF = ( { lexicon, username, diary_title, type, descr, groupBy, dateFrom, dateTill, genre_name, fund_name, result } ) => {
 
-    const overTitle = `${ username } > ${ diary_title }`;
+    const overHeader = diary_title;
 
-    const title = `${ descr } (${ YYYYMMDDToRepr( dateFrom ) }-${ YYYYMMDDToRepr( dateTill ) })`;
+    const header = `${ descr }`;
 
-    const underTitle = 'filters goes here';
+    const underHeader = 
+        (
+            `[ ${ lexicon.report.dateFrom }: ${ YYYYMMDDToRepr( dateFrom ) } ` +
+            `${ lexicon.report.dateTill }: ${ YYYYMMDDToRepr( dateTill ) } ]`
+        ) +
 
+        ( genre_name 
+            ? ` [ ${ lexicon.payment.genre_name }: ${ genre_name } ]`
+            : '' 
+        ) +
+
+        ( fund_name
+            ? ` [ ${ lexicon.payment.fund_name }: ${ fund_name } ]`
+            : '' 
+        );
+    
     const reportModule = 
-        ( groupBy === 'month' ) ? paymentsGroupByMonthReport :
-        // ( type === 'payment' && groupBy === 'week' ) ? paymentsGroupByWeekReport :
-        // ( type === 'payment' && groupBy === 'genre' ) ? paymentsGroupByGenreReport :
-        // ( type === 'payment' && groupBy === 'fund' ) ? paymentsGroupByFundReport :
-        ( type === 'payment' ) ? paymentsReport : undefined;
+        groupBy === 'month' ? paymentsGroupByMonthReport :
+        groupBy === 'week' ? paymentsGroupByWeekReport :
+        groupBy === 'genre' ? paymentsGroupByGenreReport :
+        groupBy === 'fund' ? paymentsGroupByFundReport :
+        paymentsReport;
 
     const cols = reportModule.cols;
 
@@ -26,15 +43,13 @@ const paymentsPDF = ( { lexicon, username, diary_title, type, descr, dateFrom, d
 
     let totals = reportModule.calculateTotals( { result } );
 
-    result = reportModule.normalizeRows( { result, totals } );
+    result = reportModule.normalizeRows( { lexicon, result, totals } );
 
     totals = reportModule.normalizeTotals( { totals, lexicon } );
 
-    console.log( cols )
-    console.log( labels )
-    console.log( result )
-    console.log( totals )
-    reportPDF( { title, cols, labels, result, totals } );
+    const footer = `${ username }, ${ new Date() }, ${ lexicon.report.page }: `;
+
+    reportPDF( { overHeader, header, underHeader, cols, labels, result, totals, footer } );
 }
 
 export  { paymentsPDF };

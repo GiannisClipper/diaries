@@ -1,23 +1,15 @@
 
 import {
+    matchPayments,
     convertFieldTo,
     reduceField,
     lookupGenre,
     lookupFund
 } from './aggregation';
 
-const payments = ( { diary_id, type, dateFrom, dateTill } ) => {
+const payments = ( { diary_id, type, dateFrom, dateTill, genre_id, fund_id } ) => {
 
-    const matchDocuments = { 
-        $match: {
-            diary_id,
-            type,
-            date: { 
-                $gte: dateFrom, 
-                $lte: dateTill
-            }
-        }
-    };
+    const matchDocuments = matchPayments( { diary_id, type, dateFrom, dateTill, genre_id, fund_id } );
     
     const selectFields1 = { 
         $project: {

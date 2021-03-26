@@ -9,13 +9,7 @@ import { retrieveRequestFeature } from '../core/features/requests';
 import ReportForm from './ReportForm';
 import { paymentsPDF } from './helpers/paymentsPDF';
 
-import { GenresContext } from '../payment/genre/GenresContext';
-import { FundsContext } from '../payment/fund/FundsContext';
-
 function Report( { reports, index, actions, assets, lexicon } ) {
-
-    const  { genres } = useContext( GenresContext ).state;
-    const  { funds } = useContext( FundsContext ).state;
 
     const report = reports[ index ];
     const { _uiux, result } = report;
@@ -40,9 +34,11 @@ function Report( { reports, index, actions, assets, lexicon } ) {
                     diary_title: 'diary title',
                     type: dataToDB.type,
                     descr: report.descr,
+                    groupBy: dataToDB.groupBy,
                     dateFrom: dataToDB.dateFrom,
                     dateTill: dataToDB.dateTill,
-                    groupBy: dataToDB.groupBy,
+                    genre_name: dataToDB.genre_name,
+                    fund_name: dataToDB.fund_name,
                     result
                 } );
             }
@@ -55,9 +51,11 @@ function Report( { reports, index, actions, assets, lexicon } ) {
                 url: `/.netlify/functions/report` +
                 `?diary_id=${ dataToDB.diary_id }` +
                 `&type=${ dataToDB.type }` +
+                ( dataToDB.groupBy ? `&groupBy=${ dataToDB.groupBy }` : '' ) +
                 `&dateFrom=${ dataToDB.dateFrom }` +
                 `&dateTill=${ dataToDB.dateTill }` +
-                `&groupBy=${ dataToDB.groupBy }`
+                ( dataToDB.genre_id ? `&genre_id=${ dataToDB.genre_id }` : '' ) +
+                ( dataToDB.fund_id ? `&fund_id=${ dataToDB.fund_id }` : '' )
             } );
         }
 

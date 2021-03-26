@@ -1,4 +1,5 @@
 import {
+    matchPayments,
     convertFieldTo,
     reduceField,
     groupGenre,
@@ -6,18 +7,9 @@ import {
     sortGenre,    
 } from './aggregation';
 
-const paymentsGroupByGenre = ( { diary_id, type, dateFrom, dateTill } ) => {
+const paymentsGroupByGenre = ( { diary_id, type, dateFrom, dateTill, genre_id, fund_id } ) => {
 
-    const matchDocuments = { 
-        $match: {
-            diary_id,
-            type,
-            date: { 
-                $gte: dateFrom, 
-                $lte: dateTill
-            }
-        }
-    };
+    const matchDocuments = matchPayments( { diary_id, type, dateFrom, dateTill, genre_id, fund_id } );
     
     const projectFields1 = { 
         $project: {

@@ -80,112 +80,153 @@ const testPDF = () => {
 }
 
 
-const TOP = 10;
-const LEFT = 10;
-const rowHeight = 8;
-const rowsPerPage = 20;
+const PAGE_WIDTH = 297;
+const PAGE_HEIGHT = 210;
+const ROW_HEIGHT = 7;
+const ROWS_PER_PAGE = 20;
+const FONT_SIZE = 8;
 
 const offsetX = ( width, align ) => align === 'center' ? width / 2 : align === 'right' ? width - 1 : 1;
 const offsetY = ( height ) => height * 0.7;
 
-const printTitle = ( { pdf, top, title, rowHeight } ) => {
+const printHeader = ( { pdf, left, top, overHeader, header, underHeader } ) => {
+    let coordX = PAGE_WIDTH / 2;
     let coordY = top;
-    let coordX = 148.5;
 
-    pdf.setFontSize( 10 );
-    pdf.text( title, coordX, coordY, 'center' );
+    pdf.setFontSize( FONT_SIZE - 1 );
+    pdf.text( overHeader, coordX, coordY, 'center' );
 
-    top += rowHeight;
+    top += ROW_HEIGHT;
+    coordY = top;
+
+    pdf.setFontSize( FONT_SIZE + 2 );
+    pdf.text( header, coordX, coordY, 'center' );
+
+    top += ROW_HEIGHT;
+    coordY = top;
+
+    pdf.setFontSize( FONT_SIZE );
+    pdf.text( underHeader, coordX, coordY, 'center' );
+
+    top += ROW_HEIGHT;
     return top;
 }
 
-const printLabels = ( { pdf, top, cols, labels, rowHeight } ) => {
-    pdf.setFontSize( 8 );
+const printLabels = ( { pdf, left, top, cols, labels } ) => {
+    pdf.setFontSize( FONT_SIZE );
 
+    let coordX = left;
     let coordY = top;
-    let coordX = LEFT;
 
     Object.keys( cols ).forEach( key => {
         const { width, align } = cols[ key ];
-        pdf.rect( 
+
+        // pdf.rect( coordX, coordY, width, ROW_HEIGHT );
+
+        pdf.line( 
             coordX, 
-            coordY,
-            width,
-            rowHeight 
+            coordY, 
+            coordX + width, 
+            coordY
         );
 
         pdf.text( 
             labels[ key ], 
             coordX + offsetX( width, align ), 
-            coordY + offsetY( rowHeight ), 
+            coordY + offsetY( ROW_HEIGHT ), 
             align 
         );
+
+        pdf.line( 
+            coordX + 1, 
+            coordY + ROW_HEIGHT, 
+            coordX + width - 1, 
+            coordY + ROW_HEIGHT
+        );
+
         coordX += width;
     } );
 
-    top += rowHeight;
+    top += ROW_HEIGHT;
     return top;
 }
 
-const printRows = ( { pdf, top, cols, rows, rowsPerPage, rowHeight, page } ) => {
+const printRows = ( { pdf, left, top, cols, rows, page } ) => {
 
-    const firstRow = ( page - 1 ) * rowsPerPage;
-    const lastRow = Math.min( page * rowsPerPage, rows.length ) - 1;
+    const firstRow = ( page - 1 ) * ROWS_PER_PAGE;
+    const lastRow = Math.min( page * ROWS_PER_PAGE, rows.length ) - 1;
 
     for ( let i = firstRow; i <= lastRow; i++ ) {
-        let coordX = LEFT;
+        let coordX = left;
         let coordY = top;
 
         Object.keys( cols ).forEach( key => {
             const { width, align } = cols[ key ];
 
+            const text = ! [ undefined, null ].includes( rows[ i ][ key ] ) 
+                ? `${ rows[ i ][ key ] }`
+                : '';
+
             pdf.text( 
-                rows[ i ][ key ] || '', 
+                text, 
                 coordX + offsetX( width, align ), 
-                coordY + offsetY( rowHeight ), 
+                coordY + offsetY( ROW_HEIGHT ), 
                 align 
             );
 
             coordX += width;
         } );
 
-        top += rowHeight;    
+        top += ROW_HEIGHT;    
     }
 
     return top;
 }
 
-const printTotals = ( { pdf, top, cols, totals, rowHeight } ) => {
+const printTotals = ( { pdf, left, top, cols, totals } ) => {
+    let coordX = left;
     let coordY = top;
-    let coordX = LEFT;
 
     Object.keys( cols ).forEach( key => {
         const { width, align } = cols[ key ];
 
         if ( totals[ key ] !== undefined ) {
-            pdf.rect( 
-                coordX, 
+            // pdf.rect( coordX, coordY, width, ROW_HEIGHT );
+
+            pdf.line( 
+                coordX + 1, 
                 coordY, 
-                width, 
-                rowHeight 
-            );
+                coordX + width - 1, 
+                coordY
+            );    
 
             pdf.text( 
                 totals[ key ], 
                 coordX + offsetX( width, align ), 
-                coordY + offsetY( rowHeight ), 
+                coordY + offsetY( ROW_HEIGHT ), 
                 align 
             );
+    
         }
 
         coordX += width;
     } );
 
-    top += rowHeight;
+    top += ROW_HEIGHT;
     return top;
 }
 
-const reportPDF = ( { title, cols, labels, result, totals } ) => {
+const printFooter = ( { pdf, footer } ) => {
+    let coordY = PAGE_HEIGHT * 0.95;
+    let coordX = PAGE_WIDTH / 2;
+
+    pdf.setFontSize( FONT_SIZE - 1 );
+    pdf.text( footer, coordX, coordY, 'center' );
+
+    return;
+}
+
+const reportPDF = ( { overHeader, header, underHeader, cols, labels, result, totals, footer } ) => {
 
     const pdf = new jsPDF( {
         orientation: 'landscape',
@@ -201,9 +242,12 @@ const reportPDF = ( { title, cols, labels, result, totals } ) => {
     // pdf.addFont( 'trebuchetMSNormal.ttf', 'trebuchetMSNormal', 'normal' );
     // pdf.setFont( 'trebuchetMSNormal' );
 
-    let pages = parseInt( result.length / rowsPerPage );
-    pages += result.length % 20 ? 1 : 0;
+    let pages = parseInt( result.length / ROWS_PER_PAGE );
+    pages += result.length % ROWS_PER_PAGE ? 1 : 0;
     pages += pages === 0 ? 1 : 0;
+
+    const layoutWidth = Object.keys( cols ).map( key => cols[ key ].width ).reduce( ( total, width ) => total + width );
+    const left = ( PAGE_WIDTH - layoutWidth ) / 2;
 
     for ( let page = 1; page <= pages; page++ ) {
 
@@ -211,19 +255,19 @@ const reportPDF = ( { title, cols, labels, result, totals } ) => {
             pdf.addPage();
         }
 
-        let top = TOP;
+        let top = PAGE_HEIGHT * 0.05;
 
-        title += ` (${ page }/${ pages })`;
+        top = printHeader( { pdf, left, top, overHeader, header, underHeader } );
 
-        top = printTitle( { pdf, top, title, rowHeight } );
+        top = printLabels( { pdf, left, top, cols, labels } );
 
-        top = printLabels( { pdf, top, cols, labels, rowHeight } );
-
-        top = printRows( { pdf, top, cols, rows: result, rowsPerPage, rowHeight, page } );
+        top = printRows( { pdf, left, top, cols, rows: result, page } );
 
         if ( page === pages ) {
-            top = printTotals( { pdf, top, cols, totals, rowHeight } );
+            top = printTotals( { pdf, left, top, cols, totals } );
         }
+
+        printFooter( { pdf, footer: `${ footer } ${ page }/${ pages }` } );
     }
 
     const blobPDF =  pdf.output( 'blob' );

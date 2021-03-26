@@ -9,7 +9,9 @@ import { shiftDate, YYYYMMDDToRepr, dateToYYYYMMDD } from '../core/helpers/dates
 import presetAction from '../core/helpers/presetAction';
 
 import { ReportsContext } from './ReportsContext';
-import { testPDF } from './helpers/reportPDF';
+// import { testPDF } from './helpers/reportPDF';
+
+import PaymentReportForm from '../payment/PaymentReportForm';
 
 function ReportForm( { reports, index, actions, assets, lexicon } ) {
 
@@ -77,7 +79,16 @@ function ReportForm( { reports, index, actions, assets, lexicon } ) {
                     </InputValue>
                 </InputBox>
 
-                <InputBox>
+                { data.type === 'payment' ?
+                    <PaymentReportForm 
+                        data={ data } 
+                        setData={ setData } 
+                        lexicon={ lexicon } 
+                    />
+
+                : null }
+
+                {/* <InputBox>
                     <InputLabel>
                         Test
                     </InputLabel>
@@ -86,7 +97,7 @@ function ReportForm( { reports, index, actions, assets, lexicon } ) {
                             testPDF()
                         </button>
                     </InputValue>
-                </InputBox>
+                </InputBox> */}
 
             </CoreForm>
         </Modal>
