@@ -5,7 +5,6 @@ import { BlockBox, BlockLabel, BlockValue } from '../libs/BlockBox';
 
 import { AppContext } from '../app/AppContext';
 import { AppBox, AppNav, AppInfo } from '../app/AppPage';
-import { LinkHome, LinkDiaries, LinkBench, LinkUsers, LinkSettings, LinkSignout } from '../app/AppLinks';
 
 import Settings from './Settings';
 
@@ -19,14 +18,7 @@ function SettingsPage() {
 
     return (
         <>
-        <AppNav>
-            <LinkHome title={ lexicon.home } />
-            <LinkDiaries title={ lexicon.diary.diaries } />
-            <LinkBench title={ lexicon.bench.bench } />
-            <LinkUsers title={ lexicon.user.users } />
-            <LinkSettings title={ lexicon.settings.settings } active />
-            <LinkSignout title={ lexicon.signin.signout } />
-        </AppNav>
+        <AppNav active="settings" / >
 
         <AppBox centeredness>
             <ListBox>

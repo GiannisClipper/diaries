@@ -1,12 +1,15 @@
 import React, { useEffect } from 'react';
 
 import { RowBox, RowValue, RowMenu } from '../libs/RowBox';
+import { OptionBox } from '../libs/MenuBox';
 
 import { CoreMenu, CreateOption, UpdateOption, DeleteOption } from '../core/CoreMenu';
 import presetAction from '../core/helpers/presetAction';
 import { createRequestFeature, updateRequestFeature, deleteRequestFeature } from '../core/features/requests';
 
 import { LinkBench } from '../app/AppLinks';
+import { LinkReports } from '../app/AppLinks';
+import { LinkBenchSettings } from '../app/AppLinks';
 
 import DiaryForm from './DiaryForm';
 
@@ -59,11 +62,23 @@ function Diary( { diaries, index, actions, assets, lexicon } ) {
         <RowBox>
 
             <RowValue title={ `${ diary.user_id }.${ diary.id }` }>
-
-                { ! diary.id || <LinkBench id={ diary.id } /> }
-
-                <span>{ diary.title }</span>
-                <span>{ diary.startDate }</span>
+                <div>
+                    <span>{ diary.title }</span>
+                    <span>{ diary.startDate }</span>
+                </div>
+                { ! diary.id || 
+                    <RowMenu>
+                        <OptionBox>
+                            <LinkBench title={ lexicon.bench.bench } id={ diary.id } />
+                        </OptionBox>
+                        <OptionBox>
+                            <LinkReports title={ lexicon.report.reports } id={ diary.id } />
+                        </OptionBox>
+                        <OptionBox>
+                            <LinkBenchSettings title={ lexicon.bench.settings } id={ diary.id } />
+                        </OptionBox>
+                    </RowMenu>
+                }
             </RowValue>
 
             <RowMenu>

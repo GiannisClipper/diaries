@@ -21,7 +21,7 @@ const RowValue = styled.span`
 
 const RowMenu = styled.span`
     display: inline-block;
-    width: 4em;
+    // width: calc( 2 * 2em );
     vertical-align: top;
     text-align: left;
     .icon {

@@ -1,7 +1,6 @@
 import React, { useContext, useState } from 'react';
 
 import { AppBox, AppNav, AppInfo } from '../app/AppPage';
-import { LinkHome, LinkDiaries, LinkBench, LinkReports, LinkBenchSettings, LinkSignout } from '../app/AppLinks';
 import { AppContext } from '../app/AppContext';
 
 import { BenchContextProvider } from './BenchContext';
@@ -15,14 +14,7 @@ function BenchPage( { diary_id } ) {
 
     return (
         <BenchContextProvider>
-            <AppNav>
-                <LinkHome title={ lexicon.home } />
-                <LinkDiaries title={ lexicon.diary.diaries } />
-                <LinkBench title={ lexicon.bench.bench } id={ diary_id } active />
-                <LinkReports title={ lexicon.report.reports } id={ diary_id } />
-                <LinkBenchSettings title={ lexicon.bench.settings } id={ diary_id } />
-                <LinkSignout title={ lexicon.signin.signout } />
-            </AppNav>
+            <AppNav active="diaries" / >
 
             <AppBox>
                 <Bench 

@@ -8,7 +8,7 @@ import { AppContext } from './AppContext';
 //import lexicons from './assets/lexicons';
 import { APP_TITLE } from './assets/constants';
 
-const AppNav = styled.div`
+const AppNavStyled = styled.div`
     position: fixed;
     top: 10vh;
     left: calc( ( 10% - 4em ) / 2 );
@@ -30,6 +30,27 @@ const AppNav = styled.div`
 
     ${ props => props.theme.AppNav && props.theme.AppNav };
 `;
+
+const AppNav = ( { active } ) => {
+
+    const { state } = useContext( AppContext );
+    const { _uiux } = state;
+    const { lexicon } = _uiux;
+
+    return (
+        <AppNavStyled>
+            { active && 
+                <>
+                <LinkHome title={ lexicon.home } active={ active === 'home' } />
+                <LinkDiaries title={ lexicon.diary.diaries } active={ active === 'diaries' } />
+                <LinkUsers title={ lexicon.user.users } active={ active === 'users' } />
+                <LinkSettings title={ lexicon.settings.settings } active={ active === 'settings' } />
+                <LinkSignout title={ lexicon.signin.signout } />
+                </>
+            }
+        </AppNavStyled>
+    );
+}
 
 const AppBox = styled.div`
     text-align: center;
@@ -71,22 +92,14 @@ const AppInfo = ( { children } ) => {
 const AppPage = props => {
 
     const { state } = useContext( AppContext );
-    const { signin, _uiux } = state;
+    const { signin } = state;
     const { username } = signin;
-    const { lexicon } = _uiux;
 
     // useEffect( () => console.log( 'Has rendered. ', 'AppPage' ) );
 
     return (
         <>
-            <AppNav>
-                <LinkHome title={ lexicon.home } active />
-                <LinkDiaries title={ lexicon.diary.diaries } />
-                <LinkBench title={ lexicon.bench.bench } />
-                <LinkUsers title={ lexicon.user.users } />
-                <LinkSettings title={ lexicon.settings.settings } />
-                <LinkSignout title={ lexicon.signin.signout } />
-            </AppNav>
+            <AppNav active="home" />
 
             <AppBox centeredness>
                 { `${ username } @ ${ APP_TITLE }` }

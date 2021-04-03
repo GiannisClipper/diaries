@@ -47,7 +47,7 @@ const paymentsPDF = ( { lexicon, username, diary_title, type, descr, groupBy, da
 
     totals = reportModule.normalizeTotals( { totals, lexicon } );
 
-    const footer = `${ username }, ${ new Date() }, ${ lexicon.report.page }: `;
+    const footer = `${ username }, ${ ( new Date() ).toLocaleString() }, ${ lexicon.report.page }: `;
 
     reportPDF( { overHeader, header, underHeader, cols, labels, result, totals, footer } );
 }
