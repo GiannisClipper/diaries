@@ -4,9 +4,13 @@ import { ListBox } from '../libs/ListBox';
 import { BlockBox, BlockLabel, BlockValue } from '../libs/BlockBox';
 
 import { ReportsContext } from './ReportsContext';
-import assets from './assets/assets'; 
+import assets from './assets/assets';
 import ReportsLoader from './ReportsLoader';
 import Report from './Report';
+
+import GenresLoader from '../payment/genre/GenresLoader';
+
+import FundsLoader from '../payment/fund/FundsLoader';
 
 function Reports( { diary_id, lexicon } ) {
 
@@ -19,17 +23,22 @@ function Reports( { diary_id, lexicon } ) {
 
     return (
         <ListBox>
+            <GenresLoader
+                diary_id={ diary_id }
+            />
+
+            <FundsLoader 
+                diary_id={ diary_id }
+            />
+
             <ReportsLoader 
                 diary_id={ diary_id }
-                state={ state }
-                actions={ actions }
-                assets={ assets }
                 lexicon={ lexicon }
             />
 
             <BlockBox>
                 <BlockLabel>
-                    { lexicon.reports }
+                    { lexicon.report.reports }
                 </BlockLabel>
 
                 <BlockValue>

@@ -1,6 +1,17 @@
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 
-function ReportsLoader( { diary_id, actions, assets, lexicon, state } ) {
+import assets from './assets/assets'; 
+
+import { ReportsContext } from './ReportsContext';
+import { GenresContext } from '../payment/genre/GenresContext';
+import { FundsContext } from '../payment/fund/FundsContext';
+
+function ReportsLoader( { diary_id, lexicon } ) {
+
+    const { state, actions } = useContext( ReportsContext );
+
+    const genres_uiux = useContext( GenresContext ).state._uiux;
+    const funds_uiux = useContext( FundsContext ).state._uiux;
 
     const data = [
         { diary_id, descr: lexicon.report.descr_notes, type: 'note' },
@@ -16,6 +27,19 @@ function ReportsLoader( { diary_id, actions, assets, lexicon, state } ) {
     useEffect( () => {
         if ( ! _uiux.page.isOpen ) {
             actions.openPage( { assets, data } );
+            actions.retrieveManyResponseWaiting( { assets } );
+            
+        } else if ( _uiux.status.isResponseWaiting ) {
+            const status1 = genres_uiux.status;
+            const status2 = funds_uiux.status;
+    
+            if ( status1.isResponseOkAfter && status2.isResponseOkAfter ) {
+                actions.retrieveManyResponseOkAfter( { assets } );
+    
+            } else if ( status1.isResponseError || status2.isResponseError ) {
+                actions.retrieveManyResponseError( { assets } );
+            }    
+
         }
     } );
 

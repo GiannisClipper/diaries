@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
 
 import comboReducer from '../core/helpers/comboReducer';
+import { retrieveManyReducer } from '../core/assets/reducers/retrieveMany';
 import { modeOneOfManyReducer } from '../core/assets/reducers/mode';
 import { formOneOfManyReducer } from '../core/assets/reducers/form';
 import { validationOneOfManyReducer } from '../core/assets/reducers/validation';
@@ -13,12 +14,14 @@ import modeActions from '../core/assets/actions/mode';
 import formActions from '../core/assets/actions/form';
 import validationActions from '../core/assets/actions/validation';
 import retrieveActions from '../core/assets/actions/retrieve';
+import retrieveManyActions from '../core/assets/actions/retrieveMany';
 
 import { AppContext } from '../app/AppContext';
 
 import { reportsSchema } from './assets/schemas';
 
 const reducers = [ 
+    retrieveManyReducer,
     reportsReducer,
     modeOneOfManyReducer,
     formOneOfManyReducer,
@@ -31,7 +34,8 @@ const unpluggedActions = {
     ...modeActions,
     ...formActions,
     ...validationActions,
-    ...retrieveActions
+    ...retrieveActions,
+    ...retrieveManyActions
 };
 
 const ReportsContext = createContext();
