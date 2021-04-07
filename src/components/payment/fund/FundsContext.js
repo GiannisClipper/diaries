@@ -65,4 +65,5 @@ const FundsContextProvider = props => {
     )
 }
 
+export default { FundsContext, FundsContextProvider };
 export { FundsContext, FundsContextProvider };

@@ -2,10 +2,17 @@ import React, { useEffect } from 'react';
 import { AppContextProvider } from './AppContext';
 import { UsersContextProvider } from '../user/UsersContext';
 import { DiariesContextProvider } from '../diary/DiariesContext';
-import { GenresContextProvider } from '../payment/genre/GenresContext';
-import { FundsContextProvider } from '../payment/fund/FundsContext';
+import paymentGenresContext from '../payment/genre/GenresContext';
+import paymentFundsContext from '../payment/fund/FundsContext';
+import workoutGenresContext from '../workout/genre/GenresContext';
+import workoutEquipsContext from '../workout/equip/EquipsContext';
 import AppLoad from './AppLoad';
 import AppRoutes from './AppRoutes';
+
+const PaymentGenresContextProvider = paymentGenresContext.GenresContextProvider;
+const PaymentFundsContextProvider = paymentFundsContext.FundsContextProvider;
+const WorkoutGenresContextProvider = workoutGenresContext.GenresContextProvider;
+const WorkoutEquipsContextProvider = workoutEquipsContext.EquipsContextProvider;
 
 function App() {
 
@@ -15,13 +22,17 @@ function App() {
         <AppContextProvider>
         <UsersContextProvider>
         <DiariesContextProvider>
-        <GenresContextProvider>
-        <FundsContextProvider>
+        <PaymentGenresContextProvider>
+        <PaymentFundsContextProvider>
+        <WorkoutGenresContextProvider>
+        <WorkoutEquipsContextProvider>
             <AppLoad>
                 <AppRoutes />
             </AppLoad>
-        </FundsContextProvider>
-        </GenresContextProvider>
+        </WorkoutEquipsContextProvider>
+        </WorkoutGenresContextProvider>
+        </PaymentFundsContextProvider>
+        </PaymentGenresContextProvider>
         </DiariesContextProvider>
         </UsersContextProvider>
         </AppContextProvider>

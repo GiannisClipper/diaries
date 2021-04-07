@@ -22,7 +22,7 @@ import retrieveManyActions from '../../core/assets/actions/retrieveMany';
 
 import { AppContext } from '../../app/AppContext';
 
-import { genresSchema } from './assets/schemas';
+import { equipsSchema } from './assets/schemas';
 
 const reducers = [ 
     pageReducer,
@@ -46,24 +46,24 @@ const unpluggedActions = {
     ...retrieveManyActions
 };
 
-const GenresContext = createContext();
+const EquipsContext = createContext();
 
-const GenresContextProvider = props => {
+const EquipsContextProvider = props => {
 
-    const [ state, dispatch ] = useReducer( comboReducer( ...reducers ), genresSchema() );
+    const [ state, dispatch ] = useReducer( comboReducer( ...reducers ), equipsSchema() );
 
     const actions = pluginActions( dispatch, unpluggedActions );
     
     actions.handleError = useContext( AppContext ).actions.handleError;
 
-    // useEffect( () => console.log( 'Has rendered. ', 'GenresContextProvider' ) );
+    // useEffect( () => console.log( 'Has rendered. ', 'EquipsContextProvider' ) );
 
     return (
-        <GenresContext.Provider value={ { state, dispatch, actions } }>
+        <EquipsContext.Provider value={ { state, dispatch, actions } }>
             { props.children }
-        </GenresContext.Provider>
+        </EquipsContext.Provider>
     )
 }
 
-export default { GenresContext, GenresContextProvider };
-export { GenresContext, GenresContextProvider };
+export default { EquipsContext, EquipsContextProvider };
+export { EquipsContext, EquipsContextProvider };

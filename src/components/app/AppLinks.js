@@ -49,8 +49,8 @@ const LinkUsers = LinkBox( {
 } );
 
 const LinkDiaries = LinkBox( { 
-    to: '/diaries', 
-    icon: faBookOpen, 
+    to: '/diaries',
+    icon: faBookOpen,
 } );
 
 const LinkBench = LinkBox( { 

@@ -12,6 +12,7 @@ import { ReportsContext } from './ReportsContext';
 // import { testPDF } from './helpers/reportPDF';
 
 import PaymentReportForm from '../payment/PaymentReportForm';
+import WorkoutReportForm from '../workout/WorkoutReportForm';
 
 function ReportForm( { reports, index, actions, assets, lexicon } ) {
 
@@ -81,6 +82,13 @@ function ReportForm( { reports, index, actions, assets, lexicon } ) {
 
                 { data.type === 'payment' ?
                     <PaymentReportForm 
+                        data={ data } 
+                        setData={ setData } 
+                        lexicon={ lexicon } 
+                    />
+
+                : data.type === 'workout' ?
+                    <WorkoutReportForm 
                         data={ data } 
                         setData={ setData } 
                         lexicon={ lexicon } 

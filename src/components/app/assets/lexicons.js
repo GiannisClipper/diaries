@@ -6,6 +6,9 @@ import noteLexicons from '../../note/assets/lexicons';
 import paymentLexicons from '../../payment/assets/lexicons';
 import paymentGenreLexicons from '../../payment/genre/assets/lexicons';
 import paymentFundLexicons from '../../payment/fund/assets/lexicons';
+import workoutLexicons from '../../workout/assets/lexicons';
+import workoutGenreLexicons from '../../workout/genre/assets/lexicons';
+import workoutEquipLexicons from '../../workout/equip/assets/lexicons';
 import reportLexicons from '../../report/assets/lexicons';
 import settingsLexicons from '../../settings/assets/lexicons';
 import backupLexicons from '../../backup/assets/lexicons';
@@ -23,6 +26,9 @@ let EN = {
     payment: paymentLexicons.EN,
     paymentGenre: paymentGenreLexicons.EN,
     paymentFund: paymentFundLexicons.EN,
+    workout: workoutLexicons.EN,
+    workoutGenre: workoutGenreLexicons.EN,
+    workoutEquip: workoutEquipLexicons.EN,
     report: reportLexicons.EN,
     settings: settingsLexicons.EN,
     backup: backupLexicons.EN,
@@ -41,6 +47,9 @@ let GR = {
     payment: paymentLexicons.GR,
     paymentGenre: paymentGenreLexicons.GR,
     paymentFund: paymentFundLexicons.GR,
+    workout: workoutLexicons.GR,
+    workoutGenre: workoutGenreLexicons.GR,
+    workoutEquip: workoutEquipLexicons.GR,
     report: reportLexicons.GR,
     settings: settingsLexicons.GR,
     backup: backupLexicons.GR,

@@ -7,7 +7,9 @@ import Signin from './Signin';
 
 function SigninPage() {
 
-    const { lexicon } = useContext( AppContext ).state._uiux;
+    const { state } = useContext( AppContext );
+    const { _uiux } = state;
+    const { lexicon } = _uiux;
 
     // useEffect( () => console.log( 'Has rendered. ', 'SigninPage' ) );
 

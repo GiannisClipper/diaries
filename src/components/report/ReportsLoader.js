@@ -15,11 +15,18 @@ function ReportsLoader( { diary_id, lexicon } ) {
 
     const data = [
         { diary_id, descr: lexicon.report.descr_notes, type: 'note' },
+
         { diary_id, descr: lexicon.report.descr_payments, type: 'payment' },
         { diary_id, descr: lexicon.report.descr_payments_month, type: 'payment', groupBy: 'month' },
         { diary_id, descr: lexicon.report.descr_payments_week, type: 'payment', groupBy: 'week' },
         { diary_id, descr: lexicon.report.descr_payments_genre, type: 'payment', groupBy: 'genre' },
-        { diary_id, descr: lexicon.report.descr_payments_fund, type: 'payment', groupBy: 'fund' }
+        { diary_id, descr: lexicon.report.descr_payments_fund, type: 'payment', groupBy: 'fund' },
+
+        { diary_id, descr: lexicon.report.descr_workouts, type: 'workout' },
+        { diary_id, descr: lexicon.report.descr_workouts_month, type: 'workout', groupBy: 'month' },
+        { diary_id, descr: lexicon.report.descr_workouts_week, type: 'workout', groupBy: 'week' },
+        { diary_id, descr: lexicon.report.descr_workouts_genre, type: 'workout', groupBy: 'genre' },
+        { diary_id, descr: lexicon.report.descr_workouts_fund, type: 'workout', groupBy: 'equip' }
     ];
     
     const { _uiux } = state;

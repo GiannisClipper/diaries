@@ -15,6 +15,7 @@ import { EntriesContext } from "./EntriesContext";
 
 import NoteForm from '../note/NoteForm';
 import PaymentForm from '../payment/PaymentForm';
+import WorkoutForm from '../workout/WorkoutForm';
 
 function EntryForm( { date, entries, index, actions, assets, lexicon } ) {
 
@@ -29,6 +30,7 @@ function EntryForm( { date, entries, index, actions, assets, lexicon } ) {
     const types = [
         { type: 'note', descr: lexicon.entry.types.note },
         { type: 'payment', descr: lexicon.entry.types.payment },
+        { type: 'workout', descr: lexicon.entry.types.workout },
     ];
 
     const onValidation = 
@@ -51,11 +53,20 @@ function EntryForm( { date, entries, index, actions, assets, lexicon } ) {
                 errors = errors.filter( x => x !== null );
                 return { data, errors };
             }
+        : data.type === 'workout'
+            ?
+            () => {
+                let errors = [];
+                const isBlank = withLexicon( validators.isBlank, lexicon );
+                errors.push( isBlank( lexicon.workout.genre_name, data.genre_name ) );
+                errors = errors.filter( x => x !== null );
+                return { data, errors };
+            }
         :
            () => {
                 let errors = [];
                 const isNotFound = withLexicon( validators.isNotFound, lexicon );        
-                errors.push( isNotFound( lexicon.entry.type, [ 'note', 'payment' ], data.type ) );
+                errors.push( isNotFound( lexicon.entry.type, [ 'note', 'payment', 'workout' ], data.type ) );
                 errors = errors.filter( x => x !== null );
                 return { data, errors };
             };
@@ -118,6 +129,13 @@ function EntryForm( { date, entries, index, actions, assets, lexicon } ) {
 
                 : data.type === 'payment' ?
                     <PaymentForm 
+                        data={ data } 
+                        setData={ setData } 
+                        lexicon={ lexicon } 
+                    />
+
+                : data.type === 'workout' ?
+                    <WorkoutForm 
                         data={ data } 
                         setData={ setData } 
                         lexicon={ lexicon } 

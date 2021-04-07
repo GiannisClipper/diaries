@@ -11,7 +11,7 @@ const entrySchema = () => ( {
     diary_id: null,
     date: '',
     index: 0,
-    type: '',  // 'note', 'payment'
+    type: '',  // 'note', 'payment', 'workout'
     _uiux: {
         menu: {},  // isOpen
         menuOptionCoords: {}, // top, left

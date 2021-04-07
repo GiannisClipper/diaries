@@ -6,6 +6,7 @@ const EN = {
     types: {
         note: 'Note',
         payment: 'Payment',
+        workout: 'Workout',
     },
 }
 
@@ -17,6 +18,7 @@ const GR = {
     types: {
         note: 'Σημείωμα',
         payment: 'Πληρωμή',
+        workout: 'Προπόνηση',
     },
 }
 
