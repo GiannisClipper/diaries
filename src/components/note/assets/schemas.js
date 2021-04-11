@@ -1,6 +1,8 @@
 const noteSchema = () => ( {
     type: 'note',
-    note: '',
+    type_specs: {
+        note: ''
+    }
 } );
 
 export { noteSchema };

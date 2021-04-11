@@ -11,13 +11,21 @@ const getMethod = async ( event, db, collectionName, payload ) => {
     collection = db.collection( 'diaries' );
     result.diaries = await collection.find( {} ).toArray();
 
-    result.payments = {};
+    result.payment = {};
 
-    collection = db.collection( 'payments_genres' );
-    result.payments.genres = await collection.find( {} ).toArray();
+    collection = db.collection( 'payment_genres' );
+    result.payment.genres = await collection.find( {} ).toArray();
 
-    collection = db.collection( 'payments_funds' );
-    result.payments.funds = await collection.find( {} ).toArray();
+    collection = db.collection( 'payment_funds' );
+    result.payment.funds = await collection.find( {} ).toArray();
+
+    result.workout = {};
+
+    collection = db.collection( 'workout_genres' );
+    result.workout.genres = await collection.find( {} ).toArray();
+
+    collection = db.collection( 'workout_equips' );
+    result.workout.equips = await collection.find( {} ).toArray();
 
     collection = db.collection( 'entries' );
     result.entries = await collection.find( {} ).toArray();

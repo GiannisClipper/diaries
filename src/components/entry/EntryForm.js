@@ -58,7 +58,7 @@ function EntryForm( { date, entries, index, actions, assets, lexicon } ) {
             () => {
                 let errors = [];
                 const isBlank = withLexicon( validators.isBlank, lexicon );
-                errors.push( isBlank( lexicon.workout.genre_name, data.genre_name ) );
+                errors.push( isBlank( lexicon.workout.genre_name, data.type_specs.genre_name ) );
                 errors = errors.filter( x => x !== null );
                 return { data, errors };
             }

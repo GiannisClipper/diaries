@@ -14,28 +14,29 @@ import { pace, speed } from './helpers/speedAndPace';
 function WorkoutForm( { data, setData, lexicon } ) {
 
     const  { genres } = useContext( GenresContext ).state;
-
     const  { equips } = useContext( EquipsContext ).state;
 
-    if ( data.allGenres === undefined ) {
-        let allGenres = [ ...genres ].reverse();
-        allGenres = allGenres.filter( ( x, i ) => i === 0 || ! allGenres[ i - 1 ].code.startsWith( x.code ) );
-        allGenres = allGenres.map( x => x.name ).filter( x => x !== '' );
-        data.allGenres = allGenres;
+    const { type_specs } = data;
 
-        data.genre_name = data.genre_id
-            ? getFromList( genres, 'id', data.genre_id ).name
+    if ( type_specs.allGenres === undefined ) {
+        type_specs.allGenres = [ ...genres ];
+        type_specs.allGenres = type_specs.allGenres.reverse();
+        type_specs.allGenres = type_specs.allGenres.filter( ( x, i ) => i === 0 || ! type_specs.allGenres[ i - 1 ].code.startsWith( x.code ) );
+        type_specs.allGenres = type_specs.allGenres.map( x => x.name ).filter( x => x !== '' );
+
+        type_specs.genre_name = type_specs.genre_id
+            ? getFromList( genres, 'id', type_specs.genre_id ).name
             : '';
     }
 
-    if ( data.allEquips === undefined ) {
-        let allEquips = [ ...equips ].reverse();
-        allEquips = allEquips.filter( ( x, i ) => i === 0 || ! allEquips[ i - 1 ].code.startsWith( x.code ) );
-        allEquips = allEquips.map( x => x.name ).filter( x => x !== '' );
-        data.allEquips = allEquips;
+    if ( type_specs.allEquips === undefined ) {
+        type_specs.allEquips = [ ...equips ];
+        type_specs.allEquips = type_specs.allEquips.reverse();
+        type_specs.allEquips = type_specs.allEquips.filter( ( x, i ) => i === 0 || ! type_specs.allEquips[ i - 1 ].code.startsWith( x.code ) );
+        type_specs.allEquips = type_specs.allEquips.map( x => x.name ).filter( x => x !== '' );
 
-        data.equip_name = data.equip_id
-            ? getFromList( equips, 'id', data.equip_id ).name
+        type_specs.equip_name = type_specs.equip_id
+            ? getFromList( equips, 'id', type_specs.equip_id ).name
             : '';
     }
 
@@ -51,7 +52,7 @@ function WorkoutForm( { data, setData, lexicon } ) {
     }
 
     const setupDuration = duration => {
-        const { distance } = data;
+        const { distance } = type_specs;
         return {
             speed: speed( { duration, distance } ),
             pace: pace( { duration, distance } )
@@ -59,7 +60,7 @@ function WorkoutForm( { data, setData, lexicon } ) {
     } 
 
     const setupDistance = distance => {
-        const { duration } = data;
+        const { duration } = type_specs;
         return {
             speed: speed( { duration, distance } ),
             pace: pace( { duration, distance } )
@@ -80,16 +81,16 @@ function WorkoutForm( { data, setData, lexicon } ) {
     return (
         <>
         <InputBox>
-            <InputLabel title={ `${ data.genre_id }` }>
+            <InputLabel title={ `${ type_specs.genre_id }` }>
                 { lexicon.workout.genre_name }
             </InputLabel>
             <InputValue>
                 <InputFromListTyping
-                    value={ data.genre_name }
-                    allValues={ data.allGenres }
+                    value={ type_specs.genre_name }
+                    allValues={ type_specs.allGenres }
                     onChange={ event => {
                         const genre_name = event.target.value;
-                        setData( { ...data, genre_name, ...setupGenre( genre_name ) } );
+                        setData( { ...data, type_specs: { ...type_specs, genre_name, ...setupGenre( genre_name ) } } );
                     } }
                 />
             </InputValue>
@@ -102,10 +103,10 @@ function WorkoutForm( { data, setData, lexicon } ) {
             <InputValue>
                 <InputDuration
                     decimals="3"
-                    value={ data.duration || '' }
+                    value={ type_specs.duration || '' }
                     onChange={ event => {
                         const duration = event.target.value;
-                        setData( { ...data, duration, ...setupDuration( duration ) } ) 
+                        setData( { ...data, type_specs: { ...type_specs, duration, ...setupDuration( duration ) } } );
                     } }
                 />
             </InputValue>
@@ -118,10 +119,10 @@ function WorkoutForm( { data, setData, lexicon } ) {
             <InputValue>
                 <InputNumber
                     decimals="3"
-                    value={ data.distance || '' }
+                    value={ type_specs.distance || '' }
                     onChange={ event => {
                         const distance = event.target.value;
-                        setData( { ...data, distance, ...setupDistance( distance ) } ) 
+                        setData( { ...data, type_specs: { ...type_specs, distance, ...setupDistance( distance ) } } );
                     } }
                 />
             </InputValue>
@@ -133,7 +134,7 @@ function WorkoutForm( { data, setData, lexicon } ) {
             </InputLabel>
             <InputValue>
                 <input 
-                    value={ `${ data.speed || '' } ${ lexicon.workout.distance }/${ lexicon.workout.hour }` }
+                    value={ `${ type_specs.speed || '' } ${ lexicon.workout.distance }/${ lexicon.workout.hour }` }
                     tabIndex="-1"
                     readOnly
                 />
@@ -146,7 +147,7 @@ function WorkoutForm( { data, setData, lexicon } ) {
             </InputLabel>
             <InputValue>
                 <input 
-                    value={ `${ data.pace || '' }/${ lexicon.workout.distance }` }
+                    value={ `${ type_specs.pace || '' }/${ lexicon.workout.distance }` }
                     tabIndex="-1"
                     readOnly
                 />
@@ -162,23 +163,23 @@ function WorkoutForm( { data, setData, lexicon } ) {
                     rows="3"
                     cols="100"
                     maxLength="500"
-                    value={ data.remark || '' }
-                    onChange={event => setData( { ...data, remark: event.target.value } )}
+                    value={ type_specs.remark || '' }
+                    onChange={ event => setData( { ...data, type_specs: { ...type_specs, remark: event.target.value } } ) }
                 />
             </InputValue>
         </InputBox>
 
         <InputBox>
-            <InputLabel title={ `${ data.equip_id }` }>
+            <InputLabel title={ `${ type_specs.equip_id }` }>
                 { lexicon.workout.equip_name }
             </InputLabel>
             <InputValue>
                 <InputFromListTyping
-                    value={ data.equip_name }
-                    allValues={ data.allEquips }
+                    value={ type_specs.equip_name }
+                    allValues={ type_specs.allEquips }
                     onChange={ event => {
                         const equip_name = event.target.value;
-                        setData( { ...data, equip_name, ...setupEquip( equip_name ) } );
+                        setData( { ...data, type_specs: { ...type_specs, equip_name, ...setupEquip( equip_name ) } } );
                     } }
 
                 />

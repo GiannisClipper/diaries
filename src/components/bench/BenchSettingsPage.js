@@ -7,8 +7,10 @@ import { AppBox, AppNav } from '../app/AppPage';
 
 import { AppContext } from '../app/AppContext';
 
-import Genres from "../payment/genre/Genres";
-import Funds from "../payment/fund/Funds";
+import PaymentGenres from "../payment/genre/Genres";
+import PaymentFunds from "../payment/fund/Funds";
+import WorkoutGenres from "../workout/genre/Genres";
+import WorkoutEquips from "../workout/equip/Equips";
 
 function SettingsPage( { diary_id } ) {
 
@@ -28,7 +30,7 @@ function SettingsPage( { diary_id } ) {
                         { lexicon.paymentGenre.genres }
                     </BlockLabel>
                     <BlockValue>
-                        <Genres 
+                        <PaymentGenres 
                             diary_id={ diary_id } 
                             lexicon={ lexicon }
                         />
@@ -40,7 +42,31 @@ function SettingsPage( { diary_id } ) {
                         { lexicon.paymentFund.funds }
                     </BlockLabel>
                     <BlockValue>
-                        <Funds 
+                        <PaymentFunds 
+                            diary_id={ diary_id } 
+                            lexicon={ lexicon }
+                        />
+                    </BlockValue>
+                </BlockBox>
+
+                <BlockBox>
+                    <BlockLabel>
+                        { lexicon.workoutGenre.genres }
+                    </BlockLabel>
+                    <BlockValue>
+                        <WorkoutGenres 
+                            diary_id={ diary_id } 
+                            lexicon={ lexicon }
+                        />
+                    </BlockValue>
+                </BlockBox>
+
+                <BlockBox>
+                    <BlockLabel>
+                        { lexicon.workoutEquip.equips }
+                    </BlockLabel>
+                    <BlockValue>
+                        <WorkoutEquips 
                             diary_id={ diary_id } 
                             lexicon={ lexicon }
                         />

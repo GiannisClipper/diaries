@@ -1,27 +1,44 @@
-const parsePaymentFromDB = ( data ) => ( {
-    id: data._id,
-    diary_id: data.diary_id,
-    date: data.date,
-    index: data.index,
-    type: data.type,
-    genre_id: data.genre_id,
-    revenue: data.revenue,
-    expense: data.expense,
-    remark: data.remark,
-    fund_id: data.fund_id,
-} )
+const parsePaymentFromDB = data => {
 
-const parsePaymentToDB = ( data ) => ( {
-    diary_id: data.diary_id,
-    date: data.date,
-    index: data.index,
-    type: data.type,
-    genre_id: data.genre_id,
-    revenue: data.revenue,
-    expense: data.expense,
-    remark: data.remark,
-    fund_id: data.fund_id,
-} )
+    const { _id, diary_id, date, index, type, type_specs } = data;
+    const { genre_id, revenue, expense, remark, fund_id } = type_specs;
+
+    return {
+        id: _id,
+        diary_id,
+        date,
+        index,
+        type,
+        type_specs: {
+            genre_id,
+            revenue,
+            expense,
+            remark,
+            fund_id
+        }
+    }
+}
+
+const parsePaymentToDB = data => {
+
+    const { diary_id, date, index, type, type_specs } = data;
+    const { genre_id, revenue, expense, remark, fund_id } = type_specs;
+
+    return {
+        diary_id,
+        date,
+        index,
+        type,
+        type_specs: {
+            genre_id,
+            revenue,
+            expense,
+            remark,
+            fund_id
+        }
+    }
+}
+
 
 export { 
     parsePaymentFromDB, 

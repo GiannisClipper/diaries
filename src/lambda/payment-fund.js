@@ -18,7 +18,7 @@ const getMethod = async ( event, db, collectionName, payload ) => {
 }
 
 exports.handler = createHandler( { 
-    collectionName: 'payments_funds',
+    collectionName: 'payment_funds',
     auth,
     getMethod,
     postMethod,

@@ -10,7 +10,7 @@ const PaymentRepr = ( { entry, lexicon } ) => {
     const  { genres } = useContext( GenresContext ).state;
     const  { funds } = useContext( FundsContext ).state;
 
-    let { revenue, expense, fund_id, genre_id, remark } = entry;
+    let { revenue, expense, fund_id, genre_id, remark } = entry.type_specs;
 
     const genre_name = genre_id
         ? getFromList( genres, 'id', genre_id ).name

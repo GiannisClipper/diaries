@@ -4,6 +4,8 @@ import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
 
 function NoteForm( { data, setData, lexicon } ) {
 
+    const { type_specs } = data;
+
     return (
         <InputBox>
             <InputLabel>
@@ -14,8 +16,8 @@ function NoteForm( { data, setData, lexicon } ) {
                     rows="10"
                     cols="50"
                     maxLength="1000"
-                    value={ data.note || '' }
-                    onChange={event => setData( { ...data, note: event.target.value } )}
+                    value={ type_specs.note || '' }
+                    onChange={ event => setData( { ...data, type_specs: { ...type_specs, note: event.target.value } } ) }
                 />
             </InputValue>
         </InputBox>

@@ -11,9 +11,11 @@ import { BenchContext } from './BenchContext';
 import assets from './assets/assets';
 import { BenchLoader } from './BenchLoader';
 
-import GenresLoader from '../payment/genre/GenresLoader';
+import PaymentGenresLoader from '../payment/genre/GenresLoader';
+import PaymentFundsLoader from '../payment/fund/FundsLoader';
 
-import FundsLoader from '../payment/fund/FundsLoader';
+import WorkoutGenresLoader from '../workout/genre/GenresLoader';
+import WorkoutEquipsLoader from '../workout/equip/EquipsLoader';
 
 import { DatesContextProvider } from '../date/DatesContext';
 import { Dates } from '../date/Dates';
@@ -114,11 +116,19 @@ const Bench = ( { diary_id, lexicon } ) => {
                 lexicon={ lexicon }
             />
 
-            <GenresLoader
+            <PaymentGenresLoader
                 diary_id={ diary_id }
             />
 
-            <FundsLoader 
+            <PaymentFundsLoader 
+                diary_id={ diary_id }
+            />
+
+            <WorkoutGenresLoader
+                diary_id={ diary_id }
+            />
+
+            <WorkoutEquipsLoader 
                 diary_id={ diary_id }
             />
 

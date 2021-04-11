@@ -11,28 +11,29 @@ import { EquipsContext } from '../workout/equip/EquipsContext';
 function WorkoutReportForm( { data, setData, lexicon } ) {
 
     const  { genres } = useContext( GenresContext ).state;
-
     const  { equips } = useContext( EquipsContext ).state;
 
-    if ( data.allGenres === undefined ) {
-        let allGenres = [ ...genres ].reverse();
-        allGenres = allGenres.filter( ( x, i ) => i === 0 || ! allGenres[ i - 1 ].code.startsWith( x.code ) );
-        allGenres = allGenres.map( x => x.name ).filter( x => x !== '' );
-        data.allGenres = allGenres;
+    const { type_specs } = data;
 
-        data.genre_name = data.genre_id
-            ? getFromList( genres, 'id', data.genre_id ).name
+    if ( type_specs.allGenres === undefined ) {
+        type_specs.allGenres = [ ...genres ]
+            .reverse()
+            .filter( ( x, i ) => i === 0 || ! type_specs.allGenres[ i - 1 ].code.startsWith( x.code ) )
+            .map( x => x.name ).filter( x => x !== '' );
+
+        type_specs.genre_name = type_specs.genre_id
+            ? getFromList( genres, 'id', type_specs.genre_id ).name
             : '';
     }
 
-    if ( data.allEquips === undefined ) {
-        let allEquips = [ ...equips ].reverse();
-        allEquips = allEquips.filter( ( x, i ) => i === 0 || ! allEquips[ i - 1 ].code.startsWith( x.code ) );
-        allEquips = allEquips.map( x => x.name ).filter( x => x !== '' );
-        data.allEquips = allEquips;
+    if ( type_specs.allEquips === undefined ) {
+        type_specs.allEquips = [ ...equips ]
+            .reverse()
+            .filter( ( x, i ) => i === 0 || ! type_specs.allEquips[ i - 1 ].code.startsWith( x.code ) )
+            .map( x => x.name ).filter( x => x !== '' );
 
-        data.equip_name = data.equip_id
-            ? getFromList( equips, 'id', data.equip_id ).name
+        type_specs.equip_name = type_specs.equip_id
+            ? getFromList( equips, 'id', type_specs.equip_id ).name
             : '';
     }
 
@@ -61,32 +62,32 @@ function WorkoutReportForm( { data, setData, lexicon } ) {
     return (
         <>
         <InputBox>
-            <InputLabel title={ `${ data.genre_id }` }>
+            <InputLabel title={ `${ type_specs.genre_id }` }>
                 { lexicon.workout.genre_name }
             </InputLabel>
             <InputValue>
                 <InputFromListTyping
-                    value={ data.genre_name }
-                    allValues={ data.allGenres }
+                    value={ type_specs.genre_name }
+                    allValues={ type_specs.allGenres }
                     onChange={ event => {
                         const genre_name = event.target.value;
-                        setData( { ...data, ...setupGenre( genre_name ) } );
+                        setData( { ...data, type_specs: { ...type_specs, ...setupGenre( genre_name ) } } );
                     } }
                 />
             </InputValue>
         </InputBox>
 
         <InputBox>
-            <InputLabel title={ `${ data.equip_id }` }>
+            <InputLabel title={ `${ type_specs.equip_id }` }>
                 { lexicon.workout.equip_name }
             </InputLabel>
             <InputValue>
                 <InputFromListTyping
-                    value={ data.equip_name }
-                    allValues={ data.allEquips }
+                    value={ type_specs.equip_name }
+                    allValues={ type_specs.allEquips }
                     onChange={ event => {
                         const equip_name = event.target.value;
-                        setData( { ...data, ...setupEquip( equip_name ) } );
+                        setData( { ...data, type_specs: { ...type_specs, ...setupEquip( equip_name ) } } );
                     } }
 
                 />

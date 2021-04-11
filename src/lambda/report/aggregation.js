@@ -84,7 +84,7 @@ const groupFund = {
 
 const lookupGenre = {
     $lookup: {
-        from: 'payments_genres', 
+        from: 'payment_genres', 
         localField: 'genre_id', 
         foreignField: '_id', 
         as: 'genre_'
@@ -93,7 +93,7 @@ const lookupGenre = {
 
 const lookupFund = {
     $lookup: {
-        from: 'payments_funds', 
+        from: 'payment_funds', 
         localField: 'fund_id', 
         foreignField: '_id', 
         as: 'fund_'

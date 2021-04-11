@@ -12,6 +12,7 @@ const entrySchema = () => ( {
     date: '',
     index: 0,
     type: '',  // 'note', 'payment', 'workout'
+    type_specs: {},
     _uiux: {
         menu: {},  // isOpen
         menuOptionCoords: {}, // top, left

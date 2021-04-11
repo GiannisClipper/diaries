@@ -10,7 +10,7 @@ const WorkoutRepr = ( { entry, lexicon } ) => {
     const  { genres } = useContext( GenresContext ).state;
     const  { equips } = useContext( EquipsContext ).state;
 
-    let { duration, distance, pace, equip_id, genre_id, remark } = entry;
+    let { duration, distance, pace, equip_id, genre_id, remark } = entry.type_specs;
 
     const genre_name = genre_id
         ? getFromList( genres, 'id', genre_id ).name

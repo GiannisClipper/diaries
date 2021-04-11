@@ -18,9 +18,9 @@ exports.handler = async function( event, context, callback ) {
         //result = await collection.updateMany( {}, { $rename: { "inSequence": "index" } } );
         //result = await collection.updateMany( {}, { $rename: { "incoming": "revenue", "outgoing": "expense" } } );
 
-        // collection = db.collection( 'payments_funds' );
+        // collection = db.collection( 'payment_funds' );
         // result.funds = await collection.updateMany( {}, { $set: { diary_id: '5ff4a9f0a71aef59a8695134' } } );
-        collection = db.collection( 'payments_genres' );
+        collection = db.collection( 'payment_genres' );
         // result.genres = await collection.updateMany( {}, { $set: { diary_id: '5ff4a9f0a71aef59a8695134' } } );
         // result = await collection.updateMany( {}, { $rename: { "isIncoming": "isRevenue", "isOutgoing": "isExpense" } } );
         // const result1 = await collection.updateMany( { isRevenue: true }, { $set: { "type": "revenue" }, $unset: { "isRevenue": null } } );
