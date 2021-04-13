@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
+import { InputBox, InputLabel, InputValue } from '../commons/InputBox';
 
 import { noteSchema } from './assets/schemas';
 

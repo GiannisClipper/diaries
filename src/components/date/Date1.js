@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import styled, { css } from 'styled-components';
 
-import StyledBlock from '../libs/BlockBox';
+import StyledBlock from '../commons/BlockBox';
 
 import { DateRepr } from './DateRepr'; 
 

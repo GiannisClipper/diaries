@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { OptionBox } from '../libs/MenuBox';
+import { OptionBox } from '../commons/MenuBox';
 import { 
     LoadingIcon,
     SuspendedIcon,
@@ -13,7 +13,7 @@ import {
     CopyIcon,
     PasteIcon,
     CloseIcon,
-} from '../libs/Icons';
+} from '../commons/Icons';
 
 function CoreMenu( { status, children } ) {
 

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 
-import { centeredness } from '../libs/InitStyle';
+import { centeredness } from '../commons/InitStyle';
 
 import { LinkHome, LinkBench, LinkDiaries, LinkUsers, LinkSettings, LinkSignout } from './AppLinks';
 import { AppContext } from './AppContext';

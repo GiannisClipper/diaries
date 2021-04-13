@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
-import { RowBox, RowValue, RowMenu } from '../libs/RowBox';
-import { OptionBox } from '../libs/MenuBox';
+import { RowBox, RowValue, RowMenu } from '../commons/RowBox';
+import { OptionBox } from '../commons/MenuBox';
 
 import { CoreMenu, CreateOption, UpdateOption, DeleteOption } from '../core/CoreMenu';
 import presetAction from '../core/helpers/presetAction';

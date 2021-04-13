@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
-import { Modal } from '../libs/Modal';
-import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
-import { InputEmail } from '../libs/InputEmail';
-import { InputFromListSelecting } from '../libs/InputFromList';
+import { Modal } from '../commons/Modal';
+import { InputBox, InputLabel, InputValue } from '../commons/InputBox';
+import { InputEmail } from '../commons/InputEmail';
+import { InputFromListSelecting } from '../commons/InputFromList';
 
 import CoreForm from "../core/CoreForm";
 import validators from '../core/assets/validators';

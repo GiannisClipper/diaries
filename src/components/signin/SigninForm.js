@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
 import styled from 'styled-components';
-import { ListBox } from '../libs/ListBox';
-import { HeadBox } from '../libs/HeadBox';
-import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
-import { ButtonBox, ButtonLabel, ButtonValue } from '../libs/ButtonBox';
-import { OkButton } from '../libs/Buttons';
+import { ListBox } from '../commons/ListBox';
+import { HeadBox } from '../commons/HeadBox';
+import { InputBox, InputLabel, InputValue } from '../commons/InputBox';
+import { ButtonBox, ButtonLabel, ButtonValue } from '../commons/ButtonBox';
+import { OkButton } from '../commons/Buttons';
 
 import { InputValidation } from '../core/CoreForm';
 import validators from '../core/assets/validators';

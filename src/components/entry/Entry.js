@@ -1,8 +1,8 @@
 import React, { useContext, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 
-import StyledRow from '../libs/RowBox';
-import { LoadingIcon, SuspendedIcon } from '../libs/Icons';
+import StyledRow from '../commons/RowBox';
+import { LoadingIcon, SuspendedIcon } from '../commons/Icons';
 
 import { CutCopyPasteContext } from '../core/CutCopyPasteContext';
 import { createRequestFeature, updateRequestFeature, deleteRequestFeature } from '../core/features/requests';

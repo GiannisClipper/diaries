@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 
-import { OkCancelForm } from '../libs/Forms';
+import { OkCancelForm } from '../commons/Forms';
 
 import presetAction from './helpers/presetAction';
 

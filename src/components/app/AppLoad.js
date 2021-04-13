@@ -3,7 +3,7 @@ import React, { useContext, useEffect } from 'react';
 import { AppContext } from '../app/AppContext';
 
 import { ThemeProvider } from 'styled-components';
-import { InitStyle } from '../libs/InitStyle';
+import { InitStyle } from '../commons/InitStyle';
 import themes from './assets/themes';
 
 const AppLoad = props => {

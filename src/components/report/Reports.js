@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 
-import { ListBox } from '../libs/ListBox';
-import { BlockBox, BlockLabel, BlockValue } from '../libs/BlockBox';
+import { ListBox } from '../commons/ListBox';
+import { BlockBox, BlockLabel, BlockValue } from '../commons/BlockBox';
 
 import { ReportsContext } from './ReportsContext';
 import assets from './assets/assets';

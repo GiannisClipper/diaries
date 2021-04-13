@@ -1,8 +1,8 @@
 import React, { useContext, useEffect } from 'react';
 
-import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
-import { InputNumber } from '../libs/InputNumber';
-import { InputFromListTyping } from '../libs/InputFromList';
+import { InputBox, InputLabel, InputValue } from '../commons/InputBox';
+import { InputNumber } from '../commons/InputNumber';
+import { InputFromListTyping } from '../commons/InputFromList';
 
 import { getFromList } from '../core/helpers/getFromList';
 

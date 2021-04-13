@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Modal } from '../libs/Modal';
-import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
+import { Modal } from '../commons/Modal';
+import { InputBox, InputLabel, InputValue } from '../commons/InputBox';
 
 import CoreForm from "../core/CoreForm";
 import presetAction from '../core/helpers/presetAction';

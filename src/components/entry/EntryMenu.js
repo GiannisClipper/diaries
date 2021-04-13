@@ -1,7 +1,7 @@
 import React, { useContext, useRef } from 'react';
 
-import { Modal } from '../libs/Modal';
-import { MenuBox } from '../libs/MenuBox';
+import { Modal } from '../commons/Modal';
+import { MenuBox } from '../commons/MenuBox';
 
 import { 
     MenuOption,

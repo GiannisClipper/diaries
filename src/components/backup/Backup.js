@@ -1,6 +1,6 @@
 import React, { useContext, useEffect  } from 'react';
 
-import { RowBox, RowValue, RowMenu } from '../libs/RowBox';
+import { RowBox, RowValue, RowMenu } from '../commons/RowBox';
 
 import { retrieveRequestFeature } from '../core/features/requests';
 import { CoreMenu, RetrieveOption } from '../core/CoreMenu';

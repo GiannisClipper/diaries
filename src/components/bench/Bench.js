@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useContext } from 'react';
 import styled from 'styled-components';
 
-import StyledList from '../libs/ListBox';
-import { BackwardIcon, ForwardIcon } from '../libs/Icons';
+import StyledList from '../commons/ListBox';
+import { BackwardIcon, ForwardIcon } from '../commons/Icons';
 
 import scrollFeature from '../core/features/scroll';
 import { CutCopyPasteContextProvider } from '../core/CutCopyPasteContext';

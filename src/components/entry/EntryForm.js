@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
-import { Modal } from '../libs/Modal';
-import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
-import { InputFromListSelecting } from '../libs/InputFromList';
+import { Modal } from '../commons/Modal';
+import { InputBox, InputLabel, InputValue } from '../commons/InputBox';
+import { InputFromListSelecting } from '../commons/InputFromList';
 
 import CoreForm from "../core/CoreForm";
 import { YYYYMMDDToRepr, dateToYYYYMMDD } from '../core/helpers/dates';

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import { RowBox, RowValue, RowMenu } from '../libs/RowBox';
+import { RowBox, RowValue, RowMenu } from '../commons/RowBox';
 
 import { CoreMenu, CreateOption, UpdateOption, DeleteOption } from '../core/CoreMenu';
 import presetAction from '../core/helpers/presetAction';
