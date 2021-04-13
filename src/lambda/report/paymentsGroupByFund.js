@@ -14,9 +14,9 @@ const paymentsGroupByFund = ( { diary_id, type, dateFrom, dateTill, genre_id, fu
     const projectFields1 = { 
         $project: {
             _id: 0,
-            fund_id: convertFieldTo( 'fund_id', 'objectId' ),
-            expense: convertFieldTo( 'expense', 'decimal' ),
-            revenue: convertFieldTo( 'revenue', 'decimal' ),
+            fund_id: convertFieldTo( 'type_specs.fund_id', 'objectId' ),
+            expense: convertFieldTo( 'type_specs.expense', 'decimal' ),
+            revenue: convertFieldTo( 'type_specs.revenue', 'decimal' ),
         }
     }
         

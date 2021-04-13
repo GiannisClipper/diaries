@@ -10,6 +10,7 @@ const reportsSchema = () => ( {
 const reportSchema = () => ( {
     descr: '',
     type: '',
+    type_specs: {},
     dateFrom: '',
     dateTill: '',
     _uiux: {

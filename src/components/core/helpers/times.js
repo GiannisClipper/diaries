@@ -1,25 +1,29 @@
 const stringToTime = value => {
-    const digits ='0123456789';
-    const parts = [ '' ];
 
-    for ( const x of value ) {
-        if ( digits.includes( x ) ) {
-            parts[ parts.length - 1 ] += x;
-        } else {
-            parts.push( '' );
-        }
-    }
+    if ( value ) {
 
-    if ( parts.length > 0 ) {
+        const digits ='0123456789';
+        const parts = [ '00' ];
 
-        while ( parts.length < 3 ) {
-            parts.unshift( '00' );
+        for ( const x of value ) {
+            if ( digits.includes( x ) ) {
+                parts[ parts.length - 1 ] += x;
+            } else {
+                parts.push( '00' );
+            }
         }
 
-        return {
-            hours: parseInt( parts[ 0 ] ),
-            minutes: parseInt( parts[ 1 ] ),
-            seconds: parseInt( parts[ 2 ] )
+        if ( parts.length > 0 ) {
+
+            while ( parts.length < 3 ) {
+                parts.unshift( '00' );
+            }
+
+            return {
+                hours: parseInt( parts[ 0 ] ),
+                minutes: parseInt( parts[ 1 ] ),
+                seconds: parseInt( parts[ 2 ] )
+            }
         }
     }
 

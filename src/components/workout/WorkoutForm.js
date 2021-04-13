@@ -7,6 +7,8 @@ import { InputFromListTyping } from '../libs/InputFromList';
 
 import { getFromList } from '../core/helpers/getFromList';
 
+import { workoutSchema } from './assets/schemas';
+
 import { GenresContext } from '../workout/genre/GenresContext';
 import { EquipsContext } from '../workout/equip/EquipsContext';
 import { pace, speed } from './helpers/speedAndPace';
@@ -16,7 +18,7 @@ function WorkoutForm( { data, setData, lexicon } ) {
     const  { genres } = useContext( GenresContext ).state;
     const  { equips } = useContext( EquipsContext ).state;
 
-    const { type_specs } = data;
+    const type_specs = data.type_specs || workoutSchema().type_specs;
 
     if ( type_specs.allGenres === undefined ) {
         type_specs.allGenres = [ ...genres ];
@@ -130,24 +132,14 @@ function WorkoutForm( { data, setData, lexicon } ) {
 
         <InputBox>
             <InputLabel>
-                { lexicon.workout.speed }
+                { `${ lexicon.workout.pace }, ${ lexicon.workout.speed }` }
             </InputLabel>
             <InputValue>
                 <input 
-                    value={ `${ type_specs.speed || '' } ${ lexicon.workout.distance }/${ lexicon.workout.hour }` }
-                    tabIndex="-1"
-                    readOnly
-                />
-            </InputValue>
-        </InputBox>
-
-        <InputBox>
-            <InputLabel>
-                { lexicon.workout.pace }
-            </InputLabel>
-            <InputValue>
-                <input 
-                    value={ `${ type_specs.pace || '' }/${ lexicon.workout.distance }` }
+                    value={ 
+                        `${ type_specs.pace || '' }/${ lexicon.workout.distance }, ` +
+                        `${ type_specs.speed || '' } ${ lexicon.workout.distance }/${ lexicon.workout.hour }`
+                    }
                     tabIndex="-1"
                     readOnly
                 />
@@ -161,8 +153,7 @@ function WorkoutForm( { data, setData, lexicon } ) {
             <InputValue>
                 <textarea
                     rows="3"
-                    cols="100"
-                    maxLength="500"
+                    maxLength="250"
                     value={ type_specs.remark || '' }
                     onChange={ event => setData( { ...data, type_specs: { ...type_specs, remark: event.target.value } } ) }
                 />

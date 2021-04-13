@@ -14,9 +14,9 @@ const paymentsGroupByGenre = ( { diary_id, type, dateFrom, dateTill, genre_id, f
     const projectFields1 = { 
         $project: {
             _id: 0,
-            genre_id: convertFieldTo( 'genre_id', 'objectId' ),
-            expense: convertFieldTo( 'expense', 'decimal' ),
-            revenue: convertFieldTo( 'revenue', 'decimal' ),
+            genre_id: convertFieldTo( 'type_specs.genre_id', 'objectId' ),
+            expense: convertFieldTo( 'type_specs.expense', 'decimal' ),
+            revenue: convertFieldTo( 'type_specs.revenue', 'decimal' ),
         }
     }
         

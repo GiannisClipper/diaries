@@ -48,8 +48,8 @@ function EntryForm( { date, entries, index, actions, assets, lexicon } ) {
             () => {
                 let errors = [];
                 const isBlank = withLexicon( validators.isBlank, lexicon );
-                errors.push( isBlank( lexicon.payment.genre_name, data.genre_name ) );
-                errors.push( isBlank( lexicon.payment.fund_name, data.fund_name ) );
+                errors.push( isBlank( lexicon.payment.genre_name, data.type_specs.genre_name ) );
+                errors.push( isBlank( lexicon.payment.fund_name, data.type_specs.fund_name ) );
                 errors = errors.filter( x => x !== null );
                 return { data, errors };
             }
@@ -81,7 +81,7 @@ function EntryForm( { date, entries, index, actions, assets, lexicon } ) {
                 index={ index }
                 onValidation={ onValidation }
             >
-                <InputBox>
+                {/* <InputBox>
                     <InputLabel>
                         Id
                     </InputLabel>
@@ -92,7 +92,7 @@ function EntryForm( { date, entries, index, actions, assets, lexicon } ) {
                             readOnly
                         />
                     </InputValue>
-                </InputBox>
+                </InputBox> */}
 
                 <InputBox>
                     <InputLabel>
@@ -115,7 +115,12 @@ function EntryForm( { date, entries, index, actions, assets, lexicon } ) {
                         <InputFromListSelecting
                             value={ getFromList( types, 'type', data.type ).descr }
                             allValues={ types.map( x => x.descr ) }
-                            onChange={ event => setData( { ...data, type: getFromList( types, 'descr', event.target.value ).type } ) }
+                            onChange={ event => {
+                                const type = getFromList( types, 'descr', event.target.value ).type
+                                if ( data.type !== type ) {
+                                    setData( { ...data, type, type_specs: null } );
+                                } 
+                            } }
                         />
                     </InputValue>
                 </InputBox>

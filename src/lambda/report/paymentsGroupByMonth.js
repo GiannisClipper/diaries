@@ -13,8 +13,8 @@ const paymentsGroupByFund = ( { diary_id, type, dateFrom, dateTill, genre_id, fu
         $project: {
             _id: 0,
             month: { $substr: [ "$date", 0, 6 ] },
-            expense: convertFieldTo( 'expense', 'decimal' ),
-            revenue: convertFieldTo( 'revenue', 'decimal' ),
+            expense: convertFieldTo( 'type_specs.expense', 'decimal' ),
+            revenue: convertFieldTo( 'type_specs.revenue', 'decimal' ),
         }
     }
         

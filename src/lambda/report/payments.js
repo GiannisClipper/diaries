@@ -16,11 +16,11 @@ const payments = ( { diary_id, type, dateFrom, dateTill, genre_id, fund_id } ) =
             _id: 0,
             date: 1,
             type: 1,
-            remark: 1,
-            expense: 1,
-            revenue: 1,
-            genre_id: convertFieldTo( 'genre_id', 'objectId' ),
-            fund_id: convertFieldTo( 'fund_id', 'objectId' )
+            remark: '$type_specs.remark',
+            expense: '$type_specs.expense',
+            revenue: '$type_specs.revenue',
+            genre_id: convertFieldTo( 'type_specs.genre_id', 'objectId' ),
+            fund_id: convertFieldTo( 'type_specs.fund_id', 'objectId' )
         }
     }
     

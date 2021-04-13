@@ -1,24 +1,8 @@
-import React, { useContext } from 'react';
-
-import { getFromList } from '../core/helpers/getFromList';
-
-import { GenresContext } from '../workout/genre/GenresContext';
-import { EquipsContext } from '../workout/equip/EquipsContext';
+import React from 'react';
 
 const WorkoutRepr = ( { entry, lexicon } ) => {
 
-    const  { genres } = useContext( GenresContext ).state;
-    const  { equips } = useContext( EquipsContext ).state;
-
-    let { duration, distance, pace, equip_id, genre_id, remark } = entry.type_specs;
-
-    const genre_name = genre_id
-        ? getFromList( genres, 'id', genre_id ).name
-        : '';
-
-    const equip_name = equip_id
-        ? getFromList( equips, 'id', equip_id ).name
-        : '';
+    let { duration, distance, pace, equip_name, genre_name, remark } = entry.type_specs;
 
     let repr = '';
 

@@ -37,8 +37,8 @@ function Report( { reports, index, actions, assets, lexicon } ) {
                     groupBy: dataToDB.groupBy,
                     dateFrom: dataToDB.dateFrom,
                     dateTill: dataToDB.dateTill,
-                    genre_name: dataToDB.genre_name,
-                    fund_name: dataToDB.fund_name,
+                    genre_name: dataToDB.type_specs.genre_name,
+                    fund_name: dataToDB.type_specs.fund_name,
                     result
                 } );
             }
@@ -54,8 +54,8 @@ function Report( { reports, index, actions, assets, lexicon } ) {
                 ( dataToDB.groupBy ? `&groupBy=${ dataToDB.groupBy }` : '' ) +
                 `&dateFrom=${ dataToDB.dateFrom }` +
                 `&dateTill=${ dataToDB.dateTill }` +
-                ( dataToDB.genre_id ? `&genre_id=${ dataToDB.genre_id }` : '' ) +
-                ( dataToDB.fund_id ? `&fund_id=${ dataToDB.fund_id }` : '' )
+                ( dataToDB.type_specs.genre_id ? `&genre_id=${ dataToDB.type_specs.genre_id }` : '' ) +
+                ( dataToDB.type_specs.fund_id ? `&fund_id=${ dataToDB.type_specs.fund_id }` : '' )
             } );
         }
 

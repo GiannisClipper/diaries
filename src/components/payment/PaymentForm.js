@@ -6,6 +6,8 @@ import { InputFromListTyping } from '../libs/InputFromList';
 
 import { getFromList } from '../core/helpers/getFromList';
 
+import { paymentSchema } from './assets/schemas';
+
 import { GenresContext } from '../payment/genre/GenresContext';
 import { FundsContext } from '../payment/fund/FundsContext';
 
@@ -14,7 +16,7 @@ function PaymentForm( { data, setData, lexicon } ) {
     const  { genres } = useContext( GenresContext ).state;
     const  { funds } = useContext( FundsContext ).state;
 
-    const { type_specs } = data;
+    const type_specs = data.type_specs || paymentSchema().type_specs;
 
     if ( type_specs.allGenres === undefined ) {
         type_specs.allGenres = [ ...genres ].reverse();
@@ -135,7 +137,7 @@ function PaymentForm( { data, setData, lexicon } ) {
                     onChange={ event => {
                         const fund_name = event.target.value;
                         setData( { ...data, fund_name, ...setupFund( fund_name ) } );
-                        setData( { ...data, type_specs: { ...type_specs, ...setupGenre( fund_name ) } } );
+                        setData( { ...data, type_specs: { ...type_specs, ...setupFund( fund_name ) } } );
                     } }
 
                 />

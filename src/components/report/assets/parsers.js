@@ -10,17 +10,23 @@ const parseReportToDB = ( data ) => {
         groupBy: data.groupBy,
     };
 
+    const { type_specs } = data;
+
     if ( result.type === 'payment' ) {
-        result.genre_id = data.genre_id;
-        result.genre_name = data.genre_name;
-        result.fund_id = data.fund_id;
-        result.fund_name = data.fund_name;
+        result.type_specs = {
+            genre_id: type_specs.genre_id,
+            genre_name: type_specs.genre_name,
+            fund_id: type_specs.fund_id,
+            fund_name: type_specs.fund_name
+        }
 
     } else if ( result.type === 'workout' ) {
-        result.genre_id = data.genre_id;
-        result.genre_name = data.genre_name;
-        result.equip_id = data.equip_id;
-        result.equip_name = data.equip_name;
+        result.type_specs = {
+            genre_id: type_specs.genre_id,
+            genre_name: type_specs.genre_name,
+            equip_id: type_specs.equip_id,
+            equip_name: type_specs.equip_name
+        }
     }
 
     return result;

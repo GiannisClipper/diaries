@@ -2,9 +2,11 @@ import React from 'react';
 
 import { InputBox, InputLabel, InputValue } from '../libs/InputBox';
 
+import { noteSchema } from './assets/schemas';
+
 function NoteForm( { data, setData, lexicon } ) {
 
-    const { type_specs } = data;
+    const type_specs = data.type_specs || noteSchema().type_specs;
 
     return (
         <InputBox>
@@ -13,9 +15,8 @@ function NoteForm( { data, setData, lexicon } ) {
             </InputLabel>
             <InputValue>
                 <textarea
-                    rows="10"
-                    cols="50"
-                    maxLength="1000"
+                    rows="12"
+                    maxLength="2000"
                     value={ type_specs.note || '' }
                     onChange={ event => setData( { ...data, type_specs: { ...type_specs, note: event.target.value } } ) }
                 />

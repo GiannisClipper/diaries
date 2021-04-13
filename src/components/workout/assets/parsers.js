@@ -3,7 +3,7 @@ import { pace, speed } from '../helpers/speedAndPace';
 const parseWorkoutFromDB = data => {
 
     const { _id, diary_id, date, index, type, type_specs } = data;
-    const { genre_id, duration, distance, remark, equip_id } = type_specs;
+    const { genre_id, genre_name, duration, distance, remark, equip_id, equip_name } = type_specs;
 
     return {
         id: _id,
@@ -13,12 +13,14 @@ const parseWorkoutFromDB = data => {
         type,
         type_specs: {
             genre_id,
-            duration: duration,
-            distance: distance,
+            genre_name,
+            duration,
+            distance,
             speed: speed( { duration, distance } ),
             pace: pace( { duration, distance } ),        
-            remark: remark,
-            equip_id: equip_id
+            remark,
+            equip_id,
+            equip_name
         }
     }
 }
@@ -35,10 +37,10 @@ const parseWorkoutToDB = data => {
         type,
         type_specs: {
             genre_id,
-            duration: duration,
-            distance: distance,
-            remark: remark,
-            equip_id: equip_id
+            duration,
+            distance,
+            remark,
+            equip_id
         }
     }
 }

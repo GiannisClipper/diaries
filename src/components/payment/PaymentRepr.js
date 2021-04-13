@@ -1,24 +1,8 @@
-import React, { useContext } from 'react';
-
-import { getFromList } from '../core/helpers/getFromList';
-
-import { GenresContext } from '../payment/genre/GenresContext';
-import { FundsContext } from '../payment/fund/FundsContext';
+import React from 'react';
 
 const PaymentRepr = ( { entry, lexicon } ) => {
 
-    const  { genres } = useContext( GenresContext ).state;
-    const  { funds } = useContext( FundsContext ).state;
-
-    let { revenue, expense, fund_id, genre_id, remark } = entry.type_specs;
-
-    const genre_name = genre_id
-        ? getFromList( genres, 'id', genre_id ).name
-        : '';
-
-    const fund_name = fund_id
-        ? getFromList( funds, 'id', fund_id ).name
-        : '';
+    let { revenue, expense, fund_name, genre_name, remark } = entry.type_specs;
 
     let repr = '';
 
