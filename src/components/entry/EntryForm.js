@@ -39,7 +39,7 @@ function EntryForm( { date, entries, index, actions, assets, lexicon } ) {
             () => {
                 let errors = [];
                 const isBlank = withLexicon( validators.isBlank, lexicon );        
-                errors.push( isBlank( lexicon.note.note, data.note ) );
+                errors.push( isBlank( lexicon.note.note, data.type_specs.note ) );
                 errors = errors.filter( x => x !== null );
                 return { data, errors };
             }

@@ -27,32 +27,114 @@ const InputItem = styled.li`
     ${ props => props.theme.InputItem && props.theme.InputItem };
 `;
 
-function InputFromList( { allValues, value, onChange, _onChange, _onMouseDown, _onKeyDown, _onBlur } ) {
+function InputFromList( { 
+    value,
+    getValue,  // export from [ values ] to assign
+    values,
+    setValues,  // set [ values ] structured as defined
+    onChange, 
+    _onChange, 
+    _onMouseDown, 
+    _onKeyDown, 
+    _onBlur, 
+    ...rest 
+} ) {
+
+    getValue = getValue || ( value => value );
+    values = values || [];
+    setValues = setValues || ( values => values );
+
+    const [ state, setState ] = useState( { value, values, index: -1, isOpen: false, ...rest } );
+
+    const openList = event => setState( { ...state, isOpen: true } );
+    const toggleList = event => setState( { ...state, isOpen: ! state.isOpen } );
+
+    _onMouseDown = _onMouseDown || (
+
+        ( { value, state, setState, onChange } ) => {
+            const values = setValues( [ value ] );
+            let index = -2;
+
+            for ( let i = 0; i < values.length; i++ ) {
+                index = value === getValue( values[ i ] ) ? i : index;
+            }
+    
+            setState( { ...state, value, values, index, isOpen: false } );
+            onChange( { target: { value } } );  // external defined attribute
+        }
+    )
+
+    _onKeyDown = _onKeyDown || (
+
+        ( { event, state, setState, onChange } ) => {
+            event = event || window.event;
+            let { value, values, index, isOpen } = state;
+
+            if ( state.values.length > 0 ) {
+                if ( event.keyCode === 38 ) {  // up arrow
+                    index = index > 0 ? index - 1 : state.values.length - 1;
+                    isOpen = true;
+                    setState( { ...state, index, isOpen } );
+
+                } else if ( event.keyCode === 40 ) {  // down arrow
+                    index = index < state.values.length - 1 ? index + 1 : 0;
+                    isOpen = true;
+                    setState( { ...state, index, isOpen } );
+
+                } else if ( event.keyCode === 13 ) {  // enter
+                    value = index >= 0 ? getValue( values[ index ] ) : null;
+                    values = value ? setValues( [ value ] ) : [];
+                    index = -2;
+
+                    for ( let i = 0; i < values.length; i++ ) {
+                        index = value === getValue( values[ i ] ) ? i : index;
+                    }
+        
+                    isOpen = false;
+                    setState( { ...state, value, values, index, isOpen } );
+                    onChange( { target: { value } } );  // external defined attribute
+                }
+            }
+        }
+    )
+
+    _onBlur = _onBlur || (
+
+        ( { event, state, setState, onChange } ) => {
+            let { value, values, index, isOpen } = state;
+            isOpen = false;
+
+            value = 
+                ! value 
+                ? ''
+                : index === -2  // changed to invaid value
+                ? ''
+                : index === -1  // initial value not changed
+                ? value 
+                : getValue( values[ index ] );  // index >= 0, changed to valid value
+
+            setState( { ...state, value, isOpen } );
+            onChange( { target: { value } } );  // extrnal defined attribute
+        }
+    )
+
+    const __onChange = _onChange ? event => _onChange( { event, state, setState } ) : null;
+    const __onMouseDown = _onMouseDown ? value => _onMouseDown( { value, state, setState, onChange } ) : null;
+    const __onKeyDown = _onKeyDown ? event => _onKeyDown( { event, state, setState, onChange } ) : null;
+    const __onBlur = _onBlur ? event => _onBlur( { event, state, setState, onChange } ) : null;
 
     const inputRef = useRef( null );
     const listRef = useRef( null );
     const listBounds = useRef( {} );
     const indexRef = useRef( null );
-    const [ state, setState ] = useState( { value, values: allValues, index: -2, isOpen: false } );
-
-    const openList = event => {
-        setState( { ...state, isOpen: true } );
-    };
-
-    const toggleList = event => {
-        const { isOpen } = state;
-        setState( { ...state, isOpen: ! isOpen } );
-    };
-
-    const __onChange = _onChange ? event => _onChange( { event, allValues, state, setState } ) : null;
-    const __onMouseDown = _onMouseDown ? value => _onMouseDown( { value, state, setState, onChange } ) : null;
-    const __onKeyDown = _onKeyDown ? event => _onKeyDown( { event, state, setState, onChange } ) : null;
-    const __onBlur = _onBlur ? event => _onBlur( { event, state, setState, onChange } ) : null;
 
     useEffect( () => {
         let { left, top, width, height } = inputRef.current.getBoundingClientRect();
         top = top + height;
-        height = parseFloat( getComputedStyle( inputRef.current ).fontSize ) * Math.min( 6, allValues.length ) * 1.4;
+
+        const { values } = state;
+        const rows = Math.min( 6, values.length || 1 );
+        height = parseFloat( getComputedStyle( inputRef.current ).fontSize ) * rows * 1.4;
 
         listBounds.current = { left, top, width, height } ;
     } );
@@ -90,7 +172,7 @@ function InputFromList( { allValues, value, onChange, _onChange, _onMouseDown, _
                 ? 
                 <InputList ref={ listRef } listBounds={ listBounds }>
                     { state.values.map( value => {
-                        value = value.accurate || value;
+                        value = getValue( value );
 
                         const attrs = {};
                         attrs.key = ++_key;
@@ -132,132 +214,90 @@ function WithTyping( InputFromList ) {
         return values;
     }
 
-    const _onChange = ( { event, allValues, state, setState } ) => {
+    const _onChange = ( { event, state, setState } ) => {
+        const { allValues } = state;
         const value = event.target.value;
-        const prevValue = state.value;
-        const prevValues = state.values;
-        let values = prevValue !== '' && value.includes( prevValue ) ? prevValues : allValues;
-        values = values.filter( x => x.simplified.includes( simplify( value ) ) );
-        let index = values.length > 0 ? 0 : -1;
+        const values = allValues.filter( x => x.simplified.includes( simplify( value ) ) );
+        const index = values.length > 0 ? 0 : -2;
+
         setState( { ...state, value, values, index } );
-    }
-
-    const _onMouseDown = ( { value, setState, onChange } ) => {
-        setState( { value, values: simplifyList( [ value ] ), index: 0, isOpen: false } );
-        onChange( { target: { value } } );  // extrnal defined attribute
-    }
-
-    const _onKeyDown = ( { event, state, setState, onChange } ) => {
-        event = event || window.event;
-        let { value, values, index, isOpen } = state;
-
-        if ( state.values.length > 0 ) {
-            if ( event.keyCode === 38 ) {  // up arrow
-                index = index > 0 ? index - 1 : state.values.length - 1;
-                isOpen = true;
-                setState( { ...state, index, isOpen } );
-
-            } else if ( event.keyCode === 40 ) {  // down arrow
-                index = index < state.values.length - 1 ? index + 1 : 0;
-                isOpen = true;
-                setState( { ...state, index, isOpen } );
-
-            } else if ( event.keyCode === 13 ) {  // enter
-                value = index >= 0 ? values[ index ].accurate : null;
-                values = value ? simplifyList( [ value ] ) : [];
-                index = value ? 0 : -1;
-                isOpen = false;
-                setState( { value, values, index, isOpen } );
-                onChange( { target: { value } } );  // extrnal defined attribute
-            }
-        }
-    }
-
-    const _onBlur = ( { event, state, setState, onChange } ) => {
-        let { value, values, index, isOpen } = state;
-        isOpen = false;
-
-        value = 
-            ! value 
-            ? ''
-            : index === -2  // initial value not changed
-            ? value 
-            : index === -1  // changed to invaid value
-            ? ''
-            : values[ index ].accurate ;  // index >= 0, changed to valid value
-
-        setState( { ...state, value, isOpen } );
-        onChange( { target: { value } } );  // extrnal defined attribute
     }
 
     return ( { allValues, value, onChange } ) =>
         <InputFromList
-            allValues={ simplifyList( allValues ) }
             value={ value }
+            getValue={ value => value.accurate }
+            values={ simplifyList( allValues ) }
+            setValues={ values => simplifyList( values ) }
             onChange={ onChange }
             _onChange={ _onChange } 
-            _onMouseDown={ _onMouseDown } 
-            _onKeyDown={ _onKeyDown }
-            _onBlur={ _onBlur }
+            allValues={ simplifyList( allValues ) }
         />
 }
 
 function WithSelecting( InputFromList ) {
 
+    return ( { allValues, value, onChange } ) =>
+        <InputFromList
+            value={ value }
+            values={ allValues }
+            setValues={ values => allValues }
+            onChange={ onChange }
+            allValues={ allValues }
+        />
+}
+
+function WithRequesting( InputFromList ) {
+
+    const _onChange = ( { event, allValues, state, setState } ) => {
+        const value = event.target.value;
+
+        const { timeout } = state;
+        if ( timeout ) {
+            clearTimeout( timeout )
+        }
+
+        const { reqFilter, reqResult } = state;
+
+        if ( ( value.length === 0 ) || ( value.includes( reqFilter ) ) ) {
+            let values = reqResult || [];
+            values = values.filter( x => x.includes( value ) );
+            const index = values.length > 0 ? 0 : -2;
+            console.log( 'filter', state.value, values )
+            setState( { ...state, value, values, index, timeout: null } );
+    
+        } else {
+            const timeout = setTimeout( () => {
+                let values = [
+                    value + '0',
+                    value + '1',
+                    value + '2',
+                    value + '00',
+                    value + '11',
+                    value + '22',
+                ];
+                console.log( 'req', state.value, values )
+                const index = values.length > 0 ? 0 : -2;
+                setState( { ...state, value, values, index, reqFilter: value, reqResult: values, timeout: null } );
+            }, 1000 );
+
+            setState( { ...state, value, timeout } );
+        }
+
+    }
+
     const _onMouseDown = ( { value, state, setState, onChange } ) => {
-        let { values, index } = state;
-        for ( let i = 0; i < values.length; i++ ) {
-            index = value === values[ i ] ? i : index;
-        }
-        setState( { ...state, value, index, isOpen: false } );
-        onChange( { target: { value } } );  // extrnal defined attribute
-    }
-
-    const _onKeyDown = ( { event, state, setState, onChange } ) => {
-        event = event || window.event;
-        let { value, values, index, isOpen } = state;
-
-        if ( event.keyCode === 38 ) {  // up arrow
-            index = index > 0 ? index - 1 : state.values.length - 1;
-            isOpen = true;
-            setState( { ...state, index, isOpen } );
-
-        } else if ( event.keyCode === 40 ) {  // down arrow
-            index = index >= 0 && index < state.values.length - 1 ? index + 1 : 0;
-            isOpen = true;
-            setState( { ...state, index, isOpen } );
-
-        } else if ( event.keyCode === 13 ) {  // enter
-            value = values[ index ];
-            isOpen = false;
-            setState( { ...state, value, index, isOpen } );
-            onChange( { target: { value } } );  // extrnal defined attribute
-        }
-    }
-
-    const _onBlur = ( { event, state, setState, onChange } ) => {
-        let { value, values, index, isOpen } = state;
-        isOpen = false;
-
-        value = 
-            ! value 
-            ? ''
-            : index < 0  // initial value not changed
-            ? value
-            : values[ index ];  // index >= 0, changed to valid value
-
-        setState( { ...state, value, isOpen } );
-        onChange( { target: { value } } );  // extrnal defined attribute
+        setState( { ...state, value, values: [ value ], index: 0, isOpen: false } );
+        onChange( { target: { value } } );  // external defined attribute
     }
 
     return ( { allValues, value, onChange } ) =>
         <InputFromList
-            allValues={ allValues }
+            allValues={ [] }
             value={ value }
             onChange={ onChange }
+            _onChange={ _onChange } 
             _onMouseDown={ _onMouseDown } 
-            _onKeyDown={ _onKeyDown }
-            _onBlur={ _onBlur }
         />
 }
 
@@ -265,4 +305,6 @@ const InputFromListTyping = WithTyping( InputFromList );
 
 const InputFromListSelecting = WithSelecting( InputFromList );
 
-export { InputFromListTyping, InputFromListSelecting };
+const InputFromListRequesting = WithRequesting( InputFromList );
+
+export { InputFromListTyping, InputFromListSelecting, InputFromListRequesting };

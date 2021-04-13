@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 
 import { InputBox, InputLabel, InputValue } from '../commons/InputBox';
-import { InputFromListTyping } from '../commons/InputFromList';
+import { InputFromListTyping, InputFromListRequesting } from '../commons/InputFromList';
 
 import { getFromList } from '../core/helpers/getFromList';
 
@@ -64,7 +64,7 @@ function PaymentReportForm( { data, setData, lexicon } ) {
                 { lexicon.payment.genre_name }
             </InputLabel>
             <InputValue>
-                <InputFromListTyping
+                <InputFromListRequesting
                     value={ type_specs.genre_name }
                     allValues={ type_specs.allGenres }
                     onChange={ event => {
