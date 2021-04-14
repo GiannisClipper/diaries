@@ -8,6 +8,7 @@ const reportsSchema = () => ( {
 } );
 
 const reportSchema = () => ( {
+    diary_id: '',
     descr: '',
     type: '',
     type_specs: {},

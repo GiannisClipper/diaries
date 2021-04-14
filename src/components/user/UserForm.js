@@ -133,7 +133,7 @@ function UserForm( { users, index, actions, assets, lexicon } ) {
                     <InputValue>
                         <InputFromListSelecting
                             value={ getFromList( types, 'type', data.type ).descr }
-                            allValues={ types.map( x => x.descr ) }
+                            values={ types.map( x => x.descr ) }
                             onChange={ event => setData( { ...data, type: getFromList( types, 'descr', event.target.value ).type } ) }
                         />
                     </InputValue>

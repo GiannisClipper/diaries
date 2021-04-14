@@ -50,7 +50,7 @@ function SettingsForm( { settings, actions, assets, lexicon } ) {
                     <InputValue>
                         <InputFromListSelecting
                             value={ data.theme }
-                            allValues={ [ 'LIGHT', 'DARK' ] }
+                            values={ [ 'LIGHT', 'DARK' ] }
                             onChange={ event => setData( { ...data, theme: event.target.value } ) }
                         />
                     </InputValue>
@@ -63,7 +63,7 @@ function SettingsForm( { settings, actions, assets, lexicon } ) {
                     <InputValue>
                         <InputFromListSelecting
                             value={ data.language }
-                            allValues={ [ 'EN', 'GR' ] }
+                            values={ [ 'EN', 'GR' ] }
                             onChange={ event => setData( { ...data, language: event.target.value } ) }
                         />
                     </InputValue>

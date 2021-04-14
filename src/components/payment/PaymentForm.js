@@ -75,7 +75,7 @@ function PaymentForm( { data, setData, lexicon } ) {
             <InputValue>
                 <InputFromListTyping
                     value={ type_specs.genre_name }
-                    allValues={ type_specs.allGenres }
+                    values={ type_specs.allGenres }
                     onChange={ event => {
                         const genre_name = event.target.value;
                         setData( { ...data, type_specs: { ...type_specs, ...setupGenre( genre_name ) } } );
@@ -133,7 +133,7 @@ function PaymentForm( { data, setData, lexicon } ) {
             <InputValue>
                 <InputFromListTyping
                     value={ type_specs.fund_name }
-                    allValues={ type_specs.allFunds }
+                    values={ type_specs.allFunds }
                     onChange={ event => {
                         const fund_name = event.target.value;
                         setData( { ...data, fund_name, ...setupFund( fund_name ) } );

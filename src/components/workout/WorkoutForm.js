@@ -89,7 +89,7 @@ function WorkoutForm( { data, setData, lexicon } ) {
             <InputValue>
                 <InputFromListTyping
                     value={ type_specs.genre_name }
-                    allValues={ type_specs.allGenres }
+                    values={ type_specs.allGenres }
                     onChange={ event => {
                         const genre_name = event.target.value;
                         setData( { ...data, type_specs: { ...type_specs, genre_name, ...setupGenre( genre_name ) } } );
@@ -167,7 +167,7 @@ function WorkoutForm( { data, setData, lexicon } ) {
             <InputValue>
                 <InputFromListTyping
                     value={ type_specs.equip_name }
-                    allValues={ type_specs.allEquips }
+                    values={ type_specs.allEquips }
                     onChange={ event => {
                         const equip_name = event.target.value;
                         setData( { ...data, type_specs: { ...type_specs, equip_name, ...setupEquip( equip_name ) } } );

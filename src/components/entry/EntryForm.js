@@ -114,7 +114,7 @@ function EntryForm( { date, entries, index, actions, assets, lexicon } ) {
                     <InputValue>
                         <InputFromListSelecting
                             value={ getFromList( types, 'type', data.type ).descr }
-                            allValues={ types.map( x => x.descr ) }
+                            values={ types.map( x => x.descr ) }
                             onChange={ event => {
                                 const type = getFromList( types, 'descr', event.target.value ).type
                                 if ( data.type !== type ) {

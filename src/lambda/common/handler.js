@@ -81,7 +81,7 @@ function createHandler( { auth, collectionName, getMethod, postMethod, putMethod
                 callback( null, responseOnSuccess( result ) );
         
             } else {
-                throw new Error( `${event.httpMethod} method not supported.` );
+                throw new Error( `${ event.httpMethod } method not supported.` );
             }
 
         } catch ( err ) {
