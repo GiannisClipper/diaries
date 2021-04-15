@@ -1,5 +1,4 @@
-import { ObjectId } from 'mongodb';
-import { createHandler, auth } from './common/handler';
+import { createHandler, auth } from './core/handler';
 import payments from './report/payments';
 import paymentsGroupByMonth from './report/paymentsGroupByMonth';
 import paymentsGroupByWeek from './report/paymentsGroupByWeek';

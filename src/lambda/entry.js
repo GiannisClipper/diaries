@@ -1,7 +1,22 @@
 import { ObjectId } from 'mongodb';
-import { createHandler, auth } from './common/handler';
-import { updateIndex } from './common/updateIndex';
-import { convertFieldTo, reduceField } from './report/aggregation';
+import { createHandler, auth } from './core/handler';
+import { convertFieldTo, reduceField } from './core/stages';
+
+const updateIndex = async ( collection, id, date, index, step ) => {
+
+    const res = await collection.updateMany( 
+        {
+            date: { $eq: date },
+            index: { $gte: index },
+            _id: { $ne: ObjectId( id ) }
+        }, 
+        { 
+            $inc: { index: step }
+        }
+    );
+
+    console.log( 'updateIndex', { id, date, index, step, res } );
+}
 
 const getMethod = async ( event, db, collectionName, payload ) => {
 

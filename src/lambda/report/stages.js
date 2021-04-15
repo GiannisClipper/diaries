@@ -28,23 +28,6 @@ const matchPayments = ( { diary_id, type, dateFrom, dateTill, genre_id, genre_id
     };
 };
 
-
-const convertFieldTo = ( field, type, onError ) => ( { 
-    $convert: { 
-        input: `$${ field }`,
-        to: type,
-        onError: onError || null 
-    }
-} )
-
-const reduceField = ( field ) => ( {
-    $reduce: {
-        input: `$${ field }`,
-        initialValue: "",
-        in: { $concat : [ "$$value", "$$this" ] }
-    }
-} )
-
 const groupMonth = {
     $group: {
         _id : "$month",
@@ -125,8 +108,6 @@ const sortFund = {
 
 export {
     matchPayments,
-    convertFieldTo,
-    reduceField,
     groupMonth,
     groupWeek,
     groupGenre,

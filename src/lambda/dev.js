@@ -1,5 +1,5 @@
-import { connectDB } from './common/connectDB';
-import { responseOnSuccess, responseOnError } from './common/responses';
+import { connectDB } from './core/connectDB';
+import { responseOnSuccess, responseOnError } from './core/responses';
 
 exports.handler = async function( event, context, callback ) {
     // Allows to freeze open connections to a database

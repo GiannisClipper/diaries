@@ -1,11 +1,5 @@
-import {
-    matchPayments,
-    convertFieldTo,
-    reduceField,
-    groupGenre,
-    lookupGenre,
-    sortGenre,    
-} from './aggregation';
+import { convertFieldTo, reduceField } from '../core/stages';
+import { matchPayments, groupGenre, lookupGenre, sortGenre } from './stages';
 
 const paymentsGroupByGenre = ( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, fund_id, fund_ids } ) => {
 

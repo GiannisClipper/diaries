@@ -1,5 +1,5 @@
-import { createHandler } from './common/handler';
-import { createToken } from './common/token';
+import { createHandler } from './core/handler';
+import { createToken } from './core/token';
 const bcrypt = require( 'bcryptjs' );
 
 const putMethod = async ( event, db, collectionName, payload ) => {

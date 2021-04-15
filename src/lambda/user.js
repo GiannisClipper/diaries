@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb';
-import { createHandler, auth, getMethod, deleteMethod } from './common/handler';
+import { createHandler, auth, getMethod, deleteMethod } from './core/handler';
 
 const bcrypt = require( 'bcryptjs' );
 

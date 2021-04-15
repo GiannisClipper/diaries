@@ -5,7 +5,7 @@ import {
     putMethod,
     deleteMethod
 }
-from './common/handler';
+from './core/handler';
 
 const getMethod = async ( event, db, collectionName, payload ) => {
 

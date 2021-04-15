@@ -1,4 +1,4 @@
-import { createHandler, auth } from './common/handler';
+import { createHandler, auth } from './core/handler';
 
 const getMethod = async ( event, db, collectionName, payload ) => {
     //console.log('event.queryStringParameters', event.queryStringParameters)

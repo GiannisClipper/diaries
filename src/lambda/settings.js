@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb';
-import { createHandler, auth } from './common/handler';
+import { createHandler, auth } from './core/handler';
 
 const putMethod = async ( event, db, collectionName, payload ) => {
     const id = payload.user_id;
