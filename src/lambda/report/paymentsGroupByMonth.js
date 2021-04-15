@@ -5,9 +5,9 @@ import {
     sortMonth,
 } from './aggregation';
 
-const paymentsGroupByFund = ( { diary_id, type, dateFrom, dateTill, genre_id, fund_id } ) => {
+const paymentsGroupByFund = ( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, fund_id, fund_ids } ) => {
 
-    const matchDocuments = matchPayments( { diary_id, type, dateFrom, dateTill, genre_id, fund_id } );
+    const matchDocuments = matchPayments( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, fund_id, fund_ids } );
     
     const projectFields1 = { 
         $project: {

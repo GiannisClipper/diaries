@@ -23,7 +23,8 @@ function PaymentReportForm( { data, setData, lexicon } ) {
                         const { value } = event.target;
                         const genre_id = value ? value._id : null;
                         const genre_name = value ? value.name : '';
-                        setData( { ...data, type_specs: { ...type_specs, genre_id, genre_name } } );
+                        const genre_code = value ? value.code : '';
+                        setData( { ...data, type_specs: { ...type_specs, genre_id, genre_name, genre_code } } );
                     } }
                 />
             </InputValue>
@@ -43,7 +44,8 @@ function PaymentReportForm( { data, setData, lexicon } ) {
                         const { value } = event.target;
                         const fund_id = value ? value._id : null;
                         const fund_name = value ? value.name : '';
-                        setData( { ...data, type_specs: { ...type_specs, fund_id, fund_name } } );
+                        const fund_code = value ? value.code : '';
+                        setData( { ...data, type_specs: { ...type_specs, fund_id, fund_name, fund_code } } );
                     } }
                 />
             </InputValue>

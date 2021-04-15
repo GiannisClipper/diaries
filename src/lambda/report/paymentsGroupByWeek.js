@@ -11,14 +11,14 @@ import {
     sortWeek,
 } from './aggregation';
 
-const paymentsGroupByWeek = ( { diary_id, type, dateFrom, dateTill, genre_id, fund_id } ) => {
+const paymentsGroupByWeek = ( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, fund_id, fund_ids } ) => {
 
     const weeks = splitWeeks( YYYYMMDDToDate( dateFrom ), YYYYMMDDToDate( dateTill ) );
     const lastDate = weeks[ weeks.length - 1 ].dateTill;
     weeks.push( { dateFrom: lastDate, dateTill: lastDate } );  // to support the operation of `bucket.boundaries` in `groupWeek` stage
     weeks.forEach( ( x, i ) => weeks[ i ] = `${ dateToYYYYMMDD( x.dateFrom ) }-${ dateToYYYYMMDD( x.dateTill ) }` );
 
-    const matchDocuments = matchPayments( { diary_id, type, dateFrom, dateTill, genre_id, fund_id } );
+    const matchDocuments = matchPayments( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, fund_id, fund_ids } );
 
     const projectFields1 = { 
         $project: {

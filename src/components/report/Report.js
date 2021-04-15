@@ -55,7 +55,9 @@ function Report( { reports, index, actions, assets, lexicon } ) {
                 `&dateFrom=${ dataToDB.dateFrom }` +
                 `&dateTill=${ dataToDB.dateTill }` +
                 ( dataToDB.type_specs.genre_id ? `&genre_id=${ dataToDB.type_specs.genre_id }` : '' ) +
-                ( dataToDB.type_specs.fund_id ? `&fund_id=${ dataToDB.type_specs.fund_id }` : '' )
+                ( dataToDB.type_specs.genre_code ? `&genre_code=${ dataToDB.type_specs.genre_code }` : '' ) +
+                ( dataToDB.type_specs.fund_id ? `&fund_id=${ dataToDB.type_specs.fund_id }` : '' ) +
+                ( dataToDB.type_specs.fund_code ? `&fund_code=${ dataToDB.type_specs.fund_code }` : '' )
             } );
         }
 

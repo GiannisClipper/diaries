@@ -1,4 +1,5 @@
-const matchPayments = ( { diary_id, type, dateFrom, dateTill, genre_id, fund_id } ) => {
+const matchPayments = ( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, fund_id, fund_ids } ) => {
+
     const filters = { 
         diary_id,
         type,
@@ -8,11 +9,17 @@ const matchPayments = ( { diary_id, type, dateFrom, dateTill, genre_id, fund_id 
         },
     }
 
-    if ( genre_id ) {
+    if ( genre_ids ) {
+        filters[ 'type_specs.genre_id' ] = { $in: genre_ids };
+
+    } else if ( genre_id ) {
         filters[ 'type_specs.genre_id' ] = genre_id;
     }
 
-    if ( fund_id ) {
+    if ( fund_ids ) {
+        filters[ 'type_specs.fund_id' ] = { $in: fund_ids };
+    
+    } else if ( fund_id ) {
         filters[ 'type_specs.fund_id' ] = fund_id;
     }
 
