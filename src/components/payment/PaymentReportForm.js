@@ -21,10 +21,12 @@ function PaymentReportForm( { data, setData, lexicon } ) {
                     url={ `/.netlify/functions/payment-genre?diary_id=${ diary_id }&name=` }
                     onChange={ event => {
                         const { value } = event.target;
-                        const genre_id = value ? value._id : null;
-                        const genre_name = value ? value.name : '';
-                        const genre_code = value ? value.code : '';
-                        setData( { ...data, type_specs: { ...type_specs, genre_id, genre_name, genre_code } } );
+                        const specs = {
+                            genre_id: value ? value._id : null,
+                            genre_name: value ? value.name : null,
+                            genre_code: value ? value.code : null,
+                        }
+                        setData( { ...data, type_specs: { ...type_specs, ...specs } } );
                     } }
                 />
             </InputValue>
@@ -35,17 +37,19 @@ function PaymentReportForm( { data, setData, lexicon } ) {
                 { lexicon.payment.fund_name }
             </InputLabel>
             <InputValue>
-            <InputFromListRequesting
+                <InputFromListRequesting
                     value={ type_specs.fund_name }
                     valueToAssign={ value => value.name }
                     valueToRepr={ value => value.name }    
                     url={ `/.netlify/functions/payment-fund?diary_id=${ diary_id }&name=` }
                     onChange={ event => {
                         const { value } = event.target;
-                        const fund_id = value ? value._id : null;
-                        const fund_name = value ? value.name : '';
-                        const fund_code = value ? value.code : '';
-                        setData( { ...data, type_specs: { ...type_specs, fund_id, fund_name, fund_code } } );
+                        const specs = {
+                            fund_id: value ? value._id : null,
+                            fund_name: value ? value.name : null,
+                            fund_code: value ? value.code : null,
+                        }
+                        setData( { ...data, type_specs: { ...type_specs, ...specs } } );
                     } }
                 />
             </InputValue>

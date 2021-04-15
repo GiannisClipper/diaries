@@ -1,84 +1,18 @@
-import React, { useContext, useEffect } from 'react';
+import React from 'react';
 
 import { InputBox, InputLabel, InputValue } from '../commons/InputBox';
 import { InputDuration } from '../commons/InputDuration';
 import { InputNumber } from '../commons/InputNumber';
-import { InputFromListTyping } from '../commons/InputFromList';
-
-import { getFromList } from '../core/helpers/getFromList';
+import { InputFromListRequesting } from '../commons/InputFromList';
 
 import { workoutSchema } from './assets/schemas';
 
-import { GenresContext } from '../workout/genre/GenresContext';
-import { EquipsContext } from '../workout/equip/EquipsContext';
 import { pace, speed } from './helpers/speedAndPace';
 
 function WorkoutForm( { data, setData, lexicon } ) {
 
-    const  { genres } = useContext( GenresContext ).state;
-    const  { equips } = useContext( EquipsContext ).state;
-
-    const type_specs = data.type_specs || workoutSchema().type_specs;
-
-    if ( type_specs.allGenres === undefined ) {
-        type_specs.allGenres = [ ...genres ];
-        type_specs.allGenres = type_specs.allGenres.reverse();
-        type_specs.allGenres = type_specs.allGenres.filter( ( x, i ) => i === 0 || ! type_specs.allGenres[ i - 1 ].code.startsWith( x.code ) );
-        type_specs.allGenres = type_specs.allGenres.map( x => x.name ).filter( x => x !== '' );
-
-        type_specs.genre_name = type_specs.genre_id
-            ? getFromList( genres, 'id', type_specs.genre_id ).name
-            : '';
-    }
-
-    if ( type_specs.allEquips === undefined ) {
-        type_specs.allEquips = [ ...equips ];
-        type_specs.allEquips = type_specs.allEquips.reverse();
-        type_specs.allEquips = type_specs.allEquips.filter( ( x, i ) => i === 0 || ! type_specs.allEquips[ i - 1 ].code.startsWith( x.code ) );
-        type_specs.allEquips = type_specs.allEquips.map( x => x.name ).filter( x => x !== '' );
-
-        type_specs.equip_name = type_specs.equip_id
-            ? getFromList( equips, 'id', type_specs.equip_id ).name
-            : '';
-    }
-
-    const setupGenre = name => {
-        let genre_id = null;
-
-        if ( name ) {
-            const genre = getFromList( genres, 'name', name );
-            genre_id = genre.id;
-        }
-
-        return { genre_id };
-    }
-
-    const setupDuration = duration => {
-        const { distance } = type_specs;
-        return {
-            speed: speed( { duration, distance } ),
-            pace: pace( { duration, distance } )
-        }
-    } 
-
-    const setupDistance = distance => {
-        const { duration } = type_specs;
-        return {
-            speed: speed( { duration, distance } ),
-            pace: pace( { duration, distance } )
-        }
-    } 
-
-    const setupEquip = name => {
-        let equip_id = null;
-
-        if ( name ) {
-            const equip = getFromList( equips, 'name', name );
-            equip_id = equip.id;
-        }
-
-        return { equip_id };
-    }
+    let { diary_id, type_specs } = data;
+    type_specs = type_specs || workoutSchema().type_specs;
 
     return (
         <>
@@ -87,12 +21,18 @@ function WorkoutForm( { data, setData, lexicon } ) {
                 { lexicon.workout.genre_name }
             </InputLabel>
             <InputValue>
-                <InputFromListTyping
+                <InputFromListRequesting
                     value={ type_specs.genre_name }
-                    values={ type_specs.allGenres }
+                    valueToAssign={ value => value.name }
+                    valueToRepr={ value => value.name }    
+                    url={ `/.netlify/functions/workout-genre?diary_id=${ diary_id }&name=` }
                     onChange={ event => {
-                        const genre_name = event.target.value;
-                        setData( { ...data, type_specs: { ...type_specs, genre_name, ...setupGenre( genre_name ) } } );
+                        const { value } = event.target;
+                        const specs = {
+                            genre_id: value ? value._id : null,
+                            genre_name: value ? value.name : null,
+                        }
+                        setData( { ...data, type_specs: { ...type_specs, ...specs } } );
                     } }
                 />
             </InputValue>
@@ -108,7 +48,12 @@ function WorkoutForm( { data, setData, lexicon } ) {
                     value={ type_specs.duration || '' }
                     onChange={ event => {
                         const duration = event.target.value;
-                        setData( { ...data, type_specs: { ...type_specs, duration, ...setupDuration( duration ) } } );
+                        const { distance } = type_specs;
+                        const specs = {
+                            speed: speed( { duration, distance } ),
+                            pace: pace( { duration, distance } )
+                        }
+                        setData( { ...data, type_specs: { ...type_specs, duration, ...specs } } );
                     } }
                 />
             </InputValue>
@@ -124,7 +69,12 @@ function WorkoutForm( { data, setData, lexicon } ) {
                     value={ type_specs.distance || '' }
                     onChange={ event => {
                         const distance = event.target.value;
-                        setData( { ...data, type_specs: { ...type_specs, distance, ...setupDistance( distance ) } } );
+                        const { duration } = type_specs;
+                        const specs = {
+                            speed: speed( { duration, distance } ),
+                            pace: pace( { duration, distance } )
+                        }
+                        setData( { ...data, type_specs: { ...type_specs, distance, ...specs } } );
                     } }
                 />
             </InputValue>
@@ -165,15 +115,21 @@ function WorkoutForm( { data, setData, lexicon } ) {
                 { lexicon.workout.equip_name }
             </InputLabel>
             <InputValue>
-                <InputFromListTyping
+                <InputFromListRequesting
                     value={ type_specs.equip_name }
-                    values={ type_specs.allEquips }
+                    valueToAssign={ value => value.name }
+                    valueToRepr={ value => value.name }    
+                    url={ `/.netlify/functions/workout-equip?diary_id=${ diary_id }&name=` }
                     onChange={ event => {
-                        const equip_name = event.target.value;
-                        setData( { ...data, type_specs: { ...type_specs, equip_name, ...setupEquip( equip_name ) } } );
+                        const { value } = event.target;
+                        const specs = {
+                            equip_id: value ? value._id : null,
+                            equip_name: value ? value.name : null,
+                        }
+                        setData( { ...data, type_specs: { ...type_specs, ...specs } } );
                     } }
-
                 />
+
             </InputValue>
         </InputBox>
         </>

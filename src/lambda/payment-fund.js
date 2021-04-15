@@ -21,7 +21,7 @@ const getMethod = async ( event, db, collectionName, payload ) => {
     }
 
     const collection = db.collection( collectionName );
-    const result = await collection.find( { diary_id: { $eq: diary_id } } ).toArray();
+    const result = await collection.find( filters ).toArray();
 
     return result;            
 }

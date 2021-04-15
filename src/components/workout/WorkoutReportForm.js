@@ -1,63 +1,11 @@
-import React, { useContext, useEffect } from 'react';
+import React from 'react';
 
 import { InputBox, InputLabel, InputValue } from '../commons/InputBox';
-import { InputFromListTyping } from '../commons/InputFromList';
-
-import { getFromList } from '../core/helpers/getFromList';
-
-import { GenresContext } from '../workout/genre/GenresContext';
-import { EquipsContext } from '../workout/equip/EquipsContext';
+import { InputFromListRequesting } from '../commons/InputFromList';
 
 function WorkoutReportForm( { data, setData, lexicon } ) {
 
-    const  { genres } = useContext( GenresContext ).state;
-    const  { equips } = useContext( EquipsContext ).state;
-
-    const { type_specs } = data;
-
-    if ( type_specs.allGenres === undefined ) {
-        type_specs.allGenres = [ ...genres ]
-            .reverse()
-            .filter( ( x, i ) => i === 0 || ! type_specs.allGenres[ i - 1 ].code.startsWith( x.code ) )
-            .map( x => x.name ).filter( x => x !== '' );
-
-        type_specs.genre_name = type_specs.genre_id
-            ? getFromList( genres, 'id', type_specs.genre_id ).name
-            : '';
-    }
-
-    if ( type_specs.allEquips === undefined ) {
-        type_specs.allEquips = [ ...equips ]
-            .reverse()
-            .filter( ( x, i ) => i === 0 || ! type_specs.allEquips[ i - 1 ].code.startsWith( x.code ) )
-            .map( x => x.name ).filter( x => x !== '' );
-
-        type_specs.equip_name = type_specs.equip_id
-            ? getFromList( equips, 'id', type_specs.equip_id ).name
-            : '';
-    }
-
-    const setupGenre = genre_name => {
-        let genre_id = null;
-
-        if ( genre_name ) {
-            const genre = getFromList( genres, 'name', genre_name );
-            genre_id = genre.id;
-        }
-
-        return { genre_name, genre_id };
-    }
-
-    const setupEquip = equip_name => {
-        let equip_id = null;
-
-        if ( equip_name ) {
-            const equip = getFromList( equips, 'name', equip_name );
-            equip_id = equip.id;
-        }
-
-        return { equip_name, equip_id };
-    }
+    const { diary_id, type_specs } = data;
 
     return (
         <>
@@ -66,12 +14,19 @@ function WorkoutReportForm( { data, setData, lexicon } ) {
                 { lexicon.workout.genre_name }
             </InputLabel>
             <InputValue>
-                <InputFromListTyping
+                <InputFromListRequesting
                     value={ type_specs.genre_name }
-                    values={ type_specs.allGenres }
+                    valueToAssign={ value => value.name }
+                    valueToRepr={ value => value.name }    
+                    url={ `/.netlify/functions/payment-genre?diary_id=${ diary_id }&name=` }
                     onChange={ event => {
-                        const genre_name = event.target.value;
-                        setData( { ...data, type_specs: { ...type_specs, ...setupGenre( genre_name ) } } );
+                        const { value } = event.target;
+                        const specs = {
+                            genre_id: value ? value._id : null,
+                            genre_name: value ? value.name : null,
+                            genre_code: value ? value.code : null,
+                        }
+                        setData( { ...data, type_specs: { ...type_specs, ...specs } } );
                     } }
                 />
             </InputValue>
@@ -82,14 +37,20 @@ function WorkoutReportForm( { data, setData, lexicon } ) {
                 { lexicon.workout.equip_name }
             </InputLabel>
             <InputValue>
-                <InputFromListTyping
+                <InputFromListRequesting
                     value={ type_specs.equip_name }
-                    values={ type_specs.allEquips }
+                    valueToAssign={ value => value.name }
+                    valueToRepr={ value => value.name }    
+                    url={ `/.netlify/functions/workout-equip?diary_id=${ diary_id }&name=` }
                     onChange={ event => {
-                        const equip_name = event.target.value;
-                        setData( { ...data, type_specs: { ...type_specs, ...setupEquip( equip_name ) } } );
+                        const { value } = event.target;
+                        const specs = {
+                            equip_id: value ? value._id : null,
+                            equip_name: value ? value.name : null,
+                            equip_code: value ? value.code : null,
+                        }
+                        setData( { ...data, type_specs: { ...type_specs, ...specs } } );
                     } }
-
                 />
             </InputValue>
         </InputBox>

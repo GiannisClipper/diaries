@@ -30,7 +30,7 @@ function createRequestFeature( { _item, actions, assets, index, url } ) {
     const createResponseErrorAfter = presetAction( actions.createResponseErrorAfter, { assets, index } );
     const handleError = actions.handleError;
 
-    const { parseToDB } = assets;
+    const { parseToDB, parseFromDB } = assets;
     const dataToDB = parseToDB( _item );
     const body = JSON.stringify( { data: { ...dataToDB } } );
 
@@ -41,7 +41,8 @@ function createRequestFeature( { _item, actions, assets, index, url } ) {
         const args = { method: 'POST', body };
         const onDone = createResponseOk;
         const onError = createResponseError;
-        const dataFromDB = res => ( { ...dataToDB, _id: res.insertedId } );
+        const dataLocally = parseFromDB( _item );
+        const dataFromDB = res => ( { ...dataLocally, _id: res.insertedId } );
         doFetch( url, args, onDone, onError, dataFromDB );
 
     } else if ( status.isResponseOk ) {
@@ -89,7 +90,7 @@ function updateRequestFeature( { _item, actions, assets, index, url } ) {
     const updateResponseErrorAfter = presetAction( actions.updateResponseErrorAfter, { assets, index } );
     const handleError = actions.handleError;
 
-    const { parseToDB } = assets;
+    const { parseToDB, parseFromDB } = assets;
     const dataToDB = parseToDB( _item );
     const body = JSON.stringify( { data: { ...dataToDB } } );
     const id = _item.id;
@@ -101,7 +102,8 @@ function updateRequestFeature( { _item, actions, assets, index, url } ) {
         const args = { method: 'PUT', body };
         const onDone = updateResponseOk;
         const onError = updateResponseError;
-        const dataFromDB = () => ( { ...dataToDB, _id: id } );
+        const dataLocally = parseFromDB( _item );
+        const dataFromDB = () => ( { ...dataLocally, _id: id } );
         doFetch( url, args, onDone, onError, dataFromDB );
 
     } else if ( status.isResponseOk ) {
@@ -121,7 +123,7 @@ function deleteRequestFeature( { _item, actions, assets, index, url } ) {
     const deleteResponseErrorAfter = presetAction( actions.deleteResponseErrorAfter, { assets, index } );
     const handleError = actions.handleError;
 
-    const { parseToDB } = assets;
+    const { parseToDB, parseFromDB } = assets;
     const dataToDB = parseToDB( _item );
     const body = JSON.stringify( { data: { ...dataToDB } } );
     const id = _item.id;
@@ -133,7 +135,8 @@ function deleteRequestFeature( { _item, actions, assets, index, url } ) {
         const args = { method: 'DELETE', body };
         const onDone = deleteResponseOk;
         const onError = deleteResponseError;
-        const dataFromDB = () => ( { ...dataToDB, _id: id } );
+        const dataLocally = parseFromDB( _item );
+        const dataFromDB = () => ( { ...dataLocally, _id: id } );
         doFetch( url, args, onDone, onError, dataFromDB );
 
     } else if ( status.isResponseOk ) {

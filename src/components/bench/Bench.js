@@ -11,11 +11,11 @@ import { BenchContext } from './BenchContext';
 import assets from './assets/assets';
 import { BenchLoader } from './BenchLoader';
 
-import PaymentGenresLoader from '../payment/genre/GenresLoader';
-import PaymentFundsLoader from '../payment/fund/FundsLoader';
+// import PaymentGenresLoader from '../payment/genre/GenresLoader';
+// import PaymentFundsLoader from '../payment/fund/FundsLoader';
 
-import WorkoutGenresLoader from '../workout/genre/GenresLoader';
-import WorkoutEquipsLoader from '../workout/equip/EquipsLoader';
+// import WorkoutGenresLoader from '../workout/genre/GenresLoader';
+// import WorkoutEquipsLoader from '../workout/equip/EquipsLoader';
 
 import { DatesContextProvider } from '../date/DatesContext';
 import { Dates } from '../date/Dates';
@@ -116,7 +116,7 @@ const Bench = ( { diary_id, lexicon } ) => {
                 lexicon={ lexicon }
             />
 
-            <PaymentGenresLoader
+            {/* <PaymentGenresLoader
                 diary_id={ diary_id }
             />
 
@@ -130,7 +130,7 @@ const Bench = ( { diary_id, lexicon } ) => {
 
             <WorkoutEquipsLoader 
                 diary_id={ diary_id }
-            />
+            /> */}
 
             <BenchLoader
                 diary_id={ diary_id }
