@@ -3,7 +3,7 @@ import React from 'react';
 import { InputBox, InputLabel, InputValue } from '../commons/InputBox';
 import { InputDuration } from '../commons/InputDuration';
 import { InputNumber } from '../commons/InputNumber';
-import { InputFromListRequesting } from '../commons/InputFromList';
+import { InputRequestingList } from '../commons/InputList';
 
 import { workoutSchema } from './assets/schemas';
 
@@ -21,7 +21,7 @@ function WorkoutForm( { data, setData, lexicon } ) {
                 { lexicon.workout.genre_name }
             </InputLabel>
             <InputValue>
-                <InputFromListRequesting
+                <InputRequestingList
                     value={ type_specs.genre_name }
                     valueToAssign={ value => value.name }
                     valueToRepr={ value => value.name }    
@@ -115,7 +115,7 @@ function WorkoutForm( { data, setData, lexicon } ) {
                 { lexicon.workout.equip_name }
             </InputLabel>
             <InputValue>
-                <InputFromListRequesting
+                <InputRequestingList
                     value={ type_specs.equip_name }
                     valueToAssign={ value => value.name }
                     valueToRepr={ value => value.name }    

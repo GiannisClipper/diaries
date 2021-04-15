@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 
 import { Modal } from '../../commons/Modal';
 import { InputBox, InputLabel, InputValue } from '../../commons/InputBox';
-import { InputFromListSelecting } from '../../commons/InputFromList';
+import { InputSelectingList } from '../../commons/InputList';
 
 import CoreForm from "../../core/CoreForm";
 import validators from '../../core/assets/validators';
@@ -84,7 +84,7 @@ function GenreForm( { genres, index, actions, assets, lexicon } ) {
                         { lexicon.paymentGenre.type }
                     </InputLabel>
                     <InputValue>
-                        <InputFromListSelecting
+                        <InputSelectingList
                             value={ getFromList( types, 'type', data.type ).descr }
                             values={ types.map( x => x.descr ) }
                             onChange={ event => setData( { ...data, type: getFromList( types, 'descr', event.target.value ).type } ) }

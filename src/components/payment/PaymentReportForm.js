@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { InputBox, InputLabel, InputValue } from '../commons/InputBox';
-import { InputFromListRequesting } from '../commons/InputFromList';
+import { InputRequestingList } from '../commons/InputList';
 
 function PaymentReportForm( { data, setData, lexicon } ) {
 
@@ -14,7 +14,7 @@ function PaymentReportForm( { data, setData, lexicon } ) {
                 { lexicon.payment.genre_name }
             </InputLabel>
             <InputValue>
-                <InputFromListRequesting
+                <InputRequestingList
                     value={ type_specs.genre_name }
                     valueToAssign={ value => value.name }
                     valueToRepr={ value => value.name }    
@@ -37,7 +37,7 @@ function PaymentReportForm( { data, setData, lexicon } ) {
                 { lexicon.payment.fund_name }
             </InputLabel>
             <InputValue>
-                <InputFromListRequesting
+                <InputRequestingList
                     value={ type_specs.fund_name }
                     valueToAssign={ value => value.name }
                     valueToRepr={ value => value.name }    

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { InputBox, InputLabel, InputValue } from '../commons/InputBox';
-import { InputFromListRequesting } from '../commons/InputFromList';
+import { InputRequestingList } from '../commons/InputList';
 
 function WorkoutReportForm( { data, setData, lexicon } ) {
 
@@ -14,7 +14,7 @@ function WorkoutReportForm( { data, setData, lexicon } ) {
                 { lexicon.workout.genre_name }
             </InputLabel>
             <InputValue>
-                <InputFromListRequesting
+                <InputRequestingList
                     value={ type_specs.genre_name }
                     valueToAssign={ value => value.name }
                     valueToRepr={ value => value.name }    
@@ -37,7 +37,7 @@ function WorkoutReportForm( { data, setData, lexicon } ) {
                 { lexicon.workout.equip_name }
             </InputLabel>
             <InputValue>
-                <InputFromListRequesting
+                <InputRequestingList
                     value={ type_specs.equip_name }
                     valueToAssign={ value => value.name }
                     valueToRepr={ value => value.name }    

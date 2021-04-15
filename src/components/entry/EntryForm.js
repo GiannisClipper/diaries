@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { Modal } from '../commons/Modal';
 import { InputBox, InputLabel, InputValue } from '../commons/InputBox';
-import { InputFromListSelecting } from '../commons/InputFromList';
+import { InputSelectingList } from '../commons/InputList';
 
 import CoreForm from "../core/CoreForm";
 import { YYYYMMDDToRepr, dateToYYYYMMDD } from '../core/helpers/dates';
@@ -112,7 +112,7 @@ function EntryForm( { date, entries, index, actions, assets, lexicon } ) {
                         { lexicon.entry.type }
                     </InputLabel>
                     <InputValue>
-                        <InputFromListSelecting
+                        <InputSelectingList
                             value={ getFromList( types, 'type', data.type ).descr }
                             values={ types.map( x => x.descr ) }
                             onChange={ event => {

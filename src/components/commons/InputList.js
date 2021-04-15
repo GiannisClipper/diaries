@@ -28,7 +28,7 @@ const InputItem = styled.li`
     ${ props => props.theme.InputItem && props.theme.InputItem };
 `;
 
-function InputFromList( { 
+function InputBaseList( { 
     value,
     valueToAssign,  // get value properly to assign (value may be an obj) 
     valueToRepr,  // get value properly to represent (value may be an obj)
@@ -219,7 +219,7 @@ function InputFromList( {
     )
 }
 
-function WithTyping( InputFromList ) {
+function WithTyping( InputBaseList ) {
 
     const simplify = value => value.toUpperCase();
 
@@ -246,7 +246,7 @@ function WithTyping( InputFromList ) {
     }
 
     return ( { value, values, onChange } ) =>
-        <InputFromList
+        <InputBaseList
             value={ value }
             valueToAssign={ value => value.accurate }
             valueToRepr={ value => value.accurate }
@@ -258,10 +258,10 @@ function WithTyping( InputFromList ) {
         />
 }
 
-function WithSelecting( InputFromList ) {
+function WithSelecting( InputBaseList ) {
 
     return ( { value, values, onChange } ) =>
-        <InputFromList
+        <InputBaseList
             value={ value }
             values={ values }
             updateValues={ () => values }  // list includes all items either there is a value selected or not
@@ -269,7 +269,7 @@ function WithSelecting( InputFromList ) {
         />
 }
 
-function WithRequesting( InputFromList ) {
+function WithRequesting( InputBaseList ) {
 
     const _onChange = ( { event, state, setState } ) => {
         const value = event.target.value;
@@ -332,7 +332,7 @@ function WithRequesting( InputFromList ) {
     }
 
     return ( { value, valueToAssign, valueToRepr, url, onChange } ) =>
-        <InputFromList
+        <InputBaseList
             value={ value }
             valueToAssign={ valueToAssign }
             valueToRepr={ valueToRepr }
@@ -342,10 +342,10 @@ function WithRequesting( InputFromList ) {
         />
 }
 
-const InputFromListTyping = WithTyping( InputFromList );
+const InputTypingList = WithTyping( InputBaseList );
 
-const InputFromListSelecting = WithSelecting( InputFromList );
+const InputSelectingList = WithSelecting( InputBaseList );
 
-const InputFromListRequesting = WithRequesting( InputFromList );
+const InputRequestingList = WithRequesting( InputBaseList );
 
-export { InputFromListTyping, InputFromListSelecting, InputFromListRequesting };
+export { InputTypingList, InputSelectingList, InputRequestingList };

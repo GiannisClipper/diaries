@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { Modal } from '../commons/Modal';
 import { InputBox, InputLabel, InputValue } from '../commons/InputBox';
-import { InputFromListSelecting } from '../commons/InputFromList';
+import { InputSelectingList } from '../commons/InputList';
 
 import CoreForm from "../core/CoreForm";
 import presetAction from '../core/helpers/presetAction';
@@ -48,7 +48,7 @@ function SettingsForm( { settings, actions, assets, lexicon } ) {
                         { lexicon.settings.theme }
                     </InputLabel>
                     <InputValue>
-                        <InputFromListSelecting
+                        <InputSelectingList
                             value={ data.theme }
                             values={ [ 'LIGHT', 'DARK' ] }
                             onChange={ event => setData( { ...data, theme: event.target.value } ) }
@@ -61,7 +61,7 @@ function SettingsForm( { settings, actions, assets, lexicon } ) {
                         { lexicon.settings.language }
                     </InputLabel>
                     <InputValue>
-                        <InputFromListSelecting
+                        <InputSelectingList
                             value={ data.language }
                             values={ [ 'EN', 'GR' ] }
                             onChange={ event => setData( { ...data, language: event.target.value } ) }

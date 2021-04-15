@@ -2,7 +2,7 @@ import React from 'react';
 
 import { InputBox, InputLabel, InputValue } from '../commons/InputBox';
 import { InputNumber } from '../commons/InputNumber';
-import { InputFromListRequesting } from '../commons/InputFromList';
+import { InputRequestingList } from '../commons/InputList';
 
 import { paymentSchema } from './assets/schemas';
 
@@ -18,7 +18,7 @@ function PaymentForm( { data, setData, lexicon } ) {
                 { lexicon.payment.genre_name }
             </InputLabel>
             <InputValue>
-                <InputFromListRequesting
+                <InputRequestingList
                     value={ type_specs.genre_name }
                     valueToAssign={ value => value.name }
                     valueToRepr={ value => value.name }    
@@ -85,7 +85,7 @@ function PaymentForm( { data, setData, lexicon } ) {
                 { lexicon.payment.fund_name }
             </InputLabel>
             <InputValue>
-                <InputFromListRequesting
+                <InputRequestingList
                     value={ type_specs.fund_name }
                     valueToAssign={ value => value.name }
                     valueToRepr={ value => value.name }    
