@@ -5,8 +5,8 @@ import {
     SIGNOUT,
 } from '../../core/assets/types/signin';
 
-import { signinSchema } from './schemas';
-import { parseSigninFromDB } from './parsers';
+import { signinSchema } from '../assets/schemas';
+import { parseSigninFromDB } from '../assets/parsers';
 
 import { settingsSchema } from '../../settings/assets/schemas';
 import { parseSettingsFromDB } from '../../settings/assets/parsers';

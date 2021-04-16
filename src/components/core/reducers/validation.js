@@ -2,7 +2,7 @@ import {
     VALIDATION,
     VALIDATION_OK,
     VALIDATION_ERROR,
-} from '../types/validation';
+} from '../assets/types/validation';
 
 const validationOneReducer = ( state, action ) => {
 

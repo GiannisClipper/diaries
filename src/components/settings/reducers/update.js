@@ -1,6 +1,6 @@
 import { UPDATE_RESPONSE_OK_AFTER } from '../../core/assets/types/update';
 
-const settingsReducer = ( state, action ) => {
+const updateOneSettingsReducer = ( state, action ) => {
 
     switch ( action.type ) {
 
@@ -25,4 +25,4 @@ const settingsReducer = ( state, action ) => {
     }
 }
 
-export { settingsReducer }; 
+export { updateOneSettingsReducer }; 

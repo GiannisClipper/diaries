@@ -6,7 +6,7 @@ import {
     RETRIEVE_MANY_RESPONSE_ERROR,
     RETRIEVE_MANY_RESPONSE_OK_AFTER, 
     RETRIEVE_MANY_RESPONSE_ERROR_AFTER, 
-} from '../types/retrieveMany';
+} from '../assets/types/retrieveMany';
 
 const retrieveManyReducer = ( state, action ) => {
 

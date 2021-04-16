@@ -1,14 +1,14 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
 
 import comboReducer from '../core/helpers/comboReducer';
-import { pageReducer } from '../core/assets/reducers/page';
-import { modeOneOfManyReducer } from '../core/assets/reducers/mode';
-import { formOneOfManyReducer } from '../core/assets/reducers/form';
-import { validationOneOfManyReducer } from '../core/assets/reducers/validation';
-import { createOneOfManyReducer } from '../core/assets/reducers/create';
-import { updateOneOfManyReducer } from '../core/assets/reducers/update';
-import { deleteOneOfManyReducer } from '../core/assets/reducers/delete';
-import { retrieveManyReducer } from '../core/assets/reducers/retrieveMany';
+import { pageReducer } from '../core/reducers/page';
+import { modeOneOfManyReducer } from '../core/reducers/mode';
+import { formOneOfManyReducer } from '../core/reducers/form';
+import { validationOneOfManyReducer } from '../core/reducers/validation';
+import { createOneOfManyReducer } from '../core/reducers/create';
+import { updateOneOfManyReducer } from '../core/reducers/update';
+import { deleteOneOfManyReducer } from '../core/reducers/delete';
+import { retrieveManyReducer } from '../core/reducers/retrieveMany';
 
 import pluginActions from '../core/helpers/pluginActions';
 import pageActions from '../core/assets/actions/page';

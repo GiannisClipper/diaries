@@ -4,7 +4,7 @@ import {
     PASTE,
     PASTE_OK,
     PASTE_ERROR,
-} from '../types/paste';
+} from '../assets/types/paste';
 
 const pasteReducer = ( state, action ) => {
 

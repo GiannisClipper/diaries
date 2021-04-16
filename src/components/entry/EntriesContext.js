@@ -1,15 +1,16 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
 
 import comboReducer from '../core/helpers/comboReducer';
-import { entriesReducer } from './assets/reducers';
-import { menuOneOfManyReducer } from '../core/assets/reducers/menu';
-import { pasteReducer } from '../core/assets/reducers/paste';
-import { modeOneOfManyReducer } from '../core/assets/reducers/mode';
-import { formOneOfManyReducer } from '../core/assets/reducers/form';
-import { validationOneOfManyReducer } from '../core/assets/reducers/validation';
-import { createOneOfManyReducer } from '../core/assets/reducers/create';
-import { updateOneOfManyReducer } from '../core/assets/reducers/update';
-import { deleteOneOfManyReducer } from '../core/assets/reducers/delete';
+import { retrieveManyEntryReducer } from './reducers/retrieveMany';
+import { menuOneOfManyEntryReducer } from './reducers/menu';
+import { menuOneOfManyReducer } from '../core/reducers/menu';
+import { pasteReducer } from '../core/reducers/paste';
+import { modeOneOfManyReducer } from '../core/reducers/mode';
+import { formOneOfManyReducer } from '../core/reducers/form';
+import { validationOneOfManyReducer } from '../core/reducers/validation';
+import { createOneOfManyReducer } from '../core/reducers/create';
+import { updateOneOfManyReducer } from '../core/reducers/update';
+import { deleteOneOfManyReducer } from '../core/reducers/delete';
 
 import pluginActions from '../core/helpers/pluginActions';
 import menuActions from '../core/assets/actions/menu';
@@ -25,7 +26,8 @@ import retrieveManyActions from '../core/assets/actions/retrieveMany';
 import { AppContext } from '../app/AppContext';
 
 const reducers = [ 
-    entriesReducer,
+    retrieveManyEntryReducer,
+    menuOneOfManyEntryReducer,
     menuOneOfManyReducer,
     pasteReducer,
     modeOneOfManyReducer,

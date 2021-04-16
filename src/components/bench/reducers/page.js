@@ -38,7 +38,7 @@ const initDates = dates => {
     } );
 }
 
-const benchReducer = ( state, action ) => {
+const pageBenchReducer = ( state, action ) => {
 
     switch ( action.type ) {
 
@@ -102,4 +102,4 @@ const benchReducer = ( state, action ) => {
     }
 }
 
-export { benchReducer };
+export { pageBenchReducer };

@@ -5,7 +5,7 @@ import {
     UPDATE_MODE, 
     DELETE_MODE, 
     NO_MODE,
-} from '../types/mode';
+} from '../assets/types/mode';
 
 const modeOneReducer = ( state, action ) => {
 

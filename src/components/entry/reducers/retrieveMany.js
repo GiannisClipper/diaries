@@ -1,24 +1,11 @@
-import { OPEN_MENU } from '../../core/assets/types/menu';
 import { RETRIEVE_MANY_RESPONSE_OK_AFTER } from '../../core/assets/types/retrieveMany';
-
 import { dateToYYYYMMDD } from '../../core/helpers/dates'; 
 
-const entriesReducer = ( state, action ) => {
+const retrieveManyEntryReducer = ( state, action ) => {
 
     switch ( action.type ) {
 
-        case OPEN_MENU: {
-            const { index, assets, menuOptionCoords } = action.payload;
-            const { namespace } = assets;
-
-            const _items = state[ namespace ];
-
-            _items[ index ]._uiux.menu = { isOpen: true };
-            _items[ index ]._uiux.menuOptionCoords = menuOptionCoords;
-
-            return { ...state, [ namespace ]: _items };
-
-        } case RETRIEVE_MANY_RESPONSE_OK_AFTER: {
+        case RETRIEVE_MANY_RESPONSE_OK_AFTER: {
             const { schema, parseFromDB, sorter } = action.payload.assets;
             
             const { date, _uiux } = state;
@@ -43,4 +30,4 @@ const entriesReducer = ( state, action ) => {
     }
 }
 
-export { entriesReducer };
+export { retrieveManyEntryReducer };

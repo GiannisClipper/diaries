@@ -1,16 +1,19 @@
 import { HANDLE_LEXICON } from '../../core/assets/types/lexicon';
 import { HANDLE_ERROR } from '../../core/assets/types/error';
+
 import comboReducer from '../../core/helpers/comboReducer';
-import { modeOneReducer } from '../../core/assets/reducers/mode';
-import { formOneReducer } from '../../core/assets/reducers/form';
-import { validationOneReducer } from '../../core/assets/reducers/validation';
-import { retrieveOneReducer } from '../../core/assets/reducers/retrieve';
-import { updateOneReducer } from '../../core/assets/reducers/update';
-import { signinReducer } from '../../signin/assets/reducers';
-import { settingsReducer } from '../../settings/assets/reducers';
-import { backupReducer } from '../../backup/assets/reducers';
+
+import { modeOneReducer } from '../../core/reducers/mode';
+import { formOneReducer } from '../../core/reducers/form';
+import { validationOneReducer } from '../../core/reducers/validation';
+import { retrieveOneReducer } from '../../core/reducers/retrieve';
+import { updateOneReducer } from '../../core/reducers/update';
+import { signinReducer } from '../../signin/reducers/signin';
+import { updateOneSettingsReducer } from '../../settings/reducers/update';
+import { retrieveOneBackupReducer } from '../../backup/reducers/retrieve';
+
 import { signinSchema } from '../../signin/assets/schemas';
-import lexicons from './lexicons';
+import lexicons from '../assets/lexicons';
 
 const appReducer = ( state, action ) => {
 
@@ -30,7 +33,7 @@ const appReducer = ( state, action ) => {
                 modeOneReducer,
                 formOneReducer, 
                 validationOneReducer, 
-                settingsReducer, 
+                updateOneSettingsReducer, 
                 updateOneReducer
             )( state, action );
 
@@ -38,7 +41,7 @@ const appReducer = ( state, action ) => {
             return comboReducer( 
                 modeOneReducer,
                 formOneReducer,
-                backupReducer,
+                retrieveOneBackupReducer,
                 retrieveOneReducer,
             )( state, action );
 

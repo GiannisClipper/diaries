@@ -1,4 +1,4 @@
-import { OPEN_PAGE } from '../types/page';
+import { OPEN_PAGE } from '../assets/types/page';
 
 const pageReducer = ( state, action ) => {
 

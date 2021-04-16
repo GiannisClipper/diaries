@@ -1,16 +1,16 @@
 import {
-    DELETE_REQUEST,
-    DELETE_RESPONSE_OK,
-    DELETE_RESPONSE_ERROR,
-    DELETE_RESPONSE_OK_AFTER, 
-    DELETE_RESPONSE_ERROR_AFTER, 
-} from '../types/delete';
+    CREATE_REQUEST,
+    CREATE_RESPONSE_OK,
+    CREATE_RESPONSE_ERROR,
+    CREATE_RESPONSE_OK_AFTER, 
+    CREATE_RESPONSE_ERROR_AFTER, 
+} from '../assets/types/create';
 
-const deleteOneReducer = ( state, action ) => {
+const createOneReducer = ( state, action ) => {
 
     switch ( action.type ) {
             
-        case DELETE_REQUEST: {
+        case CREATE_REQUEST: {
             const { assets } = action.payload;
             const { namespace } = assets;
 
@@ -20,27 +20,30 @@ const deleteOneReducer = ( state, action ) => {
 
             return { ...state, [ namespace ]: _item };
 
-        } case DELETE_RESPONSE_OK: {
-            const { assets } = action.payload;
-            const { namespace } = assets;
+        } case CREATE_RESPONSE_OK: {
+            const { dataFromDB, assets } = action.payload;
+            const { namespace, parseFromDB } = assets;
 
-            const _item = state[ namespace ];
+            let _item = state[ namespace ];
 
+            _item = { ..._item, ...parseFromDB( dataFromDB ) };
             _item._uiux.status = { isResponseOk: true };
 
             return { ...state, [ namespace ]: _item };
 
-        } case DELETE_RESPONSE_OK_AFTER: {
+        } case CREATE_RESPONSE_OK_AFTER: {
             const { assets } = action.payload;
             const { namespace } = assets;
 
             const _item = state[ namespace ];
 
+            _item._uiux.mode = {};
+            _item._uiux.form = {};
             _item._uiux.status = { isResponseOkAfter: true };
 
             return { ...state, [ namespace ]: _item };
 
-        } case DELETE_RESPONSE_ERROR: {
+        } case CREATE_RESPONSE_ERROR: {
             const { error, assets } = action.payload;
             const { namespace } = assets;
 
@@ -51,7 +54,7 @@ const deleteOneReducer = ( state, action ) => {
 
             return { ...state, [ namespace ]: _item };
 
-        } case DELETE_RESPONSE_ERROR_AFTER: {
+        } case CREATE_RESPONSE_ERROR_AFTER: {
             const { assets } = action.payload;
             const { namespace, schema } = assets;
 
@@ -67,11 +70,11 @@ const deleteOneReducer = ( state, action ) => {
     }
 }
 
-const deleteOneOfManyReducer = ( state, action ) => {
+const createOneOfManyReducer = ( state, action ) => {
 
     switch ( action.type ) {
-
-        case DELETE_REQUEST: {
+            
+        case CREATE_REQUEST: {
             const { index, assets } = action.payload;
             const { namespace } = assets;
 
@@ -81,44 +84,52 @@ const deleteOneOfManyReducer = ( state, action ) => {
 
             return { ...state, [ namespace ]: _items };
 
-        } case DELETE_RESPONSE_OK: {
-            const { index, assets } = action.payload;
-            const { namespace } = assets;
+        } case CREATE_RESPONSE_OK: {
+            const { index, dataFromDB, assets } = action.payload;
+            const { namespace, parseFromDB } = assets;
 
             const _items = state[ namespace ];
 
+            _items[ index ] = { ..._items[ index ], ...parseFromDB( dataFromDB ) };
             _items[ index ]._uiux.status = { isResponseOk: true };
 
             return { ...state, [ namespace ]: _items };
 
-        } case DELETE_RESPONSE_OK_AFTER: {
+        } case CREATE_RESPONSE_OK_AFTER: {
             const { index, assets } = action.payload;
-            const { namespace } = assets;
+            const { namespace, schema, sorter } = assets;
 
             const _items = [ ...state[ namespace ] ];
 
-            _items.splice( index, 1 );
+            _items[ index ]._uiux.mode = {};
+            _items[ index ]._uiux.form = {};
+            _items[ index ]._uiux.status = { isResponseOkAfter: true };
+
+            if ( sorter ) _items.sort( sorter );
+            _items.push( schema() );
 
             return { ...state, [ namespace ]: _items };
 
-        } case DELETE_RESPONSE_ERROR: {
+        } case CREATE_RESPONSE_ERROR: {
             const { index, error, assets } = action.payload;
             const { namespace } = assets;
 
             const _items = state[ namespace ];
 
-            _items[ index ]._uiux.status = { isResponseError: true };
             _items[ index ]._uiux.error = error;
+            _items[ index ]._uiux.status = { isResponseError: true }
 
             return { ...state, [ namespace ]: _items };
 
-        } case DELETE_RESPONSE_ERROR_AFTER: {
+        } case CREATE_RESPONSE_ERROR_AFTER: {
             const { index, assets } = action.payload;
-            const { namespace } = assets;
+            const { namespace, schema } = assets;
 
             const _items = state[ namespace ];
 
-            _items[ index ]._uiux.status = { isResponseErrorAfter: true };
+            const { _uiux } = _items[ index ];
+            _items[ index ] = { ...schema(), _uiux };
+            _items[ index ]._uiux.status = { isResponseErrorAfter: true }
 
             return { ...state, [ namespace ]: _items };
 
@@ -128,4 +139,4 @@ const deleteOneOfManyReducer = ( state, action ) => {
     }
 }
 
-export { deleteOneReducer, deleteOneOfManyReducer };
+export { createOneReducer, createOneOfManyReducer };

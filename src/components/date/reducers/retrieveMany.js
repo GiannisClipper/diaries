@@ -7,7 +7,7 @@ import {
 
 import { daysBetween, shiftDate, dateToYYYYMMDD } from '../../core/helpers/dates'; 
 
-const datesReducer = ( state, action ) => {
+const retrieveManyDateReducer = ( state, action ) => {
 
     switch ( action.type ) {
 
@@ -76,4 +76,4 @@ const datesReducer = ( state, action ) => {
     }
 }
 
-export { datesReducer };
+export { retrieveManyDateReducer };

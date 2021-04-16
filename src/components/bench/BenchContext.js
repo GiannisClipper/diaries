@@ -1,8 +1,8 @@
 import React, { createContext, useReducer, useEffect } from 'react';
 
 import comboReducer from '../core/helpers/comboReducer';
-import { pageReducer } from '../core/assets/reducers/page';
-import { benchReducer } from './assets/reducers';
+import { pageBenchReducer } from './reducers/page';
+import { pageReducer } from '../core/reducers/page';
 
 import pluginActions from '../core/helpers/pluginActions';
 import pageActions from '../core/assets/actions/page';
@@ -10,7 +10,7 @@ import pageActions from '../core/assets/actions/page';
 import { benchSchema } from './assets/schemas';
 
 const reducers = [ 
-    benchReducer,
+    pageBenchReducer,
     pageReducer,
 ];
 

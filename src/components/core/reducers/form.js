@@ -1,29 +1,29 @@
-import { 
-    OPEN_MENU, 
-    CLOSE_MENU 
-} from '../types/menu';
+import {
+    OPEN_FORM,
+    CLOSE_FORM,
+} from '../assets/types/form';
 
-const menuOneReducer = ( state, action ) => {
+const formOneReducer = ( state, action ) => {
 
     switch ( action.type ) {
 
-        case OPEN_MENU: {
+        case OPEN_FORM: {
             const { assets } = action.payload;
             const { namespace } = assets;
 
             const _item = state[ namespace ];
-
-            _item._uiux.menu = { isOpen: true };
+            _item._uiux.form = { isOpen: true };
 
             return { ...state, [ namespace ]: _item };
 
-        } case CLOSE_MENU: {
+        } case CLOSE_FORM: {
             const { assets } = action.payload;
             const { namespace } = assets;
 
             const _item = state[ namespace ];
-
-            _item._uiux.menu = {};
+            _item._uiux.form = {};
+            // _item._uiux.status = {};
+            // _item._uiux.mode = {};
 
             return { ...state, [ namespace ]: _item };
 
@@ -33,27 +33,25 @@ const menuOneReducer = ( state, action ) => {
     }
 }
 
-const menuOneOfManyReducer = ( state, action ) => {
+const formOneOfManyReducer = ( state, action ) => {
 
     switch ( action.type ) {
 
-        case OPEN_MENU: {
-            const { index, assets } = action.payload;
+        case OPEN_FORM: {
+            const { assets, index } = action.payload;
             const { namespace } = assets;
 
             const _items = state[ namespace ];
-
-            _items[ index ]._uiux.menu = { isOpen: true };
+            _items[ index ]._uiux.form = { isOpen: true };
 
             return { ...state, [ namespace ]: _items };
 
-        } case CLOSE_MENU: {
-            const { index, assets } = action.payload;
+        } case CLOSE_FORM: {
+            const { assets, index } = action.payload;
             const { namespace } = assets;
 
             const _items = state[ namespace ];
-
-            _items[ index ]._uiux.menu = {};
+            _items[ index ]._uiux.form = {};
 
             return { ...state, [ namespace ]: _items };
 
@@ -63,4 +61,4 @@ const menuOneOfManyReducer = ( state, action ) => {
     }
 }
 
-export { menuOneReducer, menuOneOfManyReducer };
+export { formOneReducer, formOneOfManyReducer };

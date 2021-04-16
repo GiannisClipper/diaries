@@ -1,16 +1,16 @@
 import {
-    RETRIEVE_REQUEST,
-    RETRIEVE_RESPONSE_OK,
-    RETRIEVE_RESPONSE_ERROR,
-    RETRIEVE_RESPONSE_OK_AFTER, 
-    RETRIEVE_RESPONSE_ERROR_AFTER, 
-} from '../types/retrieve';
+    UPDATE_REQUEST,
+    UPDATE_RESPONSE_OK,
+    UPDATE_RESPONSE_ERROR,
+    UPDATE_RESPONSE_OK_AFTER, 
+    UPDATE_RESPONSE_ERROR_AFTER, 
+} from '../assets/types/update';
 
-const retrieveOneReducer = ( state, action ) => {
+const updateOneReducer = ( state, action ) => {
 
     switch ( action.type ) {
-
-        case RETRIEVE_REQUEST: {
+            
+        case UPDATE_REQUEST: {
             const { assets } = action.payload;
             const { namespace } = assets;
 
@@ -20,27 +20,30 @@ const retrieveOneReducer = ( state, action ) => {
 
             return { ...state, [ namespace ]: _item };
 
-        } case RETRIEVE_RESPONSE_OK: {
-            const { assets, dataFromDB } = action.payload;
-            const { namespace } = assets;
+        } case UPDATE_RESPONSE_OK: {
+            const { dataFromDB, assets } = action.payload;
+            const { namespace, parseFromDB } = assets;
 
-            const { _uiux } = state[ namespace ];
-            _uiux.status = { isResponseOk: true };
-            const _item = { ...dataFromDB, _uiux };
+            let _item = state[ namespace ];
+
+            _item = { ..._item, ...parseFromDB( dataFromDB ) };
+            _item._uiux.status = { isResponseOk: true };
 
             return { ...state, [ namespace ]: _item };
 
-        } case RETRIEVE_RESPONSE_OK_AFTER: {
+        } case UPDATE_RESPONSE_OK_AFTER: {
             const { assets } = action.payload;
             const { namespace } = assets;
 
             const _item = state[ namespace ];
 
+            _item._uiux.mode = {};
+            _item._uiux.form = {};
             _item._uiux.status = { isResponseOkAfter: true };
 
             return { ...state, [ namespace ]: _item };
 
-        } case RETRIEVE_RESPONSE_ERROR: {
+        } case UPDATE_RESPONSE_ERROR: {
             const { error, assets } = action.payload;
             const { namespace } = assets;
 
@@ -51,12 +54,14 @@ const retrieveOneReducer = ( state, action ) => {
 
             return { ...state, [ namespace ]: _item };
 
-        } case RETRIEVE_RESPONSE_ERROR_AFTER: {
+        } case UPDATE_RESPONSE_ERROR_AFTER: {
             const { assets } = action.payload;
-            const { namespace, schema } = assets;
+            const { namespace } = assets;
 
-            const _item = schema();
+            let _item = state[ namespace ];
 
+            const { _saved } = _item._uiux;
+            _item = { ..._item, ..._saved };
             _item._uiux.status = { isResponseErrorAfter: true };
 
             return { ...state, [ namespace ]: _item };
@@ -67,11 +72,11 @@ const retrieveOneReducer = ( state, action ) => {
     }
 }
 
-const retrieveOneOfManyReducer = ( state, action ) => {
+const updateOneOfManyReducer = ( state, action ) => {
 
     switch ( action.type ) {
             
-        case RETRIEVE_REQUEST: {
+        case UPDATE_REQUEST: {
             const { index, assets } = action.payload;
             const { namespace } = assets;
 
@@ -81,7 +86,7 @@ const retrieveOneOfManyReducer = ( state, action ) => {
 
             return { ...state, [ namespace ]: _items };
 
-        } case RETRIEVE_RESPONSE_OK: {
+        } case UPDATE_RESPONSE_OK: {
             const { index, dataFromDB, assets } = action.payload;
             const { namespace, parseFromDB } = assets;
 
@@ -92,19 +97,25 @@ const retrieveOneOfManyReducer = ( state, action ) => {
 
             return { ...state, [ namespace ]: _items };
 
-        } case RETRIEVE_RESPONSE_OK_AFTER: {
+        } case UPDATE_RESPONSE_OK_AFTER: {
             const { index, assets } = action.payload;
-            const { namespace } = assets;
+            const { namespace, schema, sorter } = assets;
 
-            const _items = state[ namespace ];
+            const _items = [ ...state[ namespace ] ];
 
             _items[ index ]._uiux.mode = {};
             _items[ index ]._uiux.form = {};
             _items[ index ]._uiux.status = { isResponseOkAfter: true };
 
+            if ( sorter ) {
+                _items.pop();
+                 _items.sort( sorter );
+                _items.push( schema() );
+            }
+
             return { ...state, [ namespace ]: _items };
 
-        } case RETRIEVE_RESPONSE_ERROR: {
+        } case UPDATE_RESPONSE_ERROR: {
             const { index, error, assets } = action.payload;
             const { namespace } = assets;
 
@@ -115,13 +126,14 @@ const retrieveOneOfManyReducer = ( state, action ) => {
 
             return { ...state, [ namespace ]: _items };
 
-        } case RETRIEVE_RESPONSE_ERROR_AFTER: {
+        } case UPDATE_RESPONSE_ERROR_AFTER: {
             const { index, assets } = action.payload;
-            const { namespace, schema } = assets;
+            const { namespace } = assets;
 
             const _items = state[ namespace ];
 
-            _items[ index ] = schema();
+            const { _saved } = _items[ index ]._uiux;
+            _items[ index ] = { ..._items[ index ], ..._saved };
             _items[ index ]._uiux.status = { isResponseErrorAfter: true }
 
             return { ...state, [ namespace ]: _items };
@@ -132,4 +144,4 @@ const retrieveOneOfManyReducer = ( state, action ) => {
     }
 }
 
-export { retrieveOneReducer, retrieveOneOfManyReducer };
+export { updateOneReducer, updateOneOfManyReducer };

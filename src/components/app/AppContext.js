@@ -6,7 +6,7 @@ import { settingsSchema } from '../settings/assets/schemas';
 import { backupSchema } from '../backup/assets/schemas';
 
 import comboReducer from '../core/helpers/comboReducer';
-import { appReducer } from './assets/reducers';
+import { appReducer } from './reducers/app';
 
 import pluginActions from '../core/helpers/pluginActions';
 import modeActions from '../core/assets/actions/mode';
