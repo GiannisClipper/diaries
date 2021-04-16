@@ -9,7 +9,7 @@ import { paymentSchema } from './assets/schemas';
 function PaymentForm( { data, setData, lexicon } ) {
 
     let { diary_id, type_specs } = data;
-    type_specs = type_specs || paymentSchema().type_specs;
+    type_specs = type_specs || paymentSchema();
 
     return (
         <>

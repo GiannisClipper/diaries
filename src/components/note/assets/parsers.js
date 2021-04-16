@@ -1,33 +1,18 @@
-const parseNoteFromDB = data => {
+const parseNoteFromDB = type_specs => {
 
-    const { _id, diary_id, date, index, type, type_specs } = data;
     const { note } = type_specs;
 
     return {
-        id: _id,
-        diary_id,
-        date,
-        index,
-        type,
-        type_specs: {
-            note
-        }
+        note
     }
 }
 
-const parseNoteToDB = data => {
+const parseNoteToDB = type_specs => {
 
-    const { diary_id, date, index, type, type_specs } = data;
     const { note } = type_specs;
 
     return {
-        diary_id,
-        date,
-        index,
-        type,
-        type_specs: {
-            note
-        }
+        note
     }
 }
 

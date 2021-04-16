@@ -12,7 +12,7 @@ import { pace, speed } from './helpers/speedAndPace';
 function WorkoutForm( { data, setData, lexicon } ) {
 
     let { diary_id, type_specs } = data;
-    type_specs = type_specs || workoutSchema().type_specs;
+    type_specs = type_specs || workoutSchema();
 
     return (
         <>

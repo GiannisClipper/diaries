@@ -6,7 +6,7 @@ import { noteSchema } from './assets/schemas';
 
 function NoteForm( { data, setData, lexicon } ) {
 
-    const type_specs = data.type_specs || noteSchema().type_specs;
+    const type_specs = data.type_specs || noteSchema();
 
     return (
         <InputBox>
