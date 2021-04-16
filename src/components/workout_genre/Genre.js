@@ -1,17 +1,17 @@
 import React, { useEffect } from 'react';
 
-import { RowBox, RowValue, RowMenu } from '../../commons/RowBox';
+import { RowBox, RowValue, RowMenu } from '../commons/RowBox';
 
-import { CoreMenu, CreateOption, UpdateOption, DeleteOption } from '../../core/CoreMenu';
-import presetAction from '../../core/helpers/presetAction';
-import { createRequestFeature, updateRequestFeature, deleteRequestFeature } from '../../core/features/requests';
+import { CoreMenu, CreateOption, UpdateOption, DeleteOption } from '../core/CoreMenu';
+import presetAction from '../core/helpers/presetAction';
+import { createRequestFeature, updateRequestFeature, deleteRequestFeature } from '../core/features/requests';
 
-import EquipForm from './EquipForm';
+import GenreForm from './GenreForm';
 
-function Equip( { equips, index, actions, assets, lexicon } ) {
+function Genre( { genres, index, actions, assets, lexicon } ) {
 
-    const equip = equips[ index ];
-    const { _uiux } = equip;
+    const genre = genres[ index ];
+    const { _uiux } = genre;
 
     const createMode = presetAction( actions.createMode, { assets, index } );
     const updateMode = presetAction( actions.updateMode, { assets, index } );
@@ -24,43 +24,43 @@ function Equip( { equips, index, actions, assets, lexicon } ) {
 
         if ( _uiux.mode.isCreate ) {
             createRequestFeature( { 
-                _item: equip,
+                _item: genre,
                 actions,
                 assets,
                 index,
-                url: `/.netlify/functions/workout-equip`
+                url: `/.netlify/functions/workout-genre`
             } );
 
         } else if ( _uiux.mode.isUpdate ) {
             updateRequestFeature( { 
-                _item: equip,
+                _item: genre,
                 actions,
                 assets,
                 index,
-                url: `/.netlify/functions/workout-equip?id=${ equip.id }`
+                url: `/.netlify/functions/workout-genre?id=${ genre.id }`
             } );
 
         } else if ( _uiux.mode.isDelete ) {
             deleteRequestFeature( { 
-                _item: equip,
+                _item: genre,
                 actions,
                 assets,
                 index,
-                url: `/.netlify/functions/workout-equip?id=${ equip.id }`
+                url: `/.netlify/functions/workout-genre?id=${ genre.id }`
             } );
         }
-    }, [ equip, _uiux, actions, assets, index ] );
+    }, [ genre, _uiux, actions, assets, index ] );
 
     return (
         <RowBox>
 
-            <RowValue title={ `${ equip.diary_id }.${ equip.id }` }>
-                <span style={ { fontFamily: 'monospace' } } >{ `${ equip.code } ` }</span>
-                <span>{ equip.name }</span>
+            <RowValue title={ `${ genre.diary_id }.${ genre.id }` }>
+                <span style={ { fontFamily: 'monospace' } } >{ `${ genre.code } ` }</span>
+                <span>{ genre.name }</span>
             </RowValue>
 
             <RowMenu>
-                { ! equip.id 
+                { ! genre.id 
                     ?
                     <CoreMenu status={ _uiux.status } >
                         <CreateOption 
@@ -92,8 +92,8 @@ function Equip( { equips, index, actions, assets, lexicon } ) {
             </RowMenu>
 
             { _uiux.form.isOpen ? 
-                <EquipForm
-                    equips={ equips }
+                <GenreForm
+                    genres={ genres }
                     index={ index }
                     actions={ actions }
                     assets={ assets }
@@ -105,5 +105,5 @@ function Equip( { equips, index, actions, assets, lexicon } ) {
     );
 }
 
-export default Equip;
-export { Equip };
+export default Genre;
+export { Genre };

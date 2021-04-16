@@ -1,29 +1,22 @@
 import React, { useEffect } from 'react';
 
-import { RowBox, RowValue, RowMenu } from '../../commons/RowBox';
+import { RowBox, RowValue, RowMenu } from '../commons/RowBox';
 
-import { CoreMenu, CreateOption, UpdateOption, DeleteOption } from '../../core/CoreMenu';
-import presetAction from '../../core/helpers/presetAction';
-import { createRequestFeature, updateRequestFeature, deleteRequestFeature } from '../../core/features/requests';
+import { CoreMenu, CreateOption, UpdateOption, DeleteOption } from '../core/CoreMenu';
+import presetAction from '../core/helpers/presetAction';
+import { createRequestFeature, updateRequestFeature, deleteRequestFeature } from '../core/features/requests';
 
-import GenreForm from './GenreForm';
+import EquipForm from './EquipForm';
 
-function Genre( { genres, index, actions, assets, lexicon } ) {
+function Equip( { equips, index, actions, assets, lexicon } ) {
 
-    const genre = genres[ index ];
-    const { _uiux } = genre;
+    const equip = equips[ index ];
+    const { _uiux } = equip;
 
     const createMode = presetAction( actions.createMode, { assets, index } );
     const updateMode = presetAction( actions.updateMode, { assets, index } );
     const deleteMode = presetAction( actions.deleteMode, { assets, index } );
     const openForm = presetAction( actions.openForm, { assets, index } );
-
-    const typeInfo =
-        genre.type === `revenue` 
-        ? lexicon.paymentGenre.types.revenue.substr( 0, 2 ) 
-        : genre.type === `expense` 
-        ? lexicon.paymentGenre.types.expense.substr( 0, 2 ) 
-        : '--';
 
     // request features
 
@@ -31,43 +24,43 @@ function Genre( { genres, index, actions, assets, lexicon } ) {
 
         if ( _uiux.mode.isCreate ) {
             createRequestFeature( { 
-                _item: genre,
+                _item: equip,
                 actions,
                 assets,
                 index,
-                url: `/.netlify/functions/payment-genre`
+                url: `/.netlify/functions/workout-equip`
             } );
 
         } else if ( _uiux.mode.isUpdate ) {
             updateRequestFeature( { 
-                _item: genre,
+                _item: equip,
                 actions,
                 assets,
                 index,
-                url: `/.netlify/functions/payment-genre?id=${ genre.id }`
+                url: `/.netlify/functions/workout-equip?id=${ equip.id }`
             } );
 
         } else if ( _uiux.mode.isDelete ) {
             deleteRequestFeature( { 
-                _item: genre,
+                _item: equip,
                 actions,
                 assets,
                 index,
-                url: `/.netlify/functions/payment-genre?id=${ genre.id }`
+                url: `/.netlify/functions/workout-equip?id=${ equip.id }`
             } );
         }
-    }, [ genre, _uiux, actions, assets, index ] );
+    }, [ equip, _uiux, actions, assets, index ] );
 
     return (
         <RowBox>
 
-            <RowValue title={ `${ genre.diary_id }.${ genre.id }` }>
-                <span style={ { fontFamily: 'monospace' } } >{ `${ typeInfo } ${ genre.code } ` }</span>
-                <span>{ genre.name }</span>
+            <RowValue title={ `${ equip.diary_id }.${ equip.id }` }>
+                <span style={ { fontFamily: 'monospace' } } >{ `${ equip.code } ` }</span>
+                <span>{ equip.name }</span>
             </RowValue>
 
             <RowMenu>
-                { ! genre.id 
+                { ! equip.id 
                     ?
                     <CoreMenu status={ _uiux.status } >
                         <CreateOption 
@@ -99,8 +92,8 @@ function Genre( { genres, index, actions, assets, lexicon } ) {
             </RowMenu>
 
             { _uiux.form.isOpen ? 
-                <GenreForm
-                    genres={ genres }
+                <EquipForm
+                    equips={ equips }
                     index={ index }
                     actions={ actions }
                     assets={ assets }
@@ -112,5 +105,5 @@ function Genre( { genres, index, actions, assets, lexicon } ) {
     );
 }
 
-export default Genre;
-export { Genre };
+export default Equip;
+export { Equip };

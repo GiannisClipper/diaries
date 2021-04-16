@@ -1,17 +1,17 @@
 import React, { useEffect } from 'react';
 
-import { RowBox, RowValue, RowMenu } from '../../commons/RowBox';
+import { RowBox, RowValue, RowMenu } from '../commons/RowBox';
 
-import { CoreMenu, CreateOption, UpdateOption, DeleteOption } from '../../core/CoreMenu';
-import presetAction from '../../core/helpers/presetAction';
-import { createRequestFeature, updateRequestFeature, deleteRequestFeature } from '../../core/features/requests';
+import { CoreMenu, CreateOption, UpdateOption, DeleteOption } from '../core/CoreMenu';
+import presetAction from '../core/helpers/presetAction';
+import { createRequestFeature, updateRequestFeature, deleteRequestFeature } from '../core/features/requests';
 
-import GenreForm from './GenreForm';
+import FundForm from './FundForm';
 
-function Genre( { genres, index, actions, assets, lexicon } ) {
+function Fund( { funds, index, actions, assets, lexicon } ) {
 
-    const genre = genres[ index ];
-    const { _uiux } = genre;
+    const fund = funds[ index ];
+    const { _uiux } = fund;
 
     const createMode = presetAction( actions.createMode, { assets, index } );
     const updateMode = presetAction( actions.updateMode, { assets, index } );
@@ -24,43 +24,43 @@ function Genre( { genres, index, actions, assets, lexicon } ) {
 
         if ( _uiux.mode.isCreate ) {
             createRequestFeature( { 
-                _item: genre,
+                _item: fund,
                 actions,
                 assets,
                 index,
-                url: `/.netlify/functions/workout-genre`
+                url: `/.netlify/functions/payment-fund`
             } );
 
         } else if ( _uiux.mode.isUpdate ) {
             updateRequestFeature( { 
-                _item: genre,
+                _item: fund,
                 actions,
                 assets,
                 index,
-                url: `/.netlify/functions/workout-genre?id=${ genre.id }`
+                url: `/.netlify/functions/payment-fund?id=${ fund.id }`
             } );
 
         } else if ( _uiux.mode.isDelete ) {
             deleteRequestFeature( { 
-                _item: genre,
+                _item: fund,
                 actions,
                 assets,
                 index,
-                url: `/.netlify/functions/workout-genre?id=${ genre.id }`
+                url: `/.netlify/functions/payment-fund?id=${ fund.id }`
             } );
         }
-    }, [ genre, _uiux, actions, assets, index ] );
+    }, [ fund, _uiux, actions, assets, index ] );
 
     return (
         <RowBox>
 
-            <RowValue title={ `${ genre.diary_id }.${ genre.id }` }>
-                <span style={ { fontFamily: 'monospace' } } >{ `${ genre.code } ` }</span>
-                <span>{ genre.name }</span>
+            <RowValue title={ `${ fund.diary_id }.${ fund.id }` }>
+                <span style={ { fontFamily: 'monospace' } } >{ `${ fund.code } ` }</span>
+                <span>{ fund.name }</span>
             </RowValue>
 
             <RowMenu>
-                { ! genre.id 
+                { ! fund.id 
                     ?
                     <CoreMenu status={ _uiux.status } >
                         <CreateOption 
@@ -91,19 +91,19 @@ function Genre( { genres, index, actions, assets, lexicon } ) {
                 }
             </RowMenu>
 
-            { _uiux.form.isOpen ? 
-                <GenreForm
-                    genres={ genres }
+            { _uiux.form.isOpen ?
+                <FundForm 
+                    funds={ funds }
                     index={ index }
                     actions={ actions }
                     assets={ assets }
                     lexicon={ lexicon }
-                /> 
+            /> 
             : null }
 
-        </RowBox> 
+        </RowBox>
     );
 }
 
-export default Genre;
-export { Genre };
+export default Fund;
+export { Fund };

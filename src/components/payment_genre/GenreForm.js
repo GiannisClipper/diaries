@@ -1,14 +1,14 @@
 import React, { useState, useContext } from 'react';
 
-import { Modal } from '../../commons/Modal';
-import { InputBox, InputLabel, InputValue } from '../../commons/InputBox';
-import { InputSelectingList } from '../../commons/InputList';
+import { Modal } from '../commons/Modal';
+import { InputBox, InputLabel, InputValue } from '../commons/InputBox';
+import { InputSelectingList } from '../commons/InputList';
 
-import CoreForm from "../../core/CoreForm";
-import validators from '../../core/assets/validators';
-import presetAction from '../../core/helpers/presetAction';
-import withLexicon from '../../core/helpers/withLexicon';
-import { getFromList } from '../../core/helpers/getFromList';
+import CoreForm from "../core/CoreForm";
+import validators from '../core/assets/validators';
+import presetAction from '../core/helpers/presetAction';
+import withLexicon from '../core/helpers/withLexicon';
+import { getFromList } from '../core/helpers/getFromList';
 
 import { GenresContext } from './GenresContext';
 

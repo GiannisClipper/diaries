@@ -7,10 +7,10 @@ import { AppBox, AppNav } from '../app/AppPage';
 
 import { AppContext } from '../app/AppContext';
 
-import PaymentGenres from "../payment/genre/Genres";
-import PaymentFunds from "../payment/fund/Funds";
-import WorkoutGenres from "../workout/genre/Genres";
-import WorkoutEquips from "../workout/equip/Equips";
+import PaymentGenres from "../payment_genre/Genres";
+import PaymentFunds from "../payment_fund/Funds";
+import WorkoutGenres from "../workout_genre/Genres";
+import WorkoutEquips from "../workout_equip/Equips";
 
 function SettingsPage( { diary_id } ) {
 

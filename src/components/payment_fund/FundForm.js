@@ -1,24 +1,24 @@
 import React, { useState, useContext } from 'react';
 
-import { Modal } from '../../commons/Modal';
-import { InputBox, InputLabel, InputValue } from '../../commons/InputBox';
+import { Modal } from '../commons/Modal';
+import { InputBox, InputLabel, InputValue } from '../commons/InputBox';
 
-import CoreForm from "../../core/CoreForm";
-import validators from '../../core/assets/validators';
-import presetAction from '../../core/helpers/presetAction';
-import withLexicon from '../../core/helpers/withLexicon';
+import CoreForm from "../core/CoreForm";
+import validators from '../core/assets/validators';
+import presetAction from '../core/helpers/presetAction';
+import withLexicon from '../core/helpers/withLexicon';
 
-import { EquipsContext } from './EquipsContext';
+import { FundsContext } from './FundsContext';
 
-function EquipForm( { equips, index, actions, assets, lexicon } ) {
+function FundForm( { funds, index, actions, assets, lexicon } ) {
 
     const closeForm = presetAction( actions.closeForm, { assets, index } );
     const noMode = presetAction( actions.noMode, { assets, index } );
     const onClickOut = () => { closeForm(); noMode() };
 
-    const equip = equips[ index ];
+    const fund = funds[ index ];
 
-    const [ data, setData ] = useState( { ...equip } );
+    const [ data, setData ] = useState( { ...fund } );
 
     const onValidation = () => {
         let errors = [];
@@ -26,9 +26,9 @@ function EquipForm( { equips, index, actions, assets, lexicon } ) {
         const isBlank = withLexicon( validators.isBlank, lexicon );
         const isFound = withLexicon( validators.isFound, lexicon );
 
-        errors.push( isBlank( lexicon.workoutEquip.name, data.name ) );
-        errors.push( isFound( lexicon.workoutEquip.name, equips.map( x=> x.name ), data.name, index ) );
-        errors.push( isFound( lexicon.workoutEquip.code, equips.map( x=> x.code ), data.code, index ) );
+        errors.push( isBlank( lexicon.paymentFund.name, data.name ) );
+        errors.push( isFound( lexicon.paymentFund.name, funds.map( x=> x.name ), data.name, index ) );
+        errors.push( isFound( lexicon.paymentFund.code, funds.map( x=> x.code ), data.code, index ) );
 
         errors = errors.filter( x => x !== null );
 
@@ -39,8 +39,8 @@ function EquipForm( { equips, index, actions, assets, lexicon } ) {
         <Modal onClick={ onClickOut } centeredness>
 
             <CoreForm
-                headLabel={ lexicon.workoutEquip.equip }
-                Context={ EquipsContext }
+                headLabel={ lexicon.paymentFund.fund }
+                Context={ FundsContext }
                 assets={ assets }
                 lexicon={ lexicon }
                 index={ index }
@@ -61,7 +61,7 @@ function EquipForm( { equips, index, actions, assets, lexicon } ) {
 
                 <InputBox>
                     <InputLabel>
-                        { lexicon.workoutEquip.name }
+                        { lexicon.paymentFund.name }
                     </InputLabel>
                     <InputValue>
                         <input
@@ -73,7 +73,7 @@ function EquipForm( { equips, index, actions, assets, lexicon } ) {
 
                 <InputBox>
                     <InputLabel>
-                        { lexicon.workoutEquip.code }
+                        { lexicon.paymentFund.code }
                     </InputLabel>
                     <InputValue>
                         <input
@@ -88,5 +88,5 @@ function EquipForm( { equips, index, actions, assets, lexicon } ) {
     );
 }
 
-export default EquipForm;
-export { EquipForm };
+export default FundForm;
+export { FundForm };

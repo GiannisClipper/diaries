@@ -1,14 +1,14 @@
 import { useContext, useEffect  } from 'react';
 
-import { retrieveManyRequestFeature } from '../../core/features/requests';
+import { retrieveManyRequestFeature } from '../core/features/requests';
 
 import assets from './assets/assets';
-import { GenresContext } from './GenresContext';
-import { genresSchema } from './assets/schemas';
+import { EquipsContext } from './EquipsContext';
+import { equipsSchema } from './assets/schemas';
 
-function GenresLoader( { diary_id } ) {
+function EquipsLoader( { diary_id } ) {
 
-    const { state, actions } = useContext( GenresContext );
+    const { state, actions } = useContext( EquipsContext );
     const { _uiux } = state;
     const { schema } = assets;
     assets.schema = () => ( { ...schema(), diary_id } );
@@ -19,9 +19,9 @@ function GenresLoader( { diary_id } ) {
     ) {
 
         actions.openPage( { data: {
-            ...genresSchema(),
+            ...equipsSchema(),
             diary_id,
-            genres: [ schema() ],
+            equips: [ schema() ],
         } } );
 
         actions.retrieveManyRequestBefore( { assets, index: 0 } );
@@ -36,16 +36,16 @@ function GenresLoader( { diary_id } ) {
                 _uiux,
                 actions,
                 assets,
-                url: `/.netlify/functions/workout-genre?diary_id=${ diary_id }`
+                url: `/.netlify/functions/workout-equip?diary_id=${ diary_id }`
             } );
         }
 
     } );
 
-    // useEffect( () => console.log( 'Has rendered. ', 'payment/GenresLoader' ) );
+    // useEffect( () => console.log( 'Has rendered. ', 'payment/EquipsLoader' ) );
 
     return null;
 }
 
-export default GenresLoader;
-export { GenresLoader };
+export default EquipsLoader;
+export { EquipsLoader };

@@ -23,7 +23,7 @@ function DatesLoader( { diary_id } ) {
                 actions.retrieveManyRequestBefore( { assets } );
 
             } else {
-                retrieveManyRequestFeature( { 
+                retrieveManyRequestFeature( {
                     _uiux,
                     actions,
                     assets,

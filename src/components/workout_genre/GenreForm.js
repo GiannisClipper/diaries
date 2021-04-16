@@ -1,12 +1,12 @@
 import React, { useState, useContext } from 'react';
 
-import { Modal } from '../../commons/Modal';
-import { InputBox, InputLabel, InputValue } from '../../commons/InputBox';
+import { Modal } from '../commons/Modal';
+import { InputBox, InputLabel, InputValue } from '../commons/InputBox';
 
-import CoreForm from "../../core/CoreForm";
-import validators from '../../core/assets/validators';
-import presetAction from '../../core/helpers/presetAction';
-import withLexicon from '../../core/helpers/withLexicon';
+import CoreForm from "../core/CoreForm";
+import validators from '../core/assets/validators';
+import presetAction from '../core/helpers/presetAction';
+import withLexicon from '../core/helpers/withLexicon';
 
 import { GenresContext } from './GenresContext';
 
