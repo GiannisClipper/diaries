@@ -17,19 +17,20 @@ const parseEntryFromDB = data => {
             ? parsePaymentFromDB( type_specs )
             : type === 'workout'
             ? parseWorkoutFromDB( type_specs )
-            : parseNoteFromDB( type_specs )    
+            : parseNoteFromDB( type_specs )
     }
 
 }
 
 const parseEntryToDB = data => {
 
-    const { diary_id, date, index, type, type_specs } = data;
+    const { diary_id, date, index, indexes, type, type_specs } = data;
 
     return {
         diary_id,
         date,
         index,
+        indexes,
         type,
         type_specs:
             type === 'payment'

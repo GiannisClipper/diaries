@@ -32,6 +32,15 @@ const Entry = ( { diary_id, date, entries, index, actions, assets, lexicon } ) =
 
     useEffect( () => {
 
+        if ( _uiux.status.isRequest ) {
+            const indexes = entries
+                .map( ( x, i ) => ( { id: x.id, old_index: x.index, new_index: i } ) )
+                .filter( ( x, i ) => x.id && x.old_index !== x.new_index )
+                .map( x => ( { id: x.id, index: x.new_index } ) );
+
+            entry.indexes = indexes;
+        }
+
         if ( _uiux.mode.isCreate ) {
             createRequestFeature( { 
                 _item: entry,
@@ -59,7 +68,7 @@ const Entry = ( { diary_id, date, entries, index, actions, assets, lexicon } ) =
                 url: `/.netlify/functions/entry?id=${ entry.id }`
             } );
         }
-    }, [ entry, _uiux, actions, assets, index ] );
+    }, [ entry, _uiux, actions, assets, index, entries ] );
 
     // cut-copy-paste feature...
 

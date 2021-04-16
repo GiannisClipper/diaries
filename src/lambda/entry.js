@@ -2,33 +2,26 @@ import { ObjectId } from 'mongodb';
 import { createHandler, auth } from './core/handler';
 import { convertFieldTo, reduceField } from './core/stages';
 
-const updateIndex = async ( collection, id, date, index, step ) => {
+const updateIndexes = async ( collection, indexes ) => {
 
-    const res = await collection.updateMany( 
-        {
-            date: { $eq: date },
-            index: { $gte: index },
-            _id: { $ne: ObjectId( id ) }
-        }, 
-        { 
-            $inc: { index: step }
-        }
-    );
+    if ( indexes && indexes.length > 0 ) {
 
-    console.log( 'updateIndex', { id, date, index, step, res } );
+        const updates = indexes.map( x => (
+            { updateOne: {
+                filter: { _id: ObjectId( x.id ) },
+                update: { $set: { index: x.index } }
+            } }
+        ) );
+
+        collection.bulkWrite( updates, { ordered : false } );
+    }
 }
 
 const getMethod = async ( event, db, collectionName, payload ) => {
 
     const diary_id = event.queryStringParameters[ 'diary_id' ];
     const [ dateFrom, dateTill ] = event.queryStringParameters[ 'range' ].split( '-' );
-
     const collection = db.collection( collectionName );
-
-    // const result = await collection.find( { 
-    //     diary_id: { $eq: diary_id },
-    //     date: { $gte: dateFrom, $lte: dateTill } 
-    // } ).toArray();
 
     const result = await collection.aggregate( [
         { 
@@ -159,13 +152,10 @@ const getMethod = async ( event, db, collectionName, payload ) => {
 
 const postMethod = async ( event, db, collectionName, payload ) => {
     const body = JSON.parse( event.body )
-    const data = body.data;
+    const { indexes, ...data } = body.data;
     const collection = db.collection( collectionName );
     const result = await collection.insertOne( data );
-
-    const id = result.insertedId;
-    const { date, index } = data;
-    await updateIndex( collection, id, date, index, 1 );
+    await updateIndexes( collection, indexes );
 
     return result;
 }
@@ -173,33 +163,21 @@ const postMethod = async ( event, db, collectionName, payload ) => {
 const putMethod = async ( event, db, collectionName, payload ) => {
     const id = event.queryStringParameters[ 'id' ];
     const body = JSON.parse( event.body );
-    const data = body.data;
+    const { indexes, ...data } = body.data;
     const collection = db.collection( collectionName );
-
-    const oldData = await collection.findOne( { _id: ObjectId( id ) } );
-    const oldDate = oldData.date;
-    const oldIndex = oldData.index;
-
     const result = await collection.updateOne( { _id: ObjectId( id ) }, { $set: data } );
-    const newDate = data.date;
-    const newIndex = data.index;
-
-    if ( oldDate + oldIndex !== newDate + newIndex ) {
-        await updateIndex( collection, id, oldDate, oldIndex, -1 );
-        await updateIndex( collection, id, newDate, newIndex, 1 );
-    }
+    await updateIndexes( collection, indexes );
 
     return result;
 }
 
 const deleteMethod = async ( event, db, collectionName, payload ) => {
     const id = event.queryStringParameters[ 'id' ];
+    const body = JSON.parse( event.body );
+    const { indexes } = body.data;
     const collection = db.collection( collectionName );
     const result = await collection.deleteOne( { _id: ObjectId( id ) } );
-
-    const body = JSON.parse( event.body );
-    const { date, index } = body.data;
-    await updateIndex( collection, id, date, index, -1 );
+    await updateIndexes( collection, indexes );
 
     return result;
 }

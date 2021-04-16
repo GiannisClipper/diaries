@@ -8,7 +8,7 @@ const realFetch = async ( url, args ) => {
 
     args.headers = { 
         'Content-Type': 'application/json; charset=utf-8',
-        Authorization: `Token ${token}`
+        Authorization: `Token ${ token }`
     };
 
     const error = { message: '' };
