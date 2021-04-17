@@ -6,14 +6,13 @@ function signinRequestFeature( { _item, actions, assets, url }) {
     const signinResponseOk = presetAction( actions.signinResponseOk, { assets } );
     const signinResponseError = presetAction( actions.signinResponseError, { assets } );
 
-    const { parseToDB } = assets;
-    const dataToDB = parseToDB( _item );
-    const body = JSON.stringify( { data: { ...dataToDB } } );
-
     const { _uiux } = _item;
     const { status } = _uiux;
 
     if ( status.isRequest ) {
+        const { parseToDB } = assets;
+        const dataToDB = parseToDB( _item );
+        const body = JSON.stringify( { data: { ...dataToDB } } );
         const args = { method: 'PUT', body };
         const onDone = signinResponseOk;
         const onError = signinResponseError;
@@ -30,14 +29,13 @@ function createRequestFeature( { _item, actions, assets, index, url } ) {
     const createResponseErrorAfter = presetAction( actions.createResponseErrorAfter, { assets, index } );
     const handleError = actions.handleError;
 
-    const { parseToDB, parseFromDB } = assets;
-    const dataToDB = parseToDB( _item );
-    const body = JSON.stringify( { data: { ...dataToDB } } );
-
     const { _uiux } = _item;
     const { status, error } = _uiux;
 
     if ( status.isRequest ) {
+        const { parseToDB, parseFromDB } = assets;
+        const dataToDB = parseToDB( _item );
+        const body = JSON.stringify( { data: { ...dataToDB } } );
         const args = { method: 'POST', body };
         const onDone = createResponseOk;
         const onError = createResponseError;
@@ -70,7 +68,6 @@ function retrieveRequestFeature( { _item, actions, assets, index, url } ) {
         const onDone = retrieveResponseOk;
         const onError = retrieveResponseError;
         const dataFromDB = res => res;
-        //typeof res === 'object' && res !== null
         doFetch( url, args, onDone, onError, dataFromDB );
 
     } else if ( status.isResponseOk ) {
@@ -90,15 +87,14 @@ function updateRequestFeature( { _item, actions, assets, index, url } ) {
     const updateResponseErrorAfter = presetAction( actions.updateResponseErrorAfter, { assets, index } );
     const handleError = actions.handleError;
 
-    const { parseToDB, parseFromDB } = assets;
-    const dataToDB = parseToDB( _item );
-    const body = JSON.stringify( { data: { ...dataToDB } } );
-    const id = _item.id;
-
     const { _uiux } = _item;
     const { status, error } = _uiux;
 
     if ( status.isRequest ) {
+        const { parseToDB, parseFromDB } = assets;
+        const dataToDB = parseToDB( _item );
+        const body = JSON.stringify( { data: { ...dataToDB } } );
+        const id = _item.id;
         const args = { method: 'PUT', body };
         const onDone = updateResponseOk;
         const onError = updateResponseError;
@@ -123,15 +119,14 @@ function deleteRequestFeature( { _item, actions, assets, index, url } ) {
     const deleteResponseErrorAfter = presetAction( actions.deleteResponseErrorAfter, { assets, index } );
     const handleError = actions.handleError;
 
-    const { parseToDB, parseFromDB } = assets;
-    const dataToDB = parseToDB( _item );
-    const body = JSON.stringify( { data: { ...dataToDB } } );
-    const id = _item.id;
-
     const { _uiux } = _item;
     const { status, error } = _uiux;
 
     if ( status.isRequest ) {
+        const { parseToDB, parseFromDB } = assets;
+        const dataToDB = parseToDB( _item );
+        const body = JSON.stringify( { data: { ...dataToDB } } );
+        const id = _item.id;    
         const args = { method: 'DELETE', body };
         const onDone = deleteResponseOk;
         const onError = deleteResponseError;
