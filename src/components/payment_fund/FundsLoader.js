@@ -2,6 +2,8 @@ import { useContext, useEffect  } from 'react';
 
 import { retrieveManyRequestFeature } from '../core/features/requests';
 
+import { urls } from '../app/assets/urls';
+
 import { FundsContext } from './FundsContext';
 import assets from './assets/assets';
 import { fundsSchema } from './assets/schemas';
@@ -36,7 +38,7 @@ function FundsLoader( { diary_id } ) {
                 _uiux,
                 actions,
                 assets,
-                url: `/.netlify/functions/payment-fund?diary_id=${ diary_id }`
+                url: `${ urls.payment_fund }?diary_id=${ diary_id }`
             } );
         }
 

@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 
 import { retrieveManyRequestFeature } from '../core/features/requests';
 
+import { urls } from '../app/assets/urls';
+
 import { diariesSchema } from './assets/schemas';
 
 function DiariesLoader( { state, actions, assets } ) {
@@ -33,7 +35,7 @@ function DiariesLoader( { state, actions, assets } ) {
             _uiux,
             actions,
             assets,
-            url: `/.netlify/functions/diary?user_id=${ user_id }`
+            url: `${ urls.diary }?user_id=${ user_id }`
         } );
 
     } );

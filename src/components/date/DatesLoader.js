@@ -3,9 +3,10 @@ import { useContext, useEffect  } from 'react';
 import { retrieveManyRequestFeature } from '../core/features/requests';
 import { dateToYYYYMMDD } from '../core/helpers/dates';
 
-import assets from './assets/assets';
+import { urls } from '../app/assets/urls';
 
-import { DatesContext } from '../date/DatesContext';
+import assets from './assets/assets';
+import { DatesContext } from './DatesContext';
 
 function DatesLoader( { diary_id } ) {
 
@@ -27,7 +28,7 @@ function DatesLoader( { diary_id } ) {
                     _uiux,
                     actions,
                     assets,
-                    url: `/.netlify/functions/entry?diary_id=${ diary_id }&range=${ dateFrom }-${ dateTill }`
+                    url: `${ urls.entry }?diary_id=${ diary_id }&range=${ dateFrom }-${ dateTill }`
                 } );
             }
 

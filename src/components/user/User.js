@@ -6,6 +6,8 @@ import { CoreMenu, CreateOption, UpdateOption, DeleteOption } from '../core/Core
 import presetAction from '../core/helpers/presetAction';
 import { createRequestFeature, updateRequestFeature, deleteRequestFeature } from '../core/features/requests';
 
+import { urls } from '../app/assets/urls';
+
 import UserForm from './UserForm';
 
 function User( { users, index, actions, assets, lexicon } ) {
@@ -28,7 +30,7 @@ function User( { users, index, actions, assets, lexicon } ) {
                 actions,
                 assets,
                 index,
-                url: `/.netlify/functions/user`
+                url: urls.user
             } );
 
         } else if ( _uiux.mode.isUpdate ) {
@@ -37,7 +39,7 @@ function User( { users, index, actions, assets, lexicon } ) {
                 actions,
                 assets,
                 index,
-                url: `/.netlify/functions/user?id=${ user.id }`
+                url: `${ urls.user }?id=${ user.id }`
             } );
 
         } else if ( _uiux.mode.isDelete ) {
@@ -46,7 +48,7 @@ function User( { users, index, actions, assets, lexicon } ) {
                 actions,
                 assets,
                 index,
-                url: `/.netlify/functions/user?id=${ user.id }`
+                url: `${ urls.user }?id=${ user.id }`
             } );
         }
     }, [ user, _uiux, actions, assets, index ] );

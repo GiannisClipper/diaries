@@ -6,6 +6,8 @@ import assets from './assets/assets';
 import { GenresContext } from './GenresContext';
 import { genresSchema } from './assets/schemas';
 
+import { urls } from '../app/assets/urls';
+
 function GenresLoader( { diary_id } ) {
 
     const { state, actions } = useContext( GenresContext );
@@ -36,7 +38,7 @@ function GenresLoader( { diary_id } ) {
                 _uiux,
                 actions,
                 assets,
-                url: `/.netlify/functions/payment-genre?diary_id=${ diary_id }`
+                url: `${ urls.payment_genre }?diary_id=${ diary_id }`
             } );
         }
 

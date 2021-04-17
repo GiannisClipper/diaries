@@ -3,6 +3,8 @@ import React from 'react';
 import { InputBox, InputLabel, InputValue } from '../commons/InputBox';
 import { InputRequestingList } from '../commons/InputList';
 
+import { urls } from '../app/assets/urls';
+
 function PaymentReportForm( { data, setData, lexicon } ) {
 
     const { diary_id, type_specs } = data;
@@ -18,7 +20,7 @@ function PaymentReportForm( { data, setData, lexicon } ) {
                     value={ type_specs.genre_name }
                     valueToAssign={ value => value.name }
                     valueToRepr={ value => value.name }    
-                    url={ `/.netlify/functions/payment-genre?diary_id=${ diary_id }&name=` }
+                    url={ `${ urls.payment_genre }?diary_id=${ diary_id }&name=` }
                     onChange={ event => {
                         const { value } = event.target;
                         const specs = {
@@ -41,7 +43,7 @@ function PaymentReportForm( { data, setData, lexicon } ) {
                     value={ type_specs.fund_name }
                     valueToAssign={ value => value.name }
                     valueToRepr={ value => value.name }    
-                    url={ `/.netlify/functions/payment-fund?diary_id=${ diary_id }&name=` }
+                    url={ `${ urls.payment_fund }?diary_id=${ diary_id }&name=` }
                     onChange={ event => {
                         const { value } = event.target;
                         const specs = {

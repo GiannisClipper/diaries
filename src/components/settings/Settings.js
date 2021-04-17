@@ -7,6 +7,7 @@ import presetAction from '../core/helpers/presetAction';
 import { updateRequestFeature } from '../core/features/requests';
 
 import { AppContext } from '../app/AppContext';
+import { urls } from '../app/assets/urls';
 
 import assets from './assets/assets';
 import SettingsForm from './SettingsForm';
@@ -28,7 +29,7 @@ function Settings( { lexicon } ) {
             _item: settings,
             actions,
             assets,
-            url: `/.netlify/functions/settings`
+            url: urls.settings
         } );
 
     }, [ settings, actions ] );

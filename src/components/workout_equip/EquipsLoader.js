@@ -2,6 +2,8 @@ import { useContext, useEffect  } from 'react';
 
 import { retrieveManyRequestFeature } from '../core/features/requests';
 
+import { urls } from '../app/assets/urls';
+
 import assets from './assets/assets';
 import { EquipsContext } from './EquipsContext';
 import { equipsSchema } from './assets/schemas';
@@ -36,7 +38,7 @@ function EquipsLoader( { diary_id } ) {
                 _uiux,
                 actions,
                 assets,
-                url: `/.netlify/functions/workout-equip?diary_id=${ diary_id }`
+                url: `${ urls.workout_equip }?diary_id=${ diary_id }`
             } );
         }
 

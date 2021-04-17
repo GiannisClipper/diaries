@@ -48,28 +48,28 @@ const mockFetch = ( url, args ) => {
 
 const mockResult = ( url, args ) => {
 
-    if ( url.startsWith( '/.netlify/functions/retrieve-dates?range=' ) ) {
-        const range = url.split( '=' )[1];
-        const [ strFrom, strTill ] = range.split( '-' );
+    // if ( url.startsWith( '/.netlify/functions/retrieve-dates?range=' ) ) {
+    //     const range = url.split( '=' )[1];
+    //     const [ strFrom, strTill ] = range.split( '-' );
 
-        return [
-            {
-                _id: strFrom,
-                date: strFrom,
-                note: strFrom + '/' + url,
-                index: 0
-            },
-            {
-                _id: strTill,
-                date: strTill,
-                note: strTill + '/' + url,
-                index: 0
-            }
-        ];
+    //     return [
+    //         {
+    //             _id: strFrom,
+    //             date: strFrom,
+    //             note: strFrom + '/' + url,
+    //             index: 0
+    //         },
+    //         {
+    //             _id: strTill,
+    //             date: strTill,
+    //             note: strTill + '/' + url,
+    //             index: 0
+    //         }
+    //     ];
 
-    } else if ( url === '/.netlify/functions/create-entry' ) {
-        return { insertedId: `${ Math.random() }` };
-    }
+    // } else if ( url === '/.netlify/functions/create-entry' ) {
+    //     return { insertedId: `${ Math.random() }` };
+    // }
 }
 
 const doFetch = ( url, args, onDone, onError, dataFromDB ) => {

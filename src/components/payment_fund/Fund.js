@@ -6,6 +6,8 @@ import { CoreMenu, CreateOption, UpdateOption, DeleteOption } from '../core/Core
 import presetAction from '../core/helpers/presetAction';
 import { createRequestFeature, updateRequestFeature, deleteRequestFeature } from '../core/features/requests';
 
+import { urls } from '../app/assets/urls';
+
 import FundForm from './FundForm';
 
 function Fund( { funds, index, actions, assets, lexicon } ) {
@@ -28,7 +30,7 @@ function Fund( { funds, index, actions, assets, lexicon } ) {
                 actions,
                 assets,
                 index,
-                url: `/.netlify/functions/payment-fund`
+                url: urls.payment_fund
             } );
 
         } else if ( _uiux.mode.isUpdate ) {
@@ -37,7 +39,7 @@ function Fund( { funds, index, actions, assets, lexicon } ) {
                 actions,
                 assets,
                 index,
-                url: `/.netlify/functions/payment-fund?id=${ fund.id }`
+                url: `${ urls.payment_fund }?id=${ fund.id }`
             } );
 
         } else if ( _uiux.mode.isDelete ) {
@@ -46,7 +48,7 @@ function Fund( { funds, index, actions, assets, lexicon } ) {
                 actions,
                 assets,
                 index,
-                url: `/.netlify/functions/payment-fund?id=${ fund.id }`
+                url: `${ urls.payment_fund }?id=${ fund.id }`
             } );
         }
     }, [ fund, _uiux, actions, assets, index ] );

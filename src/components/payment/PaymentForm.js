@@ -4,6 +4,8 @@ import { InputBox, InputLabel, InputValue } from '../commons/InputBox';
 import { InputNumber } from '../commons/InputNumber';
 import { InputRequestingList } from '../commons/InputList';
 
+import { urls } from '../app/assets/urls';
+
 import { paymentSchema } from './assets/schemas';
 
 function PaymentForm( { data, setData, lexicon } ) {
@@ -22,7 +24,7 @@ function PaymentForm( { data, setData, lexicon } ) {
                     value={ type_specs.genre_name }
                     valueToAssign={ value => value.name }
                     valueToRepr={ value => value.name }    
-                    url={ `/.netlify/functions/payment-genre?diary_id=${ diary_id }&name=` }
+                    url={ `${ urls.payment_genre }?diary_id=${ diary_id }&name=` }
                     onChange={ event => {
                         const { value } = event.target;
                         const specs = {
@@ -89,7 +91,7 @@ function PaymentForm( { data, setData, lexicon } ) {
                     value={ type_specs.fund_name }
                     valueToAssign={ value => value.name }
                     valueToRepr={ value => value.name }    
-                    url={ `/.netlify/functions/payment-fund?diary_id=${ diary_id }&name=` }
+                    url={ `${ urls.payment_fund }?diary_id=${ diary_id }&name=` }
                     onChange={ event => {
                         const { value } = event.target;
                         const specs = {

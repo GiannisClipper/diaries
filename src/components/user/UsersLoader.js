@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 
 import { retrieveManyRequestFeature } from '../core/features/requests';
 
+import { urls } from '../app/assets/urls';
+
 import { usersSchema } from './assets/schemas';
 
 function UsersLoader( { state, actions, assets } ) {
@@ -27,7 +29,7 @@ function UsersLoader( { state, actions, assets } ) {
             _uiux,
             actions,
             assets,
-            url: `/.netlify/functions/user`
+            url: urls.user
         } );
 
     } );

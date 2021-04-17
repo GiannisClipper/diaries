@@ -5,8 +5,9 @@ import { InputDuration } from '../commons/InputDuration';
 import { InputNumber } from '../commons/InputNumber';
 import { InputRequestingList } from '../commons/InputList';
 
-import { workoutSchema } from './assets/schemas';
+import { urls } from '../app/assets/urls';
 
+import { workoutSchema } from './assets/schemas';
 import { pace, speed } from './helpers/speedAndPace';
 
 function WorkoutForm( { data, setData, lexicon } ) {
@@ -25,7 +26,7 @@ function WorkoutForm( { data, setData, lexicon } ) {
                     value={ type_specs.genre_name }
                     valueToAssign={ value => value.name }
                     valueToRepr={ value => value.name }    
-                    url={ `/.netlify/functions/workout-genre?diary_id=${ diary_id }&name=` }
+                    url={ `${ urls.workout_genre }?diary_id=${ diary_id }&name=` }
                     onChange={ event => {
                         const { value } = event.target;
                         const specs = {
@@ -119,7 +120,7 @@ function WorkoutForm( { data, setData, lexicon } ) {
                     value={ type_specs.equip_name }
                     valueToAssign={ value => value.name }
                     valueToRepr={ value => value.name }    
-                    url={ `/.netlify/functions/workout-equip?diary_id=${ diary_id }&name=` }
+                    url={ `${ urls.workout_equip }?diary_id=${ diary_id }&name=` }
                     onChange={ event => {
                         const { value } = event.target;
                         const specs = {

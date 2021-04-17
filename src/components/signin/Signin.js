@@ -3,6 +3,7 @@ import React, { useContext, useEffect } from 'react';
 import { signinRequestFeature } from '../core/features/requests';
 
 import { AppContext } from '../app/AppContext';
+import { urls } from '../app/assets/urls';
 
 import assets from './assets/assets';
 import SigninForm from './SigninForm';
@@ -20,7 +21,7 @@ function Signin( { lexicon } ) {
             _item: signin,
             actions,
             assets,
-            url: `/.netlify/functions/signin`
+            url: urls.signin
         } );
 
     }, [ signin, actions ] );

@@ -2,6 +2,8 @@ import { useContext, useEffect  } from 'react';
 
 import { retrieveManyRequestFeature } from '../core/features/requests';
 
+import { urls } from '../app/assets/urls';
+
 import assets from './assets/assets';
 import { GenresContext } from './GenresContext';
 import { genresSchema } from './assets/schemas';
@@ -36,7 +38,7 @@ function GenresLoader( { diary_id } ) {
                 _uiux,
                 actions,
                 assets,
-                url: `/.netlify/functions/workout-genre?diary_id=${ diary_id }`
+                url: `${ urls.workout_genre }?diary_id=${ diary_id }`
             } );
         }
 

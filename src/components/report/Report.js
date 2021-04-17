@@ -6,6 +6,8 @@ import { CoreMenu, RetrieveOption } from '../core/CoreMenu';
 import presetAction from '../core/helpers/presetAction';
 import { retrieveRequestFeature } from '../core/features/requests';
 
+import { urls } from '../app/assets/urls';
+
 import ReportForm from './ReportForm';
 import { paymentsPDF } from './helpers/paymentsPDF';
 
@@ -48,7 +50,7 @@ function Report( { reports, index, actions, assets, lexicon } ) {
                 actions,
                 assets,
                 index,
-                url: `/.netlify/functions/report` +
+                url: urls.report +
                 `?diary_id=${ dataToDB.diary_id }` +
                 `&type=${ dataToDB.type }` +
                 ( dataToDB.groupBy ? `&groupBy=${ dataToDB.groupBy }` : '' ) +

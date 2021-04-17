@@ -10,6 +10,7 @@ import { createRequestFeature, updateRequestFeature, deleteRequestFeature } from
 import { LinkBench } from '../app/AppLinks';
 import { LinkReports } from '../app/AppLinks';
 import { LinkBenchSettings } from '../app/AppLinks';
+import { urls } from '../app/assets/urls';
 
 import DiaryForm from './DiaryForm';
 
@@ -33,7 +34,7 @@ function Diary( { diaries, index, actions, assets, lexicon } ) {
                 actions,
                 assets,
                 index,
-                url: `/.netlify/functions/diary`
+                url: urls.diary
             } );
 
         } else if ( _uiux.mode.isUpdate ) {
@@ -42,7 +43,7 @@ function Diary( { diaries, index, actions, assets, lexicon } ) {
                 actions,
                 assets,
                 index,
-                url: `/.netlify/functions/diary?id=${ diary.id }`
+                url: `${ urls.diary }?id=${ diary.id }`
             } );
 
         } else if ( _uiux.mode.isDelete ) {
@@ -51,7 +52,7 @@ function Diary( { diaries, index, actions, assets, lexicon } ) {
                 actions,
                 assets,
                 index,
-                url: `/.netlify/functions/diary?id=${ diary.id }`
+                url: `${ urls.diary }?id=${ diary.id }`
             } );
         }
     }, [ diary, _uiux, actions, assets, index ] );

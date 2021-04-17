@@ -6,6 +6,8 @@ import { CoreMenu, CreateOption, UpdateOption, DeleteOption } from '../core/Core
 import presetAction from '../core/helpers/presetAction';
 import { createRequestFeature, updateRequestFeature, deleteRequestFeature } from '../core/features/requests';
 
+import { urls } from '../app/assets/urls';
+
 import EquipForm from './EquipForm';
 
 function Equip( { equips, index, actions, assets, lexicon } ) {
@@ -28,7 +30,7 @@ function Equip( { equips, index, actions, assets, lexicon } ) {
                 actions,
                 assets,
                 index,
-                url: `/.netlify/functions/workout-equip`
+                url: urls.workout_equip
             } );
 
         } else if ( _uiux.mode.isUpdate ) {
@@ -37,7 +39,7 @@ function Equip( { equips, index, actions, assets, lexicon } ) {
                 actions,
                 assets,
                 index,
-                url: `/.netlify/functions/workout-equip?id=${ equip.id }`
+                url: `${ urls.workout_equip }?id=${ equip.id }`
             } );
 
         } else if ( _uiux.mode.isDelete ) {
@@ -46,7 +48,7 @@ function Equip( { equips, index, actions, assets, lexicon } ) {
                 actions,
                 assets,
                 index,
-                url: `/.netlify/functions/workout-equip?id=${ equip.id }`
+                url: `${ urls.workout_equip }?id=${ equip.id }`
             } );
         }
     }, [ equip, _uiux, actions, assets, index ] );

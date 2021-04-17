@@ -8,6 +8,7 @@ import presetAction from '../core/helpers/presetAction';
 import saveAsTextFile from '../core/helpers/saveAsTextFile';
 
 import { AppContext } from '../app/AppContext';
+import { urls } from '../app/assets/urls';
 
 import assets from './assets/assets';
 import BackupForm from './BackupForm';
@@ -29,7 +30,7 @@ function Backup( { lexicon } ) {
                 _item: backup,
                 actions,
                 assets,
-                url: `/.netlify/functions/backup`
+                url: urls.backup
             } );
 
         } else {

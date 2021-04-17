@@ -6,6 +6,8 @@ import { CoreMenu, CreateOption, UpdateOption, DeleteOption } from '../core/Core
 import presetAction from '../core/helpers/presetAction';
 import { createRequestFeature, updateRequestFeature, deleteRequestFeature } from '../core/features/requests';
 
+import { urls } from '../app/assets/urls';
+
 import GenreForm from './GenreForm';
 
 function Genre( { genres, index, actions, assets, lexicon } ) {
@@ -28,7 +30,7 @@ function Genre( { genres, index, actions, assets, lexicon } ) {
                 actions,
                 assets,
                 index,
-                url: `/.netlify/functions/workout-genre`
+                url: urls.workout_genre
             } );
 
         } else if ( _uiux.mode.isUpdate ) {
@@ -37,7 +39,7 @@ function Genre( { genres, index, actions, assets, lexicon } ) {
                 actions,
                 assets,
                 index,
-                url: `/.netlify/functions/workout-genre?id=${ genre.id }`
+                url: `${ urls.workout_genre }?id=${ genre.id }`
             } );
 
         } else if ( _uiux.mode.isDelete ) {
@@ -46,7 +48,7 @@ function Genre( { genres, index, actions, assets, lexicon } ) {
                 actions,
                 assets,
                 index,
-                url: `/.netlify/functions/workout-genre?id=${ genre.id }`
+                url: `${ urls.workout_genre }?id=${ genre.id }`
             } );
         }
     }, [ genre, _uiux, actions, assets, index ] );

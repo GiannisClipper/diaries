@@ -8,6 +8,8 @@ import { CutCopyPasteContext } from '../core/CutCopyPasteContext';
 import { createRequestFeature, updateRequestFeature, deleteRequestFeature } from '../core/features/requests';
 import { dragFeature, dropFeature } from '../core/features/dragNDrop';
 
+import { urls } from '../app/assets/urls';
+
 import EntryRepr from './EntryRepr';
 import { EntryMenuOption, BlankEntryMenu, ExistsEntryMenu } from './EntryMenu';
 import EntryForm from './EntryForm';
@@ -47,7 +49,7 @@ const Entry = ( { diary_id, date, entries, index, actions, assets, lexicon } ) =
                 actions,
                 assets,
                 index,
-                url: `/.netlify/functions/entry`
+                url: urls.entry
             } );
 
         } else if ( _uiux.mode.isUpdate ) {
@@ -56,7 +58,7 @@ const Entry = ( { diary_id, date, entries, index, actions, assets, lexicon } ) =
                 actions,
                 assets,
                 index,
-                url: `/.netlify/functions/entry?id=${ entry.id }`
+                url: `${ urls.entry }?id=${ entry.id }`
             } );
 
         } else if ( _uiux.mode.isDelete ) {
@@ -65,7 +67,7 @@ const Entry = ( { diary_id, date, entries, index, actions, assets, lexicon } ) =
                 actions,
                 assets,
                 index,
-                url: `/.netlify/functions/entry?id=${ entry.id }`
+                url: `${ urls.entry }?id=${ entry.id }`
             } );
         }
     }, [ entry, _uiux, actions, assets, index, entries ] );
