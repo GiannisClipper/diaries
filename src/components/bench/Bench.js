@@ -5,7 +5,7 @@ import StyledList from '../commons/ListBox';
 import { BackwardIcon, ForwardIcon } from '../commons/Icons';
 
 import scrollFeature from '../core/features/scroll';
-import { CutCopyPasteContextProvider } from '../core/CutCopyPasteContext';
+import { CopyPasteContextProvider } from '../core/CopyPasteContext';
 
 import { BenchContext } from './BenchContext';
 import assets from './assets/assets';
@@ -117,14 +117,14 @@ const Bench = ( { diary_id, lexicon } ) => {
                 assets={ assets }
             />
 
-            <CutCopyPasteContextProvider>
+            <CopyPasteContextProvider>
                 <Periods
                     diary_id={ diary_id }
                     periods={ periods }
                     startDate={ startDate }
                     lexicon={ lexicon }
                 />
-            </CutCopyPasteContextProvider>
+            </CopyPasteContextProvider>
 
             <NextButton 
                 reference={ next }

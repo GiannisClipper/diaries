@@ -105,8 +105,10 @@ const createOneOfManyReducer = ( state, action ) => {
             _items[ index ]._uiux.form = {};
             _items[ index ]._uiux.status = { isResponseOkAfter: true };
 
-            if ( sorter ) _items.sort( sorter );
-            _items.push( schema() );
+            if ( index === _items.length - 1 ) {  // excluding copy-paste new entries  
+                if ( sorter ) _items.sort( sorter );
+                _items.push( schema() );
+            }
 
             return { ...state, [ namespace ]: _items };
 
@@ -117,7 +119,7 @@ const createOneOfManyReducer = ( state, action ) => {
             const _items = state[ namespace ];
 
             _items[ index ]._uiux.error = error;
-            _items[ index ]._uiux.status = { isResponseError: true }
+            _items[ index ]._uiux.status = { isResponseError: true };
 
             return { ...state, [ namespace ]: _items };
 
@@ -129,7 +131,7 @@ const createOneOfManyReducer = ( state, action ) => {
 
             const { _uiux } = _items[ index ];
             _items[ index ] = { ...schema(), _uiux };
-            _items[ index ]._uiux.status = { isResponseErrorAfter: true }
+            _items[ index ]._uiux.status = { isResponseErrorAfter: true };
 
             return { ...state, [ namespace ]: _items };
 

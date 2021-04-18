@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import StyledRow from '../commons/RowBox';
 import { LoadingIcon, SuspendedIcon } from '../commons/Icons';
 
-import { CutCopyPasteContext } from '../core/CutCopyPasteContext';
+import { CopyPasteContext } from '../core/CopyPasteContext';
 import { createRequestFeature, updateRequestFeature, deleteRequestFeature } from '../core/features/requests';
 import { dragFeature, dropFeature } from '../core/features/dragNDrop';
 
@@ -13,7 +13,7 @@ import { urls } from '../app/assets/urls';
 import EntryRepr from './EntryRepr';
 import { EntryMenuOption, BlankEntryMenu, ExistsEntryMenu } from './EntryMenu';
 import EntryForm from './EntryForm';
-import { presetCutCopyPasteFeature, cutCopyPasteFeature } from './features/cutCopyPaste';
+import { presetCopyPasteFeature, copyPasteFeature } from './features/copyPaste';
 
 const RowBox = StyledRow.RowBox;
 
@@ -74,15 +74,15 @@ const Entry = ( { diary_id, date, entries, index, actions, assets, lexicon } ) =
 
     // cut-copy-paste feature...
 
-    const cutCopyPasteContext = useContext( CutCopyPasteContext )
+    const copyPasteContext = useContext( CopyPasteContext )
 
-    const { onCut, onCopy, onPaste } = presetCutCopyPasteFeature( 
-        { cutCopyPasteContext, date, entries, index, actions, assets } 
+    const { onCut, onCopy, onPaste } = presetCopyPasteFeature( 
+        { copyPasteContext, date, entries, index, actions, assets } 
     );
 
     useEffect( () => {
-        cutCopyPasteFeature( 
-            { cutCopyPasteContext, entries, index, actions, assets } 
+        copyPasteFeature( 
+            { copyPasteContext, entries, index, actions, assets } 
         );
     } );  
     

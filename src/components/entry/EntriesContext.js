@@ -4,7 +4,7 @@ import comboReducer from '../core/helpers/comboReducer';
 import { retrieveManyEntryReducer } from './reducers/retrieveMany';
 import { menuOneOfManyEntryReducer } from './reducers/menu';
 import { menuOneOfManyReducer } from '../core/reducers/menu';
-import { pasteReducer } from '../core/reducers/paste';
+import { copyPasteReducer } from '../core/reducers/copyPaste';
 import { modeOneOfManyReducer } from '../core/reducers/mode';
 import { formOneOfManyReducer } from '../core/reducers/form';
 import { validationOneOfManyReducer } from '../core/reducers/validation';
@@ -15,7 +15,7 @@ import { deleteOneOfManyReducer } from '../core/reducers/delete';
 import pluginActions from '../core/helpers/pluginActions';
 import menuActions from '../core/assets/actions/menu';
 import modeActions from '../core/assets/actions/mode';
-import pasteActions from '../core/assets/actions/paste';
+import copyPasteActions from '../core/assets/actions/copyPaste';
 import formActions from '../core/assets/actions/form';
 import validationActions from '../core/assets/actions/validation';
 import createActions from '../core/assets/actions/create';
@@ -29,7 +29,7 @@ const reducers = [
     retrieveManyEntryReducer,
     menuOneOfManyEntryReducer,
     menuOneOfManyReducer,
-    pasteReducer,
+    copyPasteReducer,
     modeOneOfManyReducer,
     formOneOfManyReducer,
     validationOneOfManyReducer,
@@ -41,7 +41,7 @@ const reducers = [
 const unpluggedActions = {
     ...menuActions,
     ...modeActions,
-    ...pasteActions,
+    ...copyPasteActions,
     ...formActions,
     ...validationActions,
     ...createActions,

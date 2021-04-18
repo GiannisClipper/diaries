@@ -18,8 +18,8 @@ const entrySchema = () => ( {
         menuOptionCoords: {}, // top, left
         form: {},  // isOpen
         mode: {},  // isCreate, isUpdate, isDelete, isRetrieveMany
-        paste: {},  // isPaste
         status: {},  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError
+        copyPaste: {},  // isCutBefore, isCut, isPasteBefore, isPaste
         error: {},
     }
 } );
