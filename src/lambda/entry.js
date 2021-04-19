@@ -147,7 +147,7 @@ const getMethod = async ( event, db, collectionName, payload ) => {
         }
     ] ).toArray();
 
-    return result;            
+    return { result };            
 }
 
 const postMethod = async ( event, db, collectionName, payload ) => {
@@ -157,7 +157,7 @@ const postMethod = async ( event, db, collectionName, payload ) => {
     const result = await collection.insertOne( data );
     await updateIndexes( collection, indexes );
 
-    return result;
+    return { result };
 }
 
 const putMethod = async ( event, db, collectionName, payload ) => {
@@ -168,7 +168,7 @@ const putMethod = async ( event, db, collectionName, payload ) => {
     const result = await collection.updateOne( { _id: ObjectId( id ) }, { $set: data } );
     await updateIndexes( collection, indexes );
 
-    return result;
+    return { result };
 }
 
 const deleteMethod = async ( event, db, collectionName, payload ) => {
@@ -179,7 +179,7 @@ const deleteMethod = async ( event, db, collectionName, payload ) => {
     const result = await collection.deleteOne( { _id: ObjectId( id ) } );
     await updateIndexes( collection, indexes );
 
-    return result;
+    return { result };
 }
 
 exports.handler = createHandler( {

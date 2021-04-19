@@ -110,13 +110,12 @@ const Entry = ( { diary_id, date, entries, index, actions, assets, lexicon } ) =
                 _uiux.status.isRequestBefore ||
                 _uiux.status.isRequest ||
                 _uiux.status.isResponseWaiting ||
-                _uiux.status.isResponseOk ?
-
+                _uiux.status.isResponseOk 
+                ?
                     <LoadingIcon />
-
-                : _uiux.status.isResponseError ||
-                _uiux.status.isResponseErrorAfter ?
-
+                : 
+                    _uiux.status.isSuspended 
+                ?
                     <SuspendedIcon />
                 : 
                     <EntryMenuOption 

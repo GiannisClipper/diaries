@@ -22,7 +22,7 @@ const putMethod = async ( event, db, collectionName, payload ) => {
         };
     }
 
-    return result;
+    return { result };
 }
 
 exports.handler = createHandler( {

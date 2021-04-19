@@ -59,10 +59,12 @@ const updateOneReducer = ( state, action ) => {
             const { namespace } = assets;
 
             let _item = state[ namespace ];
-
-            const { _saved } = _item._uiux;
+            const { _saved, error } = _item._uiux;
             _item = { ..._item, ..._saved };
-            _item._uiux.status = { isResponseErrorAfter: true };
+
+            _item._uiux.status = error.statusCode !== 500
+                ? { isResponseErrorAfter: true }
+                : { isSuspended: true };
 
             return { ...state, [ namespace ]: _item };
 
@@ -134,7 +136,11 @@ const updateOneOfManyReducer = ( state, action ) => {
 
             const { _saved } = _items[ index ]._uiux;
             _items[ index ] = { ..._items[ index ], ..._saved };
-            _items[ index ]._uiux.status = { isResponseErrorAfter: true }
+
+            const { error } = _items[ index ]._uiux;
+            _items[ index ]._uiux.status = error.statusCode !== 500
+                ? { isResponseErrorAfter: true }
+                : { isSuspended: true };
 
             return { ...state, [ namespace ]: _items };
 

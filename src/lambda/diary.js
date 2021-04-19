@@ -14,7 +14,7 @@ const getMethod = async ( event, db, collectionName, payload ) => {
     const collection = db.collection( collectionName );
     const result = await collection.find( { user_id: { $eq: user_id } } ).toArray();
 
-    return result;            
+    return { result };            
 }
 
 exports.handler = createHandler( {

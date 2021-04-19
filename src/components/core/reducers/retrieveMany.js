@@ -93,9 +93,14 @@ const retrieveManyReducer = ( state, action ) => {
         } case RETRIEVE_MANY_RESPONSE_ERROR_AFTER: {
             const { assets } = action.payload;
             const { namespace } = assets;
-
             const _items = state[ namespace ];
-            _items.forEach( x => x._uiux.status = { isResponseErrorAfter: true } );
+
+            const { error } = state._uiux;
+            _items.forEach( x => 
+                x._uiux.status = error.statusCode !== 500
+                    ? { isResponseErrorAfter: true }
+                    : { isSuspended: true }
+            );
     
             const { _uiux } = state;
             _uiux.status = { isResponseErrorAfter: true };

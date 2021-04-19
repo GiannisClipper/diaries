@@ -7,7 +7,7 @@ const auth = event => {
     let token = event.headers.authorization;
     const payload =  verifyToken( token );
     if ( payload.error ) {
-        throw new Error( `No authorization (${payload.error}).` );
+        throw new Error( `No authorization (${ payload.error }).` );
     }
     return payload;
 }
@@ -15,7 +15,7 @@ const auth = event => {
 const getMethod = async ( event, db, collectionName, payload ) => {
     const collection = db.collection( collectionName );
     const result = await collection.find( {} ).toArray();
-    return result;
+    return { result };
 }
 
 const postMethod = async ( event, db, collectionName, payload ) => {
@@ -23,7 +23,7 @@ const postMethod = async ( event, db, collectionName, payload ) => {
     const data = body.data;
     const collection = db.collection( collectionName );
     const result = await collection.insertOne( data );
-    return result;
+    return { result, statusCode: 201 };
 }
 
 const putMethod = async ( event, db, collectionName, payload ) => {
@@ -32,14 +32,14 @@ const putMethod = async ( event, db, collectionName, payload ) => {
     const data = body.data;
     const collection = db.collection( collectionName );
     const result = await collection.updateOne( { _id: ObjectId( id ) }, { $set: data } );
-    return result;
+    return { result };
 }
 
 const deleteMethod = async ( event, db, collectionName, payload ) => {
     const id = event.queryStringParameters[ 'id' ];
     const collection = db.collection( collectionName );
     const result = await collection.deleteOne( { _id: ObjectId( id ) } );
-    return result;
+    return { result };
 }
 
 function createHandler( { auth, collectionName, getMethod, postMethod, putMethod, deleteMethod } ) {
@@ -58,27 +58,27 @@ function createHandler( { auth, collectionName, getMethod, postMethod, putMethod
 
             if ( event.httpMethod === 'GET' && getMethod ) {
 
-                const result = await getMethod( event, db, collectionName, payload );
+                const { result, statusCode } = await getMethod( event, db, collectionName, payload );
                 console.log( result );
-                callback( null, responseOnSuccess( result ) );
+                callback( null, responseOnSuccess( { result, statusCode } ) );
 
             } else if ( event.httpMethod === 'POST' && postMethod ) {
 
-                const result = await postMethod( event, db, collectionName, payload );
+                const { result, statusCode } = await postMethod( event, db, collectionName, payload );
                 console.log( result );
-                callback( null, responseOnSuccess( result ) );
+                callback( null, responseOnSuccess( { result, statusCode } ) );
 
             } else if ( event.httpMethod === 'PUT' && putMethod ) {
 
-                const result = await putMethod( event, db, collectionName, payload );
+                const { result, statusCode } = await putMethod( event, db, collectionName, payload );
                 console.log( result );
-                callback( null, responseOnSuccess( result ) );
+                callback( null, responseOnSuccess( { result, statusCode } ) );
 
             } else if ( event.httpMethod === 'DELETE' && deleteMethod ) {
 
-                const result = await deleteMethod( event, db, collectionName, payload );
+                const { result, statusCode } = await deleteMethod( event, db, collectionName, payload );
                 console.log( result );
-                callback( null, responseOnSuccess( result ) );
+                callback( null, responseOnSuccess( { result, statusCode } ) );
         
             } else {
                 throw new Error( `${ event.httpMethod } method not supported.` );

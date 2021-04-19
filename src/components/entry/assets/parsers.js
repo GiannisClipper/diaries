@@ -12,7 +12,7 @@ const parseEntryFromDB = data => {
         date,
         index,
         type,
-        type_specs: 
+        type_specs:
             type === 'payment'
             ? parsePaymentFromDB( type_specs )
             : type === 'workout'

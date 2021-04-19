@@ -7,7 +7,7 @@ const putMethod = async ( event, db, collectionName, payload ) => {
     const data = body.data;
     const collection = db.collection( collectionName );
     const result = await collection.updateOne( { _id: ObjectId( id ) }, { $set: data } );
-    return result;
+    return { result };
 }
 
 exports.handler = createHandler( {

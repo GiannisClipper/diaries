@@ -58,11 +58,10 @@ const appReducer = ( state, action ) => {
         
                 } case HANDLE_ERROR: {
                     const { error } = action.payload;
-
                     let { signin } = state;
 
                     //if ( error && error.message && error.message.includes( 'No auth' ) ) {
-                    if ( error.includes( 'No auth' ) ) {
+                    if ( error.message.includes( 'No auth' ) ) {
                         signin = signinSchema();
                     }
 
@@ -71,7 +70,7 @@ const appReducer = ( state, action ) => {
                     return { ...state, signin };
 
                 } default: {
-                    console.log( `undefined type:${ action.type }` );
+                    console.log( `undefined action type:${ action.type }` );
                     throw new Error();
                 }
             }

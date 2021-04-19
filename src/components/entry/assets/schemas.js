@@ -18,7 +18,7 @@ const entrySchema = () => ( {
         menuOptionCoords: {}, // top, left
         form: {},  // isOpen
         mode: {},  // isCreate, isUpdate, isDelete, isRetrieveMany
-        status: {},  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError
+        status: {},  // isRequestBefore, isRequest, isResponseWaiting, isResponseOk, isResponseError, isSuspended
         copyPaste: {},  // isCutBefore, isCut, isPasteBefore, isPaste
         error: {},
     }

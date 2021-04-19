@@ -14,6 +14,8 @@ const userSchema = () => ( {
     email: '',
     type: '',  // admin, user
     remark: '',
+    theme: null,
+    language: null,
     _uiux: {
         form: {},  // isOpen
         mode: {},  // isCreate, isUpdate, isDelete

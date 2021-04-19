@@ -48,27 +48,27 @@ const getMethod = async ( event, db, collectionName ) => {
                 case 'month': {
                     const stages = paymentsGroupByMonth( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, fund_id, fund_ids } );
                     const result = collection.aggregate( stages ).toArray();
-                    return result;
+                    return { result };
 
                 } case 'week': {
                     const stages = paymentsGroupByWeek( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, fund_id, fund_ids } );
                     const result = collection.aggregate( stages ).toArray();
-                    return result;
+                    return { result };
 
                 } case 'genre': {
                     const stages = paymentsGroupByGenre( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, fund_id, fund_ids } );
                     const result = collection.aggregate( stages ).toArray();
-                    return result;
+                    return { result };
 
                 } case 'fund': {
                     const stages = paymentsGroupByFund( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, fund_id, fund_ids } );
                     const result = collection.aggregate( stages ).toArray();
-                    return result;
+                    return { result };
 
                 } default: {
                     const stages = payments( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, fund_id, fund_ids } );
                     const result = collection.aggregate( stages ).toArray();
-                    return result;
+                    return { result };
                 }
             }
 

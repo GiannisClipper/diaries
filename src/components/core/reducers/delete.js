@@ -55,9 +55,13 @@ const deleteOneReducer = ( state, action ) => {
             const { assets } = action.payload;
             const { namespace, schema } = assets;
 
-            const _item = schema();
+            let _item = state[ namespace ];
+            const { error } = _item._uiux;
+            _item = schema();
 
-            _item._uiux.status = { isResponseErrorAfter: true };
+            _item._uiux.status = error.statusCode !== 500
+                ? { isResponseErrorAfter: true }
+                : { isSuspended: true };
 
             return { ...state, [ namespace ]: _item };
 
@@ -118,7 +122,10 @@ const deleteOneOfManyReducer = ( state, action ) => {
 
             const _items = state[ namespace ];
 
-            _items[ index ]._uiux.status = { isResponseErrorAfter: true };
+            const { error } = _items[ index ]._uiux;
+            _items[ index ]._uiux.status = error.statusCode !== 500
+                ? { isResponseErrorAfter: true }
+                : { isSuspended: true };
 
             return { ...state, [ namespace ]: _items };
 

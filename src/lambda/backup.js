@@ -30,7 +30,7 @@ const getMethod = async ( event, db, collectionName, payload ) => {
     collection = db.collection( 'entries' );
     result.entries = await collection.find( {} ).toArray();
 
-    return result;
+    return { result };
 }
 
 exports.handler = createHandler( {

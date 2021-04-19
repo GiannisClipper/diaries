@@ -11,25 +11,35 @@ const realFetch = async ( url, args ) => {
         Authorization: `Token ${ token }`
     };
 
-    const error = { message: '' };
+    const error = { 
+        statusCode: null, 
+        message: '',
+        result: null, 
+    };
 
     let res = await fetch( url, args );
 
     if ( ![ 200, 201 ].includes( res.status ) ) {
+        error.statusCode = res.status;
         error.message += `${ res.status } ${ res.statusText }`;
     }
-  
+    
     try {
         res = await res.json();
     } catch( err ) {
         res = {};
     }
 
-    if ( error.message !== '' ) {
-        const message = res.message && res.message !== error.message 
+    if ( ![ 422 ].includes( res.status ) ) {
+        // 422 for the error results on server-side data validation
+        error.result = res;
+    }
+
+    if ( error.statusCode ) {
+        error.message = res.message && res.message !== error.message 
             ? `${ error.message } (${ res.message })`
             : error.message;
-        throw new Error( message );
+        throw error;
     }
  
     return res;
@@ -80,9 +90,12 @@ const doFetch = ( url, args, onDone, onError, dataFromDB ) => {
         console.log( JSON.stringify( res ) );
         onDone( { dataFromDB: dataFromDB( res ) } );
     } )
-    .catch( err => { 
-        alert( err.message );
-        onError( { error: err.message } );
+    .catch( error => {
+        console.log( JSON.stringify( error ) );
+        if ( error.statusCode !== 422 ) {
+            alert( error.message );
+        }
+        onError( { error } );
     } );
 }
 

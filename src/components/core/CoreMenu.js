@@ -27,8 +27,7 @@ function CoreMenu( { status, children } ) {
         ?
             <LoadingIcon />
         : 
-        status.isResponseError ||
-        status.isResponseErrorAfter 
+        status.isSuspended
         ?
             <SuspendedIcon />
         : 

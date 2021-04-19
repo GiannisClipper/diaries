@@ -1,13 +1,13 @@
-const responseOnSuccess = res => ( {
+const responseOnSuccess = ( { result,statusCode } ) => ( {
     headers: { 'Content-Type': 'application/json; charset=utf-8' },
-    statusCode: 200,
-    body: JSON.stringify( res )
+    statusCode: statusCode || 200,
+    body: JSON.stringify( result )
 } );
 
-const responseOnError = err => ( {
+const responseOnError = error => ( {
     headers: { 'Content-Type': 'application/json; charset=utf-8' },
     statusCode: 500,
-    body: JSON.stringify( { message: err.message } )
+    body: JSON.stringify( { message: error.message } )
 } );
 
 export { responseOnSuccess, responseOnError };

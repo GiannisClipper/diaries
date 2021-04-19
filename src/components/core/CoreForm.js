@@ -78,6 +78,13 @@ function CoreForm( { headLabel, Context, assets, lexicon, index, onValidation, c
     const noMode = presetAction( actions.noMode, { assets, index } );
     const onClickCancel = () => { closeForm(); noMode(); };
 
+    useEffect( () => {
+        if ( _uiux.status.isResponseErrorAfter && _uiux.error.statusCode === 422 ) {
+            alert( 'Validation errors' )
+            _uiux.status = {};
+        }
+    } );
+ 
     return (
         <OkCancelForm
             headLabel={ headLabel }

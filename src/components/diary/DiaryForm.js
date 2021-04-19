@@ -78,7 +78,7 @@ function DiaryForm( { diaries, index, actions, assets, lexicon } ) {
                     </InputLabel>
                     <InputValue>
                         <InputDate
-                            value={ data.startDate }
+                            value={ data.startDate || '' }
                             onChange={ event => setData( { ...data, startDate: event.target.value } ) }
                         />
                     </InputValue>
