@@ -1,8 +1,12 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
 
 import comboReducer from '../core/helpers/comboReducer';
-import { retrieveManyEntryReducer } from './reducers/retrieveMany';
 import { menuOneOfManyEntryReducer } from './reducers/menu';
+import { retrieveManyEntryReducer } from './reducers/retrieveMany';
+import { createOneOfManyEntryReducer } from './reducers/create';
+import { updateOneOfManyEntryReducer } from './reducers/update';
+import { deleteOneOfManyEntryReducer } from './reducers/delete';
+
 import { menuOneOfManyReducer } from '../core/reducers/menu';
 import { copyPasteReducer } from '../core/reducers/copyPaste';
 import { modeOneOfManyReducer } from '../core/reducers/mode';
@@ -26,15 +30,18 @@ import retrieveManyActions from '../core/assets/actions/retrieveMany';
 import { AppContext } from '../app/AppContext';
 
 const reducers = [ 
-    retrieveManyEntryReducer,
     menuOneOfManyEntryReducer,
     menuOneOfManyReducer,
     copyPasteReducer,
     modeOneOfManyReducer,
     formOneOfManyReducer,
     validationOneOfManyReducer,
+    createOneOfManyEntryReducer,
     createOneOfManyReducer,
+    retrieveManyEntryReducer,
+    updateOneOfManyEntryReducer,
     updateOneOfManyReducer,
+    deleteOneOfManyEntryReducer,
     deleteOneOfManyReducer,
 ];
 
