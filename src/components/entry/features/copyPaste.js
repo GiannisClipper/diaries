@@ -41,21 +41,21 @@ function presetCopyPasteFeature( { copyPasteContext, date, entries, index, actio
 
     const onPaste = event => {
 
-        let data = isCut() ? { ...getCut().data } : isCopy() ? { ...getCopy().data } : null;
+        if ( isCut() || isCopy() ) {
+            if ( ! entry._uiux.copyPaste.isCutBefore ) {
 
-        const sourceIndex = isCut() ? getCut().index : isCopy() ? getCopy().index : null;
+                if ( isCut() ) {
+                    const { cut } = getCut();
+                    cut();
+                }
 
-        if ( data.date !== dateToYYYYMMDD( date ) || sourceIndex !== index ) {  // no paste to item itself
+                const data = isCut() 
+                    ? { ...getCut().data, date: dateToYYYYMMDD( date ), index }
+                    : { ...getCopy().data, date: dateToYYYYMMDD( date ), index, id: null }
 
-            if ( isCut() ) {
-                const { cut } = getCut();
-                cut();
+                const payload = { data };
+                pasteBefore( payload );
             }
-
-            data.date = dateToYYYYMMDD( date ); 
-            data.id = isCopy() ? null : data.id;
-            const payload = { data };
-            pasteBefore( payload );
         }
     }
 
