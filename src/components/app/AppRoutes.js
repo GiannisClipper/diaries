@@ -4,11 +4,11 @@ import { AppContext } from './AppContext';
 import AppPage from './AppPage';
 import SigninPage from '../signin/SigninPage';
 import Signout from '../signin/Signout';
-import UsersPage from '../user/UsersPage';
-import DiariesPage from '../diary/DiariesPage';
+import UsersPage from '../users/UsersPage';
+import DiariesPage from '../diaries/DiariesPage';
 import BenchPage from '../bench/BenchPage';
 import BenchSettingsPage from '../bench/BenchSettingsPage';
-import ReportsPage from '../report/ReportsPage';
+import ReportsPage from '../reports/ReportsPage';
 import SettingsPage from '../settings/SettingsPage';
 
 function Error404() {

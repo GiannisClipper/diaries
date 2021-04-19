@@ -1,60 +1,60 @@
 import coreLexicons from '../../core/assets/lexicons';
-import diaryLexicons from '../../diary/assets/lexicons';
+import diariesLexicons from '../../diaries/assets/lexicons';
 import benchLexicons from '../../bench/assets/lexicons';
-import entryLexicons from '../../entry/assets/lexicons';
-import noteLexicons from '../../note/assets/lexicons';
-import paymentLexicons from '../../payment/assets/lexicons';
-import paymentGenreLexicons from '../../payment_genre/assets/lexicons';
-import paymentFundLexicons from '../../payment_fund/assets/lexicons';
-import workoutLexicons from '../../workout/assets/lexicons';
-import workoutGenreLexicons from '../../workout_genre/assets/lexicons';
-import workoutEquipLexicons from '../../workout_equip/assets/lexicons';
-import reportLexicons from '../../report/assets/lexicons';
+import entriesLexicons from '../../entries/assets/lexicons';
+import notesLexicons from '../../notes/assets/lexicons';
+import paymentsLexicons from '../../payments/assets/lexicons';
+import paymentGenresLexicons from '../../payment_genres/assets/lexicons';
+import paymentFundsLexicons from '../../payment_funds/assets/lexicons';
+import workoutsLexicons from '../../workouts/assets/lexicons';
+import workoutGenresLexicons from '../../workout_genres/assets/lexicons';
+import workoutEquipsLexicons from '../../workout_equips/assets/lexicons';
+import reportsLexicons from '../../reports/assets/lexicons';
 import settingsLexicons from '../../settings/assets/lexicons';
 import backupLexicons from '../../backup/assets/lexicons';
 import signinLexicons from '../../signin/assets/lexicons';
-import userLexicons from '../../user/assets/lexicons';
+import usersLexicons from '../../users/assets/lexicons';
 
 let EN = {
     language: 'EN',
     home: 'Home',
     core: coreLexicons.EN,
-    diary: diaryLexicons.EN,
+    diaries: diariesLexicons.EN,
     bench: benchLexicons.EN,
-    entry: entryLexicons.EN,
-    note: noteLexicons.EN,
-    payment: paymentLexicons.EN,
-    paymentGenre: paymentGenreLexicons.EN,
-    paymentFund: paymentFundLexicons.EN,
-    workout: workoutLexicons.EN,
-    workoutGenre: workoutGenreLexicons.EN,
-    workoutEquip: workoutEquipLexicons.EN,
-    report: reportLexicons.EN,
+    entries: entriesLexicons.EN,
+    notes: notesLexicons.EN,
+    payments: paymentsLexicons.EN,
+    paymentGenres: paymentGenresLexicons.EN,
+    paymentFunds: paymentFundsLexicons.EN,
+    workouts: workoutsLexicons.EN,
+    workoutGenres: workoutGenresLexicons.EN,
+    workoutEquips: workoutEquipsLexicons.EN,
+    reports: reportsLexicons.EN,
     settings: settingsLexicons.EN,
     backup: backupLexicons.EN,
     signin: signinLexicons.EN,
-    user: userLexicons.EN,
+    users: usersLexicons.EN,
 }
 
 let GR = {
     language: 'GR',
     home: 'Αρχική',
     core: coreLexicons.GR,
-    diary: diaryLexicons.GR,
+    diaries: diariesLexicons.GR,
     bench: benchLexicons.GR,
-    entry: entryLexicons.GR,
-    note: noteLexicons.GR,
-    payment: paymentLexicons.GR,
-    paymentGenre: paymentGenreLexicons.GR,
-    paymentFund: paymentFundLexicons.GR,
-    workout: workoutLexicons.GR,
-    workoutGenre: workoutGenreLexicons.GR,
-    workoutEquip: workoutEquipLexicons.GR,
-    report: reportLexicons.GR,
+    entries: entriesLexicons.GR,
+    notes: notesLexicons.GR,
+    payments: paymentsLexicons.GR,
+    paymentGenres: paymentGenresLexicons.GR,
+    paymentFunds: paymentFundsLexicons.GR,
+    workouts: workoutsLexicons.GR,
+    workoutGenres: workoutGenresLexicons.GR,
+    workoutEquips: workoutEquipsLexicons.GR,
+    reports: reportsLexicons.GR,
     settings: settingsLexicons.GR,
     backup: backupLexicons.GR,
     signin: signinLexicons.GR,
-    user: userLexicons.GR,
+    users: usersLexicons.GR,
 }
 
 const DEFAULT = EN;

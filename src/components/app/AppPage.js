@@ -42,8 +42,8 @@ const AppNav = ( { active } ) => {
             { active && 
                 <>
                 <LinkHome title={ lexicon.home } active={ active === 'home' } />
-                <LinkDiaries title={ lexicon.diary.diaries } active={ active === 'diaries' } />
-                <LinkUsers title={ lexicon.user.users } active={ active === 'users' } />
+                <LinkDiaries title={ lexicon.diaries.diaries } active={ active === 'diaries' } />
+                <LinkUsers title={ lexicon.users.users } active={ active === 'users' } />
                 <LinkSettings title={ lexicon.settings.settings } active={ active === 'settings' } />
                 <LinkSignout title={ lexicon.signin.signout } />
                 </>

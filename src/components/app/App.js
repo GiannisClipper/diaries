@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { AppContextProvider } from './AppContext';
-import { UsersContextProvider } from '../user/UsersContext';
-import { DiariesContextProvider } from '../diary/DiariesContext';
-import paymentGenresContext from '../payment_genre/GenresContext';
-import paymentFundsContext from '../payment_fund/FundsContext';
-import workoutGenresContext from '../workout_genre/GenresContext';
-import workoutEquipsContext from '../workout_equip/EquipsContext';
+import { UsersContextProvider } from '../users/UsersContext';
+import { DiariesContextProvider } from '../diaries/DiariesContext';
+import paymentGenresContext from '../payment_genres/GenresContext';
+import paymentFundsContext from '../payment_funds/FundsContext';
+import workoutGenresContext from '../workout_genres/GenresContext';
+import workoutEquipsContext from '../workout_equips/EquipsContext';
 import AppLoad from './AppLoad';
 import AppRoutes from './AppRoutes';
 

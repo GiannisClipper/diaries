@@ -1,9 +1,9 @@
 import { createHandler, auth } from './core/handler';
-import payments from './report/payments';
-import paymentsGroupByMonth from './report/paymentsGroupByMonth';
-import paymentsGroupByWeek from './report/paymentsGroupByWeek';
-import paymentsGroupByGenre from './report/paymentsGroupByGenre';
-import paymentsGroupByFund from './report/paymentsGroupByFund';
+import payments from './reports/payments';
+import paymentsGroupByMonth from './reports/paymentsGroupByMonth';
+import paymentsGroupByWeek from './reports/paymentsGroupByWeek';
+import paymentsGroupByGenre from './reports/paymentsGroupByGenre';
+import paymentsGroupByFund from './reports/paymentsGroupByFund';
 
 const getMethod = async ( event, db, collectionName ) => {
     let { 

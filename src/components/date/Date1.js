@@ -5,8 +5,8 @@ import StyledBlock from '../commons/BlockBox';
 
 import { DateRepr } from './DateRepr'; 
 
-import { EntriesContextProvider } from '../entry/EntriesContext';
-import { Entries } from '../entry/Entries';
+import { EntriesContextProvider } from '../entries/EntriesContext';
+import { Entries } from '../entries/Entries';
 
 const BlockBox = styled( StyledBlock.BlockBox )`
     margin-bottom: .5em;

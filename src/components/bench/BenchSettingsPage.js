@@ -7,10 +7,10 @@ import { AppBox, AppNav } from '../app/AppPage';
 
 import { AppContext } from '../app/AppContext';
 
-import PaymentGenres from "../payment_genre/Genres";
-import PaymentFunds from "../payment_fund/Funds";
-import WorkoutGenres from "../workout_genre/Genres";
-import WorkoutEquips from "../workout_equip/Equips";
+import PaymentGenres from "../payment_genres/Genres";
+import PaymentFunds from "../payment_funds/Funds";
+import WorkoutGenres from "../workout_genres/Genres";
+import WorkoutEquips from "../workout_equips/Equips";
 
 function SettingsPage( { diary_id } ) {
 
@@ -27,7 +27,7 @@ function SettingsPage( { diary_id } ) {
 
                 <BlockBox>
                     <BlockLabel>
-                        { lexicon.paymentGenre.genres }
+                        { lexicon.paymentGenres.genres }
                     </BlockLabel>
                     <BlockValue>
                         <PaymentGenres 
@@ -39,7 +39,7 @@ function SettingsPage( { diary_id } ) {
 
                 <BlockBox>
                     <BlockLabel>
-                        { lexicon.paymentFund.funds }
+                        { lexicon.paymentFunds.funds }
                     </BlockLabel>
                     <BlockValue>
                         <PaymentFunds 
@@ -51,7 +51,7 @@ function SettingsPage( { diary_id } ) {
 
                 <BlockBox>
                     <BlockLabel>
-                        { lexicon.workoutGenre.genres }
+                        { lexicon.workoutGenres.genres }
                     </BlockLabel>
                     <BlockValue>
                         <WorkoutGenres 
@@ -63,7 +63,7 @@ function SettingsPage( { diary_id } ) {
 
                 <BlockBox>
                     <BlockLabel>
-                        { lexicon.workoutEquip.equips }
+                        { lexicon.workoutEquips.equips }
                     </BlockLabel>
                     <BlockValue>
                         <WorkoutEquips 

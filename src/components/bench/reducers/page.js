@@ -5,7 +5,7 @@ import {
 } from '../../core/assets/types/page';
 
 import { datesSchema } from '../../date/assets/schemas';
-import { entriesSchema, entrySchema } from '../../entry/assets/schemas';
+import { entriesSchema, entrySchema } from '../../entries/assets/schemas';
 
 import { shiftDate } from '../../core/helpers/dates';
 

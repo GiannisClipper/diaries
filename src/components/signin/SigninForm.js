@@ -37,8 +37,8 @@ function SignForm( { signin, actions, assets, lexicon } ) {
 
         const isBlank = withLexicon( validators.isBlank, lexicon );
 
-        errors.push( isBlank( lexicon.user.username, data.username ) );
-        errors.push( isBlank( lexicon.user.password, data.password ) );
+        errors.push( isBlank( lexicon.users.username, data.username ) );
+        errors.push( isBlank( lexicon.users.password, data.password ) );
 
         errors = errors.filter( x => x !== null );
 
@@ -63,7 +63,7 @@ function SignForm( { signin, actions, assets, lexicon } ) {
 
             <InputBox>
                 <InputLabel>
-                    { lexicon.user.username }
+                    { lexicon.users.username }
                 </InputLabel>
                 <InputValue>
                     <input
@@ -75,7 +75,7 @@ function SignForm( { signin, actions, assets, lexicon } ) {
 
             <InputBox>
                 <InputLabel>
-                    { lexicon.user.password }
+                    { lexicon.users.password }
                 </InputLabel>
                 <InputValue>
                     <input
