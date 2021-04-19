@@ -30,7 +30,7 @@ function User( { users, index, actions, assets, lexicon } ) {
                 actions,
                 assets,
                 index,
-                url: urls.user
+                url: urls.users
             } );
 
         } else if ( _uiux.mode.isUpdate ) {
@@ -39,7 +39,7 @@ function User( { users, index, actions, assets, lexicon } ) {
                 actions,
                 assets,
                 index,
-                url: `${ urls.user }?id=${ user.id }`
+                url: `${ urls.users }?id=${ user.id }`
             } );
 
         } else if ( _uiux.mode.isDelete ) {
@@ -48,7 +48,7 @@ function User( { users, index, actions, assets, lexicon } ) {
                 actions,
                 assets,
                 index,
-                url: `${ urls.user }?id=${ user.id }`
+                url: `${ urls.users }?id=${ user.id }`
             } );
         }
     }, [ user, _uiux, actions, assets, index ] );

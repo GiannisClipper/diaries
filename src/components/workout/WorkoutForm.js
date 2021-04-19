@@ -26,7 +26,7 @@ function WorkoutForm( { data, setData, lexicon } ) {
                     value={ type_specs.genre_name }
                     valueToAssign={ value => value.name }
                     valueToRepr={ value => value.name }    
-                    url={ `${ urls.workout_genre }?diary_id=${ diary_id }&name=` }
+                    url={ `${ urls.workout_genres }?diary_id=${ diary_id }&name=` }
                     onChange={ event => {
                         const { value } = event.target;
                         const specs = {
@@ -120,7 +120,7 @@ function WorkoutForm( { data, setData, lexicon } ) {
                     value={ type_specs.equip_name }
                     valueToAssign={ value => value.name }
                     valueToRepr={ value => value.name }    
-                    url={ `${ urls.workout_equip }?diary_id=${ diary_id }&name=` }
+                    url={ `${ urls.workout_equips }?diary_id=${ diary_id }&name=` }
                     onChange={ event => {
                         const { value } = event.target;
                         const specs = {

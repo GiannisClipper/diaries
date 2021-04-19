@@ -30,7 +30,7 @@ function Genre( { genres, index, actions, assets, lexicon } ) {
                 actions,
                 assets,
                 index,
-                url: urls.workout_genre
+                url: urls.workout_genres
             } );
 
         } else if ( _uiux.mode.isUpdate ) {
@@ -39,7 +39,7 @@ function Genre( { genres, index, actions, assets, lexicon } ) {
                 actions,
                 assets,
                 index,
-                url: `${ urls.workout_genre }?id=${ genre.id }`
+                url: `${ urls.workout_genres }?id=${ genre.id }`
             } );
 
         } else if ( _uiux.mode.isDelete ) {
@@ -48,7 +48,7 @@ function Genre( { genres, index, actions, assets, lexicon } ) {
                 actions,
                 assets,
                 index,
-                url: `${ urls.workout_genre }?id=${ genre.id }`
+                url: `${ urls.workout_genres }?id=${ genre.id }`
             } );
         }
     }, [ genre, _uiux, actions, assets, index ] );

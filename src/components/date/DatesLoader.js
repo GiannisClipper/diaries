@@ -28,7 +28,7 @@ function DatesLoader( { diary_id } ) {
                     _uiux,
                     actions,
                     assets,
-                    url: `${ urls.entry }?diary_id=${ diary_id }&range=${ dateFrom }-${ dateTill }`
+                    url: `${ urls.entries }?diary_id=${ diary_id }&range=${ dateFrom }-${ dateTill }`
                 } );
             }
 

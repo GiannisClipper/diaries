@@ -29,7 +29,7 @@ function UsersLoader( { state, actions, assets } ) {
             _uiux,
             actions,
             assets,
-            url: urls.user
+            url: urls.users
         } );
 
     } );

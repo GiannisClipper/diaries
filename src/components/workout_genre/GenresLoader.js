@@ -38,7 +38,7 @@ function GenresLoader( { diary_id } ) {
                 _uiux,
                 actions,
                 assets,
-                url: `${ urls.workout_genre }?diary_id=${ diary_id }`
+                url: `${ urls.workout_genres }?diary_id=${ diary_id }`
             } );
         }
 

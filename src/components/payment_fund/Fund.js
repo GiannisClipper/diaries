@@ -30,7 +30,7 @@ function Fund( { funds, index, actions, assets, lexicon } ) {
                 actions,
                 assets,
                 index,
-                url: urls.payment_fund
+                url: urls.payment_funds
             } );
 
         } else if ( _uiux.mode.isUpdate ) {
@@ -39,7 +39,7 @@ function Fund( { funds, index, actions, assets, lexicon } ) {
                 actions,
                 assets,
                 index,
-                url: `${ urls.payment_fund }?id=${ fund.id }`
+                url: `${ urls.payment_funds }?id=${ fund.id }`
             } );
 
         } else if ( _uiux.mode.isDelete ) {
@@ -48,7 +48,7 @@ function Fund( { funds, index, actions, assets, lexicon } ) {
                 actions,
                 assets,
                 index,
-                url: `${ urls.payment_fund }?id=${ fund.id }`
+                url: `${ urls.payment_funds }?id=${ fund.id }`
             } );
         }
     }, [ fund, _uiux, actions, assets, index ] );

@@ -30,7 +30,7 @@ function Equip( { equips, index, actions, assets, lexicon } ) {
                 actions,
                 assets,
                 index,
-                url: urls.workout_equip
+                url: urls.workout_equips
             } );
 
         } else if ( _uiux.mode.isUpdate ) {
@@ -39,7 +39,7 @@ function Equip( { equips, index, actions, assets, lexicon } ) {
                 actions,
                 assets,
                 index,
-                url: `${ urls.workout_equip }?id=${ equip.id }`
+                url: `${ urls.workout_equips }?id=${ equip.id }`
             } );
 
         } else if ( _uiux.mode.isDelete ) {
@@ -48,7 +48,7 @@ function Equip( { equips, index, actions, assets, lexicon } ) {
                 actions,
                 assets,
                 index,
-                url: `${ urls.workout_equip }?id=${ equip.id }`
+                url: `${ urls.workout_equips }?id=${ equip.id }`
             } );
         }
     }, [ equip, _uiux, actions, assets, index ] );

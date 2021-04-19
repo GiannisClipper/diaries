@@ -1,18 +1,18 @@
 const base = '/.netlify/functions';
 
 const urls = {
-    user: 'user',
+    users: 'users',
     signin: 'signin',
     settings: 'settings',
     backup: `backup`,
 
-    diary: 'diary',
-    entry: 'entry',
-    payment_fund: 'payment_fund',
-    payment_genre: 'payment_genre',
-    workout_equip: 'workout_equip',
-    workout_genre: 'workout_genre',
-    report: 'report',
+    diaries: 'diaries',
+    entries: 'entries',
+    payment_funds: 'payment_funds',
+    payment_genres: 'payment_genres',
+    workout_equips: 'workout_equips',
+    workout_genres: 'workout_genres',
+    reports: 'reports',
 };
 
 Object.keys( urls ).forEach( key => urls[ key ] = `${ base }/${ urls[ key ] }` );

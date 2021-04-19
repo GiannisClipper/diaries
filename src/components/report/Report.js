@@ -50,7 +50,7 @@ function Report( { reports, index, actions, assets, lexicon } ) {
                 actions,
                 assets,
                 index,
-                url: urls.report +
+                url: urls.reports +
                 `?diary_id=${ dataToDB.diary_id }` +
                 `&type=${ dataToDB.type }` +
                 ( dataToDB.groupBy ? `&groupBy=${ dataToDB.groupBy }` : '' ) +

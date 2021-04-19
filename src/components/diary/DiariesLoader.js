@@ -35,7 +35,7 @@ function DiariesLoader( { state, actions, assets } ) {
             _uiux,
             actions,
             assets,
-            url: `${ urls.diary }?user_id=${ user_id }`
+            url: `${ urls.diaries }?user_id=${ user_id }`
         } );
 
     } );

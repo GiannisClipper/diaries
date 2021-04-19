@@ -37,7 +37,7 @@ function Genre( { genres, index, actions, assets, lexicon } ) {
                 actions,
                 assets,
                 index,
-                url: urls.payment_genre
+                url: urls.payment_genres
             } );
 
         } else if ( _uiux.mode.isUpdate ) {
@@ -46,7 +46,7 @@ function Genre( { genres, index, actions, assets, lexicon } ) {
                 actions,
                 assets,
                 index,
-                url: `${ urls.payment_genre }?id=${ genre.id }`
+                url: `${ urls.payment_genres }?id=${ genre.id }`
             } );
 
         } else if ( _uiux.mode.isDelete ) {
@@ -55,7 +55,7 @@ function Genre( { genres, index, actions, assets, lexicon } ) {
                 actions,
                 assets,
                 index,
-                url: `${ urls.payment_genre }?id=${ genre.id }`
+                url: `${ urls.payment_genres }?id=${ genre.id }`
             } );
         }
     }, [ genre, _uiux, actions, assets, index ] );

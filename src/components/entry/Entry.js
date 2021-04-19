@@ -40,7 +40,7 @@ const Entry = ( { diary_id, date, entries, index, actions, assets, lexicon } ) =
                 actions,
                 assets,
                 index,
-                url: urls.entry
+                url: urls.entries
             } );
 
         } else if ( _uiux.mode.isUpdate ) {
@@ -49,7 +49,7 @@ const Entry = ( { diary_id, date, entries, index, actions, assets, lexicon } ) =
                 actions,
                 assets,
                 index,
-                url: `${ urls.entry }?id=${ entry.id }`
+                url: `${ urls.entries }?id=${ entry.id }`
             } );
 
         } else if ( _uiux.mode.isDelete ) {
@@ -58,7 +58,7 @@ const Entry = ( { diary_id, date, entries, index, actions, assets, lexicon } ) =
                 actions,
                 assets,
                 index,
-                url: `${ urls.entry }?id=${ entry.id }`
+                url: `${ urls.entries }?id=${ entry.id }`
             } );
         }
     }, [ entry, _uiux, actions, assets, index, entries ] );

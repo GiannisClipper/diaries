@@ -38,7 +38,7 @@ function EquipsLoader( { diary_id } ) {
                 _uiux,
                 actions,
                 assets,
-                url: `${ urls.workout_equip }?diary_id=${ diary_id }`
+                url: `${ urls.workout_equips }?diary_id=${ diary_id }`
             } );
         }
 

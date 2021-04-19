@@ -34,7 +34,7 @@ function Diary( { diaries, index, actions, assets, lexicon } ) {
                 actions,
                 assets,
                 index,
-                url: urls.diary
+                url: urls.diaries
             } );
 
         } else if ( _uiux.mode.isUpdate ) {
@@ -43,7 +43,7 @@ function Diary( { diaries, index, actions, assets, lexicon } ) {
                 actions,
                 assets,
                 index,
-                url: `${ urls.diary }?id=${ diary.id }`
+                url: `${ urls.diaries }?id=${ diary.id }`
             } );
 
         } else if ( _uiux.mode.isDelete ) {
@@ -52,7 +52,7 @@ function Diary( { diaries, index, actions, assets, lexicon } ) {
                 actions,
                 assets,
                 index,
-                url: `${ urls.diary }?id=${ diary.id }`
+                url: `${ urls.diaries }?id=${ diary.id }`
             } );
         }
     }, [ diary, _uiux, actions, assets, index ] );

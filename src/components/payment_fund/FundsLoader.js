@@ -38,7 +38,7 @@ function FundsLoader( { diary_id } ) {
                 _uiux,
                 actions,
                 assets,
-                url: `${ urls.payment_fund }?diary_id=${ diary_id }`
+                url: `${ urls.payment_funds }?diary_id=${ diary_id }`
             } );
         }
 
