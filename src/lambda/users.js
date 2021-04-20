@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb';
 import { createHandler, auth, getMethod } from './core/handler';
-import { isFound } from './core/validators';
+import { deleteValidation } from './users/validations';
 
 const bcrypt = require( 'bcryptjs' );
 
@@ -28,19 +28,7 @@ const putMethod = async ( event, db, collectionName, payload ) => {
 const deleteMethod = async ( event, db, collectionName ) => {
     const id = event.queryStringParameters[ 'id' ];
 
-    let errors = [];
-
-    errors.push( await isFound( { 
-        db,
-        collection: 'users', 
-        field: 'id', 
-        value: id,
-        lookupCollection: 'diaries', 
-        lookupField: 'user_id' 
-    } ) );
-
-    errors = errors.filter( x => x !== null );
-
+    const errors = await deleteValidation( { db, id } );
     if ( errors.length > 0 ) {
         return { result: errors, statusCode: 422 };
     }
