@@ -26,8 +26,8 @@ const postMethod = async ( event, db, collectionName, payload ) => {
     const data = body.data;
 
     let errors = [];
-    errors.push( await isEmptyUser_id( { db, data } ) );
-    errors.push( await isEmptyTitle( { db, data } ) );
+    errors.push( isEmptyUser_id( { db, data } ) );
+    errors.push( isEmptyTitle( { db, data } ) );
     errors.push( await isExistsTitle( { db, data } ) );
     errors = errors.filter( x => x !== null );
 
@@ -46,8 +46,8 @@ const putMethod = async ( event, db, collectionName, payload ) => {
     const data = body.data;
 
     let errors = [];
-    errors.push( await isEmptyUser_id( { db, data } ) );
-    errors.push( await isEmptyTitle( { db, data } ) );
+    errors.push( isEmptyUser_id( { db, data } ) );
+    errors.push( isEmptyTitle( { db, data } ) );
     errors.push( await isExistsTitle( { db, data, id } ) );
     errors = errors.filter( x => x !== null );
 

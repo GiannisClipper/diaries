@@ -8,6 +8,14 @@ const isEmpty = ( { value, message } ) => {
     return null;
 }
 
+const isInvalid = ( { value, values, message } ) => {
+
+    if ( ! values.includes( value ) ) {
+        return { type: 'isInvalid', message, value, values };
+    }
+    return null;
+}
+
 const isExists = async ( { db, lookupCollection, lookupFields, excludedId, message } ) => {
 
     const filters = {};
@@ -26,6 +34,20 @@ const isExists = async ( { db, lookupCollection, lookupFields, excludedId, messa
     return null;
 }
 
+const isNotExists = async ( { db, lookupCollection, lookupFields, message } ) => {
+
+    const filters = {};
+
+    Object.keys( lookupFields ).forEach( key => filters[ key ] = lookupFields[ key ] );
+
+    const result = await db.collection( lookupCollection ).findOne( filters );
+
+    if (  ! result ) {
+        return { type: 'isNotExists', message, lookupCollection, lookupFields };
+    }
+    return null;
+}
+
 const isUsedBy = async ( { db, lookupCollection, lookupFields, message } ) => {
 
     const filters = {};
@@ -40,4 +62,4 @@ const isUsedBy = async ( { db, lookupCollection, lookupFields, message } ) => {
     return null;
 }
 
-export { isEmpty, isExists, isUsedBy };
+export { isEmpty, isInvalid, isExists, isNotExists, isUsedBy };

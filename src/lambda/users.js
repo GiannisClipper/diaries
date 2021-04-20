@@ -9,13 +9,13 @@ import {
 
 const bcrypt = require( 'bcryptjs' );
 
-const postMethod = async ( event, db, collectionName, payload ) => {
+const postMethod = async ( event, db, collectionName ) => {
     const body = JSON.parse( event.body )
     const data = body.data;
 
     let errors = [];
-    errors.push( await isEmptyUsername( { db, data } ) );
-    errors.push( await isEmptyPassword( { db, data } ) );
+    errors.push( isEmptyUsername( { data } ) );
+    errors.push( isEmptyPassword( { data } ) );
     errors.push( await isExistsUsername( { db, data } ) );
     errors = errors.filter( x => x !== null );
 
@@ -29,13 +29,13 @@ const postMethod = async ( event, db, collectionName, payload ) => {
     return { result, statusCode: 201 };
 }
 
-const putMethod = async ( event, db, collectionName, payload ) => {
+const putMethod = async ( event, db, collectionName ) => {
     const id = event.queryStringParameters[ 'id' ];
     const body = JSON.parse( event.body );
     const data = body.data;
 
     let errors = [];
-    errors.push( await isEmptyUsername( { db, data } ) );
+    errors.push( isEmptyUsername( { data } ) );
     errors.push( await isExistsUsername( { db, data, id } ) );
     errors = errors.filter( x => x !== null );
 

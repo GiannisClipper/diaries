@@ -30,22 +30,30 @@ function SignForm( { signin, actions, assets, lexicon } ) {
 
     const [ data, setData ] = useState( { ...signin } );
 
-    const { status } = signin._uiux;
+    const { _uiux } = signin;
+    const { status } = _uiux;
 
     const onValidation = () => {
         let errors = [];
 
-        const isBlank = withLexicon( validators.isBlank, lexicon );
+        // const isBlank = withLexicon( validators.isBlank, lexicon );
 
-        errors.push( isBlank( lexicon.users.username, data.username ) );
-        errors.push( isBlank( lexicon.users.password, data.password ) );
+        // errors.push( isBlank( lexicon.users.username, data.username ) );
+        // errors.push( isBlank( lexicon.users.password, data.password ) );
 
-        errors = errors.filter( x => x !== null );
+        // errors = errors.filter( x => x !== null );
 
         return { data, errors };
      }
 
     const onClickOk = validation;
+
+    // useEffect( () => {
+    //     if ( _uiux.status.isResponseErrorAfter && _uiux.error.statusCode === 422 ) {
+    //         alert( 'Validation errors' )
+    //         _uiux.status = {};
+    //     }
+    // } );
 
     return (
         <SignList>

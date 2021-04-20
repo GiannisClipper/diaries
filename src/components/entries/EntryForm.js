@@ -38,36 +38,36 @@ function EntryForm( { date, entries, index, actions, assets, lexicon } ) {
             ?
             () => {
                 let errors = [];
-                const isBlank = withLexicon( validators.isBlank, lexicon );        
-                errors.push( isBlank( lexicon.notes.note, data.type_specs.note ) );
-                errors = errors.filter( x => x !== null );
+                // const isBlank = withLexicon( validators.isBlank, lexicon );        
+                // errors.push( isBlank( lexicon.notes.note, data.type_specs.note ) );
+                // errors = errors.filter( x => x !== null );
                 return { data, errors };
             }
         : data.type === 'payment'
             ?
             () => {
                 let errors = [];
-                const isBlank = withLexicon( validators.isBlank, lexicon );
-                errors.push( isBlank( lexicon.payments.genre_name, data.type_specs.genre_name ) );
-                errors.push( isBlank( lexicon.payments.fund_name, data.type_specs.fund_name ) );
-                errors = errors.filter( x => x !== null );
+                // const isBlank = withLexicon( validators.isBlank, lexicon );
+                // errors.push( isBlank( lexicon.payments.genre_name, data.type_specs.genre_name ) );
+                // errors.push( isBlank( lexicon.payments.fund_name, data.type_specs.fund_name ) );
+                // errors = errors.filter( x => x !== null );
                 return { data, errors };
             }
         : data.type === 'workout'
             ?
             () => {
                 let errors = [];
-                const isBlank = withLexicon( validators.isBlank, lexicon );
-                errors.push( isBlank( lexicon.workouts.genre_name, data.type_specs.genre_name ) );
-                errors = errors.filter( x => x !== null );
+                // const isBlank = withLexicon( validators.isBlank, lexicon );
+                // errors.push( isBlank( lexicon.workouts.genre_name, data.type_specs.genre_name ) );
+                // errors = errors.filter( x => x !== null );
                 return { data, errors };
             }
         :
            () => {
                 let errors = [];
-                const isNotFound = withLexicon( validators.isNotFound, lexicon );        
-                errors.push( isNotFound( lexicon.entries.type, [ 'note', 'payment', 'workout' ], data.type ) );
-                errors = errors.filter( x => x !== null );
+                // const isNotFound = withLexicon( validators.isNotFound, lexicon );        
+                // errors.push( isNotFound( lexicon.entries.type, [ 'note', 'payment', 'workout' ], data.type ) );
+                // errors = errors.filter( x => x !== null );
                 return { data, errors };
             };
 

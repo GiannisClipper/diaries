@@ -32,8 +32,8 @@ const postMethod = async ( event, db, collectionName ) => {
     const data = body.data;
 
     let errors = [];
-    errors.push( await isEmptyDiary_id( { db, data } ) );
-    errors.push( await isEmptyName( { db, data } ) );
+    errors.push( isEmptyDiary_id( { db, data } ) );
+    errors.push( isEmptyName( { db, data } ) );
     errors.push( await isExistsName( { db, data } ) );
     errors.push( await isExistsCode( { db, data } ) );
     errors = errors.filter( x => x !== null );
@@ -53,8 +53,8 @@ const putMethod = async ( event, db, collectionName ) => {
     const data = body.data;
 
     let errors = [];
-    errors.push( await isEmptyDiary_id( { db, data } ) );
-    errors.push( await isEmptyName( { db, data } ) );
+    errors.push( isEmptyDiary_id( { db, data } ) );
+    errors.push( isEmptyName( { db, data } ) );
     errors.push( await isExistsName( { db, data, id } ) );
     errors.push( await isExistsCode( { db, data, id } ) );
     errors = errors.filter( x => x !== null );

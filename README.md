@@ -1,3 +1,31 @@
+## About Diaries app
+
+Auto-scrolling feature
+
+Copy-paste feature
+
+Drag-n-drop feature
+
+Customized inputs to support specific forms of data (date, time, number)
+
+Customized drop-down-list inputs to fetch data from DB dynamically
+
+Client-side data validation
+
+Server-side data validation
+
+Multiple themes feature (Light and Dark)
+
+Multiple language feature (English and Greek)
+
+## Lambda functions
+
+This is the back-end. It supports all the stantard CRUD operations to manipulate data in a MongoDB database, as well as complex retrieve operations -using the aggregation framework of MongoDB- to produce data reports. It provides the following API endpoints:
+
+.../users (POST method to create a new user)
+
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

@@ -1,12 +1,12 @@
 import { isEmpty, isExists, isUsedBy } from '../core/validators';
 
-const isEmptyUsername = async ( { data } ) =>
+const isEmptyUsername = ( { data } ) =>
     isEmpty( { 
         value: data.username, 
         message: 'users.username'
     } );
 
-const isEmptyPassword = async ( { data } ) =>
+const isEmptyPassword = ( { data } ) =>
     isEmpty( { 
         value: data.password, 
         message: 'users.password'

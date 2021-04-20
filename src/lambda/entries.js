@@ -1,21 +1,15 @@
 import { ObjectId } from 'mongodb';
 import { createHandler, auth } from './core/handler';
 import { convertFieldTo, reduceField } from './core/stages';
-
-const updateIndexes = async ( collection, indexes ) => {
-
-    if ( indexes && indexes.length > 0 ) {
-
-        const updates = indexes.map( x => (
-            { updateOne: {
-                filter: { _id: ObjectId( x.id ) },
-                update: { $set: { index: x.index } }
-            } }
-        ) );
-
-        collection.bulkWrite( updates, { ordered : false } );
-    }
-}
+import { updateIndexes } from './entries/updateIndexes';
+import { 
+    isEmptyType,
+    isInvalidType,
+    isEmptyNote,
+    isEmptyPayment_genre_id,
+    isEmptyPayment_fund_id,
+    isEmptyWorkoutGenre_id
+} from './entries/validators';
 
 const getMethod = async ( event, db, collectionName, payload ) => {
 
@@ -150,9 +144,31 @@ const getMethod = async ( event, db, collectionName, payload ) => {
     return { result };            
 }
 
-const postMethod = async ( event, db, collectionName, payload ) => {
+const postMethod = async ( event, db, collectionName ) => {
     const body = JSON.parse( event.body )
     const { indexes, ...data } = body.data;
+
+    let errors = [];
+    errors.push( isEmptyType( { data } ) );
+    errors.push( isInvalidType( { data } ) );
+
+    if ( data.type === 'note' ) {
+        errors.push( isEmptyNote( { data } ) );
+
+    } if ( data.type === 'payment' ) {
+        errors.push( isEmptyPayment_genre_id( { data } ) );
+        errors.push( isEmptyPayment_fund_id( { data } ) );
+
+    } if ( data.type === 'workout' ) {
+        errors.push( isEmptyWorkoutGenre_id( { data } ) );
+    }
+
+    errors = errors.filter( x => x !== null );
+
+    if ( errors.length > 0 ) {
+        return { result: errors, statusCode: 422 };
+    }
+
     const collection = db.collection( collectionName );
     const result = await collection.insertOne( data );
     await updateIndexes( collection, indexes );
@@ -160,10 +176,32 @@ const postMethod = async ( event, db, collectionName, payload ) => {
     return { result };
 }
 
-const putMethod = async ( event, db, collectionName, payload ) => {
+const putMethod = async ( event, db, collectionName ) => {
     const id = event.queryStringParameters[ 'id' ];
     const body = JSON.parse( event.body );
     const { indexes, ...data } = body.data;
+
+    let errors = [];
+    errors.push( isEmptyType( { data } ) );
+    errors.push( isInvalidType( { data } ) );
+
+    if ( data.type === 'note' ) {
+        errors.push( isEmptyNote( { data } ) );
+
+    } if ( data.type === 'payment' ) {
+        errors.push( isEmptyPayment_genre_id( { data } ) );
+        errors.push( isEmptyPayment_fund_id( { data } ) );
+
+    } if ( data.type === 'workout' ) {
+        errors.push( isEmptyWorkoutGenre_id( { data } ) );
+    }
+
+    errors = errors.filter( x => x !== null );
+
+    if ( errors.length > 0 ) {
+        return { result: errors, statusCode: 422 };
+    }
+
     const collection = db.collection( collectionName );
     const result = await collection.updateOne( { _id: ObjectId( id ) }, { $set: data } );
     await updateIndexes( collection, indexes );
@@ -171,10 +209,11 @@ const putMethod = async ( event, db, collectionName, payload ) => {
     return { result };
 }
 
-const deleteMethod = async ( event, db, collectionName, payload ) => {
+const deleteMethod = async ( event, db, collectionName ) => {
     const id = event.queryStringParameters[ 'id' ];
     const body = JSON.parse( event.body );
     const { indexes } = body.data;
+
     const collection = db.collection( collectionName );
     const result = await collection.deleteOne( { _id: ObjectId( id ) } );
     await updateIndexes( collection, indexes );
