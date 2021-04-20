@@ -8,7 +8,7 @@ const isEmpty = ( { value, message } ) => {
     return null;
 }
 
-const isAlreadyExists = async ( { db, lookupCollection, lookupFields, excludedId, message } ) => {
+const isExists = async ( { db, lookupCollection, lookupFields, excludedId, message } ) => {
 
     const filters = {};
 
@@ -21,7 +21,7 @@ const isAlreadyExists = async ( { db, lookupCollection, lookupFields, excludedId
     const result = await db.collection( lookupCollection ).findOne( filters );
 
     if ( result ) {
-        return { type: 'isAlreadyExists', message, lookupCollection, lookupFields };
+        return { type: 'isExists', message, lookupCollection, lookupFields };
     }
     return null;
 }
@@ -40,4 +40,4 @@ const isUsedBy = async ( { db, lookupCollection, lookupFields, message } ) => {
     return null;
 }
 
-export { isEmpty, isAlreadyExists, isUsedBy };
+export { isEmpty, isExists, isUsedBy };

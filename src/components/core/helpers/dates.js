@@ -30,6 +30,7 @@ const isDateNum = ( value, month, year ) => {
 }
 
 const splitYYYYMMDD = value => {
+    value = value || '';
     const year = parseInt( value.substring( 0, 4 ) );
     const month = parseInt( value.substring( 4, 6 ) );
     const dateNum = parseInt( value.substring( 6, 8 ) );

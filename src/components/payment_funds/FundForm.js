@@ -23,14 +23,14 @@ function FundForm( { funds, index, actions, assets, lexicon } ) {
     const onValidation = () => {
         let errors = [];
 
-        const isBlank = withLexicon( validators.isBlank, lexicon );
-        const isFound = withLexicon( validators.isFound, lexicon );
+        // const isBlank = withLexicon( validators.isBlank, lexicon );
+        // const isFound = withLexicon( validators.isFound, lexicon );
 
-        errors.push( isBlank( lexicon.paymentFunds.name, data.name ) );
-        errors.push( isFound( lexicon.paymentFunds.name, funds.map( x=> x.name ), data.name, index ) );
-        errors.push( isFound( lexicon.paymentFunds.code, funds.map( x=> x.code ), data.code, index ) );
+        // errors.push( isBlank( lexicon.paymentFunds.name, data.name ) );
+        // errors.push( isFound( lexicon.paymentFunds.name, funds.map( x=> x.name ), data.name, index ) );
+        // errors.push( isFound( lexicon.paymentFunds.code, funds.map( x=> x.code ), data.code, index ) );
 
-        errors = errors.filter( x => x !== null );
+        // errors = errors.filter( x => x !== null );
 
         return { data, errors };
     }

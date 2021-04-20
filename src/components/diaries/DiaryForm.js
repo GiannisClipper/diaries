@@ -24,14 +24,14 @@ function DiaryForm( { diaries, index, actions, assets, lexicon } ) {
     const onValidation = () => {
         let errors = [];
 
-        const isBlank = withLexicon( validators.isBlank, lexicon );
-        const isFound = withLexicon( validators.isFound, lexicon );
+        // const isBlank = withLexicon( validators.isBlank, lexicon );
+        // const isFound = withLexicon( validators.isFound, lexicon );
 
-        errors.push( isBlank( lexicon.diaries.user_id, data.user_id ) );
-        errors.push( isBlank( lexicon.diaries.title, data.title ) );
-        errors.push( isFound( lexicon.diaries.title, diaries.map( x=> x.title ), data.title, index ) );
+        // errors.push( isBlank( lexicon.diaries.user_id, data.user_id ) );
+        // errors.push( isBlank( lexicon.diaries.title, data.title ) );
+        // errors.push( isFound( lexicon.diaries.title, diaries.map( x=> x.title ), data.title, index ) );
 
-        errors = errors.filter( x => x !== null );
+        // errors = errors.filter( x => x !== null );
 
         return { data, errors };
     }

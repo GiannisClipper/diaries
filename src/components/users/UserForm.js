@@ -32,24 +32,24 @@ function UserForm( { users, index, actions, assets, lexicon } ) {
     const onValidation = () => {
         let errors = [];
 
-        const isBlank = withLexicon( validators.isBlank, lexicon );
-        const isFound = withLexicon( validators.isFound, lexicon );
-        const isNotFound = withLexicon( validators.isNotFound, lexicon );
+        // const isBlank = withLexicon( validators.isBlank, lexicon );
+        // const isFound = withLexicon( validators.isFound, lexicon );
+        // const isNotFound = withLexicon( validators.isNotFound, lexicon );
 
-        errors.push( isBlank( lexicon.users.username, data.username ) );
-        errors.push( isFound( lexicon.users.username, users.map( x=> x.title ), data.username, index ) );
+        // errors.push( isBlank( lexicon.users.username, data.username ) );
+        // errors.push( isFound( lexicon.users.username, users.map( x=> x.title ), data.username, index ) );
 
-        if ( _uiux.mode.isCreate ) {
-            errors.push( isBlank( lexicon.users.password, data.password ) );
-        }
+        // if ( _uiux.mode.isCreate ) {
+        //     errors.push( isBlank( lexicon.users.password, data.password ) );
+        // }
 
-        if ( data.password ) {
-            errors.push( isNotFound( lexicon.users.password2, [ data.password ], data.password2 ) );
-        }
+        // if ( data.password ) {
+        //     errors.push( isNotFound( lexicon.users.password2, [ data.password ], data.password2 ) );
+        // }
 
-        errors = errors.filter( x => x !== null );
+        // errors = errors.filter( x => x !== null );
 
-        return { data, errors: [] };
+        return { data, errors };
     }
 
     return (

@@ -1,6 +1,11 @@
 import { ObjectId } from 'mongodb';
 import { createHandler, auth, getMethod } from './core/handler';
-import { postValidation, putValidation, deleteValidation } from './users/validations';
+import {
+    isEmptyUsername,
+    isEmptyPassword,
+    isExistsUsername,
+    isUsedByDiaries 
+} from './users/validators';
 
 const bcrypt = require( 'bcryptjs' );
 
@@ -8,7 +13,12 @@ const postMethod = async ( event, db, collectionName, payload ) => {
     const body = JSON.parse( event.body )
     const data = body.data;
 
-    const errors = await postValidation( { db, data } );
+    let errors = [];
+    errors.push( await isEmptyUsername( { db, data } ) );
+    errors.push( await isEmptyPassword( { db, data } ) );
+    errors.push( await isExistsUsername( { db, data } ) );
+    errors = errors.filter( x => x !== null );
+
     if ( errors.length > 0 ) {
         return { result: errors, statusCode: 422 };
     }
@@ -24,7 +34,11 @@ const putMethod = async ( event, db, collectionName, payload ) => {
     const body = JSON.parse( event.body );
     const data = body.data;
 
-    const errors = await putValidation( { db, data, id } );
+    let errors = [];
+    errors.push( await isEmptyUsername( { db, data } ) );
+    errors.push( await isExistsUsername( { db, data, id } ) );
+    errors = errors.filter( x => x !== null );
+
     if ( errors.length > 0 ) {
         return { result: errors, statusCode: 422 };
     }
@@ -40,7 +54,10 @@ const putMethod = async ( event, db, collectionName, payload ) => {
 const deleteMethod = async ( event, db, collectionName ) => {
     const id = event.queryStringParameters[ 'id' ];
 
-    const errors = await deleteValidation( { db, id } );
+    let errors = [];
+    errors.push( await isUsedByDiaries( { db, id } ) );
+    errors = errors.filter( x => x !== null );
+
     if ( errors.length > 0 ) {
         return { result: errors, statusCode: 422 };
     }
