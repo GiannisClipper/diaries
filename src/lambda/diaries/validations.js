@@ -1,4 +1,4 @@
-import { isFound } from '../core/validations';
+import { isUsedBy } from '../core/validations';
 
 const deleteValidation = async ( { db, id } ) => {
     const errors = [];
@@ -12,9 +12,9 @@ const deleteValidation = async ( { db, id } ) => {
     ];
 
     for ( const lookupCollection of lookupCollections ) {
-        errors.push( await isFound( { 
+        errors.push( await isUsedBy( { 
             db,
-            lookupCollection, 
+            lookupCollection,
             lookupFields: { diary_id: id }, 
             message: 'diaries.id'
         } ) );

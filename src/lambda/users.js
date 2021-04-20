@@ -1,12 +1,18 @@
 import { ObjectId } from 'mongodb';
 import { createHandler, auth, getMethod } from './core/handler';
-import { deleteValidation } from './users/validations';
+import { postValidation, putValidation, deleteValidation } from './users/validations';
 
 const bcrypt = require( 'bcryptjs' );
 
 const postMethod = async ( event, db, collectionName, payload ) => {
     const body = JSON.parse( event.body )
     const data = body.data;
+
+    const errors = await postValidation( { db, data } );
+    if ( errors.length > 0 ) {
+        return { result: errors, statusCode: 422 };
+    }
+
     data.password = bcrypt.hashSync( data.password, bcrypt.genSaltSync( 8 ) );
     const collection = db.collection( collectionName );
     const result = await collection.insertOne( data );
@@ -17,6 +23,12 @@ const putMethod = async ( event, db, collectionName, payload ) => {
     const id = event.queryStringParameters[ 'id' ];
     const body = JSON.parse( event.body );
     const data = body.data;
+
+    const errors = await putValidation( { db, data, id } );
+    if ( errors.length > 0 ) {
+        return { result: errors, statusCode: 422 };
+    }
+
     if ( data.password !== undefined ) {
         data.password = bcrypt.hashSync( data.password, bcrypt.genSaltSync( 8 ) );
     }

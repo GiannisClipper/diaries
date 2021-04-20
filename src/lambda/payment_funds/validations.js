@@ -1,9 +1,9 @@
-import { isFound } from '../core/validations';
+import { isUsedBy } from '../core/validations';
 
 const deleteValidation = async ( { db, id } ) => {
     const errors = [];
 
-    errors.push( await isFound( { 
+    errors.push( await isUsedBy( { 
         db,
         lookupCollection: 'entries',
         lookupFields: { 'type_specs.fund_id': id, type: 'payment' }, 

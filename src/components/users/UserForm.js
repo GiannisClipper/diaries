@@ -49,7 +49,7 @@ function UserForm( { users, index, actions, assets, lexicon } ) {
 
         errors = errors.filter( x => x !== null );
 
-        return { data, errors };
+        return { data, errors: [] };
     }
 
     return (
