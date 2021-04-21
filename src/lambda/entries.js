@@ -29,6 +29,7 @@ const parseData = data => ( {
     date: data.date,
     index: data.index,
     indexes: data.indexes,
+    type: data.type,
     type_specs:
         data.type === 'note'
         ? parseNoteData( data.type_specs || {} )

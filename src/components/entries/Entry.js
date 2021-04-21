@@ -2,8 +2,8 @@ import React, { useContext, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 
 import StyledRow from '../commons/RowBox';
-import { LoadingIcon, SuspendedIcon } from '../commons/Icons';
 
+import { LoadingOption, SuspendedOption } from '../core/CoreMenu';
 import { CopyPasteContext } from '../core/CopyPasteContext';
 import { createRequestFeature, updateRequestFeature, deleteRequestFeature } from '../core/features/requests';
 import { dragFeature, dropFeature } from '../core/features/dragNDrop';
@@ -112,11 +112,11 @@ const Entry = ( { diary_id, date, entries, index, actions, assets, lexicon } ) =
                 _uiux.status.isResponseWaiting ||
                 _uiux.status.isResponseOk 
                 ?
-                    <LoadingIcon />
+                    <LoadingOption />
                 : 
                     _uiux.status.isSuspended 
                 ?
-                    <SuspendedIcon />
+                    <SuspendedOption />
                 : 
                     <EntryMenuOption 
                         index={ index } 

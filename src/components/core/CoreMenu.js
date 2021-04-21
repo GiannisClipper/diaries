@@ -15,26 +15,6 @@ import {
     CloseIcon,
 } from '../commons/Icons';
 
-function CoreMenu( { status, children } ) {
-
-    status = status || {};
-
-    return ( 
-        status.isValidation ||
-        status.isRequestBefore ||
-        status.isRequest ||
-        status.isResponseWaiting 
-        ?
-            <LoadingIcon />
-        : 
-        status.isSuspended
-        ?
-            <SuspendedIcon />
-        : 
-            <>{ children }</>
-    );
-}
-
 function WithOptionBox( Option ) {
     return function WithOptionBoxIcon( { reference, onClick, lexicon } ) {
         return (
@@ -47,6 +27,14 @@ function WithOptionBox( Option ) {
         )
     }
 }
+
+const LoadingOption = WithOptionBox( 
+    () => <LoadingIcon />
+)
+
+const SuspendedOption = WithOptionBox( 
+    () => <SuspendedIcon />
+)
 
 const MenuOption = WithOptionBox( 
     ( { lexicon } ) => <MenuIcon title={ lexicon.core.menu } />
@@ -84,9 +72,31 @@ const CloseOption = WithOptionBox(
     ( { lexicon } ) => <CloseIcon title={ lexicon.core.close } />
 )
 
+function CoreMenu( { status, children } ) {
+
+    status = status || {};
+
+    return ( 
+        status.isValidation ||
+        status.isRequestBefore ||
+        status.isRequest ||
+        status.isResponseWaiting 
+        ?
+            <LoadingOption />
+        : 
+        status.isSuspended
+        ?
+            <SuspendedOption />
+        : 
+            <>{ children }</>
+    );
+}
+
 export default CoreMenu;
 export { 
     CoreMenu,
+    LoadingOption,
+    SuspendedOption,
     MenuOption,
     CreateOption,
     RetrieveOption,
