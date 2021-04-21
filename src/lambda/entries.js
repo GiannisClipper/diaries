@@ -4,6 +4,41 @@ import { convertFieldTo, reduceField } from './core/stages';
 import { updateIndexes } from './entries/updateIndexes';
 import { createValidation, updateValidation } from './entries/validations';
 
+const parseNoteData = data => ( {
+    note: data.note
+} );
+
+const parsePaymentData = data => ( {
+    genre_id: data.genre_id,
+    revenue: data.revenue,
+    expense: data.expense,
+    remark: data.remark,
+    fund_id: data.fund_id
+} );
+
+const parseWorkoutData = data => ( {
+    genre_id: data.genre_id,
+    duration: data.duration,
+    distance: data.distance,
+    remark: data.remark,
+    equip_id: data.equip_id
+} );
+        
+const parseData = data => ( {
+    diary_id: data.diary_id,
+    date: data.date,
+    index: data.index,
+    indexes: data.indexes,
+    type_specs:
+        data.type === 'note'
+        ? parseNoteData( data.type_specs || {} )
+        : data.type === 'payment'
+        ? parsePaymentData( data.type_specs || {} )
+        : data.type === 'workout'
+        ? parseWorkoutData( data.type_specs || {} )
+        : {}
+} );
+
 const getMethod = async ( event, db, collectionName, payload ) => {
 
     const diary_id = event.queryStringParameters[ 'diary_id' ];
@@ -139,7 +174,8 @@ const getMethod = async ( event, db, collectionName, payload ) => {
 
 const postMethod = async ( event, db, collectionName ) => {
     const body = JSON.parse( event.body )
-    const { indexes, ...data } = body.data;
+    let { indexes, ...data } = body.data;
+    data = parseData( data );
 
     const errors = await createValidation( { db, data } );
     if ( errors.length > 0 ) {
@@ -156,7 +192,9 @@ const postMethod = async ( event, db, collectionName ) => {
 const putMethod = async ( event, db, collectionName ) => {
     const id = event.queryStringParameters[ 'id' ];
     const body = JSON.parse( event.body );
-    const { indexes, ...data } = body.data;
+    let { indexes, ...data } = body.data;
+    data = parseData( data );
+
 
     const errors = await updateValidation( { db, id, data } );
     if ( errors.length > 0 ) {

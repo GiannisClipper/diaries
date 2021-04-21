@@ -2,6 +2,12 @@ import { ObjectId } from 'mongodb';
 import { createHandler, auth } from './core/handler';
 import { createValidation, updateValidation, deleteValidation } from './diaries/validations';
 
+const parseData = data => ( {
+    user_id: data.user_id,
+    title: data.title,
+    startDate: data.startDate,
+} );
+
 const getMethod = async ( event, db, collectionName, payload ) => {
 
     const user_id = event.queryStringParameters[ 'user_id' ];
@@ -14,7 +20,7 @@ const getMethod = async ( event, db, collectionName, payload ) => {
 
 const postMethod = async ( event, db, collectionName, payload ) => {
     const body = JSON.parse( event.body )
-    const data = body.data;
+    const data = parseData( body.data || {} );
 
     const errors = await createValidation( { db, data } );
     if ( errors.length > 0 ) {
@@ -29,7 +35,7 @@ const postMethod = async ( event, db, collectionName, payload ) => {
 const putMethod = async ( event, db, collectionName, payload ) => {
     const id = event.queryStringParameters[ 'id' ];
     const body = JSON.parse( event.body );
-    const data = body.data;
+    const data = parseData( body.data || {} );
 
     const errors = await updateValidation( { db, id, data } );
     if ( errors.length > 0 ) {

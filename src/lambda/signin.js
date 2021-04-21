@@ -4,9 +4,14 @@ import { createValidation } from './signin/validations';
 
 const bcrypt = require( 'bcryptjs' );
 
+const parseData = data => ( {
+    username: data.username,
+    password: data.password,
+} );
+
 const postMethod = async ( event, db, collectionName ) => {
     const body = JSON.parse( event.body );
-    const data = body.data;
+    const data = parseData( body.data || {} );
 
     const errors = await createValidation( { db, data } );
     if ( errors.length > 0 ) {

@@ -4,9 +4,17 @@ import { createValidation, updateValidation, deleteValidation } from './users/va
 
 const bcrypt = require( 'bcryptjs' );
 
+const parseData = data => ( {
+    username: data.username,
+    password: data.password,
+    email: data.email,
+    type: data.type,
+    remark: data.remark,
+} );
+
 const postMethod = async ( event, db, collectionName ) => {
     const body = JSON.parse( event.body )
-    const data = body.data;
+    const data = parseData( body.data || {} );
 
     const errors = await createValidation( { db, data } );
     if ( errors.length > 0 ) {
@@ -22,7 +30,7 @@ const postMethod = async ( event, db, collectionName ) => {
 const putMethod = async ( event, db, collectionName ) => {
     const id = event.queryStringParameters[ 'id' ];
     const body = JSON.parse( event.body );
-    const data = body.data;
+    const data = parseData( body.data || {} );
 
     const errors = await updateValidation( { db, id, data } );
     if ( errors.length > 0 ) {
