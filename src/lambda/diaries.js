@@ -1,15 +1,6 @@
 import { ObjectId } from 'mongodb';
 import { createHandler, auth } from './core/handler';
-import { 
-    isEmptyUser_id,
-    isEmptyTitle,
-    isExistsTitle,
-    isUsedByEntries,
-    isUsedByPaymentGenres,
-    isUsedByPaymentFunds,
-    isUsedByWorkoutGenres,
-    isUsedByWorkoutEquips 
-} from './diaries/validators';
+import { createValidation, updateValidation, deleteValidation } from './diaries/validations';
 
 const getMethod = async ( event, db, collectionName, payload ) => {
 
@@ -25,12 +16,7 @@ const postMethod = async ( event, db, collectionName, payload ) => {
     const body = JSON.parse( event.body )
     const data = body.data;
 
-    let errors = [];
-    errors.push( isEmptyUser_id( { db, data } ) );
-    errors.push( isEmptyTitle( { db, data } ) );
-    errors.push( await isExistsTitle( { db, data } ) );
-    errors = errors.filter( x => x !== null );
-
+    const errors = await createValidation( { db, data } );
     if ( errors.length > 0 ) {
         return { result: errors, statusCode: 422 };
     }
@@ -45,12 +31,7 @@ const putMethod = async ( event, db, collectionName, payload ) => {
     const body = JSON.parse( event.body );
     const data = body.data;
 
-    let errors = [];
-    errors.push( isEmptyUser_id( { db, data } ) );
-    errors.push( isEmptyTitle( { db, data } ) );
-    errors.push( await isExistsTitle( { db, data, id } ) );
-    errors = errors.filter( x => x !== null );
-
+    const errors = await updateValidation( { db, id, data } );
     if ( errors.length > 0 ) {
         return { result: errors, statusCode: 422 };
     }
@@ -63,14 +44,7 @@ const putMethod = async ( event, db, collectionName, payload ) => {
 const deleteMethod = async ( event, db, collectionName ) => {
     const id = event.queryStringParameters[ 'id' ];
 
-    let errors = [];
-    errors.push( await isUsedByEntries( { db, id } ) );
-    errors.push( await isUsedByPaymentGenres( { db, id } ) );
-    errors.push( await isUsedByPaymentFunds( { db, id } ) );
-    errors.push( await isUsedByWorkoutGenres( { db, id } ) );
-    errors.push( await isUsedByWorkoutEquips( { db, id } ) );
-
-    errors = errors.filter( x => x !== null );
+    const errors = await deleteValidation( { db, id } );
     if ( errors.length > 0 ) {
         return { result: errors, statusCode: 422 };
     }

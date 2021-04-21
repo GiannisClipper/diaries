@@ -20,9 +20,20 @@ Multiple language feature (English and Greek)
 
 ## Lambda functions
 
-This is the back-end. It supports all the stantard CRUD operations to manipulate data in a MongoDB database, as well as complex retrieve operations -using the aggregation framework of MongoDB- to produce data reports. It provides the following API endpoints:
+The code here has the role of the back-end. It supports all the stantard CRUD operations to manipulate data in a MongoDB database, as well as complex queries using the aggregation framework of MongoDB to produce data reports. It provides the following API endpoints:
 
-.../users (POST method to create a new user)
+.../users (with POST method creates a new user)
+.../signin (with PUT method ...),
+    settings: 'settings',
+    backup: `backup`,
+
+    diaries: 'diaries',
+    entries: 'entries',
+    payment_funds: 'payment_funds',
+    payment_genres: 'payment_genres',
+    workout_equips: 'workout_equips',
+    workout_genres: 'workout_genres',
+    reports: 'reports',
 
 
 

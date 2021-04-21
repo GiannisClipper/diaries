@@ -13,7 +13,7 @@ function signinRequestFeature( { _item, actions, assets, url }) {
         const { parseToDB } = assets;
         const dataToDB = parseToDB( _item );
         const body = JSON.stringify( { data: { ...dataToDB } } );
-        const args = { method: 'PUT', body };
+        const args = { method: 'POST', body };
         const onDone = signinResponseOk;
         const onError = signinResponseError;
         const dataFromDB = res => res;

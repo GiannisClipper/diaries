@@ -25,7 +25,7 @@ const isUsedByDiaries = async ( { db, id } ) =>
     await isUsedBy( {
         db,
         lookupCollection: 'diaries',
-        lookupFields: { diary_id: id }, 
+        lookupFields: { diary_id: id },
         message: 'users.id'
     } );
 

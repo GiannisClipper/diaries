@@ -1,18 +1,14 @@
 import { createHandler } from './core/handler';
 import { createToken } from './core/token';
-import { isEmptyUsername, isEmptyPassword } from './users/validators';
+import { createValidation } from './signin/validations';
 
 const bcrypt = require( 'bcryptjs' );
 
-const putMethod = async ( event, db, collectionName, payload ) => {
+const postMethod = async ( event, db, collectionName ) => {
     const body = JSON.parse( event.body );
     const data = body.data;
 
-    let errors = [];
-    errors.push( isEmptyUsername( { data } ) );
-    errors.push( isEmptyPassword( { data } ) );
-    errors = errors.filter( x => x !== null );
-
+    const errors = await createValidation( { db, data } );
     if ( errors.length > 0 ) {
         return { result: errors, statusCode: 422 };
     }
@@ -39,5 +35,5 @@ const putMethod = async ( event, db, collectionName, payload ) => {
 
 exports.handler = createHandler( {
     collectionName: 'users',
-    putMethod
+    postMethod
 } );

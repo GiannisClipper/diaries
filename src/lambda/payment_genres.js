@@ -1,12 +1,6 @@
 import { ObjectId } from 'mongodb';
 import { createHandler, auth } from './core/handler';
-import {
-    isEmptyDiary_id,
-    isEmptyName,
-    isExistsName,
-    isExistsCode,
-    isUsedByEntries 
-} from './payment_genres/validators';
+import { createValidation, updateValidation, deleteValidation } from './payment_genres/validations';
 
 const getMethod = async ( event, db, collectionName, payload ) => {
 
@@ -31,13 +25,7 @@ const postMethod = async ( event, db, collectionName ) => {
     const body = JSON.parse( event.body )
     const data = body.data;
 
-    let errors = [];
-    errors.push( isEmptyDiary_id( { db, data } ) );
-    errors.push( isEmptyName( { db, data } ) );
-    errors.push( await isExistsName( { db, data } ) );
-    errors.push( await isExistsCode( { db, data } ) );
-    errors = errors.filter( x => x !== null );
-
+    const errors = await createValidation( { db, data } );
     if ( errors.length > 0 ) {
         return { result: errors, statusCode: 422 };
     }
@@ -52,13 +40,7 @@ const putMethod = async ( event, db, collectionName ) => {
     const body = JSON.parse( event.body );
     const data = body.data;
 
-    let errors = [];
-    errors.push( isEmptyDiary_id( { db, data } ) );
-    errors.push( isEmptyName( { db, data } ) );
-    errors.push( await isExistsName( { db, data, id } ) );
-    errors.push( await isExistsCode( { db, data, id } ) );
-    errors = errors.filter( x => x !== null );
-
+    const errors = await updateValidation( { db, id, data } );
     if ( errors.length > 0 ) {
         return { result: errors, statusCode: 422 };
     }
@@ -71,10 +53,7 @@ const putMethod = async ( event, db, collectionName ) => {
 const deleteMethod = async ( event, db, collectionName ) => {
     const id = event.queryStringParameters[ 'id' ];
 
-    let errors = [];
-    errors.push( await isUsedByEntries( { db, id } ) );
-
-    errors = errors.filter( x => x !== null );    
+    const errors = await deleteValidation( { db, id } );
     if ( errors.length > 0 ) {
         return { result: errors, statusCode: 422 };
     }

@@ -2,14 +2,7 @@ import { ObjectId } from 'mongodb';
 import { createHandler, auth } from './core/handler';
 import { convertFieldTo, reduceField } from './core/stages';
 import { updateIndexes } from './entries/updateIndexes';
-import { 
-    isEmptyType,
-    isInvalidType,
-    isEmptyNote,
-    isEmptyPayment_genre_id,
-    isEmptyPayment_fund_id,
-    isEmptyWorkoutGenre_id
-} from './entries/validators';
+import { createValidation, updateValidation } from './entries/validations';
 
 const getMethod = async ( event, db, collectionName, payload ) => {
 
@@ -148,23 +141,7 @@ const postMethod = async ( event, db, collectionName ) => {
     const body = JSON.parse( event.body )
     const { indexes, ...data } = body.data;
 
-    let errors = [];
-    errors.push( isEmptyType( { data } ) );
-    errors.push( isInvalidType( { data } ) );
-
-    if ( data.type === 'note' ) {
-        errors.push( isEmptyNote( { data } ) );
-
-    } if ( data.type === 'payment' ) {
-        errors.push( isEmptyPayment_genre_id( { data } ) );
-        errors.push( isEmptyPayment_fund_id( { data } ) );
-
-    } if ( data.type === 'workout' ) {
-        errors.push( isEmptyWorkoutGenre_id( { data } ) );
-    }
-
-    errors = errors.filter( x => x !== null );
-
+    const errors = await createValidation( { db, data } );
     if ( errors.length > 0 ) {
         return { result: errors, statusCode: 422 };
     }
@@ -181,23 +158,7 @@ const putMethod = async ( event, db, collectionName ) => {
     const body = JSON.parse( event.body );
     const { indexes, ...data } = body.data;
 
-    let errors = [];
-    errors.push( isEmptyType( { data } ) );
-    errors.push( isInvalidType( { data } ) );
-
-    if ( data.type === 'note' ) {
-        errors.push( isEmptyNote( { data } ) );
-
-    } if ( data.type === 'payment' ) {
-        errors.push( isEmptyPayment_genre_id( { data } ) );
-        errors.push( isEmptyPayment_fund_id( { data } ) );
-
-    } if ( data.type === 'workout' ) {
-        errors.push( isEmptyWorkoutGenre_id( { data } ) );
-    }
-
-    errors = errors.filter( x => x !== null );
-
+    const errors = await updateValidation( { db, id, data } );
     if ( errors.length > 0 ) {
         return { result: errors, statusCode: 422 };
     }
