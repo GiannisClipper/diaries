@@ -16,7 +16,7 @@ function CoreForm( { headLabel, Context, assets, lexicon, index, validationFeatu
         ? state[ namespace ][ index ]
         : state[ namespace ];
 
-    const { _uiux, ...data } = _item;
+    const { _uiux } = _item;
     const { status, mode } = _uiux;
 
     const okLabel = ( 
@@ -31,8 +31,7 @@ function CoreForm( { headLabel, Context, assets, lexicon, index, validationFeatu
     const cancelLabel = lexicon.core.cancel;
 
     const validation = presetAction( actions.validation, { assets, index } );
-    const validationOk = presetAction( actions.validationOk, { assets, index } );
-    const onClickOk = validationFeature ? validation : () => validationOk( { data } );
+    const onClickOk = validation;
 
     const closeForm = presetAction( actions.closeForm, { assets, index } );
     const noMode = presetAction( actions.noMode, { assets, index } );

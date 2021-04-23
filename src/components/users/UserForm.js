@@ -20,20 +20,16 @@ function UserForm( { users, index, actions, assets, lexicon } ) {
     const onClickOut = () => { closeForm(); noMode() };
 
     const user = users[ index ];
-    const { _uiux } = user;
+    const { status, mode } = user._uiux;
 
     const [ data, setData ] = useState( { ...user } );
-    const { status } = user._uiux;
 
     const types = [
         { type: 'admin', descr: lexicon.users.types.admin },
         { type: 'user', descr: lexicon.users.types.user },
     ];
 
-    // validation feature
-
     useEffect( () => {
-
         validationFeature( { 
             actions,
             assets,
@@ -43,7 +39,9 @@ function UserForm( { users, index, actions, assets, lexicon } ) {
             validationProcess: ( { data } ) => {
                 const errors = [];
                 errors.push( isEmptyUsername( { data } ) );
-                errors.push( isEmptyPassword( { data } ) );
+                if ( mode.isCreate ) {
+                    errors.push( isEmptyPassword( { data } ) );
+                }
                 errors.push( isInvalidPassword( { data } ) );
             
                 return errors.filter( x => x !== null );
@@ -60,7 +58,6 @@ function UserForm( { users, index, actions, assets, lexicon } ) {
                 assets={ assets }
                 lexicon={ lexicon }
                 index={ index }
-                validationFeature={ true }
             >
                 {/* <InputBox>
                     <InputLabel>

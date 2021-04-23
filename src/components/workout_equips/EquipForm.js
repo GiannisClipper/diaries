@@ -17,14 +17,11 @@ function EquipForm( { equips, index, actions, assets, lexicon } ) {
     const onClickOut = () => { closeForm(); noMode() };
 
     const equip = equips[ index ];
-
-    const [ data, setData ] = useState( { ...equip } );
     const { status } = equip._uiux;
 
-    // validation feature
+    const [ data, setData ] = useState( { ...equip } );
 
     useEffect( () => {
-
         validationFeature( { 
             actions,
             assets,
@@ -39,7 +36,6 @@ function EquipForm( { equips, index, actions, assets, lexicon } ) {
                 return errors.filter( x => x !== null );
             }, 
         } );
-
     } );
 
     return (
@@ -51,7 +47,6 @@ function EquipForm( { equips, index, actions, assets, lexicon } ) {
                 assets={ assets }
                 lexicon={ lexicon }
                 index={ index }
-                validationFeature={ true }
             >
                 {/* <InputBox>
                     <InputLabel>

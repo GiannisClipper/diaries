@@ -45,10 +45,8 @@ function EntryForm( { date, entries, index, actions, assets, lexicon } ) {
         { type: 'workout', descr: lexicon.entries.types.workout },
     ];
 
-    // validation feature
 
     useEffect( () => {
-
         validationFeature( { 
             actions,
             assets,
@@ -87,7 +85,6 @@ function EntryForm( { date, entries, index, actions, assets, lexicon } ) {
                 assets={ assets }
                 lexicon={ lexicon }
                 index={ index }
-                validationFeature={ true }
             >
                 {/* <InputBox>
                     <InputLabel>

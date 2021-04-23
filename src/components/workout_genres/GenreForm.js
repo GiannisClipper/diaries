@@ -17,14 +17,11 @@ function GenreForm( { genres, index, actions, assets, lexicon } ) {
     const onClickOut = () => { closeForm(); noMode() };
 
     const genre = genres[ index ];
-
-    const [ data, setData ] = useState( { ...genre } );
     const { status } = genre._uiux;
 
-    // validation feature
+    const [ data, setData ] = useState( { ...genre } );
 
     useEffect( () => {
-
         validationFeature( { 
             actions,
             assets,
@@ -39,7 +36,6 @@ function GenreForm( { genres, index, actions, assets, lexicon } ) {
                 return errors.filter( x => x !== null );
             }, 
         } );
-
     } );
 
     return (
@@ -51,7 +47,6 @@ function GenreForm( { genres, index, actions, assets, lexicon } ) {
                 assets={ assets }
                 lexicon={ lexicon }
                 index={ index }
-                validationFeature={ true }
             >
                 {/* <InputBox>
                     <InputLabel>

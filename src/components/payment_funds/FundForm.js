@@ -17,14 +17,11 @@ function FundForm( { funds, index, actions, assets, lexicon } ) {
     const onClickOut = () => { closeForm(); noMode() };
 
     const fund = funds[ index ];
-
-    const [ data, setData ] = useState( { ...fund } );
     const { status } = fund._uiux;
 
-    // validation feature
+    const [ data, setData ] = useState( { ...fund } );
 
     useEffect( () => {
-
         validationFeature( { 
             actions,
             assets,
@@ -39,7 +36,6 @@ function FundForm( { funds, index, actions, assets, lexicon } ) {
                 return errors.filter( x => x !== null );
             }, 
         } );
-
     } );
 
     return (
@@ -51,7 +47,6 @@ function FundForm( { funds, index, actions, assets, lexicon } ) {
                 assets={ assets }
                 lexicon={ lexicon }
                 index={ index }
-                validationFeature={ true }
             >
                 {/* <InputBox>
                     <InputLabel>

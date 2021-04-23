@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Modal } from '../commons/Modal';
 import { InputBox, InputLabel, InputValue } from '../commons/InputBox';
@@ -7,6 +7,7 @@ import { InputDate } from '../commons/InputDate';
 import CoreForm from "../core/CoreForm";
 import { shiftDate, YYYYMMDDToRepr, dateToYYYYMMDD } from '../core/helpers/dates';
 import presetAction from '../core/helpers/presetAction';
+import { validationFeature } from "../core/features/validation";
 
 import { ReportsContext } from './ReportsContext';
 // import { testPDF } from './helpers/reportPDF';
@@ -21,6 +22,7 @@ function ReportForm( { reports, index, actions, assets, lexicon } ) {
     const onClickOut = () => { closeForm(); noMode() };
 
     const report = reports[ index ];
+    const { status } = report._uiux;
 
     const [ data, setData ] = useState( { 
         ...report,
@@ -28,6 +30,16 @@ function ReportForm( { reports, index, actions, assets, lexicon } ) {
         dateTill: YYYYMMDDToRepr( dateToYYYYMMDD( new Date() ) ),
     } );
 
+    useEffect( () => {
+        validationFeature( { 
+            actions,
+            assets,
+            index,
+            data,
+            status,
+        } );
+    } );
+        
     return (
         <Modal onClick={ onClickOut } centeredness>
             <CoreForm

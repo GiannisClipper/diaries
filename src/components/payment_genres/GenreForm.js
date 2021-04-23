@@ -19,9 +19,9 @@ function GenreForm( { genres, index, actions, assets, lexicon } ) {
     const onClickOut = () => { closeForm(); noMode() };
 
     const genre = genres[ index ];
+    const { status } = genre._uiux;
 
     const [ data, setData ] = useState( { ...genre } );
-    const { status } = genre._uiux;
 
     const types = [
         { type: 'revenue', descr: lexicon.payment_genres.types.revenue },
@@ -29,10 +29,8 @@ function GenreForm( { genres, index, actions, assets, lexicon } ) {
         { type: '', descr: '--' },
     ];
 
-    // validation feature
 
     useEffect( () => {
-
         validationFeature( { 
             actions,
             assets,
@@ -47,7 +45,6 @@ function GenreForm( { genres, index, actions, assets, lexicon } ) {
                 return errors.filter( x => x !== null );
             }, 
         } );
-
     } );
 
     return (
@@ -59,7 +56,6 @@ function GenreForm( { genres, index, actions, assets, lexicon } ) {
                 assets={ assets }
                 lexicon={ lexicon }
                 index={ index }
-                validationFeature={ true }
             >
                 {/* <InputBox>
                     <InputLabel>

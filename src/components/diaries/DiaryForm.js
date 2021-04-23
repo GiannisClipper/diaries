@@ -18,14 +18,11 @@ function DiaryForm( { diaries, index, actions, assets, lexicon } ) {
     const onClickOut = () => { closeForm(); noMode() };
 
     const diary = diaries[ index ];
-
-    const [ data, setData ] = useState( { ...diary } );
     const { status } = diary._uiux;
 
-    // validation feature
+    const [ data, setData ] = useState( { ...diary } );
 
     useEffect( () => {
-
         validationFeature( { 
             actions,
             assets,
@@ -40,7 +37,6 @@ function DiaryForm( { diaries, index, actions, assets, lexicon } ) {
                 return errors.filter( x => x !== null );
             }, 
         } );
-
     } );
 
     return (
@@ -52,7 +48,6 @@ function DiaryForm( { diaries, index, actions, assets, lexicon } ) {
                 assets={ assets }
                 lexicon={ lexicon }
                 index={ index }
-                validationFeature={ true }
             >
                 {/* <InputBox>
                     <InputLabel>
