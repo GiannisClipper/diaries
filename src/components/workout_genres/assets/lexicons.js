@@ -1,4 +1,5 @@
 const EN = {
+    id: 'Id',
     genres: 'Workout genres',
     genre: 'Workout genre',
     name: 'Name',
@@ -6,6 +7,7 @@ const EN = {
 }
 
 const GR = {
+    id: 'Id',
     genres: 'Κατηγορίες προπόνησης',
     genre: 'Κατηγορία προπόνησης',
     name: 'Ονομασία',

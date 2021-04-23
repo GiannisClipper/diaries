@@ -42,25 +42,25 @@ const isInvalidType = ( { data } ) =>
 const isEmptyNote = ( { data } ) =>
     isEmpty( { 
         value: data.type_specs.note, 
-        message: 'entries.note.note'
+        message: 'notes.note'
     } );
 
 const isEmptyPayment_genre_id = ( { data } ) =>
     isEmpty( { 
         value: data.type_specs.genre_id, 
-        message: 'entries.payment.genre_id'
+        message: 'payments.genre_id'
     } );
 
 const isEmptyPayment_fund_id = ( { data } ) =>
     isEmpty( { 
         value: data.type_specs.fund_id, 
-        message: 'entries.payment.fund_id'
+        message: 'payments.fund_id'
     } );
 
 const isEmptyWorkoutGenre_id = ( { data } ) =>
     isEmpty( { 
         value: data.type_specs.genre_id, 
-        message: 'entries.workout.genre_id'
+        message: 'workouts.genre_id'
     } );
 
 export { 

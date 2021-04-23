@@ -26,9 +26,9 @@ function EquipForm( { equips, index, actions, assets, lexicon } ) {
         // const isBlank = withLexicon( validators.isBlank, lexicon );
         // const isFound = withLexicon( validators.isFound, lexicon );
 
-        // errors.push( isBlank( lexicon.workoutEquips.name, data.name ) );
-        // errors.push( isFound( lexicon.workoutEquips.name, equips.map( x=> x.name ), data.name, index ) );
-        // errors.push( isFound( lexicon.workoutEquips.code, equips.map( x=> x.code ), data.code, index ) );
+        // errors.push( isBlank( lexicon.workout_equips.name, data.name ) );
+        // errors.push( isFound( lexicon.workout_equips.name, equips.map( x=> x.name ), data.name, index ) );
+        // errors.push( isFound( lexicon.workout_equips.code, equips.map( x=> x.code ), data.code, index ) );
 
         // errors = errors.filter( x => x !== null );
 
@@ -39,7 +39,7 @@ function EquipForm( { equips, index, actions, assets, lexicon } ) {
         <Modal onClick={ onClickOut } centeredness>
 
             <CoreForm
-                headLabel={ lexicon.workoutEquips.equip }
+                headLabel={ lexicon.workout_equips.equip }
                 Context={ EquipsContext }
                 assets={ assets }
                 lexicon={ lexicon }
@@ -61,7 +61,7 @@ function EquipForm( { equips, index, actions, assets, lexicon } ) {
 
                 <InputBox>
                     <InputLabel>
-                        { lexicon.workoutEquips.name }
+                        { lexicon.workout_equips.name }
                     </InputLabel>
                     <InputValue>
                         <input
@@ -73,7 +73,7 @@ function EquipForm( { equips, index, actions, assets, lexicon } ) {
 
                 <InputBox>
                     <InputLabel>
-                        { lexicon.workoutEquips.code }
+                        { lexicon.workout_equips.code }
                     </InputLabel>
                     <InputValue>
                         <input

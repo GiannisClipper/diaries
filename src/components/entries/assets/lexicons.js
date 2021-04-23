@@ -1,4 +1,5 @@
 const EN = {
+    id: 'Id',
     entries: 'Entries',
     entry: 'Entry',
     date: 'Date',
@@ -11,6 +12,7 @@ const EN = {
 }
 
 const GR = {
+    id: 'Id',
     entries: 'Εγγραφές',
     entry: 'Εγγραφή',
     date: 'Ημ/νία',

@@ -4,11 +4,11 @@ import benchLexicons from '../../bench/assets/lexicons';
 import entriesLexicons from '../../entries/assets/lexicons';
 import notesLexicons from '../../notes/assets/lexicons';
 import paymentsLexicons from '../../payments/assets/lexicons';
-import paymentGenresLexicons from '../../payment_genres/assets/lexicons';
-import paymentFundsLexicons from '../../payment_funds/assets/lexicons';
+import payment_genresLexicons from '../../payment_genres/assets/lexicons';
+import payment_fundsLexicons from '../../payment_funds/assets/lexicons';
 import workoutsLexicons from '../../workouts/assets/lexicons';
-import workoutGenresLexicons from '../../workout_genres/assets/lexicons';
-import workoutEquipsLexicons from '../../workout_equips/assets/lexicons';
+import workout_genresLexicons from '../../workout_genres/assets/lexicons';
+import workout_equipsLexicons from '../../workout_equips/assets/lexicons';
 import reportsLexicons from '../../reports/assets/lexicons';
 import settingsLexicons from '../../settings/assets/lexicons';
 import backupLexicons from '../../backup/assets/lexicons';
@@ -24,11 +24,11 @@ let EN = {
     entries: entriesLexicons.EN,
     notes: notesLexicons.EN,
     payments: paymentsLexicons.EN,
-    paymentGenres: paymentGenresLexicons.EN,
-    paymentFunds: paymentFundsLexicons.EN,
+    payment_genres: payment_genresLexicons.EN,
+    payment_funds: payment_fundsLexicons.EN,
     workouts: workoutsLexicons.EN,
-    workoutGenres: workoutGenresLexicons.EN,
-    workoutEquips: workoutEquipsLexicons.EN,
+    workout_genres: workout_genresLexicons.EN,
+    workout_equips: workout_equipsLexicons.EN,
     reports: reportsLexicons.EN,
     settings: settingsLexicons.EN,
     backup: backupLexicons.EN,
@@ -45,11 +45,11 @@ let GR = {
     entries: entriesLexicons.GR,
     notes: notesLexicons.GR,
     payments: paymentsLexicons.GR,
-    paymentGenres: paymentGenresLexicons.GR,
-    paymentFunds: paymentFundsLexicons.GR,
+    payment_genres: payment_genresLexicons.GR,
+    payment_funds: payment_fundsLexicons.GR,
     workouts: workoutsLexicons.GR,
-    workoutGenres: workoutGenresLexicons.GR,
-    workoutEquips: workoutEquipsLexicons.GR,
+    workout_genres: workout_genresLexicons.GR,
+    workout_equips: workout_equipsLexicons.GR,
     reports: reportsLexicons.GR,
     settings: settingsLexicons.GR,
     backup: backupLexicons.GR,

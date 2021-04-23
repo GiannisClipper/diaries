@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 
 import { OkCancelForm } from '../commons/Forms';
+import { ErrorsRepr } from './ErrorsRepr';
 
 import presetAction from './helpers/presetAction';
 
@@ -77,13 +78,6 @@ function CoreForm( { headLabel, Context, assets, lexicon, index, onValidation, c
     const closeForm = presetAction( actions.closeForm, { assets, index } );
     const noMode = presetAction( actions.noMode, { assets, index } );
     const onClickCancel = () => { closeForm(); noMode(); };
-
-    useEffect( () => {
-        if ( _uiux.status.isResponseErrorAfter && _uiux.error.statusCode === 422 ) {
-            alert( 'Validation errors' )
-            _uiux.status = {};
-        }
-    } );
  
     return (
         <OkCancelForm
@@ -104,6 +98,14 @@ function CoreForm( { headLabel, Context, assets, lexicon, index, onValidation, c
             />
 
             { children }
+
+            { _uiux.status.isResponseErrorAfter && _uiux.error.statusCode === 422
+                ?
+                <ErrorsRepr errors={ _uiux.error.result } />
+                :
+                null 
+            }
+
         </OkCancelForm>
     );
 }

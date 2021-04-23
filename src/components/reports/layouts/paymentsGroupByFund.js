@@ -14,8 +14,8 @@ const cols = {
 
 const labels = ( lexicon ) => ( {
     count: lexicon.reports.count,
-    fund_code: lexicon.paymentFunds.code,
-    fund_name: lexicon.paymentFunds.name,
+    fund_code: lexicon.payment_funds.code,
+    fund_name: lexicon.payment_funds.name,
     revenue: lexicon.payments.revenue,
     revenue100: lexicon.reports.revenue100,
     expense: lexicon.payments.expense,

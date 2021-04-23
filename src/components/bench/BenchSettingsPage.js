@@ -27,7 +27,7 @@ function SettingsPage( { diary_id } ) {
 
                 <BlockBox>
                     <BlockLabel>
-                        { lexicon.paymentGenres.genres }
+                        { lexicon.payment_genres.genres }
                     </BlockLabel>
                     <BlockValue>
                         <PaymentGenres 
@@ -39,7 +39,7 @@ function SettingsPage( { diary_id } ) {
 
                 <BlockBox>
                     <BlockLabel>
-                        { lexicon.paymentFunds.funds }
+                        { lexicon.payment_funds.funds }
                     </BlockLabel>
                     <BlockValue>
                         <PaymentFunds 
@@ -51,7 +51,7 @@ function SettingsPage( { diary_id } ) {
 
                 <BlockBox>
                     <BlockLabel>
-                        { lexicon.workoutGenres.genres }
+                        { lexicon.workout_genres.genres }
                     </BlockLabel>
                     <BlockValue>
                         <WorkoutGenres 
@@ -63,7 +63,7 @@ function SettingsPage( { diary_id } ) {
 
                 <BlockBox>
                     <BlockLabel>
-                        { lexicon.workoutEquips.equips }
+                        { lexicon.workout_equips.equips }
                     </BlockLabel>
                     <BlockValue>
                         <WorkoutEquips 

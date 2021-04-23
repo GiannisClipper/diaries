@@ -2,17 +2,17 @@ import React, { useEffect } from 'react';
 import { AppContextProvider } from './AppContext';
 import { UsersContextProvider } from '../users/UsersContext';
 import { DiariesContextProvider } from '../diaries/DiariesContext';
-import paymentGenresContext from '../payment_genres/GenresContext';
-import paymentFundsContext from '../payment_funds/FundsContext';
-import workoutGenresContext from '../workout_genres/GenresContext';
-import workoutEquipsContext from '../workout_equips/EquipsContext';
+import payment_genresContext from '../payment_genres/GenresContext';
+import payment_fundsContext from '../payment_funds/FundsContext';
+import workout_genresContext from '../workout_genres/GenresContext';
+import workout_equipsContext from '../workout_equips/EquipsContext';
 import AppLoad from './AppLoad';
 import AppRoutes from './AppRoutes';
 
-const PaymentGenresContextProvider = paymentGenresContext.GenresContextProvider;
-const PaymentFundsContextProvider = paymentFundsContext.FundsContextProvider;
-const WorkoutGenresContextProvider = workoutGenresContext.GenresContextProvider;
-const WorkoutEquipsContextProvider = workoutEquipsContext.EquipsContextProvider;
+const PaymentGenresContextProvider = payment_genresContext.GenresContextProvider;
+const PaymentFundsContextProvider = payment_fundsContext.FundsContextProvider;
+const WorkoutGenresContextProvider = workout_genresContext.GenresContextProvider;
+const WorkoutEquipsContextProvider = workout_equipsContext.EquipsContextProvider;
 
 function App() {
 

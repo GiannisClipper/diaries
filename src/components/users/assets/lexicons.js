@@ -1,4 +1,5 @@
 const EN = {
+    id: 'Id',
     users: 'Users',
     username: 'Username',
     password: 'Password',
@@ -13,6 +14,7 @@ const EN = {
 }
 
 const GR = {
+    id: 'Id',
     users: 'Χρήστες',
     username: 'Όνομα',
     password: 'Κωδικός',

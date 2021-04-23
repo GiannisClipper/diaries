@@ -1,4 +1,5 @@
 const EN = {
+    id: 'Id',
     genres: 'Payment genres',
     genre: 'Payment genre',
     name: 'Name',
@@ -11,6 +12,7 @@ const EN = {
 }
 
 const GR = {
+    id: 'Id',
     genres: 'Κατηγορίες πληρωμών',
     genre: 'Κατηγορία πληρωμών',
     name: 'Ονομασία',

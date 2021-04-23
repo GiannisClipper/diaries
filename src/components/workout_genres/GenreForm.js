@@ -26,9 +26,9 @@ function GenreForm( { genres, index, actions, assets, lexicon } ) {
         // const isBlank = withLexicon( validators.isBlank, lexicon );
         // const isFound = withLexicon( validators.isFound, lexicon );
 
-        // errors.push( isBlank( lexicon.workoutGenres.name, data.name ) );
-        // errors.push( isFound( lexicon.workoutGenres.name, genres.map( x=> x.name ), data.name, index ) );
-        // errors.push( isFound( lexicon.workoutGenres.code, genres.map( x=> x.code ), data.code, index ) );
+        // errors.push( isBlank( lexicon.workout_genres.name, data.name ) );
+        // errors.push( isFound( lexicon.workout_genres.name, genres.map( x=> x.name ), data.name, index ) );
+        // errors.push( isFound( lexicon.workout_genres.code, genres.map( x=> x.code ), data.code, index ) );
 
         // errors = errors.filter( x => x !== null );
 
@@ -39,7 +39,7 @@ function GenreForm( { genres, index, actions, assets, lexicon } ) {
         <Modal onClick={ onClickOut } centeredness>
 
             <CoreForm
-                headLabel={ lexicon.workoutGenres.genre }
+                headLabel={ lexicon.workout_genres.genre }
                 Context={ GenresContext }
                 assets={ assets }
                 lexicon={ lexicon }
@@ -61,7 +61,7 @@ function GenreForm( { genres, index, actions, assets, lexicon } ) {
 
                 <InputBox>
                     <InputLabel>
-                        { lexicon.workoutGenres.name }
+                        { lexicon.workout_genres.name }
                     </InputLabel>
                     <InputValue>
                         <input
@@ -73,7 +73,7 @@ function GenreForm( { genres, index, actions, assets, lexicon } ) {
 
                 <InputBox>
                     <InputLabel>
-                        { lexicon.workoutGenres.code }
+                        { lexicon.workout_genres.code }
                     </InputLabel>
                     <InputValue>
                         <input

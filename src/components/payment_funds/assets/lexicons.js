@@ -1,4 +1,5 @@
 const EN = {
+    id: 'Id',
     funds: 'Payment funds',
     fund: 'Payment fund',
     name: 'Name',
@@ -6,6 +7,7 @@ const EN = {
 }
 
 const GR = {
+    id: 'Id',
     funds: 'Μέσα πληρωμών',
     fund: 'Μέσo πληρωμών',
     name: 'Ονομασία',

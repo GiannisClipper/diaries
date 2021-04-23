@@ -22,6 +22,7 @@ const formOneReducer = ( state, action ) => {
 
             const _item = state[ namespace ];
             _item._uiux.form = {};
+            _item._uiux.error = {};
             // _item._uiux.status = {};
             // _item._uiux.mode = {};
 
@@ -52,6 +53,7 @@ const formOneOfManyReducer = ( state, action ) => {
 
             const _items = state[ namespace ];
             _items[ index ]._uiux.form = {};
+            _items[ index ]._uiux.error = {};
 
             return { ...state, [ namespace ]: _items };
 

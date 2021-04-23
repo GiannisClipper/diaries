@@ -22,9 +22,9 @@ function Genre( { genres, index, actions, assets, lexicon } ) {
 
     const typeInfo =
         genre.type === `revenue` 
-        ? lexicon.paymentGenres.types.revenue.substr( 0, 2 ) 
+        ? lexicon.payment_genres.types.revenue.substr( 0, 2 ) 
         : genre.type === `expense` 
-        ? lexicon.paymentGenres.types.expense.substr( 0, 2 ) 
+        ? lexicon.payment_genres.types.expense.substr( 0, 2 ) 
         : '--';
 
     // request features

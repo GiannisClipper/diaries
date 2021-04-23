@@ -1,4 +1,5 @@
 const EN = {
+    id: 'Id',
     equips: 'Workout equipment',
     equip: 'Workout equipment',
     name: 'Name',
@@ -6,6 +7,7 @@ const EN = {
 }
 
 const GR = {
+    id: 'Id',
     equips: 'Εξοπλισμός προπόνησης',
     equip: 'Εξοπλισμός προπόνησης',
     name: 'Ονομασία',

@@ -1,3 +1,5 @@
+import { isInvalid } from "../../../lambda/core/validators";
+
 const EN = {
     days: [
         "Sunday",
@@ -36,6 +38,12 @@ const EN = {
     isBlank: 'Empty value not allowed.',
     isFound: 'Value already exists.',
     isNotFound: 'Value not valid.',
+
+    isEmpty: 'Empty value not allowed.',
+    isInvalid: 'Value not valid.',
+    isExists: 'Value already exists.',
+    isNotExists: 'Value not exists.',
+    isUsedBy: 'Document is used.',
 }
 
 const GR = {
@@ -76,6 +84,12 @@ const GR = {
     isBlank: 'Η τιμή δεν μπορεί να είναι κενή.',
     isFound: 'Η τιμή υπάρχει ήδη.',
     isNotFound: 'Η τιμή δεν είναι έγκυρη.',
+
+    isEmpty: 'Η τιμή δεν μπορεί να είναι κενή.',
+    isInvalid: 'Η τιμή δεν είναι έγκυρη.',
+    isExists: 'Η τιμή υπάρχει ήδη.',
+    isNotExists: 'Η τιμή δεν βρέθηκε.',
+    isUsedBy: 'Η εγγραφή χρησιμοποιείται.',
 }
 
 export default { EN, GR };

@@ -60,11 +60,14 @@ const appReducer = ( state, action ) => {
         
                 } case HANDLE_ERROR: {
                     const { error } = action.payload;
-                    let { signin } = state;
 
-                    if ( error.message.includes( 'No auth' ) ) {
-                        signin = signinSchema();
+                    if ( error.statusCode && error.statusCode === 422 ) {
+                        return state;
                     }
+
+                    const signin = error.message.includes( 'No auth' )
+                        ? signinSchema()
+                        : state.signin;
 
                     state._uiux.error = error;
 

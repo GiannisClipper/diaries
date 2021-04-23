@@ -23,8 +23,8 @@ function GenreForm( { genres, index, actions, assets, lexicon } ) {
     const [ data, setData ] = useState( { ...genre } );
 
     const types = [
-        { type: 'revenue', descr: lexicon.paymentGenres.types.revenue },
-        { type: 'expense', descr: lexicon.paymentGenres.types.expense },
+        { type: 'revenue', descr: lexicon.payment_genres.types.revenue },
+        { type: 'expense', descr: lexicon.payment_genres.types.expense },
         { type: '', descr: '--' },
     ];
 
@@ -34,9 +34,9 @@ function GenreForm( { genres, index, actions, assets, lexicon } ) {
         // const isBlank = withLexicon( validators.isBlank, lexicon );
         // const isFound = withLexicon( validators.isFound, lexicon );
 
-        // errors.push( isBlank( lexicon.paymentGenres.name, data.name ) );
-        // errors.push( isFound( lexicon.paymentGenres.name, genres.map( x=> x.name ), data.name, index ) );
-        // errors.push( isFound( lexicon.paymentGenres.code, genres.map( x=> x.code ), data.code, index ) );
+        // errors.push( isBlank( lexicon.payment_genres.name, data.name ) );
+        // errors.push( isFound( lexicon.payment_genres.name, genres.map( x=> x.name ), data.name, index ) );
+        // errors.push( isFound( lexicon.payment_genres.code, genres.map( x=> x.code ), data.code, index ) );
 
         // errors = errors.filter( x => x !== null );
 
@@ -47,7 +47,7 @@ function GenreForm( { genres, index, actions, assets, lexicon } ) {
         <Modal onClick={ onClickOut } centeredness>
 
             <CoreForm
-                headLabel={ lexicon.paymentGenres.genre }
+                headLabel={ lexicon.payment_genres.genre }
                 Context={ GenresContext }
                 assets={ assets }
                 lexicon={ lexicon }
@@ -69,7 +69,7 @@ function GenreForm( { genres, index, actions, assets, lexicon } ) {
 
                 <InputBox>
                     <InputLabel>
-                        { lexicon.paymentGenres.name }
+                        { lexicon.payment_genres.name }
                     </InputLabel>
                     <InputValue>
                         <input
@@ -81,7 +81,7 @@ function GenreForm( { genres, index, actions, assets, lexicon } ) {
 
                 <InputBox>
                     <InputLabel>
-                        { lexicon.paymentGenres.type }
+                        { lexicon.payment_genres.type }
                     </InputLabel>
                     <InputValue>
                         <InputSelectingList
@@ -94,7 +94,7 @@ function GenreForm( { genres, index, actions, assets, lexicon } ) {
 
                 <InputBox>
                     <InputLabel>
-                        { lexicon.paymentGenres.code }
+                        { lexicon.payment_genres.code }
                     </InputLabel>
                     <InputValue>
                         <input
