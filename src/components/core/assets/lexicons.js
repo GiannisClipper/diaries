@@ -35,15 +35,12 @@ const EN = {
     copy: 'Copy',
     paste: 'Paste',
     close: 'Close',
-    isBlank: 'Empty value not allowed.',
-    isFound: 'Value already exists.',
-    isNotFound: 'Value not valid.',
 
-    isEmpty: 'Empty value not allowed.',
-    isInvalid: 'Value not valid.',
-    isExists: 'Value already exists.',
-    isNotExists: 'Value not exists.',
-    isUsedBy: 'Document is used.',
+    isEmpty: 'Empty not allowed.',
+    isInvalid: 'Not valid.',
+    isExists: 'Already exists.',
+    isNotExists: 'Not exists.',
+    isUsedBy: 'Is in use.',
 }
 
 const GR = {
@@ -81,15 +78,12 @@ const GR = {
     copy: 'Αντιγραφή',
     paste: 'Επικόλληση',
     close: 'Κλείσιμο',
-    isBlank: 'Η τιμή δεν μπορεί να είναι κενή.',
-    isFound: 'Η τιμή υπάρχει ήδη.',
-    isNotFound: 'Η τιμή δεν είναι έγκυρη.',
 
-    isEmpty: 'Η τιμή δεν μπορεί να είναι κενή.',
-    isInvalid: 'Η τιμή δεν είναι έγκυρη.',
-    isExists: 'Η τιμή υπάρχει ήδη.',
-    isNotExists: 'Η τιμή δεν βρέθηκε.',
-    isUsedBy: 'Η εγγραφή χρησιμοποιείται.',
+    isEmpty: 'Δεν μπορεί να είναι κενό.',
+    isInvalid: 'Μη έγκυρο.',
+    isExists: 'Υπάρχει ήδη.',
+    isNotExists: 'Δεν υπάρχει.',
+    isUsedBy: 'Είναι σε χρήση.',
 }
 
 export default { EN, GR };

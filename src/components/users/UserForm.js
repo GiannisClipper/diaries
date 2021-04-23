@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Modal } from '../commons/Modal';
 import { InputBox, InputLabel, InputValue } from '../commons/InputBox';
@@ -6,11 +6,11 @@ import { InputEmail } from '../commons/InputEmail';
 import { InputSelectingList } from '../commons/InputList';
 
 import CoreForm from "../core/CoreForm";
-import validators from '../core/assets/validators';
-import presetAction from '../core/helpers/presetAction';
-import withLexicon from '../core/helpers/withLexicon';
 import { getFromList } from '../core/helpers/getFromList';
+import presetAction from '../core/helpers/presetAction';
+import { validationFeature } from "../core/features/validation";
 
+import { isEmptyUsername, isEmptyPassword, isInvalidPassword } from './assets/validators';
 import { UsersContext } from './UsersContext';
 
 function UserForm( { users, index, actions, assets, lexicon } ) {
@@ -23,34 +23,33 @@ function UserForm( { users, index, actions, assets, lexicon } ) {
     const { _uiux } = user;
 
     const [ data, setData ] = useState( { ...user } );
+    const { status } = user._uiux;
 
     const types = [
         { type: 'admin', descr: lexicon.users.types.admin },
         { type: 'user', descr: lexicon.users.types.user },
     ];
 
-    const onValidation = () => {
-        let errors = [];
+    // validation feature
 
-        // const isBlank = withLexicon( validators.isBlank, lexicon );
-        // const isFound = withLexicon( validators.isFound, lexicon );
-        // const isNotFound = withLexicon( validators.isNotFound, lexicon );
+    useEffect( () => {
 
-        // errors.push( isBlank( lexicon.users.username, data.username ) );
-        // errors.push( isFound( lexicon.users.username, users.map( x=> x.title ), data.username, index ) );
-
-        // if ( _uiux.mode.isCreate ) {
-        //     errors.push( isBlank( lexicon.users.password, data.password ) );
-        // }
-
-        // if ( data.password ) {
-        //     errors.push( isNotFound( lexicon.users.password2, [ data.password ], data.password2 ) );
-        // }
-
-        // errors = errors.filter( x => x !== null );
-
-        return { data, errors };
-    }
+        validationFeature( { 
+            actions,
+            assets,
+            index,
+            data,
+            status,
+            validationProcess: ( { data } ) => {
+                const errors = [];
+                errors.push( isEmptyUsername( { data } ) );
+                errors.push( isEmptyPassword( { data } ) );
+                errors.push( isInvalidPassword( { data } ) );
+            
+                return errors.filter( x => x !== null );
+            }, 
+        } );
+    } );
 
     return (
         <Modal onClick={ onClickOut } centeredness>
@@ -61,9 +60,9 @@ function UserForm( { users, index, actions, assets, lexicon } ) {
                 assets={ assets }
                 lexicon={ lexicon }
                 index={ index }
-                onValidation={ onValidation }
+                validationFeature={ true }
             >
-                <InputBox>
+                {/* <InputBox>
                     <InputLabel>
                         Id
                     </InputLabel>
@@ -74,7 +73,7 @@ function UserForm( { users, index, actions, assets, lexicon } ) {
                             readOnly
                         />
                     </InputValue>
-                </InputBox>
+                </InputBox> */}
 
                 <InputBox>
                     <InputLabel>

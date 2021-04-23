@@ -12,7 +12,7 @@ import {
 
 const createValidation = async ( { db, data } ) => {
     const errors = [];
-    errors.push( isEmptyDiary_id( { db, data } ) );
+    errors.push( isEmptyDiary_id( { data } ) );
     errors.push( isEmptyDate( { data } ) );
     errors.push( isInvalidDate( { data } ) );
     errors.push( isEmptyType( { data } ) );
@@ -34,7 +34,7 @@ const createValidation = async ( { db, data } ) => {
 
 const updateValidation = async ( { db, id, data } ) => {
     const errors = [];
-    errors.push( isEmptyDiary_id( { db, data } ) );
+    errors.push( isEmptyDiary_id( { data } ) );
     errors.push( isEmptyDate( { data } ) );
     errors.push( isInvalidDate( { data } ) );
     errors.push( isEmptyType( { data } ) );

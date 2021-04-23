@@ -56,7 +56,7 @@ const UsersContextProvider = props => {
     
     actions.handleError = useContext( AppContext ).actions.handleError;
     
-    useEffect( () => console.log( 'Has rendered. ', 'UsersContextProvider' ) );
+    // useEffect( () => console.log( 'Has rendered. ', 'UsersContextProvider' ) );
 
     return (
         <UsersContext.Provider value={ { state, dispatch, actions } }>

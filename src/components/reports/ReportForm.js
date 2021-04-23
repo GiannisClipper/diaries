@@ -28,11 +28,6 @@ function ReportForm( { reports, index, actions, assets, lexicon } ) {
         dateTill: YYYYMMDDToRepr( dateToYYYYMMDD( new Date() ) ),
     } );
 
-    const onValidation = () => {
-        let errors = [];
-        return { data, errors };
-    }
-
     return (
         <Modal onClick={ onClickOut } centeredness>
             <CoreForm
@@ -41,7 +36,6 @@ function ReportForm( { reports, index, actions, assets, lexicon } ) {
                 assets={ assets }
                 lexicon={ lexicon }
                 index={ index }
-                onValidation={ onValidation }
             >
                 <InputBox>
                     <InputLabel>

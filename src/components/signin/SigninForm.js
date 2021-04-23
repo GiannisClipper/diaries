@@ -7,12 +7,15 @@ import { InputBox, InputLabel, InputValue } from '../commons/InputBox';
 import { ButtonBox, ButtonLabel, ButtonValue } from '../commons/ButtonBox';
 import { OkButton } from '../commons/Buttons';
 
-import { InputValidation } from '../core/CoreForm';
-import validators from '../core/assets/validators';
 import presetAction from '../core/helpers/presetAction';
-import withLexicon from '../core/helpers/withLexicon';
+import { validationFeature } from "../core/features/validation";
+import { parseErrors } from '../core/assets/parsers';
+import { ErrorsRepr } from '../core/ErrorsRepr';
+
+import { isEmptyUsername, isEmptyPassword } from '../users/assets/validators';
 
 import { APP_TITLE } from '../app/assets/constants';
+import validation from '../core/assets/actions/validation';
 
 const SignList = styled( ListBox )`
     width: 30em;
@@ -23,51 +26,45 @@ const SignList = styled( ListBox )`
 
 function SignForm( { signin, actions, assets, lexicon } ) {
 
-    const validation = presetAction( actions.validation, { assets } );
-    const validationOk = presetAction( actions.validationOk, { assets } );
-    const validationError = presetAction( actions.validationError, { assets } );
-    const signinRequest = presetAction( actions.signinRequest, { assets } );
-
     const [ data, setData ] = useState( { ...signin } );
 
     const { _uiux } = signin;
     const { status } = _uiux;
 
-    const onValidation = () => {
-        let errors = [];
+    const errors = 
+    ( _uiux.status.isResponseError && _uiux.error.statusCode === 422 && _uiux.error.result ) ||
+    ( _uiux.status.isValidationError && _uiux.error.result )
+        ? parseErrors( { lexicon, errors: _uiux.error.result } )
+        : null;
 
-        // const isBlank = withLexicon( validators.isBlank, lexicon );
+    // validation feature
 
-        // errors.push( isBlank( lexicon.users.username, data.username ) );
-        // errors.push( isBlank( lexicon.users.password, data.password ) );
+    useEffect( () => {
 
-        // errors = errors.filter( x => x !== null );
+        validationFeature( { 
+            actions,
+            assets,
+            data,
+            status,
+            validationProcess: ( { data } ) => {
+                const errors = [];
+                errors.push( isEmptyUsername( { data } ) );
+                errors.push( isEmptyPassword( { data } ) );
+            
+                return errors.filter( x => x !== null );
+            }, 
+        } );
 
-        return { data, errors };
-     }
+    } );
 
+    const validation = presetAction( actions.validation, { assets } );
     const onClickOk = validation;
-
-    // useEffect( () => {
-    //     if ( _uiux.status.isResponseErrorAfter && _uiux.error.statusCode === 422 ) {
-    //         alert( 'Validation errors' )
-    //         _uiux.status = {};
-    //     }
-    // } );
 
     return (
         <SignList>
             <HeadBox>
                 { APP_TITLE }
             </HeadBox>
-
-            <InputValidation
-                status={ status }
-                onValidation={ onValidation }
-                validationOk={ validationOk }
-                validationError={ validationError }
-                request={ signinRequest }
-            />
 
             <InputBox>
                 <InputLabel>
@@ -93,6 +90,18 @@ function SignForm( { signin, actions, assets, lexicon } ) {
                     />
                 </InputValue>
             </InputBox>
+
+            { errors
+                ? 
+                ( 
+                <ButtonBox>
+                    <ButtonLabel />
+                    <ErrorsRepr errors={ errors } />
+                </ButtonBox> 
+                )
+                : 
+                null 
+            }
 
             <ButtonBox>
                 <ButtonLabel />

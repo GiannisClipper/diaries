@@ -1,15 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Modal } from '../commons/Modal';
 import { InputBox, InputLabel, InputValue } from '../commons/InputBox';
 import { InputSelectingList } from '../commons/InputList';
 
 import CoreForm from "../core/CoreForm";
-import { YYYYMMDDToRepr, dateToYYYYMMDD } from '../core/helpers/dates';
-import validators from '../core/assets/validators';
-import presetAction from '../core/helpers/presetAction';
-import withLexicon from '../core/helpers/withLexicon';
 import { getFromList } from '../core/helpers/getFromList';
+import { YYYYMMDDToRepr, dateToYYYYMMDD } from '../core/helpers/dates';
+import presetAction from '../core/helpers/presetAction';
+import { validationFeature } from "../core/features/validation";
+
+import {
+    isEmptyDiary_id,
+    isEmptyDate,
+    isInvalidDate,
+    isEmptyType,
+    isInvalidType,
+    isEmptyNote,
+    isEmptyPayment_genre_id,
+    isEmptyPayment_fund_id,
+    isEmptyWorkoutGenre_id
+} from './assets/validators';
 
 import { EntriesContext } from "./EntriesContext";
 
@@ -26,6 +37,7 @@ function EntryForm( { date, entries, index, actions, assets, lexicon } ) {
     const entry = entries[ index ];
 
     const [ data, setData ] = useState( { ...entry } );
+    const { status } = entry._uiux;
 
     const types = [
         { type: 'note', descr: lexicon.entries.types.note },
@@ -33,43 +45,39 @@ function EntryForm( { date, entries, index, actions, assets, lexicon } ) {
         { type: 'workout', descr: lexicon.entries.types.workout },
     ];
 
-    const onValidation = 
-        data.type === 'note'
-            ?
-            () => {
-                let errors = [];
-                // const isBlank = withLexicon( validators.isBlank, lexicon );        
-                // errors.push( isBlank( lexicon.notes.note, data.type_specs.note ) );
-                // errors = errors.filter( x => x !== null );
-                return { data, errors };
-            }
-        : data.type === 'payment'
-            ?
-            () => {
-                let errors = [];
-                // const isBlank = withLexicon( validators.isBlank, lexicon );
-                // errors.push( isBlank( lexicon.payments.genre_name, data.type_specs.genre_name ) );
-                // errors.push( isBlank( lexicon.payments.fund_name, data.type_specs.fund_name ) );
-                // errors = errors.filter( x => x !== null );
-                return { data, errors };
-            }
-        : data.type === 'workout'
-            ?
-            () => {
-                let errors = [];
-                // const isBlank = withLexicon( validators.isBlank, lexicon );
-                // errors.push( isBlank( lexicon.workouts.genre_name, data.type_specs.genre_name ) );
-                // errors = errors.filter( x => x !== null );
-                return { data, errors };
-            }
-        :
-           () => {
-                let errors = [];
-                // const isNotFound = withLexicon( validators.isNotFound, lexicon );        
-                // errors.push( isNotFound( lexicon.entries.type, [ 'note', 'payment', 'workout' ], data.type ) );
-                // errors = errors.filter( x => x !== null );
-                return { data, errors };
-            };
+    // validation feature
+
+    useEffect( () => {
+
+        validationFeature( { 
+            actions,
+            assets,
+            index,
+            data,
+            status,
+            validationProcess: ( { data } ) => {
+                const errors = [];
+                errors.push( isEmptyDiary_id( { data } ) );
+                errors.push( isEmptyDate( { data } ) );
+                errors.push( isInvalidDate( { data } ) );
+                errors.push( isEmptyType( { data } ) );
+                errors.push( isInvalidType( { data } ) );
+            
+                if ( data.type === 'note' ) {
+                    errors.push( isEmptyNote( { data } ) );
+            
+                } if ( data.type === 'payment' ) {
+                    errors.push( isEmptyPayment_genre_id( { data } ) );
+                    errors.push( isEmptyPayment_fund_id( { data } ) );
+            
+                } if ( data.type === 'workout' ) {
+                    errors.push( isEmptyWorkoutGenre_id( { data } ) );
+                }
+            
+                return errors.filter( x => x !== null );
+            }, 
+        } );
+    } );
 
     return (
         <Modal onClick={ onClickOut } centeredness>
@@ -79,7 +87,7 @@ function EntryForm( { date, entries, index, actions, assets, lexicon } ) {
                 assets={ assets }
                 lexicon={ lexicon }
                 index={ index }
-                onValidation={ onValidation }
+                validationFeature={ true }
             >
                 {/* <InputBox>
                     <InputLabel>

@@ -11,8 +11,8 @@ import {
 
 const createValidation = async ( { db, data } ) => {
     const errors = [];
-    errors.push( isEmptyUser_id( { db, data } ) );
-    errors.push( isEmptyTitle( { db, data } ) );
+    errors.push( isEmptyUser_id( { data } ) );
+    errors.push( isEmptyTitle( { data } ) );
     errors.push( await isExistsTitle( { db, data } ) );
 
     return errors.filter( x => x !== null );
@@ -20,8 +20,8 @@ const createValidation = async ( { db, data } ) => {
 
 const updateValidation = async ( { db, id, data } ) => {
     const errors = [];
-    errors.push( isEmptyUser_id( { db, data } ) );
-    errors.push( isEmptyTitle( { db, data } ) );
+    errors.push( isEmptyUser_id( { data } ) );
+    errors.push( isEmptyTitle( { data } ) );
     errors.push( await isExistsTitle( { db, data, id } ) );
 
     return errors.filter( x => x !== null );

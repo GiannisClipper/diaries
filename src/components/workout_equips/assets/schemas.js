@@ -16,7 +16,8 @@ const equipSchema = () => ( {
     _uiux: {
         form: {},  // isOpen
         mode: {},  // isCreate, isUpdate, isDelete
-        status: {},  // isRequest, isResponseWaiting, isResponseError, isValidation, isValidationOk
+        status: {},  // isRequest, isResponseWaiting, isResponseError, isValidation, isValidationOk, isValidationError
+        error: {},
     }
 } );
 

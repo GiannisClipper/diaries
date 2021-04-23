@@ -23,33 +23,35 @@ const signinReducer = ( state, action ) => {
 
         } case SIGNIN_RESPONSE_OK: {
             const { dataFromDB } = action.payload;
+
             const signin = { ...signinSchema(), ...parseSigninFromDB( dataFromDB ) };
-            const settings = { ...settingsSchema(), ...parseSettingsFromDB( dataFromDB ) };
-
-            if ( ! signin.token ) {
-                throw new Error( 'Τα στοιχεία εισόδου είναι λανθασμένα.' );
-            }
-
             localStorage.setItem( 'signin', JSON.stringify( parseSigninFromDB( signin ) ) );
+
+            const settings = { ...settingsSchema(), ...parseSettingsFromDB( dataFromDB ) };
             localStorage.setItem( 'settings', JSON.stringify( parseSettingsFromDB( settings ) ) );
 
             return { ...state, signin, settings };
 
         } case SIGNIN_RESPONSE_ERROR: {
-            localStorage.removeItem( 'settings' );
-            const settings = settingsSchema();
+            const { error } = action.payload;
 
-            localStorage.removeItem( 'signin' );
+            const settings = settingsSchema();
+            localStorage.removeItem( 'settings' );
+
             const signin = signinSchema();
+            localStorage.removeItem( 'signin' );
+
+            signin._uiux.status = { isResponseError: true };
+            signin._uiux.error = error;
 
             return { ...state, signin, settings };
 
         } case SIGNOUT: {
-            // localStorage.removeItem( 'settings' );
-            // const settings = settingsSchema();
+            // not remove settings (theme, language) from localstorage
+            // due to be available on signin
 
-            localStorage.removeItem( 'signin' );
             const signin = signinSchema();
+            localStorage.removeItem( 'signin' );
 
             return { ...state, signin };
 

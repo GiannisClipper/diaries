@@ -3,13 +3,17 @@ import { doFetch } from '../helpers/customFetch';
 
 function signinRequestFeature( { _item, actions, assets, url }) {
 
+    const signinRequest = presetAction( actions.signinRequest, { assets } );
     const signinResponseOk = presetAction( actions.signinResponseOk, { assets } );
     const signinResponseError = presetAction( actions.signinResponseError, { assets } );
 
     const { _uiux } = _item;
     const { status } = _uiux;
 
-    if ( status.isRequest ) {
+    if ( status.isValidationOk ) {
+        signinRequest();
+
+    } else if ( status.isRequest ) {
         const { parseToDB } = assets;
         const dataToDB = parseToDB( _item );
         const body = JSON.stringify( { data: { ...dataToDB } } );
@@ -23,6 +27,7 @@ function signinRequestFeature( { _item, actions, assets, url }) {
 
 function createRequestFeature( { _item, actions, assets, index, url } ) {
 
+    const createRequest = presetAction( actions.createRequest, { assets, index } );
     const createResponseOk = presetAction( actions.createResponseOk, { assets, index } );
     const createResponseError = presetAction( actions.createResponseError, { assets, index } );
     const createResponseOkAfter = presetAction( actions.createResponseOkAfter, { assets, index } );
@@ -32,7 +37,10 @@ function createRequestFeature( { _item, actions, assets, index, url } ) {
     const { _uiux } = _item;
     const { status, error } = _uiux;
 
-    if ( status.isRequest ) {
+    if ( status.isValidationOk ) {
+        createRequest();
+
+    } else if ( status.isRequest ) {
         const { parseToDB, parseFromDB } = assets;
         const dataToDB = parseToDB( _item );
         const body = JSON.stringify( { data: { ...dataToDB } } );
@@ -54,6 +62,7 @@ function createRequestFeature( { _item, actions, assets, index, url } ) {
 
 function retrieveRequestFeature( { _item, actions, assets, index, url } ) {
 
+    const retrieveRequest = presetAction( actions.retrieveRequest, { assets, index } );
     const retrieveResponseOk = presetAction( actions.retrieveResponseOk, { assets, index } );
     const retrieveResponseError = presetAction( actions.retrieveResponseError, { assets, index } );
     const retrieveResponseOkAfter = presetAction( actions.retrieveResponseOkAfter, { assets, index } );
@@ -63,7 +72,10 @@ function retrieveRequestFeature( { _item, actions, assets, index, url } ) {
     const { _uiux } = _item;
     const { status, error } = _uiux;
 
-    if ( status.isRequest ) {
+    if ( status.isValidationOk ) {
+        retrieveRequest();
+
+    } else if ( status.isRequest ) {
         const args = { method: 'GET' };
         const onDone = retrieveResponseOk;
         const onError = retrieveResponseError;
@@ -81,6 +93,7 @@ function retrieveRequestFeature( { _item, actions, assets, index, url } ) {
 
 function updateRequestFeature( { _item, actions, assets, index, url } ) {
 
+    const updateRequest = presetAction( actions.updateRequest, { assets, index } );
     const updateResponseOk = presetAction( actions.updateResponseOk, { assets, index } );
     const updateResponseError = presetAction( actions.updateResponseError, { assets, index } );
     const updateResponseOkAfter = presetAction( actions.updateResponseOkAfter, { assets, index } );
@@ -90,7 +103,10 @@ function updateRequestFeature( { _item, actions, assets, index, url } ) {
     const { _uiux } = _item;
     const { status, error } = _uiux;
 
-    if ( status.isRequest ) {
+    if ( status.isValidationOk ) {
+        updateRequest();
+
+    } else if ( status.isRequest ) {
         const { parseToDB, parseFromDB } = assets;
         const dataToDB = parseToDB( _item );
         const body = JSON.stringify( { data: { ...dataToDB } } );
@@ -113,6 +129,7 @@ function updateRequestFeature( { _item, actions, assets, index, url } ) {
 
 function deleteRequestFeature( { _item, actions, assets, index, url } ) {
 
+    const deleteRequest = presetAction( actions.deleteRequest, { assets, index } );
     const deleteResponseOk = presetAction( actions.deleteResponseOk, { assets, index } );
     const deleteResponseError = presetAction( actions.deleteResponseError, { assets, index } );
     const deleteResponseOkAfter = presetAction( actions.deleteResponseOkAfter, { assets, index } );
@@ -122,7 +139,10 @@ function deleteRequestFeature( { _item, actions, assets, index, url } ) {
     const { _uiux } = _item;
     const { status, error } = _uiux;
 
-    if ( status.isRequest ) {
+    if ( status.isValidationOk ) {
+        deleteRequest();
+
+    } else if ( status.isRequest ) {
         const { parseToDB, parseFromDB } = assets;
         const dataToDB = parseToDB( _item );
         const body = JSON.stringify( { data: { ...dataToDB } } );

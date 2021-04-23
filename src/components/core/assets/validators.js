@@ -1,3 +1,28 @@
+const isEmpty = ( { value, message } ) => {
+
+    if ( !value || !value.trim() ) {
+        return { type: 'isEmpty', message, value };
+    }
+    return null;
+}
+
+const isInvalid = ( { value, values, calculation, message } ) => {
+
+    if ( values ) {
+        if ( ! values.includes( value ) ) {
+            return { type: 'isInvalid', message, value, values };
+        }
+    }
+
+    if ( calculation ) {
+        if ( ! calculation( value ) ) {
+            return { type: 'isInvalid', message, value, values };
+        }
+    }
+
+    return null;
+}
+
 const _isBlank = value => !value || !value.trim() ? true : false;
 
 const _isFound = ( values, value, index = -1 ) => {
@@ -24,5 +49,5 @@ const isNotFound = ( lexicon, inputLabel, values, value ) =>
         ? `${ inputLabel }: ${ lexicon.core.isNotFound }`
         : null;
 
-export default { isBlank, isFound, isNotFound };
-export { isBlank, isFound, isNotFound };
+export default { isEmpty, isInvalid, isBlank, isFound, isNotFound };
+export { isEmpty, isInvalid, isBlank, isFound, isNotFound };

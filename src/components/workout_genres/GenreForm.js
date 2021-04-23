@@ -1,13 +1,13 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Modal } from '../commons/Modal';
 import { InputBox, InputLabel, InputValue } from '../commons/InputBox';
 
 import CoreForm from "../core/CoreForm";
-import validators from '../core/assets/validators';
 import presetAction from '../core/helpers/presetAction';
-import withLexicon from '../core/helpers/withLexicon';
+import { validationFeature } from "../core/features/validation";
 
+import { isEmptyDiary_id, isEmptyName } from './assets/validators';
 import { GenresContext } from './GenresContext';
 
 function GenreForm( { genres, index, actions, assets, lexicon } ) {
@@ -19,21 +19,28 @@ function GenreForm( { genres, index, actions, assets, lexicon } ) {
     const genre = genres[ index ];
 
     const [ data, setData ] = useState( { ...genre } );
+    const { status } = genre._uiux;
 
-    const onValidation = () => {
-        let errors = [];
+    // validation feature
 
-        // const isBlank = withLexicon( validators.isBlank, lexicon );
-        // const isFound = withLexicon( validators.isFound, lexicon );
+    useEffect( () => {
 
-        // errors.push( isBlank( lexicon.workout_genres.name, data.name ) );
-        // errors.push( isFound( lexicon.workout_genres.name, genres.map( x=> x.name ), data.name, index ) );
-        // errors.push( isFound( lexicon.workout_genres.code, genres.map( x=> x.code ), data.code, index ) );
+        validationFeature( { 
+            actions,
+            assets,
+            index,
+            data,
+            status,
+            validationProcess: ( { data } ) => {
+                const errors = [];
+                errors.push( isEmptyDiary_id( { data } ) );
+                errors.push( isEmptyName( { data } ) );
+            
+                return errors.filter( x => x !== null );
+            }, 
+        } );
 
-        // errors = errors.filter( x => x !== null );
-
-        return { data, errors };
-    }
+    } );
 
     return (
         <Modal onClick={ onClickOut } centeredness>
@@ -44,9 +51,9 @@ function GenreForm( { genres, index, actions, assets, lexicon } ) {
                 assets={ assets }
                 lexicon={ lexicon }
                 index={ index }
-                onValidation={ onValidation }
+                validationFeature={ true }
             >
-                <InputBox>
+                {/* <InputBox>
                     <InputLabel>
                         Id
                     </InputLabel>
@@ -57,7 +64,7 @@ function GenreForm( { genres, index, actions, assets, lexicon } ) {
                             readOnly
                         />
                     </InputValue>
-                </InputBox>
+                </InputBox> */}
 
                 <InputBox>
                     <InputLabel>

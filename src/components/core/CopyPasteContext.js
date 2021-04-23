@@ -37,7 +37,7 @@ const CopyPasteContextProvider = ( { children } ) => {
         return mem.copy ? true : false;
     }
 
-    useEffect( () => console.log( 'Has rendered. ', 'CopyPasteContextProvider' ) );
+    //useEffect( () => console.log( 'Has rendered. ', 'CopyPasteContextProvider' ) );
 
     return (
         <CopyPasteContext.Provider value={ {

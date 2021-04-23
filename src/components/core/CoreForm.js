@@ -3,40 +3,11 @@ import React, { useContext, useEffect } from 'react';
 import { OkCancelForm } from '../commons/Forms';
 import { ButtonBox, ButtonLabel } from '../commons/ButtonBox';
 
-import { ErrorsRepr } from './ErrorsRepr';
 import presetAction from './helpers/presetAction';
 import { parseErrors } from './assets/parsers';
+import { ErrorsRepr } from './ErrorsRepr';
 
-function InputValidation( { 
-    status, 
-    onValidation,
-    validationOk,
-    validationError,
-    request,
-} ) {
-
-    useEffect( () => {
-    
-        if ( status.isValidation ) {
-            const { data, errors } = onValidation();
-
-            if ( errors.length === 0 ) {
-                validationOk( { data } )
-
-            } else {
-                alert( errors.join( '\n' ) );
-                validationError();
-            }
-
-        } else if ( status.isValidationOk ) {
-            request();
-        }
-    } );
-
-    return null;
-}
-
-function CoreForm( { headLabel, Context, assets, lexicon, index, onValidation, children } ) {
+function CoreForm( { headLabel, Context, assets, lexicon, index, validationFeature, children } ) {
 
     const { state, actions } = useContext( Context );
     const { namespace } = assets;
@@ -45,7 +16,7 @@ function CoreForm( { headLabel, Context, assets, lexicon, index, onValidation, c
         ? state[ namespace ][ index ]
         : state[ namespace ];
 
-    const { _uiux } = _item;
+    const { _uiux, ...data } = _item;
     const { status, mode } = _uiux;
 
     const okLabel = ( 
@@ -59,60 +30,46 @@ function CoreForm( { headLabel, Context, assets, lexicon, index, onValidation, c
 
     const cancelLabel = lexicon.core.cancel;
 
-    const validation = onValidation ? presetAction( actions.validation, { assets, index } ) : null;
-    const validationOk = onValidation ? presetAction( actions.validationOk, { assets, index } ) : null;
-    const validationError = onValidation ? presetAction( actions.validationError, { assets, index } ) : null;
-
-    const rawRequest = (
-        mode.isCreate ? actions.createRequest :
-        mode.isRetrieve ? actions.retrieveRequest :
-        mode.isRetrieveMany ? actions.retrieveManyRequest :
-        mode.isUpdate ? actions.updateRequest :
-        mode.isDelete ? actions.deleteRequest :
-        null
-    );
-
-    const request = presetAction( rawRequest, { assets, index } );
-
-    onValidation = mode.isDelete ? null : onValidation;
-    const onClickOk = onValidation ? validation : request;
+    const validation = presetAction( actions.validation, { assets, index } );
+    const validationOk = presetAction( actions.validationOk, { assets, index } );
+    const onClickOk = validationFeature ? validation : () => validationOk( { data } );
 
     const closeForm = presetAction( actions.closeForm, { assets, index } );
     const noMode = presetAction( actions.noMode, { assets, index } );
     const onClickCancel = () => { closeForm(); noMode(); };
  
     const errors = 
-        _uiux.status.isResponseErrorAfter && _uiux.error.statusCode === 422 && _uiux.error.result
+        ( _uiux.status.isResponseErrorAfter && _uiux.error.statusCode === 422 && _uiux.error.result ) ||
+        ( _uiux.status.isValidationError && _uiux.error.result )
             ? parseErrors( { lexicon, errors: _uiux.error.result } )
             : null;
 
     return (
         <OkCancelForm
             headLabel={ headLabel }
+
             okLabel={ okLabel }
             cancelLabel={ cancelLabel }
+
             onClickOk={ onClickOk }
             onClickCancel={ onClickCancel }
+
             isRequest={ status.isRequest }
             isDelete={ mode.isDelete }
         >
-            <InputValidation
-                status={ status }
-                onValidation={ onValidation }
-                validationOk={ validationOk }
-                validationError={ validationError }
-                request={ request }
-            />
 
             { children }
 
             { errors
-                ? (
+                ? 
+                ( 
                 <ButtonBox>
                     <ButtonLabel />
                     <ErrorsRepr errors={ errors } />
-                </ButtonBox> )
-                : null 
+                </ButtonBox> 
+                )
+                : 
+                null 
             }
 
         </OkCancelForm>
@@ -120,4 +77,4 @@ function CoreForm( { headLabel, Context, assets, lexicon, index, onValidation, c
 }
 
 export default CoreForm;
-export { InputValidation, CoreForm };
+export { CoreForm };

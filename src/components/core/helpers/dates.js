@@ -124,6 +124,7 @@ export {
     isYear,
     isMonth,
     isDateNum,
+    isYYYYMMDD,
     dateToYYYYMMDD,
     YYYYMMDDToDate,
     reprToYYYYMMDD,

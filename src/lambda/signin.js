@@ -21,8 +21,8 @@ const postMethod = async ( event, db, collectionName ) => {
     const collection = db.collection( collectionName );
     let result = await collection.findOne( { username: data.username } );
 
-    if ( !result || !bcrypt.compareSync( data.password, result.password ) ) {
-        result = {};
+    if ( ! result || ! bcrypt.compareSync( data.password, result.password ) ) {
+        return { result: [ { type: 'isInvalid', message: 'signin.credentials' } ], statusCode: 422 };
 
     } else {
         const payload = { user_id: result._id, }

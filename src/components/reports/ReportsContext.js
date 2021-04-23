@@ -50,7 +50,7 @@ const ReportsContextProvider = props => {
     
     actions.handleError = useContext( AppContext ).actions.handleError;
 
-    useEffect( () => console.log( 'Has rendered. ', 'ReportsContextProvider' ) );
+    // useEffect( () => console.log( 'Has rendered. ', 'ReportsContextProvider' ) );
 
     return (
         <ReportsContext.Provider value={ { state, dispatch, actions } }>

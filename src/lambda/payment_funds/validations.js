@@ -8,8 +8,8 @@ import {
 
 const createValidation = async ( { db, data } ) => {
     const errors = [];
-    errors.push( isEmptyDiary_id( { db, data } ) );
-    errors.push( isEmptyName( { db, data } ) );
+    errors.push( isEmptyDiary_id( { data } ) );
+    errors.push( isEmptyName( { data } ) );
     errors.push( await isExistsName( { db, data } ) );
     errors.push( await isExistsCode( { db, data } ) );
 
@@ -18,8 +18,8 @@ const createValidation = async ( { db, data } ) => {
 
 const updateValidation = async ( { db, id, data } ) => {
     const errors = [];
-    errors.push( isEmptyDiary_id( { db, data } ) );
-    errors.push( isEmptyName( { db, data } ) );
+    errors.push( isEmptyDiary_id( { data } ) );
+    errors.push( isEmptyName( { data } ) );
     errors.push( await isExistsName( { db, data, id } ) );
     errors.push( await isExistsCode( { db, data, id } ) );
 

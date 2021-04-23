@@ -3,7 +3,7 @@ const signinSchema = () => ( {
     password: '',
     user_id: null,
     _uiux: {
-        status: {},  // isRequest, isResponseWaiting, isResponseError, isValidation, isValidationOk
+        status: {},  // isRequest, isResponseWaiting, isResponseError, isValidation, isValidationOk, isValidationError
         error: {},
     },
 } );

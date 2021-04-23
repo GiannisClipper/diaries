@@ -6,8 +6,6 @@ import { InputSelectingList } from '../commons/InputList';
 
 import CoreForm from "../core/CoreForm";
 import presetAction from '../core/helpers/presetAction';
-import validators from '../core/assets/validators';
-import withLexicon from '../core/helpers/withLexicon';
 
 import { AppContext } from '../app/AppContext';
 
@@ -19,19 +17,6 @@ function SettingsForm( { settings, actions, assets, lexicon } ) {
 
     const [ data, setData ] = useState( { ...settings } );
 
-    const onValidation = () => {
-        let errors = [];
-
-        const isBlank = withLexicon( validators.isBlank, lexicon );
-
-        errors.push( isBlank( lexicon.settings.theme, data.theme ) );
-        errors.push( isBlank( lexicon.settings.language, data.language ) );
-
-        errors = errors.filter( x => x !== null );
-
-        return { data, errors };
-    }
-
     return (
         <Modal onClick={ onClickOut } centeredness>
 
@@ -40,7 +25,6 @@ function SettingsForm( { settings, actions, assets, lexicon } ) {
                 Context={ AppContext }
                 assets={ assets }
                 lexicon={ lexicon }
-                onValidation={ onValidation }
             >
 
                 <InputBox>
