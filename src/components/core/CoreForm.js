@@ -1,9 +1,11 @@
 import React, { useContext, useEffect } from 'react';
 
 import { OkCancelForm } from '../commons/Forms';
-import { ErrorsRepr } from './ErrorsRepr';
+import { ButtonBox, ButtonLabel } from '../commons/ButtonBox';
 
+import { ErrorsRepr } from './ErrorsRepr';
 import presetAction from './helpers/presetAction';
+import { parseErrors } from './assets/parsers';
 
 function InputValidation( { 
     status, 
@@ -79,6 +81,11 @@ function CoreForm( { headLabel, Context, assets, lexicon, index, onValidation, c
     const noMode = presetAction( actions.noMode, { assets, index } );
     const onClickCancel = () => { closeForm(); noMode(); };
  
+    const errors = 
+        _uiux.status.isResponseErrorAfter && _uiux.error.statusCode === 422 && _uiux.error.result
+            ? parseErrors( { lexicon, errors: _uiux.error.result } )
+            : null;
+
     return (
         <OkCancelForm
             headLabel={ headLabel }
@@ -99,11 +106,13 @@ function CoreForm( { headLabel, Context, assets, lexicon, index, onValidation, c
 
             { children }
 
-            { _uiux.status.isResponseErrorAfter && _uiux.error.statusCode === 422
-                ?
-                <ErrorsRepr errors={ _uiux.error.result } />
-                :
-                null 
+            { errors
+                ? (
+                <ButtonBox>
+                    <ButtonLabel />
+                    <ErrorsRepr errors={ errors } />
+                </ButtonBox> )
+                : null 
             }
 
         </OkCancelForm>

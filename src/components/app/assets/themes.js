@@ -110,6 +110,9 @@ const createTheme = colors => ( {
             color: ${colors.CautionButtonText}; 
         }
     `,
+    ErrorsRepr: css`
+        color: ${colors.CautionButtonBack};
+    `,
 } );
 
 const lightColors = {
