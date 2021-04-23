@@ -1,107 +1,85 @@
 ## About Diaries app
 
-Auto-scrolling feature
+The purpose of this web application is to maintain diaries. It is developed as a practice and example to serveless solutions. The front-end implementation is based on ReactJS, preferring functional components, hooks and a combination of context and useReduce for state management. The back-end is JS in the form of Lambda functions and uses a MongoDB database.
 
-Copy-paste feature
+## A short description
 
-Drag-n-drop feature
+Diaries app supports multiple `users` and each one of them creates and maintains multiple `diaries`. A diary contains three types of `entries` (notes, payments, workouts) with more specific data fields per type. Payments are categorized to `genres` and `funds` and also workouts to `genres` and `equips`. All these categorizations are defined and organized dynamically by the user. Finally a series of `reports`, filters, groups and represents in pdf format the diary entries.
 
-Customized inputs to support specific forms of data (date, time, number)
+## Highlighted front-end features
 
-Customized drop-down-list inputs to fetch data from DB dynamically
+Auto-scrolling operation. The diary's list of dates expanding and retrieving the corresponding entries whenever user reaches close to the top or the bottom of it.
 
-Client-side data validation
+Cut-Copy-paste icons are available to move or copy an entry to another position of the diary.
 
-Server-side data validation
+Drag-n-drop operation is available to move an entry to another position of the diary.
 
-Multiple themes feature (Light and Dark)
+Customized input components supporting specific forms of data-entry (date, number, email, duration).
 
-Multiple language feature (English and Greek)
+Customized drop-down-list component requesting data from back-end and DB dynamically.
+
+Some data validations at the form level for faster performance although full data validations are performed at the back-end level.
+
+Multiple themes feature are supported (Light and Dark).
+
+Multiple language feature are supported (English and Greek).
+
+## Highlighted back-end features
+
+The code checks the received data integrity:
+
+- providing API endpoints based on RESTful principles
+
+- using JWTokens to authenticate and authorize signed in users
+
+- using parsers to confirm the received data structures
+
+- performing validations to secure the db constraints and relations
+
+- responding detailed validation errors to inform and guide the client
 
 ## Lambda functions
 
-The code here has the role of the back-end. It supports all the stantard CRUD operations to manipulate data in a MongoDB database, as well as complex queries using the aggregation framework of MongoDB to produce data reports. It provides the following API endpoints:
+The code here has the role of the back-end. It supports all the stantard CRUD operations to manipulate data in a MongoDB database, as well as complex queries using the aggregation framework of MongoDB to produce data reports. It provides the following API endpoints
 
-.../users (with POST method creates a new user)
-.../signin (with PUT method ...),
-    settings: 'settings',
-    backup: `backup`,
+- `.../users [POST]` to create a new user
+- `.../users?id=SOMETEXT [PUT]` to update a user
+- `.../users?id=SOMETEXT [DELETE]` to delete a user
 
-    diaries: 'diaries',
-    entries: 'entries',
-    payment_funds: 'payment_funds',
-    payment_genres: 'payment_genres',
-    workout_equips: 'workout_equips',
-    workout_genres: 'workout_genres',
-    reports: 'reports',
+- `.../signin [POST]` to perform login operation
+- `.../settings [PUT]` to update the user's settings
+- `.../backup [GET]` to perform backup operation
+
+- `.../diaries [POST]` to create a new diary
+- `.../diaries?id=SOMETEXT [PUT]` to update a diary
+- `.../diaries?id=SOMETEXT [DELETE]` to delete a diary
+
+- `.../entries [POST]` to create a new entry
+- `.../entries?id= [PUT]` to update a entry
+- `.../entries?id= [DELETE]` to delete a entry
+- `.../entries?diary_id=SOMETEXT&range=YYYYMMDD-YYYYMMDD [GET]` to retrieve data according to a range of dates
+
+- `.../payment_genres [POST]` to create a new payment_genre
+- `.../payment_genres?id=SOMETEXT [PUT]` to update a payment_genre
+- `.../payment_genres?id=SOMETEXT [DELETE]` to delete a payment_genre
+- `.../payment_genres?diary_id=SOMETEXT&name=SOMETEXT [GET]` to retrieve data according to a name substring  
+
+- `.../payment_funds [POST]` to create a new payment_fund
+- `.../payment_funds?id=SOMETEXT [PUT]` to update a payment_fund
+- `.../payment_funds?id=SOMETEXT [DELETE]` to delete a payment_fund
+- `.../payment_funds?diary_id=SOMETEXT&name=SOMETEXT [GET]` to retrieve data according to a name substring
+
+- `.../workout_genres [POST]` to create a new workout_genre
+- `.../workout_genres?id=SOMETEXT [PUT]` to update a workout_genre
+- `.../workout_genres?id=SOMETEXT [DELETE]` to delete a workout_genre
+- `.../workout_genres?diary_id=SOMETEXT&name=SOMETEXT [GET]` to retrieve data according to a name substring
+
+- `.../workout_equips [POST]` to create a new workout_equip
+- `.../workout_equips?id=SOMETEXT [PUT]` to update a workout_equip
+- `.../workout_equips?id=SOMETEXT [DELETE]` to delete a workout_equip
+- `.../workout_equips?diary_id=SOMETEXT&name=SOMETEXT [GET]` to retrieve data according to a name substring
+
+- `.../reports?diary_id=SOMETEXT&type=SOMETEXT&groupBy=SOMETEXT&dateFrom=YYYYMMDD&dateTill=YYYYMMDD&genre_id=SOMETEXT&genre_code=SOMETEXT&fund_id=SOMETEXT&fund_code=SOMETEXT [GET]` to retrieve data according to specified paramaters
 
 
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+Athens 2020-2021, GiannisClipper.

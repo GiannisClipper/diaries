@@ -13,7 +13,7 @@ const OptionBox = styled.span`
     width: 2em;
     display: inline-block;
     vertical-align: top;
-    padding: .5em;
+    padding: 0.5em 0.25em;
     font-size: 1em;
 
     ${ props => props.theme.OptionBox && props.theme.OptionBox };

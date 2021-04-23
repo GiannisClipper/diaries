@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { centeredness } from '../commons/InitStyle';
 
-import { LinkHome, LinkBench, LinkDiaries, LinkUsers, LinkSettings, LinkSignout } from './AppLinks';
+import { LinkHome, LinkDiaries, LinkUsers, LinkSettings, LinkSignout } from './AppLinks';
 import { AppContext } from './AppContext';
 //import lexicons from './assets/lexicons';
 import { APP_TITLE } from './assets/constants';

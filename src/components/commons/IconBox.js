@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 const IconBox = styled.span`
     display: inline-block;
-    // width: 2em;
     vertical-align: top;
     font-size: 100%;
     cursor: pointer;

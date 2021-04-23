@@ -8,11 +8,20 @@ const isEmpty = ( { value, message } ) => {
     return null;
 }
 
-const isInvalid = ( { value, values, message } ) => {
+const isInvalid = ( { value, values, calculation, message } ) => {
 
-    if ( ! values.includes( value ) ) {
-        return { type: 'isInvalid', message, value, values };
+    if ( values ) {
+        if ( ! values.includes( value ) ) {
+            return { type: 'isInvalid', message, value, values };
+        }
     }
+
+    if ( calculation ) {
+        if ( ! calculation( value ) ) {
+            return { type: 'isInvalid', message, value, values };
+        }
+    }
+
     return null;
 }
 

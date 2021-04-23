@@ -40,14 +40,25 @@ const AppContext = createContext();
 const AppContextProvider = props => {
 
     const schema = appSchema();
-    schema.signin = { ...signinSchema(), ...JSON.parse( localStorage.getItem( 'signin' ) || '{}' ) };
-    schema.settings = { ...settingsSchema(), ...JSON.parse( localStorage.getItem( 'settings' ) || '{}' ) };
+
+    const localStorageSignin = localStorage.getItem( 'signin' );
+    const localStorageSettings = localStorage.getItem( 'settings' );
+
+    schema.signin = localStorageSignin
+        ? { ...signinSchema(), ...JSON.parse( localStorageSignin ) }
+        : { ...signinSchema() };
+
+    schema.settings = localStorageSettings
+        ? { ...settingsSchema(), ...JSON.parse( localStorageSettings ) }
+        : { ...settingsSchema() };
+
     schema.backup = backupSchema();
+
     schema._uiux.lexicon = lexicons[ schema.settings.language ] || lexicons.DEFAULT;
 
     const [ state, dispatch ] = useReducer( comboReducer( ...reducers ), schema );
 
-    window.state = state;  // for debugging purposes
+    //window.state = state;  // for debugging purposes
 
     const actions = pluginActions( dispatch, unpluggedActions );
 

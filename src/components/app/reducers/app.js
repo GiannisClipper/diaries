@@ -51,16 +51,17 @@ const appReducer = ( state, action ) => {
     
                 case HANDLE_LEXICON: {
                     const { language } = action.payload;
-                    const { _uiux } = state;
-                    const lexicon = lexicons[ language ] || lexicons.DEFAULT;
+                    const { _uiux, settings } = state;
 
-                    return { ...state, _uiux: { ..._uiux, lexicon } };
+                    const lexicon = lexicons[ language ] || lexicons.DEFAULT;
+                    settings.language = lexicon.language;
+
+                    return { ...state, settings, _uiux: { ..._uiux, lexicon } };
         
                 } case HANDLE_ERROR: {
                     const { error } = action.payload;
                     let { signin } = state;
 
-                    //if ( error && error.message && error.message.includes( 'No auth' ) ) {
                     if ( error.message.includes( 'No auth' ) ) {
                         signin = signinSchema();
                     }

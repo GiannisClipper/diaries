@@ -1,9 +1,26 @@
 import { isEmpty, isInvalid } from '../core/validators';
+import { isYYYYMMDD } from '../core/helpers';
 
 const isEmptyDiary_id = ( { data } ) =>
     isEmpty( { 
         value: data.diary_id, 
         message: 'entries.diary_id'
+    } );
+
+const isEmptyDate = ( { data } ) =>
+    isEmpty( { 
+        value: data.date, 
+        message: 'entries.date'
+    } );
+
+const isInvalidDate = ( { data } ) =>
+    ! data.date
+    ? null
+    :
+    isInvalid( { 
+        value: data.date, 
+        calculation: value => isYYYYMMDD( value ),
+        message: 'entries.date'
     } );
 
 const isEmptyType = ( { data } ) =>
@@ -48,6 +65,8 @@ const isEmptyWorkoutGenre_id = ( { data } ) =>
 
 export { 
     isEmptyDiary_id,
+    isEmptyDate,
+    isInvalidDate,
     isEmptyType,
     isInvalidType,
     isEmptyNote,

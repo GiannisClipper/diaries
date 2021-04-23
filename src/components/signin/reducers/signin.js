@@ -30,14 +30,8 @@ const signinReducer = ( state, action ) => {
                 throw new Error( 'Τα στοιχεία εισόδου είναι λανθασμένα.' );
             }
 
-            const signin_uiux = signin._uiux;
-            const settings_uiux = settings._uiux;
-            delete signin._uiux;
-            delete settings._uiux;
-            localStorage.setItem( 'signin', JSON.stringify( signin ) );
-            localStorage.setItem( 'settings', JSON.stringify( settings ) );
-            signin._uiux = signin_uiux;
-            settings._uiux = settings_uiux;
+            localStorage.setItem( 'signin', JSON.stringify( parseSigninFromDB( signin ) ) );
+            localStorage.setItem( 'settings', JSON.stringify( parseSettingsFromDB( settings ) ) );
 
             return { ...state, signin, settings };
 
