@@ -8,7 +8,7 @@ const speed = ( { duration, distance } ) => {
 
         if ( time ) {
             const seconds = timeToSeconds( time );
-            const kmPerHour = ( ( distance / seconds ) * 60 * 60 ).toFixed( 3 );
+            const kmPerHour = ( ( distance / seconds ) * 60 * 60 ).toFixed( 1 );
             return kmPerHour;
         }
     }

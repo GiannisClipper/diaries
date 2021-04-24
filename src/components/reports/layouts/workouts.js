@@ -1,12 +1,16 @@
 import { YYYYMMDDToRepr } from '../../core/helpers/dates';
+import { stringToTime, timeToSeconds, secondsToTime, timeToString } from '../../core/helpers/times';
+import { pace, speed } from '../../workouts/helpers/speedAndPace';
 
 const cols = {
     sn: { width: 10, align: 'center' },
     date: { width: 20, align: 'center' },
-    genre_name: { width: 70, align: 'left' },
+    genre_name: { width: 50, align: 'left' },
     duration: { width: 20, align: 'right' },
     distance: { width: 20, align: 'right' },
-    equip_name: { width: 70, align: 'left' },
+    pace: { width: 20, align: 'right' },
+    speed: { width: 20, align: 'right' },
+    equip_name: { width: 50, align: 'left' },
     remark: { width: 70, align: 'left' },
 };
 
@@ -16,6 +20,8 @@ const labels = ( lexicon ) => ( {
     genre_name: lexicon.workouts.genre_name,
     duration: lexicon.workouts.duration,
     distance: lexicon.workouts.distance,
+    pace: lexicon.workouts.pace,
+    speed: lexicon.workouts.speed,
     equip_name: lexicon.workouts.equip_name,
     remark: lexicon.workouts.remark,
 } )
@@ -27,6 +33,8 @@ const normalizeRows = ( { result } ) => {
     result.forEach( row => {
         row.sn = ++sn;
         row.date = YYYYMMDDToRepr( row.date );
+        row.pace = pace( { duration: row.duration, distance: row.distance } );
+        row.speed = speed( { duration: row.duration, distance: row.distance } );
     } );
 
     return result;
@@ -40,7 +48,8 @@ const calculateTotals = ( { result } ) => {
     };
 
     result.forEach( x => {
-        let duration = parseFloat( x.duration );
+        let duration = stringToTime( x.duration );
+        duration = duration ? timeToSeconds( duration ) : 0;
         let distance = parseFloat( x.distance );
         totals.duration += isNaN( duration ) ? 0 : duration;
         totals.distance += isNaN( distance ) ? 0 : distance;
@@ -50,7 +59,8 @@ const calculateTotals = ( { result } ) => {
 }
 
 const normalizeTotals = ( { totals, lexicon } ) => {
-    totals.duration = totals.duration.toFixed( 0 );
+    totals.duration = secondsToTime( totals.duration );
+    totals.duration = timeToString( totals.duration );
     totals.distance = totals.distance.toFixed( 3 );
 
     return totals;
