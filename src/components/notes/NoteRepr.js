@@ -4,7 +4,9 @@ const NoteRepr = ( { entry } ) => {
 
     let { note } = entry.type_specs;
 
-    let repr = note;
+    let repr = note.substring( 0, 100 );
+
+    repr += repr === note ? '' : '...';
 
     return <>{ repr }</>
 }

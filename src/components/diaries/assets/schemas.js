@@ -11,7 +11,7 @@ const diariesSchema = () => ( {
 const diarySchema = () => ( {
     id: null,
     user_id: null,
-    title: null,
+    title: '',
     startDate: null,
     _uiux: {
         form: {},  // isOpen

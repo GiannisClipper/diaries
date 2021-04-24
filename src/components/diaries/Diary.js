@@ -64,8 +64,10 @@ function Diary( { diaries, index, actions, assets, lexicon } ) {
 
             <RowValue title={ `${ diary.user_id }.${ diary.id }` }>
                 <div>
-                    <span>{ diary.title }</span>
-                    <span>{ diary.startDate }</span>
+                    { diary.startDate
+                        ? `${ diary.title } ( ${ diary.startDate } )`
+                        : `${ diary.title }`
+                    }
                 </div>
                 { ! diary.id || 
                     <RowMenu>

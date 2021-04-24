@@ -12,6 +12,9 @@ import ReportForm from './ReportForm';
 import { getPdfContent } from './helpers/getPdfContent';
 import { getPdfFile } from './helpers/getPdfFile';
 
+import { AppContext } from '../app/AppContext';
+import { DiariesContext } from '../diaries/DiariesContext';
+
 function Report( { reports, index, actions, assets, lexicon } ) {
 
     const report = reports[ index ];
@@ -23,6 +26,15 @@ function Report( { reports, index, actions, assets, lexicon } ) {
     const retrieveMode = presetAction( actions.retrieveMode, { assets, index } );
     const openForm = presetAction( actions.openForm, { assets, index } );
 
+    const { username } = useContext( AppContext ).state.signin;
+    const { diaries } = useContext( DiariesContext ).state;
+
+    const { diary_id } = dataToDB;
+    const diary_title = diaries
+        .filter( x => x.id === diary_id )
+        .map( x => x.title )
+        .reduce( ( result = '', x ) => result += x, '' );
+
     // request feature
 
     useEffect( () => {
@@ -33,8 +45,8 @@ function Report( { reports, index, actions, assets, lexicon } ) {
 
                 const content = getPdfContent( {
                         lexicon,
-                        username: 'username',
-                        diary_title: 'diary title',
+                        username,
+                        diary_title,
                         type: dataToDB.type,
                         descr: report.descr,
                         groupBy: dataToDB.groupBy,

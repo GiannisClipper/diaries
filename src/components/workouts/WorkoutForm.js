@@ -41,27 +41,6 @@ function WorkoutForm( { data, setData, lexicon } ) {
 
         <InputBox>
             <InputLabel>
-                { lexicon.workouts.duration }
-            </InputLabel>
-            <InputValue>
-                <InputDuration
-                    decimals="3"
-                    value={ type_specs.duration || '' }
-                    onChange={ event => {
-                        const duration = event.target.value;
-                        const { distance } = type_specs;
-                        const specs = {
-                            speed: speed( { duration, distance } ),
-                            pace: pace( { duration, distance } )
-                        }
-                        setData( { ...data, type_specs: { ...type_specs, duration, ...specs } } );
-                    } }
-                />
-            </InputValue>
-        </InputBox>
-
-        <InputBox>
-            <InputLabel>
                 { lexicon.workouts.distance }
             </InputLabel>
             <InputValue>
@@ -76,6 +55,27 @@ function WorkoutForm( { data, setData, lexicon } ) {
                             pace: pace( { duration, distance } )
                         }
                         setData( { ...data, type_specs: { ...type_specs, distance, ...specs } } );
+                    } }
+                />
+            </InputValue>
+        </InputBox>
+
+        <InputBox>
+            <InputLabel>
+                { lexicon.workouts.duration }
+            </InputLabel>
+            <InputValue>
+                <InputDuration
+                    decimals="3"
+                    value={ type_specs.duration || '' }
+                    onChange={ event => {
+                        const duration = event.target.value;
+                        const { distance } = type_specs;
+                        const specs = {
+                            speed: speed( { duration, distance } ),
+                            pace: pace( { duration, distance } )
+                        }
+                        setData( { ...data, type_specs: { ...type_specs, duration, ...specs } } );
                     } }
                 />
             </InputValue>

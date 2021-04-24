@@ -57,9 +57,10 @@ function User( { users, index, actions, assets, lexicon } ) {
         <RowBox>
 
             <RowValue title={ `${ user.id }` }>
-                <span>{ user.username }</span>
-                <span>{ user.email }</span>
-                <span>{ user.remark }</span>
+                { user.email
+                    ? `${ user.username } ( ${ user.email } )`
+                    : `${ user.username }`
+                }
             </RowValue>
 
             <RowMenu>
