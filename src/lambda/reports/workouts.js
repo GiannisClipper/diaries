@@ -1,9 +1,9 @@
 import { convertFieldTo, reduceField } from '../core/stages';
-import { matchPayments, lookupGenre, lookupFund } from './paymentsStages';
+import { matchWorkouts, lookupGenre, lookupEquip } from './workoutsStages';
 
-const payments = ( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, fund_id, fund_ids } ) => {
+const workouts = ( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, equip_id, equip_ids } ) => {
 
-    const matchDocuments = matchPayments( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, fund_id, fund_ids } );
+    const matchDocuments = matchWorkouts( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, equip_id, equip_ids } );
     
     const selectFields1 = { 
         $project: {
@@ -11,10 +11,10 @@ const payments = ( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, fu
             date: 1,
             type: 1,
             remark: '$type_specs.remark',
-            expense: '$type_specs.expense',
-            revenue: '$type_specs.revenue',
+            duration: '$type_specs.duration',
+            distance: '$type_specs.distance',
             genre_id: convertFieldTo( 'type_specs.genre_id', 'objectId' ),
-            fund_id: convertFieldTo( 'type_specs.fund_id', 'objectId' )
+            equip_id: convertFieldTo( 'type_specs.equip_id', 'objectId' )
         }
     }
     
@@ -23,10 +23,10 @@ const payments = ( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, fu
             date: 1,
             type: 1,
             remark: 1,
-            expense: 1,
-            revenue: 1,
+            duration: 1,
+            distance: 1,
             genre_name: reduceField( 'genre_.name' ),
-            fund_name: reduceField( 'fund_.name' )
+            equip_name: reduceField( 'equip_.name' )
         }
     }
     
@@ -34,12 +34,12 @@ const payments = ( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, fu
         matchDocuments,
         selectFields1,
         lookupGenre,
-        lookupFund,
+        lookupEquip,
         selectFields2,
     ];
 
     return stages;
 }
 
-export default payments;
-export { payments };
+export default workouts;
+export { workouts };

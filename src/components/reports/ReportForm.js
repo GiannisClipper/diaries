@@ -102,17 +102,6 @@ function ReportForm( { reports, index, actions, assets, lexicon } ) {
 
                 : null }
 
-                {/* <InputBox>
-                    <InputLabel>
-                        Test
-                    </InputLabel>
-                    <InputValue>
-                        <button onClick={ event => testPDF() } >
-                            testPDF()
-                        </button>
-                    </InputValue>
-                </InputBox> */}
-
             </CoreForm>
         </Modal>
     );

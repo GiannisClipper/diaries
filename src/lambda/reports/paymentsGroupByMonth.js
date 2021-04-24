@@ -1,5 +1,5 @@
 import { convertFieldTo } from '../core/stages';
-import { matchPayments, groupMonth, sortMonth } from './stages';
+import { matchPayments, groupMonth, sortMonth } from './paymentsStages';
 
 const paymentsGroupByFund = ( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, fund_id, fund_ids } ) => {
 

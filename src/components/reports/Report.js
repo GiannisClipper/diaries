@@ -10,6 +10,7 @@ import { urls } from '../app/assets/urls';
 
 import ReportForm from './ReportForm';
 import { paymentsPDF } from './helpers/paymentsPDF';
+import { workoutsPDF } from './helpers/workoutsPDF';
 
 function Report( { reports, index, actions, assets, lexicon } ) {
 
@@ -30,19 +31,36 @@ function Report( { reports, index, actions, assets, lexicon } ) {
 
             if ( _uiux.status.isResponseOk ) {
 
-                paymentsPDF( {
-                    lexicon,
-                    username: 'username',
-                    diary_title: 'diary title',
-                    type: dataToDB.type,
-                    descr: report.descr,
-                    groupBy: dataToDB.groupBy,
-                    dateFrom: dataToDB.dateFrom,
-                    dateTill: dataToDB.dateTill,
-                    genre_name: dataToDB.type_specs.genre_name,
-                    fund_name: dataToDB.type_specs.fund_name,
-                    result
-                } );
+                if ( dataToDB.type === 'payment' ) {
+                    paymentsPDF( {
+                        lexicon,
+                        username: 'username',
+                        diary_title: 'diary title',
+                        type: dataToDB.type,
+                        descr: report.descr,
+                        groupBy: dataToDB.groupBy,
+                        dateFrom: dataToDB.dateFrom,
+                        dateTill: dataToDB.dateTill,
+                        genre_name: dataToDB.type_specs.genre_name,
+                        fund_name: dataToDB.type_specs.fund_name,
+                        result
+                    } );
+
+                } else if ( dataToDB.type === 'workout' ) {
+                    workoutsPDF( {
+                        lexicon,
+                        username: 'username',
+                        diary_title: 'diary title',
+                        type: dataToDB.type,
+                        descr: report.descr,
+                        groupBy: dataToDB.groupBy,
+                        dateFrom: dataToDB.dateFrom,
+                        dateTill: dataToDB.dateTill,
+                        genre_name: dataToDB.type_specs.genre_name,
+                        equip_name: dataToDB.type_specs.equip_name,
+                        result
+                    } );
+                }
             }
 
             retrieveRequestFeature( {
@@ -59,7 +77,9 @@ function Report( { reports, index, actions, assets, lexicon } ) {
                 ( dataToDB.type_specs.genre_id ? `&genre_id=${ dataToDB.type_specs.genre_id }` : '' ) +
                 ( dataToDB.type_specs.genre_code ? `&genre_code=${ dataToDB.type_specs.genre_code }` : '' ) +
                 ( dataToDB.type_specs.fund_id ? `&fund_id=${ dataToDB.type_specs.fund_id }` : '' ) +
-                ( dataToDB.type_specs.fund_code ? `&fund_code=${ dataToDB.type_specs.fund_code }` : '' )
+                ( dataToDB.type_specs.fund_code ? `&fund_code=${ dataToDB.type_specs.fund_code }` : '' ) +
+                ( dataToDB.type_specs.equip_id ? `&equip_id=${ dataToDB.type_specs.equip_id }` : '' ) +
+                ( dataToDB.type_specs.equip_code ? `&equip_code=${ dataToDB.type_specs.equip_code }` : '' )
             } );
         }
 

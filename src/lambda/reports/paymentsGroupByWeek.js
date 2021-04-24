@@ -1,6 +1,6 @@
 import { splitWeeks, YYYYMMDDToDate, dateToYYYYMMDD } from '../../components/core/helpers/dates';
 import { convertFieldTo } from '../core/stages';
-import { matchPayments, groupWeek, sortWeek } from './stages';
+import { matchPayments, groupWeek, sortWeek } from './paymentsStages';
 
 const paymentsGroupByWeek = ( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, fund_id, fund_ids } ) => {
 

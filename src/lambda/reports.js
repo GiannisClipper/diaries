@@ -1,9 +1,16 @@
 import { createHandler, auth } from './core/handler';
+
 import payments from './reports/payments';
 import paymentsGroupByMonth from './reports/paymentsGroupByMonth';
 import paymentsGroupByWeek from './reports/paymentsGroupByWeek';
 import paymentsGroupByGenre from './reports/paymentsGroupByGenre';
 import paymentsGroupByFund from './reports/paymentsGroupByFund';
+
+import workouts from './reports/workouts';
+// import workoutsGroupByMonth from './reports/workoutsGroupByMonth';
+// import workoutsGroupByWeek from './reports/workoutsGroupByWeek';
+// import workoutsGroupByGenre from './reports/workoutsGroupByGenre';
+// import workoutsGroupByFund from './reports/workoutsGroupByFund';
 
 const getMethod = async ( event, db, collectionName ) => {
     let { 
@@ -15,7 +22,9 @@ const getMethod = async ( event, db, collectionName ) => {
         genre_id,
         genre_code,
         fund_id,
-        fund_code
+        fund_code,
+        equip_id,
+        equip_code
     } = event.queryStringParameters;
 
     const collection = db.collection( collectionName );
@@ -67,6 +76,57 @@ const getMethod = async ( event, db, collectionName ) => {
 
                 } default: {
                     const stages = payments( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, fund_id, fund_ids } );
+                    const result = await collection.aggregate( stages ).toArray();
+                    return { result };
+                }
+            }
+
+        } case 'workout': {
+
+            let genre_ids = null;
+            if ( genre_code ) {
+                const result = await db.collection( 'workout_genres' ).find( { code: { $regex: '^' + genre_code } } ).toArray();
+                if ( result.length > 1 ) {
+                    genre_ids = result.map( x => x._id.toString() );
+                }
+            }
+
+            let equip_ids = null;
+            if ( equip_code ) {
+                const result = await db.collection( 'workout_equips' ).find( { code: { $regex: '^' + equip_code } } ).toArray();
+                if ( result.length > 1 ) {
+                    equip_ids = result.map( x => x._id.toString() );
+                }
+            }
+
+            switch ( groupBy ) {
+
+                case 'month': {
+                    // const stages = workoutsGroupByMonth( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, equip_id, equip_ids } );
+                    // const result = await collection.aggregate( stages ).toArray();
+                    // return { result };
+                    return [];
+
+                } case 'week': {
+                    // const stages = workoutsGroupByWeek( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, equip_id, equip_ids } );
+                    // const result = await collection.aggregate( stages ).toArray();
+                    // return { result };
+                    return [];
+
+                } case 'genre': {
+                    // const stages = workoutsGroupByGenre( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, equip_id, equip_ids } );
+                    // const result = await collection.aggregate( stages ).toArray();
+                    // return { result };
+                    return [];
+
+                } case 'equip': {
+                    // const stages = workoutsGroupByFund( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, equip_id, equip_ids } );
+                    // const result = await collection.aggregate( stages ).toArray();
+                    // return { result };
+                    return [];
+
+                } default: {
+                    const stages = workouts( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, equip_id, equip_ids } );
                     const result = await collection.aggregate( stages ).toArray();
                     return { result };
                 }
