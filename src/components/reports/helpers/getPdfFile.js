@@ -226,7 +226,7 @@ const printFooter = ( { pdf, footer } ) => {
     return;
 }
 
-const reportPDF = ( { overHeader, header, underHeader, cols, labels, result, totals, footer } ) => {
+const getPdfFile = ( { overHeader, header, underHeader, cols, labels, result, totals, footer } ) => {
 
     const pdf = new jsPDF( {
         orientation: 'landscape',
@@ -276,4 +276,4 @@ const reportPDF = ( { overHeader, header, underHeader, cols, labels, result, tot
     window.open( blobURL );
 }
 
-export  { reportPDF, testPDF };
+export  { getPdfFile, testPDF };
