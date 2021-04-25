@@ -26,20 +26,6 @@ const labels = ( lexicon ) => ( {
     remark: lexicon.workouts.remark,
 } )
 
-const normalizeRows = ( { result } ) => {
-
-    let sn = 0;
-
-    result.forEach( row => {
-        row.sn = ++sn;
-        row.date = YYYYMMDDToRepr( row.date );
-        row.pace = pace( { duration: row.duration, distance: row.distance } );
-        row.speed = speed( { duration: row.duration, distance: row.distance } );
-    } );
-
-    return result;
-}
-
 const calculateTotals = ( { result } ) => {
     
     const totals = {
@@ -58,6 +44,20 @@ const calculateTotals = ( { result } ) => {
     return totals;
 }
 
+const normalizeRows = ( { result } ) => {
+
+    let sn = 0;
+
+    result.forEach( row => {
+        row.sn = ++sn;
+        row.date = YYYYMMDDToRepr( row.date );
+        row.pace = pace( { duration: row.duration, distance: row.distance } );
+        row.speed = speed( { duration: row.duration, distance: row.distance } );
+    } );
+
+    return result;
+}
+
 const normalizeTotals = ( { totals, lexicon } ) => {
     totals.duration = secondsToTime( totals.duration );
     totals.duration = timeToString( totals.duration );
@@ -66,5 +66,5 @@ const normalizeTotals = ( { totals, lexicon } ) => {
     return totals;
 }
 
-export default { cols, labels, normalizeRows, calculateTotals, normalizeTotals };
-export { cols, labels, normalizeRows, calculateTotals, normalizeTotals };
+export default { cols, labels, calculateTotals, normalizeRows, normalizeTotals };
+export { cols, labels, calculateTotals, normalizeRows, normalizeTotals };

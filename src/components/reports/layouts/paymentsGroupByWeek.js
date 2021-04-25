@@ -1,5 +1,5 @@
 import { calculateTotals } from './payments';
-import { normalizeAmounts, normalizeTotals } from './paymentsGroupByMonth';
+import { normalizeRowAmounts, normalizeTotals } from './paymentsGroupByMonth';
 
 const cols = {
     count: { width: 20, align: 'center' },
@@ -23,11 +23,11 @@ const labels = ( lexicon ) => ( {
 
 const normalizeRows = ( { lexicon, result, totals } ) => {
     result.forEach( row => {
-        row = normalizeAmounts( { row, totals } );
+        row = normalizeRowAmounts( { row, totals } );
     } );
 
     return result;
 }
 
-export default { cols, labels, normalizeAmounts, normalizeRows, calculateTotals, normalizeTotals };
-export { cols, labels, normalizeAmounts, normalizeRows, calculateTotals, normalizeTotals };
+export default { cols, labels, calculateTotals, normalizeRows, normalizeRowAmounts, normalizeTotals };
+export { cols, labels, calculateTotals, normalizeRows, normalizeRowAmounts, normalizeTotals };

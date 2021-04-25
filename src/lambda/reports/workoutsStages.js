@@ -32,8 +32,8 @@ const groupMonth = {
     $group: {
         _id : "$month",
         month : { $first: "$month" },
-        duration: { $sum: "$duration" },
         distance: { $sum: "$distance" },
+        duration: { $push: "$duration" },
         count: { $sum: 1 }
     }
 }
@@ -45,8 +45,8 @@ const groupWeek = ( weeks ) => ( {
         default: 'error',
         output: {
             // _id: automatically assigned with the corresponded boundaries value
-            duration: { $sum: "$duration" },
             distance: { $sum: "$distance" },
+            duration: { $push: "$duration" },
             count: { $sum: 1 }
         }
     }
@@ -56,8 +56,8 @@ const groupGenre = {
     $group: {
         _id : "$genre_id",
         genre_id : { $first: "$genre_id" },
-        duration: { $sum: "$duration" },
         distance: { $sum: "$distance" },
+        duration: { $push: "$duration" },
         count: { $sum: 1 }
     }
 }
@@ -66,8 +66,8 @@ const groupEquip = {
     $group: {
         _id : "$equip_id",
         equip_id : { $first: "$equip_id" },
-        duration: { $sum: "$duration" },
         distance: { $sum: "$distance" },
+        duration: { $push: "$duration" },
         count: { $sum: 1 }
     }
 }

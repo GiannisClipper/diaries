@@ -7,10 +7,10 @@ import paymentsGroupByGenreReport from '../layouts/paymentsGroupByGenre';
 import paymentsGroupByFundReport from '../layouts/paymentsGroupByFund';
 
 import workoutsReport from '../layouts/workouts';
-// import workoutsGroupByMonthReport from '../layouts/workoutsGroupByMonth';
-// import workoutsGroupByWeekReport from '../layouts/workoutsGroupByWeek';
-// import workoutsGroupByGenreReport from '../layouts/workoutsGroupByGenre';
-// import workoutsGroupByFundReport from '../layouts/workoutsGroupByFund';
+import workoutsGroupByMonthReport from '../layouts/workoutsGroupByMonth';
+import workoutsGroupByWeekReport from '../layouts/workoutsGroupByWeek';
+import workoutsGroupByGenreReport from '../layouts/workoutsGroupByGenre';
+import workoutsGroupByEquipReport from '../layouts/workoutsGroupByEquip';
 
 const getPdfContent = ( { 
     lexicon, 
@@ -58,21 +58,34 @@ const getPdfContent = ( {
         type ==='payment' && groupBy === 'genre' ? paymentsGroupByGenreReport :
         type ==='payment' && groupBy === 'fund' ? paymentsGroupByFundReport :
         type ==='payment' ? paymentsReport :
-        // type ==='workout' && groupBy === 'month' ? workoutsGroupByMonthReport :
-        // type ==='workout' && groupBy === 'week' ? workoutsGroupByWeekReport :
-        // type ==='workout' && groupBy === 'genre' ? workoutsGroupByGenreReport :
-        // type ==='workout' && groupBy === 'equip' ? workoutsGroupByFundReport :
+        type ==='workout' && groupBy === 'month' ? workoutsGroupByMonthReport :
+        type ==='workout' && groupBy === 'week' ? workoutsGroupByWeekReport :
+        type ==='workout' && groupBy === 'genre' ? workoutsGroupByGenreReport :
+        type ==='workout' && groupBy === 'equip' ? workoutsGroupByEquipReport :
         type ==='workout' ? workoutsReport : null;
 
     const cols = reportModule.cols;
 
+    console.log( type, groupBy, cols )
     const labels = reportModule.labels( lexicon );
+    
+    let totals = {};
 
-    let totals = reportModule.calculateTotals( { result } );
+    if ( reportModule.normalizeResult ) {
+        result = reportModule.normalizeResult( { result } );
+    }
 
-    result = reportModule.normalizeRows( { lexicon, result, totals } );
+    if ( reportModule.calculateTotals ) {
+        totals = reportModule.calculateTotals( { result } );
+    }
 
-    totals = reportModule.normalizeTotals( { totals, lexicon } );
+    if ( reportModule.normalizeRows ) {
+        result = reportModule.normalizeRows( { lexicon, result, totals } );
+    }
+
+    if ( reportModule.normalizeTotals ) {
+        totals = reportModule.normalizeTotals( { totals, lexicon } );
+    }
 
     const footer = `${ username }, ${ ( new Date() ).toLocaleString() }, ${ lexicon.reports.page }: `;
 

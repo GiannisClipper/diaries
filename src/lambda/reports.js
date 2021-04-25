@@ -7,10 +7,10 @@ import paymentsGroupByGenre from './reports/paymentsGroupByGenre';
 import paymentsGroupByFund from './reports/paymentsGroupByFund';
 
 import workouts from './reports/workouts';
-// import workoutsGroupByMonth from './reports/workoutsGroupByMonth';
-// import workoutsGroupByWeek from './reports/workoutsGroupByWeek';
-// import workoutsGroupByGenre from './reports/workoutsGroupByGenre';
-// import workoutsGroupByFund from './reports/workoutsGroupByFund';
+import workoutsGroupByMonth from './reports/workoutsGroupByMonth';
+import workoutsGroupByWeek from './reports/workoutsGroupByWeek';
+import workoutsGroupByGenre from './reports/workoutsGroupByGenre';
+import workoutsGroupByEquip from './reports/workoutsGroupByEquip';
 
 const getMethod = async ( event, db, collectionName ) => {
     let { 
@@ -102,28 +102,24 @@ const getMethod = async ( event, db, collectionName ) => {
             switch ( groupBy ) {
 
                 case 'month': {
-                    // const stages = workoutsGroupByMonth( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, equip_id, equip_ids } );
-                    // const result = await collection.aggregate( stages ).toArray();
-                    // return { result };
-                    return [];
+                    const stages = workoutsGroupByMonth( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, equip_id, equip_ids } );
+                    const result = await collection.aggregate( stages ).toArray();
+                    return { result };
 
                 } case 'week': {
-                    // const stages = workoutsGroupByWeek( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, equip_id, equip_ids } );
-                    // const result = await collection.aggregate( stages ).toArray();
-                    // return { result };
-                    return [];
+                    const stages = workoutsGroupByWeek( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, equip_id, equip_ids } );
+                    const result = await collection.aggregate( stages ).toArray();
+                    return { result };
 
                 } case 'genre': {
-                    // const stages = workoutsGroupByGenre( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, equip_id, equip_ids } );
-                    // const result = await collection.aggregate( stages ).toArray();
-                    // return { result };
-                    return [];
+                    const stages = workoutsGroupByGenre( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, equip_id, equip_ids } );
+                    const result = await collection.aggregate( stages ).toArray();
+                    return { result };
 
                 } case 'equip': {
-                    // const stages = workoutsGroupByFund( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, equip_id, equip_ids } );
-                    // const result = await collection.aggregate( stages ).toArray();
-                    // return { result };
-                    return [];
+                    const stages = workoutsGroupByEquip( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, equip_id, equip_ids } );
+                    const result = await collection.aggregate( stages ).toArray();
+                    return { result };
 
                 } default: {
                     const stages = workouts( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, equip_id, equip_ids } );

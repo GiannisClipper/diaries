@@ -20,7 +20,20 @@ const labels = ( lexicon ) => ( {
     difference: lexicon.reports.difference,
 } )
 
-const normalizeAmounts = ( { row, totals } ) => {
+const normalizeRows = ( { lexicon, result, totals } ) => {
+    result.forEach( row => {
+        const year = row.month.substring( 0, 4 );
+        const month = lexicon.core.months[ parseInt( row.month.substring( 4, 6 ) ) - 1 ];
+
+        row.month = `${ month } ${ year }`;
+
+        row = normalizeRowAmounts( { row, totals } );
+    } );
+
+    return result;
+}
+
+const normalizeRowAmounts = ( { row, totals } ) => {
     row.revenue100 = row.revenue !== 0 ? ( 100 / ( totals.revenue / row.revenue ) ) : 0;
     row.expense100 = row.expense !== 0 ? ( 100 / ( totals.expense / row.expense ) ) : 0;
 
@@ -32,19 +45,6 @@ const normalizeAmounts = ( { row, totals } ) => {
     return row;
 }
 
-const normalizeRows = ( { lexicon, result, totals } ) => {
-    result.forEach( row => {
-        const year = row.month.substring( 0, 4 );
-        const month = lexicon.core.months[ parseInt( row.month.substring( 4, 6 ) ) - 1 ];
-
-        row.month = `${ month } ${ year }`;
-
-        row = normalizeAmounts( { row, totals } );
-    } );
-
-    return result;
-}
-
 const normalizeTotals = ( { totals } ) => {
     totals.difference = ( totals.revenue - totals.expense ).toFixed( 2 );
     totals.revenue = totals.revenue.toFixed( 2 );
@@ -53,5 +53,5 @@ const normalizeTotals = ( { totals } ) => {
     return totals;
 }
 
-export default { cols, labels, normalizeAmounts, normalizeRows, calculateTotals, normalizeTotals };
-export { cols, labels, normalizeAmounts, normalizeRows, calculateTotals, normalizeTotals };
+export default { cols, labels, calculateTotals, normalizeRows, normalizeRowAmounts, normalizeTotals };
+export { cols, labels, calculateTotals, normalizeRows, normalizeRowAmounts, normalizeTotals };

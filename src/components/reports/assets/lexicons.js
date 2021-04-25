@@ -24,9 +24,11 @@ const EN = {
     count: 'Records',
     month: 'Month',
     week: 'Week',
+    difference: 'Difference',
     revenue100: '%',
     expense100: '%',
-    difference: 'Difference',
+    distance100: '%',
+    duration100: '%',
 }
 
 const GR = {
@@ -55,9 +57,11 @@ const GR = {
     count: 'Εγγραφές',
     month: 'Μήνας',
     week: 'Εβδομάδα',
+    difference: 'Υπόλοιπο',
     revenue100: '%',
     expense100: '%',
-    difference: 'Υπόλοιπο',
+    distance100: '%',
+    duration100: '%',
 }
 
 export default { EN, GR };
