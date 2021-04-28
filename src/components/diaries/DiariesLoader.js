@@ -10,17 +10,15 @@ function DiariesLoader( { state, actions, assets } ) {
 
     const { _uiux } = state;
     const { schema } = assets;
-    const user_id = schema().user_id;
+    const { user_id , token } = schema();
 
-    if ( 
-        ! _uiux.page.isOpen ||
-        user_id !== state.user_id
-    ) {
+    if ( ! _uiux.page.isOpen || user_id + token !== state.user_id + state.token ) {
 
         actions.openPage( { 
             data: {
                 ...diariesSchema(),
                 user_id,
+                token,
                 diaries: [ schema() ],
             } 
         } );

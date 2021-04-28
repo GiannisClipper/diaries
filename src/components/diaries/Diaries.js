@@ -12,9 +12,9 @@ import Diary from './Diary';
 
 function Diaries( { lexicon } ) {
 
-    const { user_id } = useContext( AppContext ).state.signin;
+    const { user_id, token } = useContext( AppContext ).state.signin;
     const { schema } = assets;
-    assets.schema = () => ( { ...schema(), user_id } );
+    assets.schema = () => ( { ...schema(), user_id, token } );
 
     const { state, actions } = useContext( DiariesContext );
     const { diaries } = state;
