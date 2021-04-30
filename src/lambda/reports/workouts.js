@@ -1,5 +1,5 @@
 import { convertFieldTo, reduceField } from '../core/stages';
-import { matchWorkouts, lookupGenre, lookupEquip } from './workoutsStages';
+import { matchWorkouts, lookupGenre, lookupEquip, sortDate } from './workoutsStages';
 
 const workouts = ( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, equip_id, equip_ids } ) => {
 
@@ -9,6 +9,7 @@ const workouts = ( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, eq
         $project: {
             _id: 0,
             date: 1,
+            index: 1,
             type: 1,
             remark: '$type_specs.remark',
             duration: '$type_specs.duration',
@@ -21,6 +22,7 @@ const workouts = ( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, eq
     const selectFields2 = { 
         $project: {
             date: 1,
+            index: 1,
             type: 1,
             remark: 1,
             duration: 1,
@@ -36,6 +38,7 @@ const workouts = ( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, eq
         lookupGenre,
         lookupEquip,
         selectFields2,
+        sortDate,
     ];
 
     return stages;

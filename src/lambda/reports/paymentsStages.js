@@ -90,6 +90,10 @@ const lookupFund = {
     }
 }
 
+const sortDate = {
+    $sort: { date: 1, index: 1 }
+}
+
 const sortMonth = {
     $sort: { month: 1 }
 }
@@ -114,6 +118,7 @@ export {
     groupFund,
     lookupGenre,
     lookupFund,
+    sortDate,
     sortMonth,
     sortWeek,
     sortGenre,

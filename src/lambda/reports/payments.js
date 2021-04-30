@@ -1,5 +1,5 @@
 import { convertFieldTo, reduceField } from '../core/stages';
-import { matchPayments, lookupGenre, lookupFund } from './paymentsStages';
+import { matchPayments, lookupGenre, lookupFund, sortDate } from './paymentsStages';
 
 const payments = ( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, fund_id, fund_ids } ) => {
 
@@ -9,6 +9,7 @@ const payments = ( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, fu
         $project: {
             _id: 0,
             date: 1,
+            index: 1,
             type: 1,
             remark: '$type_specs.remark',
             expense: '$type_specs.expense',
@@ -21,6 +22,7 @@ const payments = ( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, fu
     const selectFields2 = { 
         $project: {
             date: 1,
+            index: 1,
             type: 1,
             remark: 1,
             expense: 1,
@@ -36,6 +38,7 @@ const payments = ( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, fu
         lookupGenre,
         lookupFund,
         selectFields2,
+        sortDate,
     ];
 
     return stages;
