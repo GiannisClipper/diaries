@@ -40,8 +40,8 @@ const calculateTotals = ( { result } ) => {
     };
 
     result.forEach( x => {
-        let revenue = parseFloat( x.revenue );
-        let expense = parseFloat( x.expense );
+        const revenue = parseFloat( x.revenue );
+        const expense = parseFloat( x.expense );
         totals.revenue += isNaN( revenue ) ? 0 : revenue;
         totals.expense += isNaN( expense ) ? 0 : expense;
     } );

@@ -1,13 +1,14 @@
-import { splitWeeks, YYYYMMDDToDate, dateToYYYYMMDD } from '../../components/core/helpers/dates';
+import { splitWeeks, YYYYMMDDToDate, dateToYYYYMMDD, shiftDate } from '../../components/core/helpers/dates';
 import { convertFieldTo } from '../core/stages';
 import { matchWorkouts, groupWeek, sortWeek } from './workoutsStages';
 
 const workoutsGroupByWeek = ( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, equip_id, equip_ids } ) => {
 
     const weeks = splitWeeks( YYYYMMDDToDate( dateFrom ), YYYYMMDDToDate( dateTill ) );
-    const lastDate = weeks[ weeks.length - 1 ].dateTill;
-    weeks.push( { dateFrom: lastDate, dateTill: lastDate } );  // to support the operation of `bucket.boundaries` in `groupWeek` stage
-    weeks.forEach( ( x, i ) => weeks[ i ] = `${ dateToYYYYMMDD( x.dateFrom ) }-${ dateToYYYYMMDD( x.dateTill ) }` );
+    let lastDate = weeks[ weeks.length - 1 ].dateTill;
+    lastDate = shiftDate( lastDate, 1 );
+    weeks.push( { dateFrom: lastDate, dateTill: lastDate } );  // due the way that works `bucket.boundaries` in `groupWeek` stage
+    weeks.forEach( ( x, i ) => weeks[ i ] = `${ dateToYYYYMMDD( x.dateFrom ) }` );
 
     const matchDocuments = matchWorkouts( { diary_id, type, dateFrom, dateTill, genre_id, genre_ids, equip_id, equip_ids } );
 
@@ -30,7 +31,7 @@ const workoutsGroupByWeek = ( { diary_id, type, dateFrom, dateTill, genre_id, ge
         }
     }
     
-    const stages = [ 
+    const stages = [
         matchDocuments,
         projectFields1,
         groupWeek( weeks ),

@@ -1,5 +1,5 @@
 import { isEmpty, isInvalid } from '../core/validators';
-import { isYYYYMMDD } from '../core/helpers';
+import { isYYYYMMDD } from '../../components/core/helpers/dates';
 
 const isEmptyDiary_id = ( { data } ) =>
     isEmpty( { 

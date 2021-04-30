@@ -1,5 +1,5 @@
-import { normalizeTotals } from './workouts';
-import { normalizeResult, calculateTotals, normalizeRowAmounts } from './workoutsGroupByMonth';
+import { dateToYYYYMMDD, YYYYMMDDToDate, YYYYMMDDToRepr, shiftDate } from '../../core/helpers/dates';
+import { normalizeResult, calculateTotals, normalizeRowAmounts, normalizeTotals } from './workoutsGroupByMonth';
 
 const cols = {
     count: { width: 20, align: 'center' },
@@ -25,6 +25,12 @@ const labels = ( lexicon ) => ( {
 
 const normalizeRows = ( { lexicon, result, totals } ) => {
     result.forEach( row => {
+        let dateFrom = YYYYMMDDToDate( row.week );
+        let dateTill = shiftDate( dateFrom, 6 );
+        dateFrom = YYYYMMDDToRepr( dateToYYYYMMDD( dateFrom ) );
+        dateTill = YYYYMMDDToRepr( dateToYYYYMMDD( dateTill ) );
+        row.week = `${ dateFrom } - ${ dateTill }`;
+
         row = normalizeRowAmounts( { row, totals } );
     } );
 

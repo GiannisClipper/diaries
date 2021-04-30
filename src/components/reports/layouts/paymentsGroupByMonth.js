@@ -1,4 +1,4 @@
-import { calculateTotals } from './payments';
+import { calculateTotals, normalizeRowAmounts, normalizeTotals } from './paymentsGroupBy';
 
 const cols = {
     count: { width: 20, align: 'center' },
@@ -31,26 +31,6 @@ const normalizeRows = ( { lexicon, result, totals } ) => {
     } );
 
     return result;
-}
-
-const normalizeRowAmounts = ( { row, totals } ) => {
-    row.revenue100 = row.revenue !== 0 ? ( 100 / ( totals.revenue / row.revenue ) ) : 0;
-    row.expense100 = row.expense !== 0 ? ( 100 / ( totals.expense / row.expense ) ) : 0;
-
-    row.revenue100 = row.revenue100.toFixed( 1 );
-    row.expense100 = row.expense100.toFixed( 1 );
-
-    row.difference = ( row.revenue - row.expense ).toFixed( 2 );
-
-    return row;
-}
-
-const normalizeTotals = ( { totals } ) => {
-    totals.difference = ( totals.revenue - totals.expense ).toFixed( 2 );
-    totals.revenue = totals.revenue.toFixed( 2 );
-    totals.expense = totals.expense.toFixed( 2 );
-
-    return totals;
 }
 
 export default { cols, labels, calculateTotals, normalizeRows, normalizeRowAmounts, normalizeTotals };

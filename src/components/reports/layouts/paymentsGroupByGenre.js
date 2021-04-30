@@ -1,5 +1,4 @@
-import { calculateTotals } from './payments';
-import { normalizeRowAmounts, normalizeTotals } from './paymentsGroupByMonth';
+import { calculateTotals, normalizeRowAmounts, normalizeTotals } from './paymentsGroupBy';
 
 const cols = {
     count: { width: 20, align: 'center' },

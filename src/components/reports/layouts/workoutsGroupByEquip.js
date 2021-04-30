@@ -1,5 +1,4 @@
-import { normalizeTotals } from './workouts';
-import { normalizeResult, calculateTotals, normalizeRowAmounts } from './workoutsGroupByMonth';
+import { normalizeResult, calculateTotals, normalizeRowAmounts, normalizeTotals } from './workoutsGroupBy';
 
 const cols = {
     count: { width: 20, align: 'center' },

@@ -1,5 +1,5 @@
-import { calculateTotals } from './payments';
-import { normalizeRowAmounts, normalizeTotals } from './paymentsGroupByMonth';
+import { dateToYYYYMMDD, YYYYMMDDToDate, YYYYMMDDToRepr, shiftDate } from '../../core/helpers/dates';
+import { calculateTotals, normalizeRowAmounts, normalizeTotals } from './paymentsGroupBy';
 
 const cols = {
     count: { width: 20, align: 'center' },
@@ -23,6 +23,12 @@ const labels = ( lexicon ) => ( {
 
 const normalizeRows = ( { lexicon, result, totals } ) => {
     result.forEach( row => {
+        let dateFrom = YYYYMMDDToDate( row.week );
+        let dateTill = shiftDate( dateFrom, 6 );
+        dateFrom = YYYYMMDDToRepr( dateToYYYYMMDD( dateFrom ) );
+        dateTill = YYYYMMDDToRepr( dateToYYYYMMDD( dateTill ) );
+        row.week = `${ dateFrom } - ${ dateTill }`;
+
         row = normalizeRowAmounts( { row, totals } );
     } );
 
