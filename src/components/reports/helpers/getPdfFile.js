@@ -35,7 +35,7 @@ jsPDF.API.events.push( [ 'addFonts', addTrebuchetMSBold ] );
 jsPDF.API.events.push( [ 'addFonts', addTrebuchetMSItalic ] );
 jsPDF.API.events.push( [ 'addFonts', addTrebuchetMSBoldItalic ] );
 
-const testPDF = () => {
+/*const testPDF = () => {
     const pdf = new jsPDF({
         orientation: 'landscape',
         unit: 'mm',
@@ -77,23 +77,19 @@ const testPDF = () => {
     const blobPDF =  new Blob( [ pdf.output( 'blob' ) ], { type : 'application/pdf' } );
     const blobURL = URL.createObjectURL( blobPDF );
     window.open( blobURL );
-}
-
-
-const PAGE_WIDTH = 297;
-const PAGE_HEIGHT = 210;
-const ROW_HEIGHT = 7;
-const ROWS_PER_PAGE = 20;
-const FONT_SIZE = 8;
+}*/
 
 const offsetX = ( width, align ) => align === 'center' ? width / 2 : align === 'right' ? width - 1 : 1;
 const offsetY = ( height ) => height * 0.7;
 
-const printHeader = ( { pdf, left, top, overHeader, header, underHeader } ) => {
+const printHeader = ( { pdf, config, left, top, overHeader, header, underHeader } ) => {
+
+    const { PAGE_WIDTH, ROW_HEIGHT, FONT_SIZE } = config;
+
     let coordX = PAGE_WIDTH / 2;
     let coordY = top;
 
-    pdf.setFontSize( FONT_SIZE - 1 );
+    pdf.setFontSize( FONT_SIZE );
     pdf.text( overHeader, coordX, coordY, 'center' );
 
     top += ROW_HEIGHT;
@@ -112,7 +108,10 @@ const printHeader = ( { pdf, left, top, overHeader, header, underHeader } ) => {
     return top;
 }
 
-const printLabels = ( { pdf, left, top, cols, labels } ) => {
+const printLabels = ( { pdf, config, left, top, cols, labels } ) => {
+
+    const { ROW_HEIGHT, FONT_SIZE } = config;
+
     pdf.setFontSize( FONT_SIZE );
 
     let coordX = left;
@@ -151,7 +150,9 @@ const printLabels = ( { pdf, left, top, cols, labels } ) => {
     return top;
 }
 
-const printRows = ( { pdf, left, top, cols, rows, page } ) => {
+const printRows = ( { pdf, config, left, top, cols, rows, page } ) => {
+
+    const { ROWS_PER_PAGE, ROW_HEIGHT } = config;
 
     const firstRow = ( page - 1 ) * ROWS_PER_PAGE;
     const lastRow = Math.min( page * ROWS_PER_PAGE, rows.length ) - 1;
@@ -183,7 +184,10 @@ const printRows = ( { pdf, left, top, cols, rows, page } ) => {
     return top;
 }
 
-const printTotals = ( { pdf, left, top, cols, totals } ) => {
+const printTotals = ( { pdf, config, left, top, cols, totals } ) => {
+
+    const { ROW_HEIGHT } = config;
+
     let coordX = left;
     let coordY = top;
 
@@ -216,7 +220,10 @@ const printTotals = ( { pdf, left, top, cols, totals } ) => {
     return top;
 }
 
-const printFooter = ( { pdf, footer } ) => {
+const printFooter = ( { pdf, config, footer } ) => {
+
+    const { PAGE_WIDTH, PAGE_HEIGHT, FONT_SIZE } = config;
+
     let coordY = PAGE_HEIGHT * 0.95;
     let coordX = PAGE_WIDTH / 2;
 
@@ -226,21 +233,58 @@ const printFooter = ( { pdf, footer } ) => {
     return;
 }
 
+const getPdfConfig = ( {
+    MARGIN_LEFT, 
+    MARGIN_TOP, 
+    MARGIN_RIGHT, 
+    MARGIN_BOTTOM, 
+    ROW_WIDTH, 
+    ROW_HEIGHT, 
+    FONT_SIZE,
+    ORIENTATION,
+} ) => {
+
+    MARGIN_LEFT = MARGIN_LEFT || 20;
+    MARGIN_TOP = MARGIN_TOP || 20;
+    MARGIN_RIGHT = MARGIN_RIGHT || 20;
+    MARGIN_BOTTOM = MARGIN_BOTTOM || 20;
+    ROW_WIDTH = ROW_WIDTH || 0;
+    ROW_HEIGHT = ROW_HEIGHT || 7;
+    FONT_SIZE = FONT_SIZE || 8;
+    ORIENTATION = ORIENTATION || ( MARGIN_LEFT + ROW_WIDTH + MARGIN_RIGHT <= 210 ? 'portrait' : 'landscape' );
+
+    const PAGE_WIDTH = ORIENTATION === 'portrait' ? 210 : 297;
+    const PAGE_HEIGHT = ORIENTATION === 'portrait' ? 297 : 210;
+    const ROWS_PER_PAGE = parseInt( ( PAGE_HEIGHT - MARGIN_TOP - MARGIN_BOTTOM ) / ROW_HEIGHT );
+
+    return { 
+        MARGIN_LEFT, 
+        MARGIN_TOP, 
+        MARGIN_RIGHT, 
+        MARGIN_BOTTOM, 
+        ROW_WIDTH, 
+        ROW_HEIGHT, 
+        FONT_SIZE, 
+        ORIENTATION, 
+        PAGE_WIDTH, 
+        PAGE_HEIGHT, 
+        ROWS_PER_PAGE 
+    };
+}
+
 const getPdfFile = ( { overHeader, header, underHeader, cols, labels, result, totals, footer } ) => {
 
-    const pdf = new jsPDF( {
-        orientation: 'landscape',
-        unit: 'mm',
-        format: 'a4'
-    } );
+    const ROW_WIDTH = Object.keys( cols )
+        .map( key => cols[ key ].width )
+        .reduce( ( tot = 0, width ) => tot += width );
+
+    const config = getPdfConfig( { MARGIN_LEFT: 10, MARGIN_TOP: 15, MARGIN_RIGHT: 10, MARGIN_BOTTOM: 20, ROW_WIDTH } );
+    const { ORIENTATION, MARGIN_TOP, MARGIN_BOTTOM, PAGE_WIDTH, PAGE_HEIGHT, ROWS_PER_PAGE } = config;
+
+    const pdf = new jsPDF( { format: 'a4', orientation: ORIENTATION, unit: 'mm' } );
 
     // https://micropyramid.com/blog/export-html-web-page-to-pdf-using-jspdf/
     pdf.setFont( 'trebuchetMSNormal', 'normal' );
-
-    //pdf.setFont( 'Tahoma', 'normal' );
-    // pdf.addFileToVFS( 'trebuchetMSNormal.ttf', base64TrebuchetMSNormal );
-    // pdf.addFont( 'trebuchetMSNormal.ttf', 'trebuchetMSNormal', 'normal' );
-    // pdf.setFont( 'trebuchetMSNormal' );
 
     let pages = parseInt( result.length / ROWS_PER_PAGE );
     pages += result.length % ROWS_PER_PAGE ? 1 : 0;
@@ -255,19 +299,21 @@ const getPdfFile = ( { overHeader, header, underHeader, cols, labels, result, to
             pdf.addPage();
         }
 
-        let top = PAGE_HEIGHT * 0.05;
+        let top = MARGIN_TOP;
 
-        top = printHeader( { pdf, left, top, overHeader, header, underHeader } );
+        top = printHeader( { pdf, config, left, top, overHeader, header, underHeader } );
 
-        top = printLabels( { pdf, left, top, cols, labels } );
+        top = printLabels( { pdf, config, left, top, cols, labels } );
 
-        top = printRows( { pdf, left, top, cols, rows: result, page } );
+        top = printRows( { pdf, config, left, top, cols, rows: result, page } );
 
         if ( page === pages ) {
-            top = printTotals( { pdf, left, top, cols, totals } );
+            top = printTotals( { pdf, config, left, top, cols, totals } );
         }
 
-        printFooter( { pdf, footer: `${ footer } ${ page }/${ pages }` } );
+        top = PAGE_HEIGHT - MARGIN_BOTTOM;
+
+        printFooter( { pdf, config, footer: `${ footer } ${ page }/${ pages }` } );
     }
 
     const blobPDF =  pdf.output( 'blob' );
@@ -276,4 +322,4 @@ const getPdfFile = ( { overHeader, header, underHeader, cols, labels, result, to
     window.open( blobURL );
 }
 
-export  { getPdfFile, testPDF };
+export  { getPdfFile };
