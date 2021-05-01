@@ -1,5 +1,7 @@
 import { createHandler, auth } from './core/handler';
 
+import notes from './reports/notes';
+
 import payments from './reports/payments';
 import paymentsGroupByMonth from './reports/paymentsGroupByMonth';
 import paymentsGroupByWeek from './reports/paymentsGroupByWeek';
@@ -32,7 +34,9 @@ const getMethod = async ( event, db, collectionName ) => {
     switch ( type ) {
 
         case 'note': {
-            return [];
+            const stages = notes( { diary_id, type, dateFrom, dateTill } );
+            const result = await collection.aggregate( stages ).toArray();
+            return { result };
 
         } case 'payment': {
 

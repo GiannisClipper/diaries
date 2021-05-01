@@ -1,5 +1,7 @@
 import { YYYYMMDDToRepr } from '../../core/helpers/dates';
 
+import notesReport from '../layouts/notes';
+
 import paymentsReport from '../layouts/payments';
 import paymentsGroupByMonthReport from '../layouts/paymentsGroupByMonth';
 import paymentsGroupByWeekReport from '../layouts/paymentsGroupByWeek';
@@ -53,11 +55,14 @@ const getPdfContent = ( {
         );
 
     const reportModule = 
+        type ==='note' ? notesReport :
+
         type ==='payment' && groupBy === 'month' ? paymentsGroupByMonthReport :
         type ==='payment' && groupBy === 'week' ? paymentsGroupByWeekReport :
         type ==='payment' && groupBy === 'genre' ? paymentsGroupByGenreReport :
         type ==='payment' && groupBy === 'fund' ? paymentsGroupByFundReport :
         type ==='payment' ? paymentsReport :
+
         type ==='workout' && groupBy === 'month' ? workoutsGroupByMonthReport :
         type ==='workout' && groupBy === 'week' ? workoutsGroupByWeekReport :
         type ==='workout' && groupBy === 'genre' ? workoutsGroupByGenreReport :
