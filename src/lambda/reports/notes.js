@@ -17,7 +17,6 @@ const notes = ( { diary_id, type, dateFrom, dateTill } ) => {
     const stages = [ 
         matchDocuments,
         selectFields1,
-        sortDate,
     ];
 
     return stages;

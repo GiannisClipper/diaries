@@ -12,6 +12,7 @@ const myFont = ... // load the *.ttf font file as binary string
 doc.addFileToVFS("MyFont.ttf", myFont);
 doc.addFont("MyFont.ttf", "MyFont", "normal");
 */
+import { textToParagraphs } from '../../core/helpers/strings';
 
 import { jsPDF } from "jspdf";
 
@@ -279,6 +280,7 @@ const getPdfConfig = ( {
     MARGIN_BOTTOM, 
     ROW_WIDTH, 
     ROW_HEIGHT, 
+    FONT_NAME,
     FONT_SIZE,
     ORIENTATION,
     staticRows,
@@ -291,7 +293,8 @@ const getPdfConfig = ( {
     MARGIN_BOTTOM = MARGIN_BOTTOM || 20;
     ROW_WIDTH = ROW_WIDTH || 0;
     ROW_HEIGHT = ROW_HEIGHT || 3.5;
-    FONT_SIZE = FONT_SIZE || 8;
+    FONT_NAME = FONT_NAME || 'Arial';
+    FONT_SIZE = FONT_SIZE || 10;
     ORIENTATION = ORIENTATION || ( MARGIN_LEFT + ROW_WIDTH + MARGIN_RIGHT <= 210 ? 'portrait' : 'landscape' );
 
     const PAGE_WIDTH = ORIENTATION === 'portrait' ? 210 : 297;
@@ -309,6 +312,7 @@ const getPdfConfig = ( {
         MARGIN_BOTTOM, 
         ROW_WIDTH, 
         ROW_HEIGHT, 
+        FONT_NAME,
         FONT_SIZE, 
         ORIENTATION, 
         PAGE_WIDTH, 
@@ -318,22 +322,41 @@ const getPdfConfig = ( {
     };
 }
 
-const getRows = result => {
+const getRows = ( { result, cols, font } ) => {
 
     const rows = [];
 
     for ( const row of result ) {
+
+        // to replace null or undefined values
+        Object.keys( cols ).forEach( key => row[ key ] = row[ key ] || '' );
+
+        // to convert to strings
+        Object.keys( cols ).forEach( key => row[ key ] = row[ key ].toString() );
+
+        // add line breaks to strings according to coloumn width
+        Object.keys( cols ).forEach( key => {
+            row[ key ] = textToParagraphs( { 
+                text: row[ key ], 
+                font, 
+                width: cols[ key ].width * 3.78  // pixels = mm * 3.78
+            } ).join( '\n' );
+        } );
+        
+        // split strings including line breaks to arrays
         Object.keys( row ).forEach( key => row[ key ] = row[ key ] || '' );
         Object.keys( row ).forEach( key => row[ key ] = row[ key ].toString().split( '\n' ) );
 
+        // find the max length of the arrays
         const maxLength = Object.keys( row )
             .map( key => row[ key ].length )
             .reduce( ( maxLength = 0, length ) => maxLength = length > maxLength ? length : maxLength );
 
+        // add an blank row
         const newRow = null;
-        // Object.keys( row ).forEach( key => newRow[ key ] = '' );
         rows.push( newRow );
 
+        // add rows created per result row
         for ( let i = 0; i < maxLength; i++ ) {
             const newRow = {};
             Object.keys( row ).forEach( key => newRow[ key ] = row[ key ][ i ] ? row[ key ][ i ] + '' : '' );
@@ -346,26 +369,32 @@ const getRows = result => {
 
 const getPdfFile = ( { overHeader, header, underHeader, cols, labels, result, totals, footer } ) => {
 
-    const rows = getRows( result);
+    const rows = getRows( { 
+        result,
+        cols,
+        font: 'trebuchetMSNormal 8px',
+    } );
 
     const ROW_WIDTH = Object.keys( cols )
         .map( key => cols[ key ].width )
         .reduce( ( total, width ) => total + width );
 
     const config = getPdfConfig( { 
-        MARGIN_LEFT: 10, 
-        MARGIN_TOP: 15, 
-        MARGIN_RIGHT: 10, 
+        MARGIN_LEFT: 10,
+        MARGIN_TOP: 15,
+        MARGIN_RIGHT: 10,
         MARGIN_BOTTOM: 15,
         ROW_WIDTH,
-        staticRows: 6 + 3 + 1,  // header + labels + footer
+        FONT_NAME: 'trebuchetMSNormal',
+        FONT_SIZE: 8,    
+        staticRows: 6 + 3 + 3,  // header + labels + footer
         dynamicRows: rows.length + 3,  // rows + totals
     } );
 
-    const { ORIENTATION, MARGIN_TOP, MARGIN_BOTTOM, PAGE_WIDTH, PAGE_HEIGHT, PAGES, ROW_HEIGHT } = config;
+    const { ORIENTATION, MARGIN_TOP, MARGIN_BOTTOM, FONT_NAME, PAGE_WIDTH, PAGE_HEIGHT, PAGES, ROW_HEIGHT } = config;
 
     const pdf = new jsPDF( { format: 'a4', orientation: ORIENTATION, unit: 'mm' } );
-    pdf.setFont( 'trebuchetMSNormal', 'normal' );  // https://micropyramid.com/blog/export-html-web-page-to-pdf-using-jspdf/
+    pdf.setFont( FONT_NAME, 'normal' );  // https://micropyramid.com/blog/export-html-web-page-to-pdf-using-jspdf/
 
     const left = ( PAGE_WIDTH - ROW_WIDTH ) / 2;
 

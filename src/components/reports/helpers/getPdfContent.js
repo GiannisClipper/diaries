@@ -71,7 +71,6 @@ const getPdfContent = ( {
 
     const cols = reportModule.cols;
 
-    console.log( type, groupBy, cols )
     const labels = reportModule.labels( lexicon );
     
     let totals = {};

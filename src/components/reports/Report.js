@@ -44,18 +44,18 @@ function Report( { reports, index, actions, assets, lexicon } ) {
             if ( _uiux.status.isResponseOk ) {
 
                 const content = getPdfContent( {
-                        lexicon,
-                        username,
-                        diary_title,
-                        type: dataToDB.type,
-                        descr: report.descr,
-                        groupBy: dataToDB.groupBy,
-                        dateFrom: dataToDB.dateFrom,
-                        dateTill: dataToDB.dateTill,
-                        genre_name: dataToDB.type_specs.genre_name,
-                        fund_name: dataToDB.type_specs.fund_name,
-                        equip_name: dataToDB.type_specs.equip_name,
-                        result
+                    lexicon,
+                    username,
+                    diary_title,
+                    type: dataToDB.type,
+                    descr: report.descr,
+                    groupBy: dataToDB.groupBy,
+                    dateFrom: dataToDB.dateFrom,
+                    dateTill: dataToDB.dateTill,
+                    genre_name: dataToDB.type_specs.genre_name,
+                    fund_name: dataToDB.type_specs.fund_name,
+                    equip_name: dataToDB.type_specs.equip_name,
+                    result
                 } );
 
                 getPdfFile( content );

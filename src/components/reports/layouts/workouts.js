@@ -1,17 +1,18 @@
-import { YYYYMMDDToRepr } from '../../core/helpers/dates';
+import { YYYYMMDDToDate, YYYYMMDDToRepr } from '../../core/helpers/dates';
+import { noIntonation } from '../../core/helpers/strings';
 import { stringToTime, timeToSeconds, secondsToTime, timeToString } from '../../core/helpers/times';
 import { pace, speed } from '../../workouts/helpers/speedAndPace';
 
 const cols = {
     sn: { width: 10, align: 'center' },
-    date: { width: 20, align: 'center' },
-    genre_name: { width: 50, align: 'left' },
+    date: { width: 30, align: 'center' },
+    genre_name: { width: 45, align: 'left' },
     distance: { width: 20, align: 'right' },
     duration: { width: 20, align: 'right' },
     pace: { width: 20, align: 'right' },
     speed: { width: 20, align: 'right' },
-    equip_name: { width: 50, align: 'left' },
-    remark: { width: 70, align: 'left' },
+    equip_name: { width: 45, align: 'left' },
+    remark: { width: 60, align: 'left' },
 };
 
 const labels = ( lexicon ) => ( {
@@ -44,13 +45,16 @@ const calculateTotals = ( { result } ) => {
     return totals;
 }
 
-const normalizeRows = ( { result } ) => {
+const normalizeRows = ( { lexicon, result } ) => {
 
     let sn = 0;
 
     result.forEach( row => {
         row.sn = ++sn;
-        row.date = YYYYMMDDToRepr( row.date );
+        const day = YYYYMMDDToDate( row.date ).getDay();
+        const dayName = noIntonation( lexicon.core.days[ day ].substr( 0, 2 ) );
+        const dateRepr = YYYYMMDDToRepr( row.date );
+        row.date = `${ dayName } ${ dateRepr }`;
         row.pace = pace( { duration: row.duration, distance: row.distance } );
         row.speed = speed( { duration: row.duration, distance: row.distance } );
     } );

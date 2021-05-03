@@ -1,12 +1,13 @@
-import { YYYYMMDDToRepr } from '../../core/helpers/dates';
+import { YYYYMMDDToDate, YYYYMMDDToRepr } from '../../core/helpers/dates';
+import { noIntonation } from '../../core/helpers/strings';
 
 const cols = {
     sn: { width: 10, align: 'center' },
-    date: { width: 20, align: 'center' },
-    genre_name: { width: 70, align: 'left' },
+    date: { width: 30, align: 'center' },
+    genre_name: { width: 60, align: 'left' },
     revenue: { width: 20, align: 'right' },
     expense: { width: 20, align: 'right' },
-    fund_name: { width: 70, align: 'left' },
+    fund_name: { width: 60, align: 'left' },
     remark: { width: 70, align: 'left' },
 };
 
@@ -20,13 +21,16 @@ const labels = ( lexicon ) => ( {
     remark: lexicon.payments.remark,
 } )
 
-const normalizeRows = ( { result } ) => {
+const normalizeRows = ( { lexicon, result } ) => {
 
     let sn = 0;
 
     result.forEach( row => {
         row.sn = ++sn;
-        row.date = YYYYMMDDToRepr( row.date );
+        const day = YYYYMMDDToDate( row.date ).getDay();
+        const dayName = noIntonation( lexicon.core.days[ day ].substr( 0, 2 ) );
+        const dateRepr = YYYYMMDDToRepr( row.date );
+        row.date = `${ dayName } ${ dateRepr }`;
     } );
 
     return result;
