@@ -1,11 +1,11 @@
+import { countDaysOfRange, calcDateByDaysAddition, setDateStr } from '@giannisclipper/date'; 
+
 import { 
     RETRIEVE_MANY_RESPONSE_OK,
     RETRIEVE_MANY_RESPONSE_ERROR, 
     RETRIEVE_MANY_RESPONSE_OK_AFTER,
     RETRIEVE_MANY_RESPONSE_ERROR_AFTER, 
 } from '../../core/assets/types/retrieveMany';
-
-import { daysBetween, shiftDate, dateToYYYYMMDD } from '../../core/helpers/dates'; 
 
 const retrieveManyDateReducer = ( state, action ) => {
 
@@ -41,11 +41,11 @@ const retrieveManyDateReducer = ( state, action ) => {
 
             const dateFrom = dates[ 0 ].date;
             const dateTill = dates[ dates.length - 1 ].date;
-            const days = daysBetween( dateFrom, dateTill ) + 1;
+            const days = countDaysOfRange( dateFrom, dateTill );
 
             for ( let i = 0; i < days; i++ ) { 
-                const date = shiftDate( dateFrom, i );
-                const dateStr = dateToYYYYMMDD( date );
+                const date = calcDateByDaysAddition( dateFrom, i );
+                const dateStr = setDateStr( date );
                 const partFromDB = dataFromDB.filter( x => x.date === dateStr );
 
                 dates[ i ]._uiux = { 

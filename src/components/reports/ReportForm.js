@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { calcDateByDaysAddition, setDateRepr } from '@giannisclipper/date';
 
 import { Modal } from '../commons/Modal';
 import { InputBox, InputLabel, InputValue } from '../commons/InputBox';
 import { InputDate } from '../commons/InputDate';
 
 import CoreForm from "../core/CoreForm";
-import { shiftDate, YYYYMMDDToRepr, dateToYYYYMMDD } from '../core/helpers/dates';
 import presetAction from '../core/helpers/presetAction';
 import { validationFeature } from "../core/features/validation";
 
@@ -24,11 +24,10 @@ function ReportForm( { reports, index, actions, assets, lexicon } ) {
     const report = reports[ index ];
     const { status } = report._uiux;
 
-    const [ data, setData ] = useState( { 
-        ...report,
-        dateFrom: YYYYMMDDToRepr( dateToYYYYMMDD( shiftDate( new Date(), -6 ) ) ) ,
-        dateTill: YYYYMMDDToRepr( dateToYYYYMMDD( new Date() ) ),
-    } );
+    const dateFrom = setDateRepr( calcDateByDaysAddition( new Date(), -6 ) );
+    const dateTill = setDateRepr( new Date() );
+ 
+    const [ data, setData ] = useState( { ...report, dateFrom, dateTill } );
 
     useEffect( () => {
         validationFeature( { 

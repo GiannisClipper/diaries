@@ -1,7 +1,7 @@
 import { useContext, useEffect  } from 'react';
+import { setDateStr } from '@giannisclipper/date'; 
 
 import { retrieveManyRequestFeature } from '../core/features/requests';
-import { dateToYYYYMMDD } from '../core/helpers/dates';
 
 import { urls } from '../app/assets/urls';
 
@@ -13,8 +13,8 @@ function DatesLoader( { diary_id } ) {
     const { state, actions } = useContext( DatesContext );
     const { dates, _uiux } = state;
 
-    const dateFrom = dateToYYYYMMDD( dates[ 0 ].date );
-    const dateTill = dateToYYYYMMDD( dates[ dates.length - 1 ].date );
+    const dateFrom = setDateStr( dates[ 0 ].date );
+    const dateTill = setDateStr( dates[ dates.length - 1 ].date );
 
     useEffect( () => {
 

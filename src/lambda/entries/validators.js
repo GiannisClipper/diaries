@@ -1,5 +1,5 @@
 import { isEmpty, isInvalid } from '../core/validators';
-import { isYYYYMMDD } from '../../components/core/helpers/dates';
+import { getDateStr } from '@giannisclipper/date';
 
 const isEmptyDiary_id = ( { data } ) =>
     isEmpty( { 
@@ -19,7 +19,7 @@ const isInvalidDate = ( { data } ) =>
     :
     isInvalid( { 
         value: data.date, 
-        calculation: value => isYYYYMMDD( value ),
+        calculation: value => getDateStr( value ) === null ? false : true,
         message: 'entries.date'
     } );
 

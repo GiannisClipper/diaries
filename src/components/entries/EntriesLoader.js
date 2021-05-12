@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
-
-import { dateToYYYYMMDD } from '../core/helpers/dates';
+import { setDateStr } from '@giannisclipper/date'; 
 
 function EntriesLoader( { diary_id, state, actions, assets }) {
 
@@ -9,7 +8,7 @@ function EntriesLoader( { diary_id, state, actions, assets }) {
 
     const schema = assets.schema;
     assets.schema = () => ( { 
-        ...schema(), diary_id, date: dateToYYYYMMDD( date ) 
+        ...schema(), diary_id, date: setDateStr( date ) 
     } );
 
     if ( dataFromDB && status.isResponseOk ) {

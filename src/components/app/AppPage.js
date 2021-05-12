@@ -5,7 +5,7 @@ import { centeredness } from '../commons/InitStyle';
 
 import { LinkHome, LinkDiaries, LinkUsers, LinkSettings, LinkSignout } from './AppLinks';
 import { AppContext } from './AppContext';
-//import lexicons from './assets/lexicons';
+
 import { APP_TITLE } from './assets/constants';
 
 const AppNavStyled = styled.div`

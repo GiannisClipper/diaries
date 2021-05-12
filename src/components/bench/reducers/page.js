@@ -1,22 +1,19 @@
-import { 
-    START_PAGE,
-    PREV_PAGE,
-    NEXT_PAGE,
-} from '../../core/assets/types/page';
+import { calcDateByDaysAddition, setDateDate } from '@giannisclipper/date';
+
+import { START_PAGE, PREV_PAGE, NEXT_PAGE } from '../../core/assets/types/page';
 
 import { datesSchema } from '../../date/assets/schemas';
 import { entriesSchema, entrySchema } from '../../entries/assets/schemas';
 
-import { shiftDate } from '../../core/helpers/dates';
 
 const calcDates = ( dateFrom, days ) => {
     dateFrom = days < 0
-        ? shiftDate( dateFrom, days )
-        : shiftDate( dateFrom, 1 );
+        ? setDateDate( calcDateByDaysAddition( dateFrom, days ) )
+        : setDateDate( calcDateByDaysAddition( dateFrom, 1 ) );
 
     const dates = new Array( Math.abs( days ) )
         .fill( undefined )
-        .map( ( x, index ) => shiftDate( dateFrom, index ) );
+        .map( ( x, index ) => setDateDate( calcDateByDaysAddition( dateFrom, index ) ) );
 
     return dates;
 }

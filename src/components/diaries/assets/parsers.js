@@ -1,16 +1,16 @@
-import { reprToYYYYMMDD, YYYYMMDDToRepr } from '../../core/helpers/dates.js'
+import { setDateStr, setDateRepr } from '@giannisclipper/date'
 
 const parseDiaryFromDB = ( data ) => ( {
     id: data._id,
     user_id: data.user_id,
     title: data.title,
-    startDate: YYYYMMDDToRepr( data.startDate ),
+    startDate: setDateRepr( data.startDate ),
 } )
 
 const parseDiaryToDB = ( data ) => ( {
     user_id: data.user_id,
     title: data.title,
-    startDate: reprToYYYYMMDD( data.startDate ),
+    startDate: setDateStr( data.startDate ),
 } )
 
 export { parseDiaryFromDB, parseDiaryToDB };

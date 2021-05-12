@@ -1,5 +1,5 @@
 import { RETRIEVE_MANY_RESPONSE_OK_AFTER } from '../../core/assets/types/retrieveMany';
-import { dateToYYYYMMDD } from '../../core/helpers/dates'; 
+import { setDateStr } from '@giannisclipper/date'; 
 
 const retrieveManyEntryReducer = ( state, action ) => {
 
@@ -17,7 +17,7 @@ const retrieveManyEntryReducer = ( state, action ) => {
                 const entry = parseFromDB( entryFromDB );
                 entries.push( { ...schema(), ...entry } );
             }
-            entries.push( { ...schema(), date: dateToYYYYMMDD( date ) } );
+            entries.push( { ...schema(), date: setDateStr( date ) } );
 
             _uiux.status = { isResponseOkAfter: true };
             // delete _uiux.dataFromDB;

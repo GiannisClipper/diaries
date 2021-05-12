@@ -1,4 +1,4 @@
-import { YYYYMMDDToDate, YYYYMMDDToRepr } from '../../core/helpers/dates';
+import { calcDayOfWeek, setDateRepr } from '@giannisclipper/date';
 import { noIntonation } from '../../core/helpers/strings';
 
 const cols = {
@@ -19,9 +19,10 @@ const normalizeRows = ( { lexicon, result } ) => {
 
     result.forEach( row => {
         row.sn = ++sn;
-        const day = YYYYMMDDToDate( row.date ).getDay();
+        let day = calcDayOfWeek( row.date );
+        day = day === 7 ? 0 : day;
         const dayName = noIntonation( lexicon.core.days[ day ].substr( 0, 2 ) );
-        const dateRepr = YYYYMMDDToRepr( row.date );
+        const dateRepr = setDateRepr( row.date );
         row.date = `${ dayName } ${ dateRepr }`;
     } );
 

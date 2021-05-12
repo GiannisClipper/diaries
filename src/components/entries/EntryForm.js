@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { setDateRepr } from '@giannisclipper/date'; 
 
 import { Modal } from '../commons/Modal';
 import { InputBox, InputLabel, InputValue } from '../commons/InputBox';
@@ -6,7 +7,6 @@ import { InputSelectingList } from '../commons/InputList';
 
 import CoreForm from "../core/CoreForm";
 import { getFromList } from '../core/helpers/getFromList';
-import { YYYYMMDDToRepr, dateToYYYYMMDD } from '../core/helpers/dates';
 import presetAction from '../core/helpers/presetAction';
 import { validationFeature } from "../core/features/validation";
 
@@ -105,7 +105,7 @@ function EntryForm( { date, entries, index, actions, assets, lexicon } ) {
                     </InputLabel>
                     <InputValue>
                         <input 
-                            value={ `${ lexicon.core.days[ date.getDay() ] } ${ YYYYMMDDToRepr( dateToYYYYMMDD( date ), 'D-M-Y' ) }` }
+                            value={ `${ lexicon.core.days[ date.getDay() ] } ${ setDateRepr( date ) }` }
                             tabIndex="-1"
                             readOnly
                         />

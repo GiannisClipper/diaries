@@ -1,11 +1,10 @@
 import { useEffect } from 'react';
-
-import { YYYYMMDDToDate, reprToYYYYMMDD } from '../core/helpers/dates';
+import { setDateDate } from '@giannisclipper/date'; 
 
 import { benchSchema } from './assets/schemas';
 
 const calcStartDate = startDate => {
-    startDate = YYYYMMDDToDate( reprToYYYYMMDD( startDate ) ) || new Date();
+    startDate = setDateDate( startDate ) || new Date();
     startDate.setHours( 12 );
     startDate.setMinutes( 0 );
     startDate.setSeconds( 0 );

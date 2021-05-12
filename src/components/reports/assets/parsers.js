@@ -1,12 +1,12 @@
-import { reprToYYYYMMDD } from '../../core/helpers/dates.js'
+import { setDateStr } from '@giannisclipper/date';
 
 const parseReportToDB = ( data ) => {
     const result = {
         diary_id: data.diary_id,
         type: data.type,
         descr: data.descr,
-        dateFrom: reprToYYYYMMDD( data.dateFrom ),
-        dateTill: reprToYYYYMMDD( data.dateTill ),
+        dateFrom: setDateStr( data.dateFrom ),
+        dateTill: setDateStr( data.dateTill ),
         groupBy: data.groupBy,
     };
 

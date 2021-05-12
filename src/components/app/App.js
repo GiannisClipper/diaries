@@ -8,6 +8,9 @@ import workout_genresContext from '../workout_genres/GenresContext';
 import workout_equipsContext from '../workout_equips/EquipsContext';
 import AppLoad from './AppLoad';
 import AppRoutes from './AppRoutes';
+import { isMonth } from '@giannisclipper/date';
+
+console.log( 'isMonth( 12 )', isMonth( 12 ) );
 
 const PaymentGenresContextProvider = payment_genresContext.GenresContextProvider;
 const PaymentFundsContextProvider = payment_fundsContext.FundsContextProvider;

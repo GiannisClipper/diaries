@@ -1,4 +1,4 @@
-import { YYYYMMDDToRepr } from '../../core/helpers/dates';
+import { setDateRepr } from '@giannisclipper/date';
 
 import notesReport from '../layouts/notes';
 
@@ -35,8 +35,8 @@ const getPdfContent = ( {
 
     const underHeader = 
         (
-            `[ ${ lexicon.reports.dateFrom }: ${ YYYYMMDDToRepr( dateFrom ) } ` +
-            `${ lexicon.reports.dateTill }: ${ YYYYMMDDToRepr( dateTill ) } ]`
+            `[ ${ lexicon.reports.dateFrom }: ${ setDateRepr( dateFrom ) } ` +
+            `${ lexicon.reports.dateTill }: ${ setDateRepr( dateTill ) } ]`
         ) +
 
         ( genre_name 

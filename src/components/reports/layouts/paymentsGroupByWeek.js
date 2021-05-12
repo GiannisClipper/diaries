@@ -1,4 +1,4 @@
-import { dateToYYYYMMDD, YYYYMMDDToDate, YYYYMMDDToRepr, shiftDate } from '../../core/helpers/dates';
+import { setDateRepr, calcDateByDaysAddition } from '@giannisclipper/date';
 import { calculateTotals, normalizeRowAmounts, normalizeTotals } from './paymentsGroupBy';
 
 const cols = {
@@ -23,10 +23,10 @@ const labels = ( lexicon ) => ( {
 
 const normalizeRows = ( { lexicon, result, totals } ) => {
     result.forEach( row => {
-        let dateFrom = YYYYMMDDToDate( row.week );
-        let dateTill = shiftDate( dateFrom, 6 );
-        dateFrom = YYYYMMDDToRepr( dateToYYYYMMDD( dateFrom ) );
-        dateTill = YYYYMMDDToRepr( dateToYYYYMMDD( dateTill ) );
+        let dateFrom = row.week;
+        let dateTill = calcDateByDaysAddition( dateFrom, 6 );
+        dateFrom = setDateRepr( dateFrom );
+        dateTill = setDateRepr( dateTill );
         row.week = `${ dateFrom } - ${ dateTill }`;
 
         row = normalizeRowAmounts( { row, totals } );

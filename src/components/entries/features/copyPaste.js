@@ -1,5 +1,5 @@
 import presetAction from '../../core/helpers/presetAction';
-import { dateToYYYYMMDD } from '../../core/helpers/dates';
+import { setDateStr } from '@giannisclipper/date';
 
 function presetCopyPasteFeature( { copyPasteContext, date, entries, index, actions, assets } ) {
 
@@ -50,8 +50,8 @@ function presetCopyPasteFeature( { copyPasteContext, date, entries, index, actio
                 }
 
                 const data = isCut() 
-                    ? { ...getCut().data, date: dateToYYYYMMDD( date ), index }
-                    : { ...getCopy().data, date: dateToYYYYMMDD( date ), index, id: null }
+                    ? { ...getCut().data, date: setDateStr( date ), index }
+                    : { ...getCopy().data, date: setDateStr( date ), index, id: null }
 
                 const payload = { data };
                 pasteBefore( payload );
